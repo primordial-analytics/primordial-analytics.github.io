@@ -17,7 +17,7 @@ thumbnail: demand-thumbnail.png
 **Client's Problem:** _"We really just want to know what
 the future holds for sales. That knowledge impacts everything we do."_
 
-![alt][image]
+![alt][image]{: .img-fluid }
 
 This problem is so common that there are thousands of off-the-shelf
 solutions. All the big companies ([Salesforce][salesforce],

@@ -25,6 +25,11 @@ a:hover {
   color: #B3A369 !important;
 }
 
+hr {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
 h1,
 h2,
 h3,
@@ -36,7 +41,7 @@ h6 {
 }
 
 section {
-  padding: 100px 0;
+  padding: 50px 0;
 }
 
 section h2.section-heading {
@@ -56,7 +61,7 @@ section h3.section-subheading {
 
 @media (min-width: 768px) {
   section {
-    padding: 100px 0;
+    padding: 50px 0;
   }
 }
 
@@ -110,7 +115,7 @@ img::-moz-selection {
 #mainNav .navbar-toggler {
   font-size: 12px;
   right: 0;
-  padding: 13px;
+  padding: 10px;
   text-transform: uppercase;
   color: white;
   border: 0;
@@ -170,40 +175,6 @@ img::-moz-selection {
   }
 }
 
-header.masthead {
-  text-align: center;
-  color: white;
-  background-image: url("/img/galaxy-darkened.jpg");
-  background-repeat: no-repeat;
-  background-attachment: scroll;
-  background-position: center center;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-
-header.masthead .intro-text {
-  padding-top: 150px;
-  padding-bottom: 100px;
-}
-
-header.masthead .intro-text .intro-lead-in {
-  font-size: 22px;
-  font-style: italic;
-  line-height: 22px;
-  margin-bottom: 25px;
-  font-family: 'Lato', sans-serif;
-}
-
-header.masthead .intro-text .intro-heading {
-  font-size: 50px;
-  font-weight: 700;
-  line-height: 50px;
-  margin-bottom: 25px;
-  font-family: 'Sansation Regular', sans-serif;
-}
-
 header.mizzenhead {
   height: 0px;
   text-align: center;
@@ -219,8 +190,7 @@ header.mizzenhead {
 }
 
 header.mizzenhead .intro-text {
-  padding-top: 150px;
-  padding-bottom: 100px;
+  padding-top: 170px;
 }
 
 header.mizzenhead .intro-text .intro-lead-in {
@@ -232,33 +202,10 @@ header.mizzenhead .intro-text .intro-lead-in {
 }
 
 header.mizzenhead .intro-text .intro-heading {
-  padding-top: 5vh;
-  font-size: 50px;
-  font-weight: 700;
-  line-height: 50px;
+  font-size: 300%;
+  line-height: 100%;
   margin-bottom: 25px;
   font-family: 'Sansation Regular', sans-serif;
-}
-
-@media (min-width: 768px) {
-  header.masthead .intro-text {
-    padding-top: 300px;
-    padding-bottom: 200px;
-  }
-  header.masthead .intro-text .intro-lead-in {
-    font-size: 40px;
-    font-style: italic;
-    line-height: 40px;
-    margin-bottom: 25px;
-    font-family: 'Lato', sans-serif;
-  }
-  header.masthead .intro-text .intro-heading {
-    font-size: 75px;
-    font-weight: 700;
-    line-height: 75px;
-    margin-bottom: 50px;
-    font-family: 'Sansation Regular', sans-serif;
-  }
 }
 
 .service-heading {
@@ -354,7 +301,7 @@ header.mizzenhead .intro-text .intro-heading {
 }
 
 .portfolio-modal .modal-content {
-  padding: 100px 0;
+  padding: 20px 0;
   text-align: center;
 }
 
@@ -364,7 +311,7 @@ header.mizzenhead .intro-text .intro-heading {
 
 .portfolio-modal .modal-content p {
   margin-bottom: 30px;
-  text-align: justify;
+  text-align: left;
 }
 
 .portfolio-modal .modal-content p.item-intro {
@@ -777,17 +724,53 @@ header .overlay {
 
 @media (pointer: coarse) and (hover: none) {
   header {
-    background: url("/img/galaxy-darkened.jpg") black no-repeat center center scroll;
+    text-align: center;
+    color: white;
+    background-image: url("/img/galaxy-darkened.jpg");
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+  header .intro-text {
+    padding-top: 150px;
+    padding-bottom: 100px;
+  }
+  header .intro-text .intro-lead-in {
+    font-size: 22px;
+    font-style: italic;
+    line-height: 22px;
+    margin-bottom: 25px;
+    font-family: 'Lato', sans-serif;
+  }
+  header .intro-text .intro-heading {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 50px;
+    margin-bottom: 25px;
+    font-family: 'Sansation Regular', sans-serif;
   }
   header video {
     display: none;
   }
 }
 
+.breadcrumb-item + .breadcrumb-item::before {
+  content: ">>";
+}
+
+.breadcrumb {
+  font-size: 80%;
+  padding: .25rem 1rem;
+}
+
 .post {
   display: inline-block;
   border-bottom: 1px solid #B9B7C7;
-  padding-bottom: 1em;
+  padding-bottom: 2em;
   margin-bottom: 2em;
 }
 
@@ -796,19 +779,18 @@ header .overlay {
   float: left;
   color: #B9B7C7;
   padding: 4px 10px 0px 0px;
-  margin-right: 21px;
-  border-right: 2px solid #B9B7C7;
+  margin-right: 20px;
+  border-right: 1px solid #B9B7C7;
   text-align: right;
 }
 
 .post-date {
-  padding-top: 32px;
+  padding-top: 20px;
   line-height: 30px;
 }
 
 div.post-left div.post-date span {
   font-size: 160%;
-  letter-spacing: -2px;
 }
 
 .post-right {
@@ -841,8 +823,6 @@ div.post-left div.post-date span {
   cursor: pointer;
   float: left;
   margin: 10px 1%;
-  max-height: 225px;
-  max-width: 480px;
   overflow: hidden;
   position: relative;
   text-align: center;
@@ -852,45 +832,25 @@ div.post-left div.post-date span {
 .playful blog-figure figcaption,
 .playful blog-figure figcaption > a {
   height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
   width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .playful blog-figure figcaption {
   backface-visibility: hidden;
   color: #fff;
-  font-size: 1.25em;
-  text-transform: uppercase;
 }
 
 .playful blog-figure h4,
 .playful blog-figure p {
   margin: 0;
-}
-
-.playful blog-figure h4 {
   color: #fff;
-  font-size: 20px;
-  font-weight: 800;
-  word-spacing: -0.15em;
-}
-
-.playful blog-figure p {
-  font-size: 18px;
-  font-weight: 100;
-  color: #fff;
-  letter-spacing: 1px;
-}
-
-.playful blog-figure h2,
-.playful blog-figure p {
-  margin: 0;
 }
 
 .playful blog-figure.softeffect {
-  background: none repeat scroll 0 0 #000000;
+  background: none repeat scroll 0 0 #B3A369;
 }
 
 .playful blog-figure.softeffect img {
@@ -898,7 +858,7 @@ div.post-left div.post-date span {
 }
 
 blog-figure.softeffect:hover img {
-  opacity: 0.35;
+  opacity: 0.3;
   transform: scale(1);
 }
 
@@ -916,7 +876,7 @@ blog-figure.softeffect:hover img {
 
 .playful blog-figure.softeffect p {
   margin: 0 auto;
-  max-width: 200px;
+  max-width: 80%;
   transform: scale(1.5);
 }
 
@@ -945,7 +905,6 @@ blog-figure.softeffect {
 
 blog-figure.softeffect:hover {
   background: none repeat scroll 0 0 #B3A369;
-  /* Cyan: #00aeef */
 }
 
 blog-figure.softeffect img {

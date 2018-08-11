@@ -21,7 +21,7 @@ number of purchases. A lot of the products we sell you can get
 anywhere, and we want our service model to shine by getting people
 regularly into our sales funnel."_
 
-![alt][image]
+![alt][image]{: .img-fluid }
 
 A very interesting problem, which concerned us, it didn't seem very
 valuable to the Client at first glance to have an analytics team dig

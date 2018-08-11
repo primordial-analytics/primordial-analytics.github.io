@@ -19,7 +19,7 @@ employees. This is a critical need for us now and going forward as it
 impacts hiring and retention of people working on high-value
 technology projects."_
 
-![alt][image]
+![alt][image]{: .img-fluid }
 
 Our Client was within range of several tech hotbeds and had the added
 stress of competing against those markets. Providing extensive "perks"

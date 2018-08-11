@@ -1,7 +1,16 @@
+.breadcrumb-item+.breadcrumb-item::before {
+    content: ">>";
+}
+
+.breadcrumb {
+    font-size: 80%;
+    padding: .25rem 1rem;
+}
+
 .post {
 	display: inline-block;
 	border-bottom: 1px solid $bg_light;
-	padding-bottom: 1em;
+	padding-bottom: 2em;
 	margin-bottom: 2em;
 }
 
@@ -10,19 +19,18 @@
 	float: left;
 	color: $bg_light;
 	padding: 4px 10px 0px 0px;
-	margin-right: 21px;
-	border-right: 2px solid $bg_light;
+	margin-right: 20px;
+	border-right: 1px solid $bg_light;
 	text-align: right;
 }
 
 .post-date {
-	padding-top: 32px;
+	padding-top: 20px;
 	line-height: 30px;
 }
 
 div.post-left div.post-date span {
     font-size: 160%;
-	letter-spacing: -2px
 }
 
 .post-right {

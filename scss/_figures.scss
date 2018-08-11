@@ -2,8 +2,6 @@
   cursor: pointer;
   float: left;
   margin: 10px 1%;
-  max-height: 225px;
-  max-width: 480px;
   overflow: hidden;
   position: relative;
   text-align: center;
@@ -13,45 +11,25 @@
 .playful blog-figure figcaption,
 .playful blog-figure figcaption > a {
   height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
   width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .playful blog-figure figcaption {
   backface-visibility: hidden;
   color: #fff;
-  font-size: 1.25em;
-  text-transform: uppercase;
 }
 
 .playful blog-figure h4,
 .playful blog-figure p {
   margin: 0;
-}
-
-.playful blog-figure h4 {
   color: #fff;
-  font-size: 20px;
-  font-weight: 800;
-  word-spacing: -0.15em;
-}
-
-.playful blog-figure p {
-  font-size: 18px;
-  font-weight: 100;
-  color: #fff;
-  letter-spacing: 1px;
-}
-
-.playful blog-figure h2,
-.playful blog-figure p {
-  margin: 0;
 }
 
 .playful blog-figure.softeffect {
-  background: none repeat scroll 0 0 #000000;
+  background: none repeat scroll 0 0 $primary;
 }
 
 .playful blog-figure.softeffect img {
@@ -59,7 +37,7 @@
 }
 
 blog-figure.softeffect:hover img {
-  opacity: 0.35;
+  opacity: 0.3;
   transform: scale(1);
 }
 
@@ -77,7 +55,7 @@ blog-figure.softeffect:hover img {
 
 .playful blog-figure.softeffect p {
   margin: 0 auto;
-  max-width: 200px;
+  max-width: 80%;
   transform: scale(1.5);
 }
 
@@ -106,7 +84,6 @@ blog-figure.softeffect {
 
 blog-figure.softeffect:hover {
   background: none repeat scroll 0 0 $primary;
-  /* Cyan: #00aeef */
 }
 
 blog-figure.softeffect img {

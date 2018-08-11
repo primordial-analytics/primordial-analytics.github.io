@@ -1,18 +1,6 @@
 <!-- Post Listing -->
 <section id="blog">
     <div class="container">
-        <div class="row text-justify">
-            <div class="col-lg-8 offset-lg-2">
-                <div id="ButtonBarDivUnit" class="ButtonBarDiv">
-                    <div>
-                        <a href='https://feedly.com/i/subscription/feed%2Fhttps%3A%2F%2Fwww.primordialanalytics.com%2Fblog%2Fatom.xml'
-                           target='blank'><img id='feedlyFollow'
-                                               src='http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-medium_2x.png'
-                                               alt='follow us in feedly' width='71' height='28'></a>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Posts -->
         <div class="row">
@@ -37,7 +25,7 @@
                             </div>
                             <div class="post-overview-right">
                                 <p>
-                                    {{ post.content | strip_html | truncatewords: 50 }}
+                                    {{ post.content | strip_html | truncatewords: 25 }}
                                 </p>
                             </div>
                         </div>

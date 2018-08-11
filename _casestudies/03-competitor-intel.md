@@ -22,7 +22,7 @@ decisions extremely difficult. All of this work is also very labor
 intensive and the drudgery of it all distracts our talented people
 from doing other more valuable work."_
 
-![alt][image]
+![alt][image]{: .img-fluid }
 
 We have a couple former product managers on our leadership team, and
 this is a very common problem for retailers of any scale. Most

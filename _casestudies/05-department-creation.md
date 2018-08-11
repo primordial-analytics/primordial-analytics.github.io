@@ -7,6 +7,9 @@ date: 2018-07-01
 thumbnail: department-thumbnail.png
 ---
 
+[alt]: 'buildings-reach-to-sky'
+[image]: img/case_studies/department.png
+
 **Client's Problem:** _"We have a strategic growth initiative (SGI) aimed
 at transforming the company from being simply data-driven to being
 analytics-driven. However, we do not have the leadership experience
@@ -17,7 +20,7 @@ a price tag that fits. To make things more complex, we would like some
 in-flight projects to evolve with the AA SGI and include machine
 learning ideas our existing team has proposed."_
 
-![alt][image]
+![alt][image]{: .img-fluid }
 
 What an awesome problem to have! A funded advanced analytics
 effort. We loved this engagement: it involved equal parts projects,
@@ -50,6 +53,3 @@ technologies and development tools (e.g. AWS, Docker, GitHub, Airflow,
 Presto) to create efficiencies for the new group. The Primordial teams
 owned the roll-out of, and training on, these systems for seamless
 handover.
-
-[alt]: 'buildings-reach-to-sky'
-[image]: img/case_studies/department.png

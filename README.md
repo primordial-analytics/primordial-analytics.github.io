@@ -2,7 +2,9 @@
 
 Welcome to the open source repo for [our web site](https://www.primordialanalytics.com)! We strongly believe in the value of open source and sharing knowledge that has common value. Feel free to dig around in our code and see how we've modified a free template from Start Bootstrap.
 
-# Howto
+# Howto's
+
+## HTML5 Movie
 
 One of our founders has an affinity for cosmology and astrophysics: it's in the name, the logo, the font face, and our theme. So that movie on the front page, how did we make that? It's super simple:
 ```bash
@@ -17,6 +19,14 @@ $ ffmpeg -i galaxy.mp4 -filter:v "setpts=0.5*PTS" a.mp4
 
 # trim to fit visually
 $ ffmpeg -i a.mp4 -t 19 -c copy b.mp4
+```
+
+## Building the Site
+
+To rebuild the site from scratch and capture config updates and styles changes, run the gulp command and then build the site:
+```bash
+$ gulp default
+$ bundle exec jekyll serve --watch --trace --drafts --verbose
 ```
 
 # Attributions

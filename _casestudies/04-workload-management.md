@@ -8,6 +8,9 @@ img: workload.png
 thumbnail: workload-thumbnail.png
 ---
 
+[alt]: 'lego-knight-fights-chuck-taylor'
+[image]: img/case_studies/workload.png
+
 **Client's Problem:** _"Our analysis department is overrun with
 work, and our business partners don't have the people or resources to
 self-service. Our people end-up being managed through their email
@@ -15,7 +18,7 @@ inbox with no coordination, meaning frustrated business partners,
 duplicated work, cut corners (tech debt), no time for innovation, and
 low morale. How do we fix this?"_
 
-![alt][image]
+![alt][image]{: .img-fluid }
 
 This client had a process problem. During the scoping and discovery
 phase, we interviewed the analysts and they had plenty of enthusiasm,
@@ -45,7 +48,3 @@ high-performing analytical teams embedded within the business. These
 teams leveraged agile methods to manage their workloads while still
 having the freedom to pursue development without rigid or formalized
 overhead that would slow them down.
-
-[alt]: 'lego-knight-fights-chuck-taylor'
-[image]: img/case_studies/workload.png
-[process]: img/case_studies/workload-management.png
