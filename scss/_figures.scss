@@ -1,4 +1,4 @@
-.playful figure {
+.playful blog-figure {
   cursor: pointer;
   float: left;
   margin: 10px 1%;
@@ -10,8 +10,8 @@
   width: 100%;
 }
 
-.playful figure figcaption,
-.playful figure figcaption > a {
+.playful blog-figure figcaption,
+.playful blog-figure figcaption > a {
   height: 100%;
   left: 0;
   position: absolute;
@@ -19,80 +19,80 @@
   width: 100%;
 }
 
-.playful figure figcaption {
+.playful blog-figure figcaption {
   backface-visibility: hidden;
   color: #fff;
   font-size: 1.25em;
   text-transform: uppercase;
 }
 
-.playful figure h4,
-.playful figure p {
+.playful blog-figure h4,
+.playful blog-figure p {
   margin: 0;
 }
 
-.playful figure h4 {
+.playful blog-figure h4 {
   color: #fff;
   font-size: 20px;
   font-weight: 800;
   word-spacing: -0.15em;
 }
 
-.playful figure p {
+.playful blog-figure p {
   font-size: 18px;
   font-weight: 100;
   color: #fff;
   letter-spacing: 1px;
 }
 
-.playful figure h2,
-.playful figure p {
+.playful blog-figure h2,
+.playful blog-figure p {
   margin: 0;
 }
 
-.playful figure.softeffect {
+.playful blog-figure.softeffect {
   background: none repeat scroll 0 0 #000000;
 }
 
-.playful figure.softeffect img {
+.playful blog-figure.softeffect img {
   transition: opacity .35s ease 0s, transform .35s ease 0s;
 }
 
-figure.softeffect:hover img {
+blog-figure.softeffect:hover img {
   opacity: 0.35;
   transform: scale(1);
 }
 
-.playful figure.softeffect figcaption:before,
-.playful figure.softeffect p {
+.playful blog-figure.softeffect figcaption:before,
+.playful blog-figure.softeffect p {
   opacity: 0;
   transition: opacity 0.35s ease 0s, transform 0.35s ease 0s;
 }
 
-.playful figure.softeffect h4 {
+.playful blog-figure.softeffect h4 {
   opacity: 0;
   padding: 20% 0 20px;
   transition: opacity 0.35s ease 0s, transform 0.35s ease 0s;
 }
 
-.playful figure.softeffect p {
+.playful blog-figure.softeffect p {
   margin: 0 auto;
   max-width: 200px;
   transform: scale(1.5);
 }
 
-.playful figure.softeffect:hover figcaption:before,
-.playful figure.softeffect:hover p {
+.playful blog-figure.softeffect:hover figcaption:before,
+.playful blog-figure.softeffect:hover p {
   opacity: 1;
   transform: scale(1);
 }
 
-.playful figure.softeffect:hover h4 {
+.playful blog-figure.softeffect:hover h4 {
   opacity: 1;
   transform: scale(1);
 }
 
-.playful figure img {
+.playful blog-figure img {
   display: block;
   max-width: 100%;
   min-height: 100%;
@@ -100,21 +100,21 @@ figure.softeffect:hover img {
   position: relative;
 }
 
-figure.softeffect {
+blog-figure.softeffect {
   background: none repeat scroll 0 0 transparent;
 }
 
-figure.softeffect:hover {
-  background: none repeat scroll 0 0 #000000;
+blog-figure.softeffect:hover {
+  background: none repeat scroll 0 0 $primary;
   /* Cyan: #00aeef */
 }
 
-figure.softeffect img {
+blog-figure.softeffect img {
   transform: scale(1);
   transition: opacity .35s ease 0s, transform .35s ease 0s;
 }
 
-figure.softeffect:hover img {
+blog-figure.softeffect:hover img {
   opacity: 0.40;
   transform: scale(1.15);
   filter: blur(2px);
