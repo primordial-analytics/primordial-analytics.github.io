@@ -1,6 +1,6 @@
 ---
 name: Coming soon
-pic: anon.png
+pic: cde.png
 position: Chief Data Engineer
 social:
   - icon: fab fa-linkedin-in

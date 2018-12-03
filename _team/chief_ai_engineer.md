@@ -1,6 +1,6 @@
 ---
 name: Coming soon
-pic: anon.png
+pic: cae.png
 position: Chief AI Engineer
 social:
   - icon: fab fa-linkedin-in

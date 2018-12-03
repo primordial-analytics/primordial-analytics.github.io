@@ -1,6 +1,6 @@
 ---
 name: Ken Cavagnolo
-pic: cavagnolo.png
+pic: cds.png
 position: Chief Data Scientist
 social:
   - icon: fab fa-linkedin-in
