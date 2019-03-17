@@ -39,7 +39,7 @@
     },
     "devDependencies": {
         "@fortawesome/fontawesome-free": "^5.1.1",
-        "browser-sync": "^2.24.6",
+        "browser-sync": "^2.26.3",
         "gulp": "^3.9.1",
         "gulp-clean-css": "3.9.4",
         "gulp-header": "2.0.5",

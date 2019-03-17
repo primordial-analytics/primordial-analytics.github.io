@@ -29,6 +29,15 @@ $ gulp default
 $ bundle exec jekyll serve --watch --trace --drafts --verbose
 ```
 
+To run maintenance tasks, use `bundle` or `npm`:
+```bash
+$ bundle update
+$ bundle install
+$ bundle exec jekyll serve --watch --trace --drafts --verbose
+$ npm audit
+$ npm audit fix
+```
+
 # Attributions
 
 With the exception of a few dollars per month in AWS charges and our personal time, our web site was built for free. Why wouldn't we pay someone? Our web site is partly to demonstrate the power of the analytical individual and the strength of the open source community. When consultancies launch into wanting to sell software XYZ from proprietary vendor ABC, it's a way of creating lock-in for long-term work -- this is a linchpin in the "land and expand" business model. At Primordial, we take the opposite view: we want you to see our work and for your people to have access to the code. That's what we've done with our site. 
