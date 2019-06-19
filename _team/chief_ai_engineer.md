@@ -1,5 +1,5 @@
 ---
-name: Coming soon
+name: Anne Hansen
 pic: cae.png
 position: Chief AI Engineer
 social:

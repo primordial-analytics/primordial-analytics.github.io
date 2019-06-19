@@ -1,5 +1,5 @@
 ---
-name: Coming soon
+name: Zhang Wei
 pic: cde.png
 position: Chief Data Engineer
 social:
