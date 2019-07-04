@@ -22,34 +22,10 @@ learning ideas our existing team has proposed."_
 
 ![alt][image]{: .img-fluid }
 
-What an awesome problem to have! A funded advanced analytics
-effort. We loved this engagement: it involved equal parts projects,
-process, and people. At a high-level, the Client's reporting unit
-needed a strategic road map that aligned them with the advanced
-analytics initiative. We helped craft that road map and put it into
-action.
+What an imposing problem! A funded advanced analytics effort. We loved this engagement: it involved equal parts projects, process, and people. At a high-level, the Client’s reporting unit needed a strategic road map that aligned them with the advanced analytics initiative. We helped craft that road map and put it into action.
 
-The first step was learning and enunciating the Client's vision and
-mission in terms of analytics. This involved interviewing the C-level
-executive team and various department heads with vested interests in
-analytics. Further interviews with the people in the reporting unit
-yielded a list of core values that they expected in themselves, their
-mission, and their leaders.
+The first step was learning and enunciating the Client’s vision and mission in terms of analytics, which involved interviewing the C-level executive team and various department heads with vested interests in analytics. Further interviews with the people in the reporting unit yielded a list of core values that they expected in themselves, their mission, and their leaders.
 
-A thorough self-audit was then conducted (effort-value of existing
-projects, a group S.W.O.T., a company P.E.S.T., readiness, competitive
-advantages, etc.).  With these inputs in-hand, they were synthesized into
-strategic focuses for the new AA group. Alongside the leaders of the
-reporting unit, we crafted near- and long-term objectives for the new
-group to pursue. Each near-term objective was additionally sliced into
-a series of goals with defined metrics/KPI's and estimated time
-lines.
+We conducted a thorough self-audit of the existing teams (effort-value of existing projects, a group S.W.O.T., a company P.E.S.T., readiness, competitive advantages). With these inputs in-hand, they were synthesized into strategic focuses for the new AA group. Alongside the leaders of the reporting unit, we crafted near- and long-term objectives for the new group to pursue. We then sliced each near-term objective into a series of goals with defined metrics/KPI’s and estimated timelines.
 
-A major part of the road map was people and their development. The
-short-term solution was embedding Primordial teams to do project work
-while also assisting in the hiring of experienced people to lead the
-new AA group. Another major hurdle was the deployment of new
-technologies and development tools (e.g. AWS, Docker, GitHub, Airflow,
-Presto) to create efficiencies for the new group. The Primordial teams
-owned the roll-out of, and training on, these systems for seamless
-handover.
+A significant part of the road map was people and their development. The short-term solution was embedding Primordial teams to do project work while also assisting in the hiring of experienced people to lead the new AA group. Another major hurdle was the deployment of new technologies and development tools (e.g., AWS, Docker, GitHub, Airflow, Presto) to create efficiencies for the new group. The Primordial teams owned the roll-out of and training on, these systems for seamless handover.

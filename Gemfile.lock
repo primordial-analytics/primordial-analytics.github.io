@@ -191,6 +191,7 @@ GEM
       gemoji (~> 3.0)
       html-pipeline (~> 2.2)
       jekyll (~> 3.0)
+    json (1.8.3.1)
     kramdown (1.17.0)
     liquid (4.0.0)
     listen (3.1.5)
@@ -211,7 +212,7 @@ GEM
       sawyer (~> 0.8.0, >= 0.5.3)
     pathutil (0.16.2)
       forwardable-extended (~> 2.6)
-    public_suffix (3.1.0)
+    public_suffix (3.1.1)
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
@@ -244,6 +245,7 @@ PLATFORMS
 DEPENDENCIES
   github-pages (= 198)
   jekyll-gist
+  json
 
 BUNDLED WITH
    2.0.2
