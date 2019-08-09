@@ -1,44 +1,47 @@
-# Primordial Analytics Consulting, LLC.
+# Primordial Analytics Consulting, LLC
 
 Welcome to the open source repo for [our web site](https://www.primordialanalytics.com)! We strongly believe in the value of open source and sharing knowledge that has common value. Feel free to dig around in our code and see how we've modified a free template from Start Bootstrap.
 
-# Howto's
+## Howto's
 
-## HTML5 Movie
+### HTML5 Movie
 
 One of our founders has an affinity for cosmology and astrophysics: it's in the name, the logo, the font face, and our theme. So that movie on the front page, how did we make that? It's super simple:
+
 ```bash
 # get a movie file to work
-$ wget https://nasaviz.gsfc.nasa.gov/vis/a010000/a010600/a010661/Galaxy_Evolution-tracking_shot2-1080p.mov 
+wget https://nasaviz.gsfc.nasa.gov/vis/a010000/a010600/a010661/Galaxy_Evolution-tracking_shot2-1080p.mov 
 
 # transform to an HTML5 friendly mp4 format
-$ ffmpeg -i Galaxy_Evolution-tracking_shot-1080p.mov -vcodec copy -acodec copy galaxy.mp4
+ffmpeg -i Galaxy_Evolution-tracking_shot-1080p.mov -vcodec copy -acodec copy galaxy.mp4
 
 # compress the movie so it runs faster
-$ ffmpeg -i galaxy.mp4 -filter:v "setpts=0.5*PTS" a.mp4
+ffmpeg -i galaxy.mp4 -filter:v "setpts=0.5*PTS" a.mp4
 
 # trim to fit visually
-$ ffmpeg -i a.mp4 -t 19 -c copy b.mp4
+ffmpeg -i a.mp4 -t 19 -c copy b.mp4
 ```
 
-## Building the Site
+### Building the Site
 
 To rebuild the site from scratch and capture config updates and styles changes, run the gulp command and then build the site:
+
 ```bash
-$ gulp default
-$ bundle exec jekyll serve --watch --trace --drafts --verbose
+gulp default
+bundle exec jekyll serve --watch --trace --drafts --verbose
 ```
 
 To run maintenance tasks, use `bundle` or `npm`:
+
 ```bash
-$ bundle update
-$ bundle install
-$ bundle exec jekyll serve --watch --trace --drafts --verbose
-$ npm audit
-$ npm audit fix
+bundle update
+bundle install
+bundle exec jekyll serve --watch --trace --drafts --verbose
+npm audit
+npm audit fix
 ```
 
-# Attributions
+## Attributions
 
 With the exception of a few dollars per month in AWS charges and our personal time, our web site was built for free. Why wouldn't we pay someone? Our web site is partly to demonstrate the power of the analytical individual and the strength of the open source community. When consultancies launch into wanting to sell software XYZ from proprietary vendor ABC, it's a way of creating lock-in for long-term work -- this is a linchpin in the "land and expand" business model. At Primordial, we take the opposite view: we want you to see our work and for your people to have access to the code. That's what we've done with our site. 
 
@@ -54,20 +57,20 @@ With the exception of a few dollars per month in AWS charges and our personal ti
 * [Noun Project Logos](https://thenounproject.com/S-Copinger/uploads/?i=11524)
 * [Font Squirrel Fonts](https://www.fontsquirrel.com/fonts/sansation)
 * Communications powered by [AWS](https://aws.amazon.com/):
-   * API Gateway (email form)
-   * CloudWatch (API logs)
-   * Lambda (form processing and email sending)
-   * SES (send email)
+  * API Gateway (email form)
+  * CloudWatch (API logs)
+  * Lambda (form processing and email sending)
+  * SES (send email)
 
-# Copyright and License
+## Copyright and License
 
-Copyright &copy; 2018 Primordial Analytics Consulting, LLC.
+Copyright &copy; 2019 Primordial Analytics Consulting, LLC.
 
 Web site project code is released under the [MIT License](LICENSE.md).
 
 Blog content is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
-# Disclaimer
+## Disclaimer
 
 Primordial Analytics Consulting, LLC., hereafter, "The Owner."
 
@@ -85,7 +88,7 @@ information nor for the availability of this information. The Owner
 will not be liable for any losses, injuries, or damages from the
 display or use of this information.
 
-## No warranties
+### No warranties
 
 All content provided on this site or blog is for informational
 purposes only. The Owner of this site or blog makes no representations as to
@@ -108,26 +111,23 @@ of any kind.  If you require advice in relation to any technical,
 legal, financial or medical matter you should consult an appropriate,
 licensed professional.
 
-## Limitations of liability
+### Limitations of liability
 
 The Owner will not be liable to you in relation to the contents of, or
 use of, or otherwise in connection with, this website:
 
 * to the extent that the website is provided free-of-charge, for any direct loss;
 * for any indirect, special or consequential loss; or
-* for any business losses, loss of revenue, income, profits or
-  anticipated savings, loss of contracts or business relationships,
-  loss of reputation or goodwill, or loss or corruption of information
-  or data.
+* for any business losses, loss of revenue, income, profits or anticipated savings, loss of contracts or business relationships, loss of reputation or goodwill, or loss or corruption of information or data.
 
 These limitations of liability apply even if The Owner has been
 expressly advised of the potential loss.
 
-## Exceptions
+### Exceptions
 
 None.
 
-## Reasonableness
+### Reasonableness
 
 By using this website, you agree that the exclusions and limitations
 of liability set out in this website disclaimer are reasonable.
@@ -135,20 +135,20 @@ of liability set out in this website disclaimer are reasonable.
 If you do not think they are reasonable, you must not use this
 website.
 
-## Unenforceable provisions
+### Unenforceable provisions
 
 If any provision of this website disclaimer is, or is found to be,
 unenforceable under applicable law, that will not affect the
 enforceability of the other provisions of this website disclaimer.
 
-## Downloadable Files and Images
+### Downloadable Files and Images
 
 Any downloadable file, including but not limited to pdfs, docs, jpegs,
 pngs, is provided at the user’s own risk. The Owner will not be liable
 for any losses, injuries, or damages resulting from a corrupted or
 damaged file.
 
-## Comments
+### Comments
 
 Comments are welcome. However, the site or blog owner reserves the
 right to edit or delete any comments submitted to this site or blog
@@ -156,11 +156,14 @@ without notice due to :
 
 * Comments deemed to be spam or questionable spam.
 * Comments including profanity.
-* Comments containing language or concepts that could be deemed
-  offensive.
-* Comments containing hate speech, credible threats, or direct attacks
-  on an individual or group.
+* Comments containing language or concepts that could be deemed offensive.
+* Comments containing hate speech, credible threats, or direct attacks on an individual or group.
 
 The blog owner is not responsible for the content in comments.
 
 This site or blog disclaimer is subject to change at anytime.
+
+## Changes
+
+**unreleased**
+**v1.0.0**
