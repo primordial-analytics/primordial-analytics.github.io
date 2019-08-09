@@ -166,4 +166,5 @@ This site or blog disclaimer is subject to change at anytime.
 ## Changes
 
 **unreleased**
+**v1.1.0**
 **v1.0.0**
