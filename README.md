@@ -4,6 +4,14 @@ Welcome to the open source repo for [our web site](https://www.primordialanalyti
 
 ## Howto's
 
+### Semantic Versioning
+
+To update the version of the site that has been released, use [`bumpversion`](https://github.com/peritus/bumpversion):
+
+```bash
+bumpversion minor --verbose
+```
+
 ### HTML5 Movie
 
 One of our founders has an affinity for cosmology and astrophysics: it's in the name, the logo, the font face, and our theme. So that movie on the front page, how did we make that? It's super simple:
@@ -162,9 +170,3 @@ without notice due to :
 The blog owner is not responsible for the content in comments.
 
 This site or blog disclaimer is subject to change at anytime.
-
-## Changes
-
-**unreleased**
-**v1.1.0**
-**v1.0.0**
