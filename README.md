@@ -10,6 +10,7 @@ To update the version of the site that has been released, use [`bumpversion`](ht
 
 ```bash
 bumpversion minor --verbose
+git push origin --tags
 ```
 
 ### HTML5 Movie
