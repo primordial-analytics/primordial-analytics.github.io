@@ -33,6 +33,14 @@ ffmpeg -i a.mp4 -t 19 -c copy b.mp4
 
 ### Building the Site
 
+Assuming macOS. Install Xcode CLI tools and Ruby:
+
+```bash
+xcode-select --install
+brew install ruby
+gem install bundler jekyll
+```
+
 To rebuild the site from scratch and capture config updates and styles changes, run the gulp command and then build the site:
 
 ```bash

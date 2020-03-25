@@ -1,6 +1,7 @@
 # local files
 _drafts
 _site
+node_modules
 
 # Windows image file caches
 Thumbs.db

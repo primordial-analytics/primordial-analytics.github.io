@@ -3,13 +3,14 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <span class="copyright">&copy; {{ 'now' | date: "%Y" }} {{ site.title }}.</span>
+                <span class="copyright">&copy; <script type="text/javascript">
+                        document.write(new Date().getFullYear());
+                    </script> {{ site.title }}.</span>
             </div>
             <div class="col-md-4">
                 <ul class="list-inline social-buttons">
                     {% for network in site.social %}
-                    <li class="list-inline-item"><a href="{{ network.url }}" target="_blank"><i
-                            class="{{ network.icon }}"></i></a>
+                    <li class="list-inline-item"><a href="{{ network.url }}" target="_blank"><i class="{{ network.icon }}"></i></a>
                     </li>
                     {% endfor %}
                 </ul>
