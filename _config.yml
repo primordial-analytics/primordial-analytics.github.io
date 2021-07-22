@@ -40,8 +40,8 @@ exclude:
 social:
   - icon: fab fa-twitter
     url: https://twitter.com/primordialytics
-  - icon: fab fa-facebook-f
-    url: https://fb.me/primordialytics
+  #- icon: fab fa-facebook-f
+  #  url: https://fb.me/primordialytics
   - icon: fab fa-linkedin-in
     url: https://linkedin.com/company/primordial-analytics/
   - icon: fab fa-github-alt
@@ -50,4 +50,4 @@ social:
 # Postal address
 address:
   - line: Technology Drive
-  - line: Knoxville, TN 37932
+  - line: Portland, OR 97221
