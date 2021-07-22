@@ -32,15 +32,16 @@
         "fontawesome": "^4.7.2",
         "gulp-util": "^3.0.8",
         "hoek": "^5.0.3",
-        "jquery": "^3.4.1",
+        "jquery": "^3.5.0",
         "jquery.easing": "^1.4.1",
         "popper.js": "^1.14.3",
-        "pump": "^3.0.0"
+        "pump": "^3.0.0",
+        "sass": "^1.35.2"
     },
     "devDependencies": {
         "@fortawesome/fontawesome-free": "^5.1.1",
         "browser-sync": "^2.26.7",
-        "gulp": "^4.0.2",
+        "gulp": "^3.9.1",
         "gulp-clean-css": "3.9.4",
         "gulp-header": "2.0.5",
         "gulp-rename": "^1.2.2",
