@@ -19,7 +19,7 @@ One of our founders has an affinity for cosmology and astrophysics: it's in the 
 
 ```bash
 # get a movie file to work
-wget https://nasaviz.gsfc.nasa.gov/vis/a010000/a010600/a010661/Galaxy_Evolution-tracking_shot2-1080p.mov 
+wget https://nasaviz.gsfc.nasa.gov/vis/a010000/a010600/a010661/Galaxy_Evolution-tracking_shot2-1080p.mov
 
 # transform to an HTML5 friendly mp4 format
 ffmpeg -i Galaxy_Evolution-tracking_shot-1080p.mov -vcodec copy -acodec copy galaxy.mp4
@@ -33,11 +33,9 @@ ffmpeg -i a.mp4 -t 19 -c copy b.mp4
 
 ### Building the Site
 
-Assuming macOS. Install Xcode CLI tools and Ruby:
+Assuming Linux. Install Ruby and deps follwing the [instructions here](https://jekyllrb.com/docs/).
 
 ```bash
-xcode-select --install
-brew install ruby
 gem install bundler jekyll
 ```
 
@@ -60,24 +58,24 @@ npm audit fix
 
 ## Attributions
 
-With the exception of a few dollars per month in AWS charges and our personal time, our web site was built for free. Why wouldn't we pay someone? Our web site is partly to demonstrate the power of the analytical individual and the strength of the open source community. When consultancies launch into wanting to sell software XYZ from proprietary vendor ABC, it's a way of creating lock-in for long-term work -- this is a linchpin in the "land and expand" business model. At Primordial, we take the opposite view: we want you to see our work and for your people to have access to the code. That's what we've done with our site. 
+With the exception of a few dollars per month in AWS charges and our personal time, our web site was built for free. Why wouldn't we pay someone? Our web site is partly to demonstrate the power of the analytical individual and the strength of the open source community. When consultancies launch into wanting to sell software XYZ from proprietary vendor ABC, it's a way of creating lock-in for long-term work -- this is a linchpin in the "land and expand" business model. At Primordial, we take the opposite view: we want you to see our work and for your people to have access to the code. That's what we've done with our site.
 
-* [GitHub Pages Hosting](https://pages.github.com/)
-* [Jekyll Blog Framework](https://jekyllrb.com/)
-* [Startup Bootstrap Site Template](https://startbootstrap.com/template-overviews/agency)
-* [Startup Bootstrap HTML5 Snippets](https://startbootstrap.com/snippets/)
-* [NASA Galaxy Image](https://images.nasa.gov/details-PIA12348.html)
-* [NASA Galaxy Video](https://nasaviz.gsfc.nasa.gov/10661)
-* [Coverr MP4 Videos](https://coverr.co)
-* [Unsplash Stock Photos](https://unsplash.com)
-* [Fontawesome Icons](https://fontawesome.com)
-* [Noun Project Logos](https://thenounproject.com/S-Copinger/uploads/?i=11524)
-* [Font Squirrel Fonts](https://www.fontsquirrel.com/fonts/sansation)
-* Communications powered by [AWS](https://aws.amazon.com/):
-  * API Gateway (email form)
-  * CloudWatch (API logs)
-  * Lambda (form processing and email sending)
-  * SES (send email)
+- [GitHub Pages Hosting](https://pages.github.com/)
+- [Jekyll Blog Framework](https://jekyllrb.com/)
+- [Startup Bootstrap Site Template](https://startbootstrap.com/template-overviews/agency)
+- [Startup Bootstrap HTML5 Snippets](https://startbootstrap.com/snippets/)
+- [NASA Galaxy Image](https://images.nasa.gov/details-PIA12348.html)
+- [NASA Galaxy Video](https://nasaviz.gsfc.nasa.gov/10661)
+- [Coverr MP4 Videos](https://coverr.co)
+- [Unsplash Stock Photos](https://unsplash.com)
+- [Fontawesome Icons](https://fontawesome.com)
+- [Noun Project Logos](https://thenounproject.com/S-Copinger/uploads/?i=11524)
+- [Font Squirrel Fonts](https://www.fontsquirrel.com/fonts/sansation)
+- Communications powered by [AWS](https://aws.amazon.com/):
+  - API Gateway (email form)
+  - CloudWatch (API logs)
+  - Lambda (form processing and email sending)
+  - SES (send email)
 
 ## Copyright and License
 
@@ -113,18 +111,18 @@ the accuracy or completeness of any information on this site or found
 by following any link on this site.
 
 This website is provided “as-is” without any representations or
-warranties, express or implied.  The Owner makes no representations or
+warranties, express or implied. The Owner makes no representations or
 warranties in relation to this website or the information and
 materials provided on this website.
 
 Without prejudice to the generality of the foregoing paragraph, The
 Owner does not warrant that:
 
-* this website will be constantly available, or available at all; or
-* the information on this website is complete, true, accurate or non-misleading.
+- this website will be constantly available, or available at all; or
+- the information on this website is complete, true, accurate or non-misleading.
 
 Nothing on this website constitutes, or is meant to constitute, advice
-of any kind.  If you require advice in relation to any technical,
+of any kind. If you require advice in relation to any technical,
 legal, financial or medical matter you should consult an appropriate,
 licensed professional.
 
@@ -133,9 +131,9 @@ licensed professional.
 The Owner will not be liable to you in relation to the contents of, or
 use of, or otherwise in connection with, this website:
 
-* to the extent that the website is provided free-of-charge, for any direct loss;
-* for any indirect, special or consequential loss; or
-* for any business losses, loss of revenue, income, profits or anticipated savings, loss of contracts or business relationships, loss of reputation or goodwill, or loss or corruption of information or data.
+- to the extent that the website is provided free-of-charge, for any direct loss;
+- for any indirect, special or consequential loss; or
+- for any business losses, loss of revenue, income, profits or anticipated savings, loss of contracts or business relationships, loss of reputation or goodwill, or loss or corruption of information or data.
 
 These limitations of liability apply even if The Owner has been
 expressly advised of the potential loss.
@@ -171,10 +169,10 @@ Comments are welcome. However, the site or blog owner reserves the
 right to edit or delete any comments submitted to this site or blog
 without notice due to :
 
-* Comments deemed to be spam or questionable spam.
-* Comments including profanity.
-* Comments containing language or concepts that could be deemed offensive.
-* Comments containing hate speech, credible threats, or direct attacks on an individual or group.
+- Comments deemed to be spam or questionable spam.
+- Comments including profanity.
+- Comments containing language or concepts that could be deemed offensive.
+- Comments containing hate speech, credible threats, or direct attacks on an individual or group.
 
 The blog owner is not responsible for the content in comments.
 
