@@ -1,6 +1,6 @@
 ---
 name: Anne Hansen
-pic: cae.png
+pic: cae.webp
 position: Chief AI Engineer
 blurb: With a strong background in computer science, machine learning, and data analytics, Anne is dedicated to leveraging the power of AI to drive business growth and innovation.
 #social:

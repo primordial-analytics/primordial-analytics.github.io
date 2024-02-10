@@ -21,25 +21,25 @@ collections:
 
 # add other dirs
 includes:
-- vendor
-- favicons
-- fonts
-- img
-- js
+  - vendor
+  - favicons
+  - fonts
+  - img
+  - js
 
 # exclude other dirs
 exclude:
-- node_modules
-- gulpfile.js
-- gulpfile_example.js
-- README.md
-- svg
-- .idea
+  - node_modules
+  - gulpfile.js
+  - gulpfile_example.js
+  - README.md
+  - svg
+  - .idea
 
 # Social networks usernames
 social:
-  - icon: fab fa-twitter
-    url: https://twitter.com/primordialytics
+  #- icon: fab fa-twitter
+  #  url: https://twitter.com/primordialytics
   #- icon: fab fa-facebook-f
   #  url: https://fb.me/primordialytics
   - icon: fab fa-linkedin-in
