@@ -14,6 +14,7 @@ highlighter: rouge
 # add collections
 collections:
   team:
+  testimonials:
   casestudies:
   posts:
     output: true
