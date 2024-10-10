@@ -49,11 +49,16 @@ bundle exec jekyll serve --watch --trace --drafts --verbose
 To run maintenance tasks, use `bundle` or `npm`:
 
 ```bash
+bundle clean --force
+gem install bundler jekyll
 bundle update
 bundle install
-bundle exec jekyll serve --watch --trace --drafts --verbose
+npm cache clean --force
+rm -rf node_modules package-lock.json
+npm install
 npm audit
 npm audit fix
+bundle exec jekyll serve --watch --trace --drafts --verbose
 ```
 
 ## Attributions

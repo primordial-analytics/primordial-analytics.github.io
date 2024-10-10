@@ -6,7 +6,9 @@ var rename = require("gulp-rename");
 var uglify = require('gulp-uglify');
 var pkg = require('./package.json');
 var browserSync = require('browser-sync').create();
-var gutil = require('gulp-util')
+var colors = require('ansi-colors');
+var template = require('lodash.template');
+
 
 // Set the banner content
 var banner = ['/*!\n',
@@ -57,20 +59,21 @@ gulp.task('vendor', done => {
 });
 
 // Compile SCSS
-gulp.task('css:compile', function() {
+gulp.task('css:compile', function(done) {
   return gulp.src('./scss/**/*.scss')
     .pipe(sass.sync({outputStyle: 'expanded'})
-        .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
+        .on('error', function (err) { console.log(colors.red('[Error]'), err.toString()); })
      )
-    .pipe(header(banner, {pkg: pkg}))
+    .pipe(header(template(banner), {pkg: pkg}))
     .pipe(gulp.dest('./_includes/css'))
+    .on('end', done);
 });
 
 // Minify CSS
 gulp.task('css:minify', gulp.series('css:compile', function() {
   return gulp.src(['./_includes/css/*.css', '!./_includes/css/*.min.css'])
     .pipe(cleanCSS()
-        .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
+        .on('error', function (err) { console.log(colors.red('[Error]'), err.toString()); })
      )
     .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest('./_includes/css'))
@@ -84,7 +87,7 @@ gulp.task('css', gulp.series('css:compile', 'css:minify'));
 gulp.task('js:minify', function() {
   return gulp.src(['./js/*.js', '!./js/*.min.js', '!./js/google*'])
     .pipe(uglify()
-        .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
+        .on('error', function (err) { console.log(colors.red('[Error]'), err.toString()); })
      )
     .pipe(rename({suffix: '.min'}))
     .pipe(header(banner, {pkg: pkg}))

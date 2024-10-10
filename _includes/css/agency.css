@@ -1,10 +1,24 @@
-/*!
- * Start Bootstrap - Agency v4.1.1 (https://startbootstrap.com/template-overviews/agency)
- * Copyright 2013-2024 Start Bootstrap
- * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-agency/blob/master/LICENSE)
- * Modified by Ken Cavagnolo
- */
-body {
+function(obj) {
+obj || (obj = {});
+var __t, __p = '';
+with (obj) {
+__p += '/*!\n * Start Bootstrap - ' +
+((__t = ( pkg.title )) == null ? '' : __t) +
+' v' +
+((__t = ( pkg.version )) == null ? '' : __t) +
+' (' +
+((__t = ( pkg.homepage )) == null ? '' : __t) +
+')\n * Copyright 2013-2024 ' +
+((__t = ( pkg.author )) == null ? '' : __t) +
+'\n * Licensed under ' +
+((__t = ( pkg.license )) == null ? '' : __t) +
+' (https://github.com/BlackrockDigital/' +
+((__t = ( pkg.name )) == null ? '' : __t) +
+'/blob/master/LICENSE)\n * Modified by Ken Cavagnolo\n */\n';
+
+}
+return __p
+}body {
   overflow-x: hidden;
   font-family: "Roboto", sans-serif;
 }
@@ -678,7 +692,6 @@ header .overlay {
     margin-bottom: 25px;
     font-family: "Sansation Regular", sans-serif;
   }
-
   header video {
     display: none;
   }
@@ -841,34 +854,4 @@ blog-figure.softeffect:hover img {
   opacity: 0.4;
   transform: scale(1.15);
   filter: blur(2px);
-}
-
-blockquote {
-    margin: 20px 0;
-    padding: 10px;
-    border-left: 5px solid #ccc;
-    background: #f9f9f9;
-    display: inline-block;
-    text-align: left;
-    max-width: 90%;
-}
-
-blockquote cite {
-    display: block;
-    margin-top: 10px;
-    font-size: 0.9em;
-    color: #555;
-    text-align: right;
-}
-
-blockquote:before {
-    content: "\201C"; /* Unicode for left double quote */
-    font-size: 4em;
-    color: #ccc;
-    line-height: 0.1em;
-    vertical-align: -0.4em;
-}
-
-blockquote p {
-    display: inline;
 }
