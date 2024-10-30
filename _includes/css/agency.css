@@ -134,7 +134,7 @@ img::-moz-selection {
   font-family: "Lato", sans-serif;
 }
 #mainNav .navbar-brand.active, #mainNav .navbar-brand:active, #mainNav .navbar-brand:focus, #mainNav .navbar-brand:hover {
-  color: #9b8a4e;
+  color: rgb(154.6460176991, 138.1504424779, 78.3539823009);
 }
 #mainNav .navbar-nav .nav-item .nav-link {
   font-size: 90%;
