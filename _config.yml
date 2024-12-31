@@ -38,7 +38,7 @@ includes:
 # exclude other dirs
 exclude:
   - node_modules
-  - vendor/bundle/ruby/3.1.0/gems/jekyll-3.9.3/lib/site_template/_posts
+  - vendor
   - gulpfile.js
   - gulpfile_example.js
   - README.md
