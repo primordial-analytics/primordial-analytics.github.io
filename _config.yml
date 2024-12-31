@@ -15,6 +15,9 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-feed
+exclude:
+  - node_modules
+  - vendor
 
 # add collections
 collections:
