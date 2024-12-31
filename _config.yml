@@ -38,7 +38,7 @@ includes:
 # exclude other dirs
 exclude:
   - node_modules
-  - vendor
+  #- vendor
   - gulpfile.js
   - gulpfile_example.js
   - README.md

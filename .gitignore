@@ -1,10 +1,18 @@
-# local files
-_drafts
-_site
-node_modules
+# Jekyll’s build directory
+_site/
+_drafts/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
 
-# Windows image file caches
+# Dependencies (Ruby gems, Node modules, etc.)
+vendor/
+node_modules/
+
+# OS / Editor / IDE files
+.DS_Store
 Thumbs.db
+.idea/
 ehthumbs.db
 
 # Folder config file
