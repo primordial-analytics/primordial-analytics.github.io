@@ -15,9 +15,6 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-feed
-exclude:
-  - node_modules
-  - vendor
 
 # add collections
 collections:
@@ -33,7 +30,6 @@ collections:
 
 # add other dirs
 includes:
-  - vendor
   - favicons
   - fonts
   - img
@@ -42,6 +38,7 @@ includes:
 # exclude other dirs
 exclude:
   - node_modules
+  - vendor
   - gulpfile.js
   - gulpfile_example.js
   - README.md
