@@ -84,7 +84,7 @@ With the exception of a few dollars per month in AWS charges and our personal ti
 
 ## Copyright and License
 
-Copyright &copy; 2019 Primordial Analytics Consulting, LLC.
+Copyright &copy; 2025 Primordial Analytics Consulting, LLC.
 
 Web site project code is released under the [MIT License](LICENSE.md).
 
@@ -115,7 +115,7 @@ purposes only. The Owner of this site or blog makes no representations as to
 the accuracy or completeness of any information on this site or found
 by following any link on this site.
 
-This website is provided “as-is” without any representations or
+This website is provided "as-is" without any representations or
 warranties, express or implied. The Owner makes no representations or
 warranties in relation to this website or the information and
 materials provided on this website.
@@ -164,7 +164,7 @@ enforceability of the other provisions of this website disclaimer.
 ### Downloadable Files and Images
 
 Any downloadable file, including but not limited to pdfs, docs, jpegs,
-pngs, is provided at the user’s own risk. The Owner will not be liable
+pngs, is provided at the user's own risk. The Owner will not be liable
 for any losses, injuries, or damages resulting from a corrupted or
 damaged file.
 

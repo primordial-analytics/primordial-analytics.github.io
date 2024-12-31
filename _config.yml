@@ -1,21 +1,29 @@
 # Site settings
 name: Primordial Analytics
-title: Primordial Analytics
-tagline: "AI-focused Analytics"
+title: AI Consulting and Analytics | Primordial Analytics
+tagline: "AI Consulting and Analytics"
 email: contact@primordialanalytics.com
-description: "Primordial Analytics is an AI-focused consultancy."
+description: "Primordial Analytics delivers cutting-edge AI solutions, advanced machine learning, and predictive analytics, empowering businesses to unlock data-driven success."
+lang: en
 blogurl: "/blog/"
 baseurl: ""
 url: https://www.primordialanalytics.com
 permalink: pretty
 markdown: kramdown
 highlighter: rouge
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
 
 # add collections
 collections:
   team:
+    output: true
   testimonials:
+    output: true
   casestudies:
+    output: true
   posts:
     output: true
     permalink: /blog/:title/
@@ -39,16 +47,10 @@ exclude:
 
 # Social networks usernames
 social:
-  #- icon: fab fa-twitter
-  #  url: https://twitter.com/primordialytics
-  #- icon: fab fa-facebook-f
-  #  url: https://fb.me/primordialytics
   - icon: fab fa-linkedin-in
     url: https://linkedin.com/company/primordial-analytics/
-  - icon: fab fa-github-alt
-    url: https://github.com/primordial-analytics
 
 # Postal address
 address:
   - line: Technology Drive
-  - line: Portland, OR 97221
+  - line: Portland, Oregon, USA
