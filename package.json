@@ -26,7 +26,8 @@
         "url": "https://github.com/BlackrockDigital/startbootstrap-agency.git"
     },
     "devDependencies": {
-        "@fortawesome/fontawesome-free": "^5.1.1"
+        "@fortawesome/fontawesome-free": "^5.1.1",
+        "gulp-cli": "^3.1.0"
     },
     "dependencies": {
         "bootstrap": "^5.3.3",
