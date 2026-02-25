@@ -1,6 +1,7 @@
 ---
 title: Demand Prediction
 subtitle: The motion of macroscopic objects
+description: "A case study on how Primordial Analytics helped a client build a custom demand prediction model using machine learning to forecast sales and acquire novel industry data."
 layout: default
 modal-id: 1
 date: 2018-07-01
@@ -16,7 +17,7 @@ thumbnail: demand-thumbnail.png
 
 **Client's Problem:** _"We really just want to know what the future holds for sales. That knowledge impacts everything we do."_
 
-![alt][image]{: .img-fluid }
+
 
 This problem is so common that there are thousands of off-the-shelf solutions. All the big companies ([Salesforce][salesforce], [Tableau][tableau], [SAP][sap], [MicroStrategy][microstrategy], et al.) have robust forecasting tools baked into their desktop or cloud software that only require the press of a button. During scoping, we pressed the Client hard on the validity of their "build versus buy" decision. We offered our insights and assessment as well. Still, they had several excellent strategic reasons for wanting to create their solution.
 

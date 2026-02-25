@@ -2,6 +2,7 @@
 name: Anne Hansen
 pic: cae.webp
 position: Chief AI Engineer
+description: "Anne Hansen is the Chief AI Engineer at Primordial Analytics, dedicated to leveraging the power of AI to drive business growth and innovation."
 blurb: With a strong background in computer science, machine learning, and data analytics, Anne is dedicated to leveraging the power of AI to drive business growth and innovation.
 #social:
 #  - icon: fab fa-linkedin-in

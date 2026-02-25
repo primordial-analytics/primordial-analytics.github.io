@@ -1,6 +1,7 @@
 ---
 title: Career Pathing
 subtitle: Uniform beginnings to mixed ends
+description: "Explore our strategy for creating appealing technical career paths to improve hiring and retention of top tech talent during a corporate reorganization."
 layout: default
 modal-id: 6
 date: 2018-07-01
@@ -13,7 +14,7 @@ thumbnail: careers-thumbnail.png
 
 **Client's Problem:** _"Our company is undergoing a transformation via a re-org to better focus on the development of our people. We do not have a legacy of strong technical leadership and thus are uncertain of how to create a career pathing that is appealing to our younger tech employees. This is a critical need for us now and going forward as it impacts hiring and retention of people working on high-value technology projects."_
 
-![alt][image]{: .img-fluid }
+
 
 Our Client was within range of several tech hotbeds and had the added stress of competing against those markets. Unfortunately, providing extensive "perks" inside the office, ala Silicon Valley, was not an option. So, the Client needed to be creative. We were a good fit for this engagement based on our history of growing up within the industry and having some ideas that did not require getting into an arms race with other companies.
 

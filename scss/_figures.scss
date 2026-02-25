@@ -1,3 +1,6 @@
+@use "variables" as *;
+@use "mixins" as *;
+
 .playful blog-figure {
   cursor: pointer;
   float: left;

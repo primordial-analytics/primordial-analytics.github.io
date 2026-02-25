@@ -1,6 +1,7 @@
 ---
 title: Customer Behavior
 subtitle: Initial conditions are critical
+description: "Discover how we helped a client maximize market share and customer engagement by predicting customer behavior and optimizing their sales funnel."
 layout: default
 modal-id: 2
 date: 2018-07-01
@@ -13,7 +14,7 @@ thumbnail: customers-thumbnail.png
 
 **Client's Problem:** _"Our sales transactions are pretty rich with data, and we don't have any trouble reporting on that data or using canned solutions from our CRM provider to determine customer lifetime value (CLV) or predict churn. Where we're struggling is in determining how to engage with a customer next in order to maximize our market share, not to maximize their spend necessarily, just their number of purchases. A lot of the products we sell you can get anywhere, and we want our service model to shine by getting people regularly into our sales funnel."_
 
-![alt][image]{: .img-fluid }
+
 
 This was a "fascinating" problem, which concerned us, it didn't seem very valuable to the Client at first glance to have a consultancy dig on this problem. Market share is difficult to ascertain if the Client is not in an industry with numerous public companies that disclose data where one can reverse-engineer the market share per company. That was the case here. However, what ultimately made a solution tractable and valuable was that purchases were geospatially related.
 

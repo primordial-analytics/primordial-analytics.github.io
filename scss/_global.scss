@@ -1,3 +1,6 @@
+@use "variables" as *;
+@use "mixins" as *;
+
 // Global styling for this template
 body {
   overflow-x: hidden;
@@ -17,6 +20,18 @@ a {
 
 .text-primary {
   color: $primary !important;
+}
+
+.bg-primary {
+  background-color: $primary !important;
+}
+
+.border-primary {
+  border-color: $primary !important;
+}
+
+.bg-light {
+  background-color: #f0f0f0 !important;
 }
 
 hr {
@@ -79,7 +94,7 @@ section {
   }
   &:active,
   &:focus {
-    box-shadow: 0 0 0 0.2rem rgba(254, 209, 55,.5) !important;
+    box-shadow: 0 0 0 0.2rem rgba(179, 163, 105, 0.5) !important;
   }
 }
 
@@ -100,4 +115,13 @@ img::selection {
 
 img::-moz-selection {
   background: transparent;
+}
+
+// Custom hover transition for cards
+.transition-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+  }
 }

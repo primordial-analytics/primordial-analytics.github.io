@@ -1,6 +1,7 @@
 ---
 title: Workload Management
 subtitle: Disorder is matter out of place
+description: "A case study detailing our approach to solving workload management issues, eliminating tech debt, and improving morale for an overrun analysis department."
 layout: default
 modal-id: 4
 date: 2018-07-01
@@ -13,7 +14,7 @@ thumbnail: workload-thumbnail.png
 
 **Client's Problem:** _"Our analysis department is overrun with work, and our business partners don't have the people or resources to self-service. Our people end-up being managed through their email inbox with no coordination, meaning frustrated business partners, duplicated work, cut corners (tech debt), no time for innovation, and low morale. How do we fix this?"_
 
-![alt][image]{: .img-fluid }
+
 
 This client had a process problem. During the scoping and discovery phase, we interviewed the analysts -- all of whom had plenty of enthusiasm, talent, and skill. Likewise, their business partners possessed the needed subject matter expertise and strategic vision to facilitate high-quality analytics work.
 

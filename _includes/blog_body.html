@@ -1,37 +1,36 @@
 <!-- Post Listing -->
-<section id="blog">
-    <div class="container">
-
-        <!-- Posts -->
-        <div class="row">
-            <div class="col-lg-8 offset-lg-2">
+<section id="blog" class="py-5 bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
                 {% for post in site.posts %}
-                <div class="post">
-                    <div class="post-left">
-                        <div class="post-date">
-                            {{ post.date | date: "%b %d" }}
-                            <span>{{ post.date | date: "%Y" }}</span>
-                        </div>
-                    </div>
-                    <div class="post-right">
-                        <h2 id="post-title">
-                            <a href="{{ post.url }}">{{ post.title }}</a>
-                        </h2>
-                        <h5 id="post-description">
-                            {{ post.description }}
-                        </h5>
-                        <div class="snippet">
-                            <div class="post-overview-left">
-                            </div>
-                            <div class="post-overview-right">
-                                <p>
-                                    {{ post.content | strip_html | truncatewords: 25 }}
-                                </p>
+                <article class="mb-5 pb-5 border-bottom border-secondary border-opacity-25">
+                    <div class="row g-4">
+                        <!-- Date Column -->
+                        <div class="col-md-3 text-md-end">
+                            <div class="text-muted fw-bold text-uppercase tracking-wider" style="letter-spacing: 0.1em;">
+                                <span class="d-block fs-6">{{ post.date | date: "%b %d" }}</span>
+                                <span class="d-block fs-4 text-primary">{{ post.date | date: "%Y" }}</span>
                             </div>
                         </div>
+                        
+                        <!-- Content Column -->
+                        <div class="col-md-9">
+                            <h2 class="mb-2 fw-bold display-6">
+                                <a href="{{ post.url }}" class="text-dark text-decoration-none hover-primary transition-hover">{{ post.title }}</a>
+                            </h2>
+                            <h5 class="text-muted fw-normal mb-4 fs-5">
+                                {{ post.description }}
+                            </h5>
+                            <p class="text-muted lh-lg mb-4">
+                                {{ post.content | strip_html | truncatewords: 35 }}
+                            </p>
+                            <a href="{{ post.url }}" class="btn btn-outline-primary btn-sm rounded-pill fw-bold px-4 py-2 text-dark hover-white transition-hover">
+                                Continue Reading &rarr;
+                            </a>
+                        </div>
                     </div>
-                    <a href="{{ post.url }}" style="float:right;">Continue Reading &raquo;</a>
-                </div>
+                </article>
                 {% endfor %}
             </div>
         </div>

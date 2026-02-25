@@ -1,27 +1,20 @@
 <!-- Portfolio Grid -->
-<section class="bg-light" id="portfolio">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2 class="section-heading text-uppercase">Case Studies</h2>
-                <h3 class="section-subheading text-muted">We are proud of our for-profit work history, take a look...</h3>
-            </div>
-        </div>
-        <div class="row">
+<section class="bg-light py-5" id="portfolio">
+    <div class="container py-5">
+        <div class="row g-4">
             {% for casestudy in site.casestudies %}
-            <div class="col-md-4 col-sm-6 portfolio-item">
-                <a href="#portfolioModal{{ casestudy.modal-id }}" class="portfolio-link" data-bs-toggle="modal">
-                    <div class="portfolio-hover">
-                        <div class="portfolio-hover-content">
-                            <i class="fas fa-plus fa-3x"></i>
+            <div class="col-md-4 col-sm-6">
+                <a href="#portfolioModal{{ casestudy.modal-id }}" class="text-decoration-none" data-bs-toggle="modal">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden transition-hover">
+                        <div class="ratio ratio-4x3">
+                            <img class="object-fit-cover w-100 h-100" src="img/case_studies/{{ casestudy.thumbnail }}" alt="{{ casestudy.title }}">
+                        </div>
+                        <div class="card-body p-4 bg-white text-center">
+                            <h5 class="card-title fw-bold text-dark mb-2">{{ casestudy.title }}</h5>
+                            <p class="card-text text-muted fs-6 mb-0">{{ casestudy.subtitle }}</p>
                         </div>
                     </div>
-                    <img class="img-fluid" src="img/case_studies/{{ casestudy.thumbnail }}" alt="">
                 </a>
-                <div class="portfolio-caption">
-                    <h5>{{ casestudy.title }}</h5>
-                    <p class="text-muted">{{ casestudy.subtitle }}</p>
-                </div>
             </div>
             {% endfor %}
         </div>

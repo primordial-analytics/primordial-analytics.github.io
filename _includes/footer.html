@@ -1,26 +1,25 @@
 <!-- Footer -->
-<footer>
+<footer class="py-4 bg-light">
     <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <span class="copyright">&copy; <script type="text/javascript">
+        <div class="row align-items-center">
+            <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+                <span class="copyright text-muted">&copy; <script type="text/javascript">
                         document.write(new Date().getFullYear());
-                    </script> {{ site.title }}.</span>
+                    </script> {{ site.name }}.</span>
             </div>
-            <div class="col-md-4">
-                <ul class="list-inline social-buttons">
+            <div class="col-md-4 text-center mb-3 mb-md-0">
+                <ul class="list-inline mb-0">
                     {% for network in site.social %}
-                    <li class="list-inline-item"><a href="{{ network.url }}" target="_blank"><i class="{{ network.icon }}"></i></a>
+                    <li class="list-inline-item">
+                        <a href="{{ network.url }}" target="_blank" class="btn btn-dark btn-sm rounded-circle shadow-sm d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="{{ network.icon }}"></i>
+                        </a>
                     </li>
                     {% endfor %}
                 </ul>
             </div>
-            <div class="col-md-4">
-                <ul class="list-inline quicklinks">
-                    <li class="list-inline-item">
-                        <a href="/privacypolicy">Privacy Policy</a>
-                    </li>
-                </ul>
+            <div class="col-md-4 text-center text-md-end">
+                <!-- Removed Privacy Policy -->
             </div>
         </div>
     </div>

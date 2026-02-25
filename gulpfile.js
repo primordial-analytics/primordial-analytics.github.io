@@ -7,7 +7,7 @@ var uglify = require('gulp-uglify');
 var pkg = require('./package.json');
 var browserSync = require('browser-sync').create();
 var colors = require('ansi-colors');
-var template = require('lodash.template');
+var cp = require('child_process');
 
 
 // Set the banner content
@@ -29,16 +29,6 @@ gulp.task('vendor', done => {
       '!./node_modules/bootstrap/dist/css/bootstrap-reboot*'
     ])
     .pipe(gulp.dest('./libs/bootstrap'))
-
-  // Font Awesome
-  gulp.src([
-      './node_modules/font-awesome/**/*',
-      '!./node_modules/font-awesome/{less,less/*}',
-      '!./node_modules/font-awesome/{scss,scss/*}',
-      '!./node_modules/font-awesome/.*',
-      '!./node_modules/font-awesome/*.{txt,json,md}'
-    ])
-    .pipe(gulp.dest('./libs/font-awesome'))
 
   // jQuery
   gulp.src([
@@ -63,7 +53,7 @@ gulp.task('css:compile', function(done) {
     .pipe(sass.sync({outputStyle: 'expanded'})
         .on('error', function (err) { console.log(colors.red('[Error]'), err.toString()); })
      )
-    .pipe(header(template(banner), {pkg: pkg}))
+    .pipe(header(banner, {pkg: pkg}))
     .pipe(gulp.dest('./_includes/css'))
     .on('end', done);
 });
@@ -97,21 +87,33 @@ gulp.task('js:minify', function() {
 // JS
 gulp.task('js', gulp.series('js:minify'));
 
+// Build the Jekyll Site
+gulp.task('jekyll-build', function (done) {
+  return cp.spawn('bundle', ['exec', 'jekyll', 'build'], {stdio: 'inherit'})
+    .on('close', done);
+});
+
+// Rebuild Jekyll & do page reload
+gulp.task('jekyll-rebuild', gulp.series('jekyll-build', function (done) {
+  browserSync.reload();
+  done();
+}));
+
 // Default task
-gulp.task('default', gulp.series('css', 'js', 'vendor'));
+gulp.task('default', gulp.series('css', 'js', 'vendor', 'jekyll-build'));
 
 // Configure the browserSync task
 gulp.task('browserSync', function() {
   browserSync.init({
     server: {
-      baseDir: "./"
+      baseDir: "_site"
     }
   });
 });
 
 // Dev task
-gulp.task('dev', gulp.series('css', 'js', 'vendor', 'browserSync', function() {
-  gulp.watch('./_scss/*.scss', ['css']);
-  gulp.watch('./js/*.js', ['js']);
-  gulp.watch('./*.html', browserSync.reload);
+gulp.task('dev', gulp.series('default', 'browserSync', function() {
+  gulp.watch('./scss/**/*.scss', gulp.series('css', 'jekyll-rebuild'));
+  gulp.watch('./js/*.js', gulp.series('js', 'jekyll-rebuild'));
+  gulp.watch(['./*.html', './_includes/*.html', './_layouts/*.html', './_posts/*', './_casestudies/*', './_team/*', './_testimonials/*'], gulp.series('jekyll-rebuild'));
 }));

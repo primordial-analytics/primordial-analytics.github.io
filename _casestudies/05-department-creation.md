@@ -1,6 +1,7 @@
 ---
 title: Department Creation
 subtitle: Subsequent large-scale evolution
+description: "See how we guided a company's strategic growth initiative to transform their reporting unit into an advanced analytics group without the massive price tag."
 layout: default
 modal-id: 5
 date: 2018-07-01
@@ -12,7 +13,7 @@ thumbnail: department-thumbnail.png
 
 **Client's Problem:** _"We have a strategic growth initiative (SGI) aimed at transforming the company from being simply data-driven to being analytics-driven. However, we do not have the leadership experience and personnel (we think) internally to extend our reporting unit into an advanced analytics (AA) group. The large consulting firms we use for most other projects are trying to sell us the Moon and stars, with a price tag that fits. To make things more complex, we would like some in-flight projects to evolve with the AA SGI and include machine learning ideas our existing team has proposed."_
 
-![alt][image]{: .img-fluid }
+
 
 What an imposing problem! A funded advanced analytics effort. We loved this engagement involving equal parts projects, processes, and people. At a high level, the Client's reporting unit needed a strategic roadmap that aligned them with the advanced analytics initiative. We helped craft that road map and put it into action.
 

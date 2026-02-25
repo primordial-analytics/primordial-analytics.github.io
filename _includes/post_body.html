@@ -1,27 +1,38 @@
-<!-- Post Listing -->
-<section id="{{ page.title }}">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 offset-lg-2">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ site.url }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ site.url }}/blog">Blog</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ page.title }}</li>
-                </ol>
-                <div class="content">
-                    <div>
-                        <br>
-                        {{ content }}
-                        <br>
+<!-- Post Content -->
+<section id="{{ page.title | slugify }}" class="py-5 bg-white">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Breadcrumbs -->
+                <nav aria-label="breadcrumb" class="mb-5">
+                    <ol class="breadcrumb bg-light p-3 rounded-pill shadow-sm d-inline-flex">
+                        <li class="breadcrumb-item"><a href="{{ site.url }}" class="text-decoration-none text-primary fw-bold">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ site.url }}/blog.html" class="text-decoration-none text-primary fw-bold">Blog</a></li>
+                        <li class="breadcrumb-item active text-muted" aria-current="page">{{ page.title }}</li>
+                    </ol>
+                </nav>
+
+                <!-- Article Header -->
+                <header class="mb-5 border-bottom border-secondary border-opacity-25 pb-4">
+                    <div class="text-muted text-uppercase fw-bold" style="letter-spacing: 0.1em; font-size: 0.85rem;">
+                        Published on <span class="text-primary">{{ page.date | date: "%B %d, %Y" }}</span>
                     </div>
+                </header>
+
+                <!-- Article Body -->
+                <article class="content fs-5 lh-lg text-dark">
+                    {{ content }}
+                </article>
+
+                <!-- Comments Section -->
+                {% if page.comments %}
+                <div class="mt-5 pt-5 border-top border-secondary border-opacity-25">
+                    <h3 class="fw-bold mb-4">Discussion</h3>
+                    {% include disqus.html %}
                 </div>
+                {% endif %}
             </div>
         </div>
-        <hr>
-        {% if page.comments %}
-        {% include disqus.html %}
-        {% endif %}
-        <hr>
     </div>
     <script id="dsq-count-scr" src="//primordialytics.disqus.com/count.js" async></script>
 </section>

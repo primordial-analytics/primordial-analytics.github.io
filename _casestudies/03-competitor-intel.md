@@ -1,6 +1,7 @@
 ---
 title: Competitor Intelligence
 subtitle: Counteract and expand
+description: "Learn how Primordial Analytics developed competitor intelligence solutions to help a client navigate a hypercompetitive industry with slim margins."
 layout: default
 modal-id: 3
 date: 2018-07-01
@@ -12,7 +13,7 @@ thumbnail: competitor-thumbnail.png
 
 **Client's Problem:** _"We operate in a hypercompetitive industry where our products have slim margins, and the differentiation within a market is service-level and not product-level. Our issue is not knowing how competitor behaviors and strategies impact our sales. We struggle with the basics, like pricing, to capture the value proposition of our service over competitors. Even simpler things, like when and how to execute product decisions, are poorly understood outside of the tribal knowledge of our product managers, making long-term strategic decisions extremely difficult. All of this work is also very labor intensive, and the drudgery of it all distracts our talented people from doing other, more valuable work."_
 
-![alt][image]{: .img-fluid }
+
 
 We have a couple of former product managers on our leadership team, a widespread problem for retailers of any scale. Most companies avoid the problem of competitor intelligence altogether by washing it out (sometimes rightly) using one of the standard product management policies, e.g., margin or premium. During scoping, we determined there was sufficient evidence and data to pursue a more sophisticated approach, which was ultimately adopted.
 

@@ -1,3 +1,6 @@
+@use "variables" as *;
+@use "mixins" as *;
+
 // Styling for the services section
 .service-heading {
   margin: 15px 0;

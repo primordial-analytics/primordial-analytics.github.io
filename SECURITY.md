@@ -2,20 +2,14 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+Primordial Analytics Consulting LLC maintains the security of our public-facing website and associated open-source repositories. We actively support the `master` branch of this repository.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| master  | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+If you discover a security vulnerability within this project or our website, please send an email to [contact@primordialanalytics.com](mailto:contact@primordialanalytics.com). 
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+We take all security vulnerabilities seriously and will respond to your report within 48 hours. Please do not disclose the vulnerability publicly until we have had a chance to address it.

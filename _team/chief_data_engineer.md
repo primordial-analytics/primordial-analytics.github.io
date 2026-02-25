@@ -2,6 +2,7 @@
 name: Zhang Wei
 pic: cde.webp
 position: Chief Data Engineer
+description: "Zhang Wei is the Chief Data Engineer at Primordial Analytics, optimizing data infrastructure with a deep understanding of modern data technologies."
 blurb: Zhang Wei has a deep understanding of modern data technologies and a passion for innovation; he is a valuable asset to any organization seeking to optimize their data infrastructure.
 #social:
 #  - icon: fab fa-linkedin-in

@@ -2,6 +2,7 @@
 name: Ken Cavagnolo
 pic: cds.webp
 position: Chief Scientist
+description: "Ken Cavagnolo is the Chief Scientist at Primordial Analytics, committed to professional cultures of data-driven decision-making and empowered teams."
 blurb: Ken is passionate about staying current with the latest developments in data science and is committed to professional cultures of data-driven decision-making and empowered teams.
 #social:
 #  - icon: fab fa-linkedin-in

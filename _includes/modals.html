@@ -1,20 +1,28 @@
 <!-- Portfolio Modals -->
 {% for casestudy in site.casestudies %}
-<div class="portfolio-modal modal fade" id="portfolioModal{{ casestudy.modal-id }}" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <div class="modal-body">
-                            <h2 class="text-uppercase">{{ casestudy.title }}</h2>
-                            <hr class="star-primary">
-                            <p>{{ casestudy.content }}</p>
-                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">
-                                <i class="far fa-times-circle"></i>
-                                Close
-                            </button>
+<div class="portfolio-modal modal fade" id="portfolioModal{{ casestudy.modal-id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+            <div class="modal-header border-0 pb-0 position-absolute top-0 end-0 z-3">
+                <button type="button" class="btn-close bg-white rounded-circle shadow-sm m-3 p-2" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="row g-0">
+                    <div class="col-lg-5 d-none d-lg-block">
+                        <img src="img/case_studies/{{ casestudy.thumbnail }}" class="img-fluid h-100 w-100 object-fit-cover" alt="{{ casestudy.title }}">
+                    </div>
+                    <div class="col-lg-7 p-5">
+                        <div class="h-100 d-flex flex-column justify-content-center">
+                            <h2 class="display-6 fw-bold mb-2">{{ casestudy.title }}</h2>
+                            <p class="text-primary fw-semibold mb-4">{{ casestudy.subtitle }}</p>
+                            <div class="text-muted fs-6 lh-lg mb-5">
+                                {{ casestudy.content }}
+                            </div>
+                            <div class="mt-auto">
+                                <button type="button" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm text-dark" data-bs-dismiss="modal">
+                                    <i class="fas fa-times me-2"></i> Close Case Study
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

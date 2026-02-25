@@ -1,89 +1,104 @@
-<!-- About -->
-<section id="about">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2 class="section-heading text-uppercase">About</h2>
-                <h3 class="section-subheading text-muted">We're the team of experts you want...</h3>
+<!-- About Us -->
+<section id="about" class="py-5 bg-light">
+    <div class="container py-5">
+        <!-- Header -->
+        <div class="row mb-5 text-center">
+            <div class="col-lg-8 offset-lg-2">
+                <h2 class="display-5 fw-bold mb-3">About Us</h2>
+                <p class="lead text-muted fs-4">We're the team of experts you want...</p>
             </div>
         </div>
+        
+        <!-- Tufte-inspired Timeline -->
+        <div class="tufte-timeline">
+            <div class="tufte-axis"></div>
+            <div class="tufte-events">
+                <!-- 2008 -->
+                <div class="tufte-event">
+                    <div class="tufte-year">2008</div>
+                    <div class="tufte-content">
+                        <h4 class="tufte-title">Emergence of "Data Science"</h4>
+                        <p class="tufte-desc">The era of academics leaving research labs, university settings, and think tanks began. Primordial's leadership team is part of this wave, which existed before "data science" as a discipline, and no one knew what it meant.</p>
+                    </div>
+                </div>
+                
+                <!-- 2011 -->
+                <div class="tufte-event">
+                    <div class="tufte-year">2011</div>
+                    <div class="tufte-content">
+                        <h4 class="tufte-title">The Data Economy</h4>
+                        <p class="tufte-desc">A handful of large technology companies have figured out this "data science" thing and are making money using it. Primordial's leadership team works at or alongside these companies.</p>
+                    </div>
+                </div>
+                
+                <!-- 2014 -->
+                <div class="tufte-event">
+                    <div class="tufte-year">2014</div>
+                    <div class="tufte-content">
+                        <h4 class="tufte-title">Analytics-driven Businesses</h4>
+                        <p class="tufte-desc">Big companies begin a fevered phase of buying specialized start-ups. Primordial's leadership team participates in some of these acquisitions and helps craft the "data & analytics first" business model.</p>
+                    </div>
+                </div>
+                
+                <!-- 2018 -->
+                <div class="tufte-event">
+                    <div class="tufte-year">2018</div>
+                    <div class="tufte-content">
+                        <h4 class="tufte-title">Artificial Intelligence</h4>
+                        <p class="tufte-desc">The definition of AI continues to gobble up all areas of analytics, and discerning "hype" from "con" from "value" is nearly impossible. Primordial's leadership team sees an industry need and opens up.</p>
+                    </div>
+                </div>
+                
+                <!-- Right Now -->
+                <div class="tufte-event tufte-event-current">
+                    <div class="tufte-year">Right Now</div>
+                    <div class="tufte-content">
+                        <h4 class="tufte-title">You Want Assistance</h4>
+                        <p class="tufte-desc">Where to start with AI? We are not a "land and expand" consultancy; we focus on solving the problem and delivering valuable work.</p>
+                        <a href="#contact" class="tufte-link">Contact Us &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual Break -->
+        <div class="row my-5 py-4">
+            <div class="col-12">
+                <hr class="border-secondary opacity-25">
+            </div>
+        </div>
+
+        <!-- Team Cards -->
+        <div class="row g-4 justify-content-center mb-5">
+            {% for person in site.team %}
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm rounded-4 bg-white text-center p-4 transition-hover">
+                    <div class="mb-4">
+                        <img class="rounded-circle shadow-sm object-fit-cover" src="img/team/{{ person.pic }}" alt="{{ person.name }}" style="width: 150px; height: 150px; border: 4px solid #fff;">
+                    </div>
+                    <h4 class="fw-bold mb-1">{{ person.name }}</h4>
+                    <p class="text-primary fw-semibold mb-3">{{ person.position }}</p>
+                    <p class="text-muted fs-6 lh-lg mb-4">{{ person.blurb }}</p>
+                    <div class="mt-auto">
+                        <ul class="list-inline mb-0">
+                            {% for network in person.social %}
+                            <li class="list-inline-item">
+                                <a target="_blank" href="{{ network.url }}" class="btn btn-light btn-sm rounded-circle shadow-sm d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                    <i class="{{ network.icon }} text-dark"></i>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
         <div class="row">
-            <div class="col-lg-12">
-                <ul class="timeline">
-                    <li>
-                        <div class="timeline-image">
-                            <img class="rounded-circle img-fluid" src="img/about/bigbang.webp" alt="">
-                        </div>
-                        <div class="timeline-panel">
-                            <div class="timeline-heading">
-                                <h4>2008</h4>
-                                <h4 class="subheading">Emergence of "Data Science"</h4>
-                            </div>
-                            <div class="timeline-body">
-                                <p class="text-muted">The era of academics leaving research labs, university settings, and think tanks began. Primordial's leadership team is part of this wave, which existed before "data science" as a discipline, and no one knew what it meant.</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="timeline-inverted">
-                        <div class="timeline-image">
-                            <img class="rounded-circle img-fluid" src="img/about/stars.webp" alt="">
-                        </div>
-                        <div class="timeline-panel">
-                            <div class="timeline-heading">
-                                <h4>2011</h4>
-                                <h4 class="subheading">The Data Economy</h4>
-                            </div>
-                            <div class="timeline-body">
-                                <p class="text-muted">A handful of large technology companies have figured out this "data science" thing and are making money using it. Primordial's leadership team works at or alongside these companies.</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="timeline-image">
-                            <img class="rounded-circle img-fluid" src="img/about/galaxy.webp" alt="">
-                        </div>
-                        <div class="timeline-panel">
-                            <div class="timeline-heading">
-                                <h4>2014</h4>
-                                <h4 class="subheading">Analytics-driven Businesses</h4>
-                            </div>
-                            <div class="timeline-body">
-                                <p class="text-muted">Big companies begin a fevered phase of buying specialized
-                                    start-ups. Primordial's leadership team participates in some of
-                                    these acquisitions and helps craft the "data & analytics first" business model.</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="timeline-inverted">
-                        <div class="timeline-image">
-                            <img class="rounded-circle img-fluid" src="img/about/cluster.webp" alt="">
-                        </div>
-                        <div class="timeline-panel">
-                            <div class="timeline-heading">
-                                <h4>2018</h4>
-                                <h4 class="subheading">Artificial Intelligence</h4>
-                            </div>
-                            <div class="timeline-body">
-                                <p class="text-muted">The definition of AI continues to gobble up all areas of analytics, and discerning "hype" from "con" from "value" is nearly impossible. Primordial's leadership team sees an industry need and opens up.</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="timeline-image">
-                            <img class="rounded-circle img-fluid" src="img/about/evolve.png" alt="">
-                        </div>
-                        <div class="timeline-panel">
-                            <div class="timeline-heading">
-                                <h4>Right Now</h4>
-                                <h4 class="subheading">You Want Assistance</h4>
-                            </div>
-                            <div class="timeline-body">
-                                <p class="text-muted">Where to start with AI? <b><a href="#contact">CONTACT US</a></b>.<br>
-                                    We are not a "land and expand" consultancy; we focus on solving the problem and delivering valuable work.</p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+            <div class="col-lg-10 mx-auto">
+                <div class="bg-white p-5 rounded-4 shadow-sm border border-light-subtle text-center">
+                    <p class="text-muted fs-5 lh-lg mb-0">Project teams are composed of highly talented, 100% on-shore individuals. Their expertise covers needs in engineering (data, security, software, cloud), *Ops, AI, analytics, UX/UI, and more. We don't compromise on quality, and that includes our people.</p>
+                </div>
             </div>
         </div>
     </div>
