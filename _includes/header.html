@@ -1,22 +1,19 @@
 <!-- Header -->
-<header class="position-relative vh-100 overflow-hidden">
+<header class="hero position-relative vh-100 overflow-hidden">
     <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50 z-1"></div>
-    <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" class="position-absolute top-50 start-50 min-vw-100 min-vh-100 translate-middle object-fit-cover z-0">
-        <source src="img/galaxy.mp4" type="video/mp4">
+    <video playsinline="playsinline" muted="muted" loop="loop" poster="/img/galaxy-poster.webp" preload="none" class="hero-video position-absolute top-50 start-50 min-vw-100 min-vh-100 translate-middle object-fit-cover z-0">
+        <source data-src="/img/galaxy.webm" type="video/webm">
+        <source data-src="/img/galaxy.mp4" type="video/mp4">
     </video>
     <div class="container h-100 position-relative z-2">
         <div class="d-flex align-items-center justify-content-center h-100 text-center">
-            <div class="text-white">
-                <h1 class="display-2 fw-bold mb-4 text-uppercase tracking-wide text-shadow">Create Something</h1>
-                <h2 class="fs-3 fw-light text-white-50 mb-5 text-shadow">Non-Profit AI, Data Science, and Analytics</h2>
-                <a href="#services" class="btn btn-primary btn-lg px-5 py-3 text-uppercase fw-bold rounded-pill shadow-lg mt-3 text-dark">Explore Our Work</a>
+            <div class="text-white col-lg-10">
+                <h1 class="display-4 fw-bold mb-4 text-shadow">Free data help for community health organizations</h1>
+                <p class="fs-4 fw-light text-white mb-5 text-shadow">We are a small team of volunteer data scientists in Portland, Oregon. A single chart, a spreadsheet check, or a short call: bring us a small question.</p>
+                <a href="/community-health-data-help/" class="btn btn-primary btn-lg px-5 py-3 text-uppercase fw-bold rounded-pill shadow-lg mt-3 text-dark">Ask for free data help</a>
+                <a href="/#contact" class="btn btn-outline-light btn-lg px-5 py-3 text-uppercase fw-bold rounded-pill mt-3 ms-sm-2">Contact us</a>
             </div>
         </div>
     </div>
+    <button type="button" class="hero-video-toggle btn btn-sm btn-outline-light position-absolute bottom-0 end-0 m-3 z-2 d-none" aria-label="Pause background video">Pause</button>
 </header>
-<!--
-        {% for page in site.pages %}
-          {% if page.title %}<a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>{% endif %}
-        {% endfor %}
- -->
-

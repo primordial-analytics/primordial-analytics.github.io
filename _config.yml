@@ -1,15 +1,15 @@
 # Site settings
 name: Primordial Analytics
-title: AI Consulting and Analytics | Primordial Analytics
-tagline: "AI Consulting and Analytics"
+title: Primordial Analytics
+tagline: "Free volunteer data science for community health non-profits"
 email: contact@primordialanalytics.com
-description: "Primordial Analytics delivers cutting-edge AI solutions, advanced machine learning, and predictive analytics, empowering businesses to unlock data-driven success."
-author: "Primordial Analytics Consulting, LLC."
-image: /img/brand/brand_white.png
-twitter:
-  username: primordialytics
+description: "Free volunteer data science for non-profit community health organizations, from a small Portland, Oregon team. We still work with our longtime clients too."
+author:
+  name: Primordial Analytics
+  type: Organization
+  url: https://www.primordialanalytics.com
+logo: /img/brand/brand_black.png
 lang: en
-blogurl: "/blog/"
 baseurl: ""
 url: https://www.primordialanalytics.com
 permalink: pretty
@@ -19,18 +19,35 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-feed
+  - jekyll-redirect-from
 
 # add collections
 collections:
   team:
-    output: true
+    output: false
   testimonials:
-    output: true
+    output: false
   casestudies:
     output: true
   posts:
     output: true
     permalink: /blog/:title/
+
+# front matter defaults
+defaults:
+  - scope:
+      path: ""
+    values:
+      image:
+        path: /img/sm_content/og-default.jpg
+        width: 1200
+        height: 630
+        alt: "Primordial Analytics: free volunteer data science for community health non-profits"
+  # published for Search Console verification, but kept out of the sitemap
+  - scope:
+      path: "google1d583c199f5983dc.html"
+    values:
+      sitemap: false
 
 # add other dirs
 includes:
@@ -57,13 +74,10 @@ exclude:
   - scss
   - svg
   - .idea
+  - ruby-build
 
-# Social networks usernames
+# Social profiles (jekyll-seo-tag emits these as sameAs on the home page)
 social:
-  - icon: fab fa-linkedin-in
-    url: https://linkedin.com/company/primordial-analytics/
-
-# Postal address
-address:
-  - line: Technology Drive
-  - line: Portland, Oregon, USA
+  name: Primordial Analytics
+  links:
+    - https://linkedin.com/company/primordial-analytics/

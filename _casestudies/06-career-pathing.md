@@ -8,13 +8,11 @@ date: 2018-07-01
 thumbnail: careers-thumbnail.png
 ---
 
-[alt]: 'survive-as-a-team'
-[image]: img/case_studies/careers.png
+<div class="container py-5" style="max-width: 800px;" markdown="1">
+
 [plum]: https://www.amazon.com/Orbiting-Giant-Hairball-Corporate-Surviving/dp/0670879835
 
 **Client's Problem:** _"Our company is undergoing a transformation via a re-org to better focus on the development of our people. We do not have a legacy of strong technical leadership and thus are uncertain of how to create a career pathing that is appealing to our younger tech employees. This is a critical need for us now and going forward as it impacts hiring and retention of people working on high-value technology projects."_
-
-
 
 Our Client was within range of several tech hotbeds and had the added stress of competing against those markets. Unfortunately, providing extensive "perks" inside the office, ala Silicon Valley, was not an option. So, the Client needed to be creative. We were a good fit for this engagement based on our history of growing up within the industry and having some ideas that did not require getting into an arms race with other companies.
 
@@ -25,3 +23,7 @@ The first order of business was to rewrite job descriptions based on industry be
 Our industry experience has taught us that segregating technical expertise from business leadership on distinct career tracts is a red herring that demotivates professional people. Thus, we built into the managerial tiering modifiers (manager, supervisors), which could be added to people's jobs as they grew into and desired those responsibilities. The result was lengthy but specific and valued, with titles such as Sr. Data Architect, Manager or Principal Data Scientist, and Director.
 
 Having a career path mapped out did not address the job's desired purpose, motivation, and difference-making. Our career model was given life by including coaching (bought) and development (built) processes that enforced a [plum tree][plum] paradigm where management existed only to support. As a result, the people were empowered to manage the work, and the managers led the professional and technical development of the people. This inversion encouraged everyone to self-motivate because the individual now determined their career path and work purpose.
+
+{% include casestudy_cta.html %}
+
+</div>
