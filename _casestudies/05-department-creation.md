@@ -6,6 +6,7 @@ layout: default
 modal-id: 5
 date: 2018-07-01
 thumbnail: department-thumbnail.png
+kind: commercial
 ---
 
 <div class="container py-5" style="max-width: 800px;" markdown="1">
@@ -18,7 +19,7 @@ The first step was learning and enunciating the Client's vision and mission rega
 
 We conducted a thorough self-audit of the existing teams (effort-value of existing projects, a group S.W.O.T., a company P.E.S.T., readiness, competitive advantages). With these inputs in hand, they were synthesized into strategic focuses for the new AA group. Alongside the leaders of the reporting unit, we crafted near- and long-term objectives for the new group to pursue. We then sliced each near-term objective into goals with defined metrics/KPIs and estimated timelines.
 
-A significant part of the road map was people and their development. The short-term solution was embedding Primordial teams to do project work while also assisting in hiring experienced people to lead the new AA group. Another major hurdle was the deployment of new technologies and development tools (e.g., AWS, Docker, GitHub, Airflow, Presto) to create efficiencies for the new group. The Primordial teams owned the roll-out and training on these systems for seamless handover.
+A significant part of the road map was people and their development. The short-term solution was for us to embed with the group to do project work while also assisting in hiring experienced people to lead the new AA group. Another major hurdle was the deployment of new technologies and development tools (e.g., AWS, Docker, GitHub, Airflow, Presto) to create efficiencies for the new group. We owned the roll-out and training on these systems for seamless handover.
 
 {% include casestudy_cta.html %}
 

@@ -15,7 +15,7 @@ git push origin --tags
 
 ### HTML5 Movie
 
-One of our founders has an affinity for cosmology and astrophysics: it's in the name, the logo, the font face, and our theme. So that movie on the front page, how did we make that? It's super simple:
+The founder has an affinity for cosmology and astrophysics: it's in the name, the logo, the font face, and our theme. So that movie on the front page, how did we make that? It's super simple:
 
 ```bash
 # get a movie file to work

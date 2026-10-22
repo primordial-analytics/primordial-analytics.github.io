@@ -115,5 +115,5 @@ gulp.task('browserSync', function() {
 gulp.task('dev', gulp.series('default', 'browserSync', function() {
   gulp.watch('./scss/**/*.scss', gulp.series('css', 'jekyll-rebuild'));
   gulp.watch('./js/*.js', gulp.series('js', 'jekyll-rebuild'));
-  gulp.watch(['./*.html', './_includes/*.html', './_layouts/*.html', './_posts/*', './_casestudies/*', './_team/*', './_testimonials/*'], gulp.series('jekyll-rebuild'));
+  gulp.watch(['./*.html', './_includes/*.html', './_layouts/*.html', './_posts/*', './_casestudies/*', './_team/*'], gulp.series('jekyll-rebuild'));
 }));

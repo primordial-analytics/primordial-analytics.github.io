@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Our people and our story
-description: "A small Portland team founded in 2018 that has volunteered its data skills for community health organizations since 2024. Meet us, and find out how to volunteer too."
+title: About Primordial Analytics
+description: "Primordial Analytics is principal-led: you work directly with founder and data scientist Ken Cavagnolo, in Portland, Oregon. Free help for community health organizations since 2024. Find out how to volunteer too."
 permalink: /people.html
 ---
 
@@ -10,14 +10,25 @@ permalink: /people.html
         <!-- Intro -->
         <div class="row mb-5 align-items-center">
             <div class="col-lg-6 pe-lg-5 mb-5 mb-lg-0">
-                <h2 class="display-5 fw-bold mb-4 lh-sm">A small team, glad to be here.</h2>
-                <p class="lead text-muted fs-4 mb-4">Primordial Analytics was incorporated on August 9, 2018. We began as a small group of data scientists, engineers, and AI experts doing client work for people who already knew us as individuals.</p>
-                <p class="text-muted fs-5 lh-lg mb-4">In 2024 we turned our attention to volunteer data science for non-profit community health organizations, and we kept serving our longtime clients on a smaller scale.</p>
+                <h2 class="display-5 fw-bold mb-4 lh-sm">Principal-led, on purpose.</h2>
+                <p class="lead text-muted fs-4 mb-4">Primordial Analytics was founded on August 9, 2018. You work directly with Ken Cavagnolo, the founder and data scientist, who does the work himself. There are no hand-offs to juniors, and one accountable person answers for your data. That suits small, high-trust data work. He started out doing client work for people who already knew him.</p>
+                <p class="text-muted fs-5 lh-lg mb-4">In 2024 the firm turned its attention to free volunteer data science for non-profit community health organizations, and it kept doing some paid work for longtime clients.</p>
                 <p class="text-muted fs-5 lh-lg">This has been a hard year for the community health organizations we exist to serve. Fewer people asked for our help, which makes sense: even free analytics costs the hours of a person to explain the data and act on it. <a href="{{ site.baseurl }}/blog/anniversary-8/">We wrote about it on our eighth anniversary</a>.</p>
             </div>
             <div class="col-lg-6">
-                <div class="ratio ratio-4x3 shadow-lg rounded-4 overflow-hidden">
-                    <img src="/img/stock/team-collab.webp" width="1200" height="800" loading="lazy" class="object-fit-cover" alt="People working on laptops around a wooden table">
+                {% assign ken = site.team | first %}
+                <div class="card border-0 shadow-lg rounded-4 bg-light p-4 p-md-5 text-center">
+                    <div class="mb-4">
+                        <img class="rounded-circle shadow-sm object-fit-cover" src="{{ site.baseurl }}/img/team/{{ ken.pic }}" alt="" width="150" height="150" loading="lazy" style="width: 150px; height: 150px; border: 4px solid #fff;">
+                    </div>
+                    <h3 class="h4 fw-bold mb-1">{{ ken.name }}</h3>
+                    <p class="text-primary fw-semibold mb-3">{{ ken.position }}</p>
+                    <p class="text-muted fs-6 lh-lg mb-3">{{ ken.blurb }}</p>
+                    <ul class="list-inline mb-0">
+                        {% for network in ken.social %}
+                        <li class="list-inline-item"><a target="_blank" rel="noopener" href="{{ network.url }}" aria-label="{% if network.label == 'Website' %}{{ ken.name }}'s website{% else %}{{ ken.name }} on {{ network.label }}{% endif %} (opens in a new tab)">{{ network.label }}</a></li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
@@ -47,7 +58,7 @@ permalink: /people.html
                             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-primary" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
                         </div>
                         <h3 class="card-title h4 fw-bold mb-3">Share what we build</h3>
-                        <p class="card-text text-muted fs-6 lh-lg">We would like busy teams to be able to pick up what we make on a Tuesday afternoon, without a kickoff meeting.</p>
+                        <p class="card-text text-muted fs-6 lh-lg">We would like busy health teams to be able to pick up what we make on a Tuesday afternoon, without a kickoff meeting.</p>
                     </div>
                 </div>
             </div>
@@ -74,11 +85,11 @@ permalink: /people.html
         <div class="row justify-content-center">
             <div class="col-lg-9">
                 <h2 class="display-5 fw-bold mb-4 lh-sm">Want to lend your skills?</h2>
-                <p class="lead text-muted fs-4 mb-4">We are always glad to hear from fellow data enthusiasts who want to make healthcare better for everyone.</p>
+                <p class="lead text-muted fs-4 mb-4">We welcome volunteers who do end-to-end data science. We are glad to hear from fellow data enthusiasts who want to make healthcare better for everyone.</p>
                 <h3 class="h4 fw-bold mb-2">Who we are looking for</h3>
                 <p class="text-muted fs-5 lh-lg mb-4">Fellow data enthusiasts: anyone who enjoys turning a messy spreadsheet into something a busy person can use.</p>
                 <h3 class="h4 fw-bold mb-2">What it is</h3>
-                <p class="text-muted fs-5 lh-lg mb-4">Volunteers help us offer free data science to community health organizations. The asks are small by design, so tell us what you are good at and how much time you might have.</p>
+                <p class="text-muted fs-5 lh-lg mb-4">Volunteers help us offer free data science to community health organizations, and the work is the full end-to-end job: framing the question, finding and cleaning data, engineering pipelines, analysis and modeling, visualization, and explaining the results to the people who will act on them. The first asks are small by design, so tell us what you are good at and how much time you might have.</p>
                 <h3 class="h4 fw-bold mb-2">How to raise your hand</h3>
                 <p class="text-muted fs-5 lh-lg mb-4">Send us a note through the contact form. Say you would like to volunteer, and tell us a little about your skills.</p>
                 <a href="{{ site.baseurl }}/#contact" class="btn btn-primary btn-lg px-5 py-3 text-uppercase fw-bold rounded-pill shadow text-dark">Volunteer with us</a>
@@ -96,9 +107,9 @@ permalink: /people.html
                     <img src="/img/stock/cosmos.webp" width="1600" height="1065" loading="lazy" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover" alt="">
                     <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
                     <div class="position-relative z-1 py-4">
-                        <h2 class="fw-bold mb-3 display-6">Meet the team</h2>
-                        <p class="lead mb-4 text-white fs-4">Get to know the people behind Primordial Analytics.</p>
-                        <a href="{{ site.baseurl }}/#about" class="btn btn-primary btn-lg px-5 py-3 text-uppercase fw-bold rounded-pill shadow mt-3 text-dark">View Our Team</a>
+                        <h2 class="fw-bold mb-3 display-6">Have a data question?</h2>
+                        <p class="lead mb-4 text-white fs-4">Free data help. We usually reply within a few business days.</p>
+                        <a href="{{ site.baseurl }}/community-health-data-help/" class="btn btn-primary btn-lg px-5 py-3 text-uppercase fw-bold rounded-pill shadow mt-3 text-dark">Ask for free data help</a>
                     </div>
                 </div>
             </div>
