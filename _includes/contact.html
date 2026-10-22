@@ -4,10 +4,8 @@
     <div class="container py-5 position-relative z-1">
         <div class="row mb-5 text-center">
             <div class="col-lg-8 offset-lg-2">
-                <h2 class="display-5 fw-bold mb-3 text-white">Tell us what would help, even if it's small</h2>
-                <p class="lead text-white-50 fs-4 mb-3">Our help is free, and everyone qualifies, pending a quick conflict-of-interest check. We built it for community health non-profits. Questions from data volunteers and paying clients are welcome too.</p>
-                <p class="text-white mb-2">Prefer email? Write to <a class="text-white fw-bold text-break" href="mailto:{{ site.email }}">{{ site.email }}</a>.</p>
-                <p class="text-white-50 mb-0">Please do not send patient names or other identifying details, here or by email.</p>
+                <h2 class="display-5 fw-bold mb-3 text-white">Contact</h2>
+                <p class="lead text-white-50 fs-4">Tell us what you're working on. We usually reply within a few business days.</p>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -38,9 +36,8 @@
                                     <label class="form-label fw-semibold text-dark" for="role">I am... <span aria-hidden="true">*</span></label>
                                     <select class="form-select form-select-lg bg-light border-0 rounded-3 px-4 py-3" id="role" required="required" aria-describedby="role-error" data-validation-required-message="Please choose the option that fits best.">
                                         <option value="" selected>Choose one</option>
-                                        <option>A community health organization looking for help</option>
-                                        <option>A data professional who wants to volunteer</option>
-                                        <option>A current or prospective client</option>
+                                        <option>A community health organization</option>
+                                        <option>A data scientist who wants to volunteer</option>
                                         <option>Something else</option>
                                     </select>
                                     <div class="help-block text-danger small mt-1 mb-0" id="role-error"></div>
@@ -56,7 +53,7 @@
                                 <button id="sendMessageButton" class="btn btn-primary btn-lg px-5 py-3 text-uppercase fw-bold rounded-pill shadow text-dark" type="submit">
                                     Send Message
                                 </button>
-                                <p class="small text-muted mt-3 mb-0">We usually reply within a few business days. Your message goes to us by email and we use it only to reply. <a href="{{ site.baseurl }}/privacy/">How we handle your information</a>.</p>
+                                <p class="small text-muted mt-3 mb-0"><a href="{{ site.baseurl }}/privacy/">How we handle your data</a></p>
                             </div>
                         </div>
                     </form>

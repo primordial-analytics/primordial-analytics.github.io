@@ -1,9 +1,9 @@
 # Site settings
 name: Primordial Analytics
 title: Primordial Analytics
-tagline: "Free volunteer data science for community health non-profits"
+tagline: "Free data science for community health organizations."
 email: contact@primordialanalytics.com
-description: "Free volunteer data science for non-profit community health organizations, from Ken Cavagnolo in Portland, Oregon. Some paid work for longtime clients too."
+description: "Free data science for community health organizations."
 author:
   name: Primordial Analytics
   type: Organization
@@ -40,7 +40,7 @@ defaults:
         path: /img/sm_content/og-default.jpg
         width: 1200
         height: 630
-        alt: "Primordial Analytics: free volunteer data science for community health non-profits"
+        alt: "Primordial Analytics: free data science for community health organizations"
   # published for Search Console verification, but kept out of the sitemap
   - scope:
       path: "google1d583c199f5983dc.html"
