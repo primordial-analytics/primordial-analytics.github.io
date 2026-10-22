@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Privacy
-description: "What this site collects, what the contact form sends, who else is involved, and how to ask us to delete your messages."
+description: "What this site collects and how to delete your messages."
 permalink: /privacy/
 ---
 
@@ -9,32 +9,20 @@ permalink: /privacy/
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-9">
-                <p class="text-muted small mb-4">Last updated October 22, 2026.</p>
-                <p class="lead text-muted fs-4 mb-5">Short version: we count visits in aggregate, we read the messages you send us so we can reply, and we do not sell anything about you. Here are the details.</p>
-
-                <h2 class="h3 fw-bold mb-3">Visits to this site</h2>
-                <p class="text-muted fs-5 lh-lg mb-4">We use Google Analytics 4 to see aggregate usage: which pages get read, roughly where visitors come from, and what kind of device they use. Google sets cookies or similar identifiers for this and receives your browser and device information. We use the reports to decide what to write and what to fix. You can block this with your browser's privacy settings, a tracking blocker, or Google's <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">opt-out browser add-on</a>.</p>
+                <h2 class="h3 fw-bold mb-3">Visits</h2>
+                <p class="text-muted fs-5 lh-lg mb-4">We use Google Analytics 4 to see aggregate usage. Google sets cookies and sees your browser and device. You can block this with your browser settings or Google's <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">opt-out add-on</a>.</p>
 
                 <h2 class="h3 fw-bold mb-3">The contact form</h2>
-                <p class="text-muted fs-5 lh-lg mb-3">When you send the contact form, it submits your name, your email, an optional phone number, the option you picked under "I am...", and your message. A form handler hosted on Amazon Web Services sends that to us by email. We use it only to reply to you, and we do not sell or share it.</p>
-                <p class="text-muted fs-5 lh-lg mb-4">When the form is sent, the page also tells Google Analytics that a message was sent (a "generate_lead" event) along with the "I am..." choice. It does not include your name, email, phone number, or the text of your message.</p>
+                <p class="text-muted fs-5 lh-lg mb-4">The form sends your name, email, optional phone number, your "I am..." choice, and your message to us by email through a handler hosted on Amazon Web Services. We use it only to reply, and we never sell or share it. Analytics is told that a message was sent, with your "I am..." choice, but not your name, email, phone number, or message.</p>
 
-                <h2 class="h3 fw-bold mb-3">Please do not send patient information</h2>
-                <p class="text-muted fs-5 lh-lg mb-4">Do not put patient names or other identifying details in the form or in email. We generally don't sign BAAs or handle identifiable patient data; in very special cases we're open to it, so ask us first. See <a href="{{ site.baseurl }}/community-health-data-help/#data-handling">how we handle your data</a>.</p>
+                <h2 class="h3 fw-bold mb-3">Patient information</h2>
+                <p class="text-muted fs-5 lh-lg mb-4">Please don't send patient names or identifying details.</p>
 
-                <h2 class="h3 fw-bold mb-3">Other services this site loads</h2>
-                <ul class="text-muted fs-5 lh-lg mb-4">
-                    <li class="mb-2"><strong>Google Fonts</strong> serves some of the typefaces. Your browser requests them from Google, which can see your IP address.</li>
-                    <li class="mb-2"><strong>cdnjs (Cloudflare)</strong> serves the image lightbox on blog posts, so it loads only on blog posts.</li>
-                    <li class="mb-2"><strong>LinkedIn, GitHub, and Ken's own website</strong>: these are plain links. Nothing from them loads unless you click one.</li>
-                </ul>
-                <p class="text-muted fs-5 lh-lg mb-4">Each of those services has its own privacy policy, and we do not control what they do with the requests they receive.</p>
+                <h2 class="h3 fw-bold mb-3">Other services</h2>
+                <p class="text-muted fs-5 lh-lg mb-4">Google Fonts serves some typefaces, and cdnjs (Cloudflare) serves the image lightbox on blog posts. Each can see your IP address.</p>
 
-                <h2 class="h3 fw-bold mb-3">Asking us to delete your messages</h2>
-                <p class="text-muted fs-5 lh-lg mb-4">Email <a class="text-break" href="mailto:{{ site.email }}">{{ site.email }}</a> and ask us to delete what you sent. We usually reply within a few business days. We will delete the messages from our inbox. We cannot delete what Google Analytics has already collected about site visits, since we have no way to tie it to you.</p>
-
-                <h2 class="h3 fw-bold mb-3">Changes</h2>
-                <p class="text-muted fs-5 lh-lg mb-0">If we change how the site works in a way that matters here, we will update this page and its date. Questions are welcome at <a class="text-break" href="mailto:{{ site.email }}">{{ site.email }}</a>.</p>
+                <h2 class="h3 fw-bold mb-3">Deleting your messages</h2>
+                <p class="text-muted fs-5 lh-lg mb-0">Email <a class="text-break" href="mailto:{{ site.email }}">{{ site.email }}</a> and we will delete what you sent. We can't delete analytics data, since we can't tie it to you.</p>
             </div>
         </div>
     </div>

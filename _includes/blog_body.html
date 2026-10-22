@@ -22,9 +22,6 @@
                             <p class="text-muted fw-normal mb-4 fs-5">
                                 {{ post.description }}
                             </p>
-                            <p class="text-muted lh-lg mb-4">
-                                {{ post.content | strip_html | truncatewords: 35 }}
-                            </p>
                             <a href="{{ post.url }}" class="btn btn-outline-primary btn-sm rounded-pill fw-bold px-4 py-2 transition-hover">
                                 Continue Reading<span class="visually-hidden"> about {{ post.title }}</span> &rarr;
                             </a>

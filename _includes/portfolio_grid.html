@@ -1,34 +1,9 @@
 <!-- Portfolio Grid -->
 <section class="bg-light py-5" id="portfolio">
     <div class="container py-5">
-        <div class="row mb-5">
-            <div class="col-lg-8 mx-auto text-center">
-                <p class="text-muted fs-5 lh-lg mb-3">Since 2024 our focus has been free, volunteer data science for community health organizations (we still do some paid work for longtime clients). Below are worked examples on public data that show how that work looks, followed by earlier paid projects.</p>
-                <p class="text-muted fs-5 lh-lg mb-0">Looking for help with your own data? <a href="{{ site.baseurl }}/community-health-data-help/">Ask for free data help</a>.</p>
-            </div>
-        </div>
-        {% assign examples = site.casestudies | where: "kind", "example" | sort: "path" %}
-        {% assign commercial = site.casestudies | where: "kind", "commercial" | sort: "path" %}
-        {% assign groups = "examples|commercial" | split: "|" %}
-        {% for group in groups %}
-        {% if group == "examples" %}
-            {% assign items = examples %}
-            {% assign heading = "Worked examples (public data)" %}
-            {% assign blurb = "These are demonstrations built on public data. They are not client projects, and no client, patient, or organization is involved. Every number is computed from a cited public source." %}
-        {% else %}
-            {% assign items = commercial %}
-            {% assign heading = "Earlier commercial engagements" %}
-            {% assign blurb = "Paid client projects, mostly from before we turned to volunteer work in 2024. They show how we think and what we have built." %}
-        {% endif %}
-        {% if items.size > 0 %}
-        <div class="row mb-4{% unless forloop.first %} mt-5 pt-4{% endunless %}">
-            <div class="col-lg-8 mx-auto text-center">
-                <h2 class="h3 fw-bold mb-2">{{ heading }}</h2>
-                <p class="text-muted fs-6 mb-0">{{ blurb }}</p>
-            </div>
-        </div>
-        <div class="row g-4">
-            {% for casestudy in items %}
+        <div class="row g-4 justify-content-center">
+            {% assign examples = site.casestudies | where: "kind", "example" | sort: "path" %}
+            {% for casestudy in examples %}
             <div class="col-md-4 col-sm-6">
                 <a href="{{ casestudy.url | relative_url }}" class="text-decoration-none">
                     <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden transition-hover">
@@ -36,7 +11,7 @@
                             <img class="object-fit-cover w-100 h-100" src="{{ site.baseurl }}/img/case_studies/{{ casestudy.thumbnail }}" width="400" height="300" loading="lazy" alt="">
                         </div>
                         <div class="card-body p-4 bg-white text-center">
-                            <h3 class="card-title h5 fw-bold text-dark mb-2">{{ casestudy.title }}</h3>
+                            <h2 class="card-title h5 fw-bold text-dark mb-2">{{ casestudy.title }}</h2>
                             <p class="card-text text-muted fs-6 mb-0">{{ casestudy.subtitle }}</p>
                         </div>
                     </div>
@@ -44,7 +19,5 @@
             </div>
             {% endfor %}
         </div>
-        {% endif %}
-        {% endfor %}
     </div>
 </section>
