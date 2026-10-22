@@ -29,9 +29,9 @@ For a health center, coverage losses show up as patients who keep coming and can
 
 Health centers were already averaging a [-2% margin in 2024](https://www.nachc.org/the-coming-surge-in-uninsured-patients-at-community-health-centers/), according to NACHC, before most of this began. The Community Health Center Fund, their largest source of federal grant money, is funded only through December 31, 2026. A House committee voted unanimously in July to advance new behavioral health and nutrition funding for health centers. It has not become law, and it isn't a substitute for the Fund.
 
-The wider nonprofit world feels it too. In a [Center for Effective Philanthropy survey](https://cep.org/wp-content/uploads/2026/05/CEP_State_of_Nonprofits_2026_FNL.pdf) of nonprofit CEOs fielded in February, 73% reported higher demand since January 2025, while many had cut staff or services. More work, fewer hands. In Oregon, Lane County [announced it would cut 23 positions](https://lookouteugene-springfield.com/story/health/2026/06/24/lane-county-says-it-will-cut-23-positions-at-its-safety-net-primary-care-clinics/) at its safety-net clinics in June, eight of them vacant, citing the expired ACA credits and federal Medicaid changes. In Indiana, two health centers announced a merger in July, and one CEO pointed to Medicaid cuts.
+The wider nonprofit world feels it too. In a [Center for Effective Philanthropy survey](https://cep.org/wp-content/uploads/2026/05/CEP_State_of_Nonprofits_2026_FNL.pdf) of nonprofit CEOs fielded in February, 73% reported higher demand since January 2025, while many had cut staff or services. More work, fewer hands. In Indiana, two health centers announced a merger in July, and one CEO pointed to Medicaid cuts.
 
-Through all of it, the people at these organizations keep showing up for their patients, and we are in awe of that. Showing up shouldn't have to be this heavy a lift, and we don't mistake your resilience for a plan.
+Through all of it, the people at these organizations keep showing up for their patients, and we are in awe of that.
 
 ### Looking Ahead: Year Nine
 
@@ -41,11 +41,11 @@ We don't have a grand expansion plan this year, and we think that's the right ca
 - **Medicaid preparation**: If it would help, we can sanity-check whatever you've already built, or run a simple what-if on your own patient data before the dates arrive.
 - **Open tools**: Sharing what we build so a busy team can pick it up on a Tuesday afternoon without a kickoff meeting.
 
-Most of all, we plan to stay available. If you run a community health organization and a question has been nagging at you, send it our way. Our help is free, and you don't owe us a reply.
+Most of all, we plan to stay available. If you run a community health organization and you have a data question, send it our way. Our help is free.
 
 To our volunteers, partners, and the people who keep the lights on: thank you for eight years. We don't know exactly what year nine holds. We'll be here, and glad to be.
 
-*Need a hand with your data, or want to lend yours? <b><a href="{{ site.baseurl }}/community-health-data-help/">See how we help</a></b> or <b><a href="{{ site.baseurl }}/#contact">CONTACT US</a></b>. Small questions are welcome.*
+*Need a hand with your data, or want to lend yours? <b><a href="{{ site.baseurl }}/community-health-data-help/">See how it works</a></b> or <b><a href="{{ site.baseurl }}/#contact">CONTACT US</a></b>.*
 
 <div class="col-lg-12 playful">
 <a data-fancybox="gallery"

@@ -12,7 +12,7 @@ Many errors in reports are not hard statistics. They are tie-out errors: the sam
 
 So this is a checklist for the last stretch before you hit submit. It is written for small health centers and health non-profits who build their reports in spreadsheets. We use the federal Uniform Data System (UDS) as the worked example because its rules are public and specific, then widen out to other funders at the end.
 
-A few honest notes first. We do data science. We are not HRSA reviewers or certified UDS trainers, and this is a data-hygiene list, not compliance advice. When it and the manual disagree, the manual wins. UDS details change every year, so check the current one.
+We do data science. We are not HRSA reviewers or certified UDS trainers, and this is a data-hygiene list, not compliance advice. When it and the manual disagree, the manual wins. UDS details change every year, so check the current one.
 
 **The basics, per the [2026 UDS Manual](https://bphc.hrsa.gov/sites/default/files/bphc/compliance/2026-uds-manual.pdf):** UDS is a calendar-year report (January 1 to December 31) for health centers funded under section 330, look-alikes, and certain Bureau of Health Workforce-funded centers. It is submitted in HRSA's Electronic Handbooks (EHBs) by February 15 at 11:59 p.m. local time. A HRSA reviewer then works with you until March 31, when final corrections are due. For 2026 data, that means February 15 and March 31, 2027. Not every non-profit reports UDS, but the patterns below apply to any multi-table report.
 
