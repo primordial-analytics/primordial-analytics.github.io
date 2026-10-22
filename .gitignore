@@ -106,3 +106,6 @@ fabric.properties
 # Sonar
 .idea/sonarlint
 *_original
+
+# Jekyll serves downloads/ (the global gitignore ignores it)
+!downloads/
