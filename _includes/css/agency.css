@@ -18,14 +18,14 @@ p {
 }
 
 a {
-  color: #645211;
+  color: #B3A369;
 }
 a:hover {
-  color: #191445;
+  color: #645211;
 }
 
 .text-primary {
-  color: #645211 !important;
+  color: #B3A369 !important;
 }
 
 :focus-visible {
@@ -140,20 +140,6 @@ section h3.section-subheading {
   box-shadow: 0 0 0 0.2rem rgba(179, 163, 105, 0.5) !important;
 }
 
-.btn-outline-primary {
-  --bs-btn-color: #191445;
-  --bs-btn-border-color: #645211;
-  --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #645211;
-  --bs-btn-hover-border-color: #645211;
-  --bs-btn-focus-shadow-rgb: 100, 82, 17;
-  --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #645211;
-  --bs-btn-active-border-color: #645211;
-  --bs-btn-disabled-color: #191445;
-  --bs-btn-disabled-border-color: #645211;
-}
-
 ::-moz-selection {
   background: #B3A369;
   text-shadow: none;
@@ -188,7 +174,7 @@ img::-moz-selection {
   right: 0;
   padding: 10px;
   text-transform: uppercase;
-  color: #191445;
+  color: white;
   border: 0;
   background-color: #B3A369;
   font-family: "Sansation Regular", sans-serif;
@@ -537,7 +523,7 @@ header.mizzenhead .intro-text .intro-heading {
   margin-top: 1rem;
   font-size: 0.85rem;
   font-weight: bold;
-  color: #645211;
+  color: #B3A369;
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -545,11 +531,11 @@ header.mizzenhead .intro-text .intro-heading {
   transition: border-color 0.3s ease;
 }
 .tufte-timeline .tufte-event .tufte-link:hover {
-  border-color: #645211;
+  border-color: #B3A369;
 }
 .tufte-timeline .tufte-event:hover .tufte-year {
   background-color: #B3A369;
-  color: #191445;
+  color: #fff;
   border-color: #B3A369;
   transform: translateX(-50%) scale(1.25) translateY(-5px);
   box-shadow: 0 0 0 8px #f8f9fa, 0 10px 20px rgba(179, 163, 105, 0.4);
@@ -830,11 +816,13 @@ article.content p {
   color: #444;
 }
 article.content a {
-  color: #645211;
-  text-decoration: underline;
+  color: #B3A369;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease;
 }
 article.content a:hover {
-  color: #191445;
+  border-color: #B3A369;
 }
 article.content img {
   max-width: 100%;
@@ -873,6 +861,10 @@ article.content ul li, article.content ol li {
 
 .hover-primary:hover {
   color: #B3A369 !important;
+}
+
+.hover-white:hover {
+  color: #fff !important;
 }
 
 .checklist {

@@ -16,16 +16,15 @@ p {
   line-height: 1.75;
 }
 
-// Gold ($primary) fails contrast as text on light backgrounds; use the dark gold.
 a {
-  color: $primary_dark;
+  color: $primary;
   &:hover {
-    color: $gray-900;
+    color: $primary_dark;
   }
 }
 
 .text-primary {
-  color: $primary_dark !important;
+  color: $primary !important;
 }
 
 // Keyboard focus
@@ -147,21 +146,6 @@ section {
   &:focus {
     box-shadow: 0 0 0 0.2rem rgba(179, 163, 105, 0.5) !important;
   }
-}
-
-// Outline buttons: dark gold border and text, filled dark gold on hover/focus
-.btn-outline-primary {
-  --bs-btn-color: #{$gray-900};
-  --bs-btn-border-color: #{$primary_dark};
-  --bs-btn-hover-color: #{$white};
-  --bs-btn-hover-bg: #{$primary_dark};
-  --bs-btn-hover-border-color: #{$primary_dark};
-  --bs-btn-focus-shadow-rgb: 100, 82, 17;
-  --bs-btn-active-color: #{$white};
-  --bs-btn-active-bg: #{$primary_dark};
-  --bs-btn-active-border-color: #{$primary_dark};
-  --bs-btn-disabled-color: #{$gray-900};
-  --bs-btn-disabled-border-color: #{$primary_dark};
 }
 
 // Highlight color customization

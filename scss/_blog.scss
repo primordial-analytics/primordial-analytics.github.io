@@ -27,10 +27,13 @@ article.content {
     }
     
     a {
-        color: $primary_dark;
-        text-decoration: underline;
+        color: $primary;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.3s ease;
+        
         &:hover {
-            color: $gray-900;
+            border-color: $primary;
         }
     }
     
@@ -78,6 +81,10 @@ article.content {
 // Hover utilities for blog links
 .hover-primary:hover {
     color: $primary !important;
+}
+
+.hover-white:hover {
+    color: $white !important;
 }
 // Checklist lists: decorative empty box in place of a bullet (not announced by screen readers)
 .checklist {
