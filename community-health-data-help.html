@@ -10,9 +10,9 @@ permalink: /community-health-data-help/
         <div class="row justify-content-center">
             <div class="col-lg-9">
                 <h2 class="display-5 fw-bold mb-4 lh-sm">Who this is for</h2>
-                <p class="lead text-muted fs-4 mb-4">We are a small team of volunteer data scientists in Portland, Oregon. Since 2024 we have offered free data help to non-profit community health organizations: health centers, free clinics, and small health non-profits.</p>
-                <p class="text-muted fs-5 lh-lg mb-4">We built this for small and under-resourced organizations, the ones with a spreadsheet, a deadline, and not enough hours. You do not need a data team, a budget, or a big project in mind. If you are not sure you are a fit, ask anyway.</p>
-                <p class="text-muted fs-5 lh-lg mb-0">We know even free help costs something: the time of a person to explain the data and act on it. That is why everything below is small on purpose.</p>
+                <p class="lead text-muted fs-4 mb-4">Primordial Analytics is Ken Cavagnolo, a data scientist in Portland, Oregon. Since 2024 we have offered free volunteer data science to non-profit community health organizations: health centers, free clinics, and small health non-profits.</p>
+                <p class="text-muted fs-5 lh-lg mb-4">We built this for small and under-resourced organizations, the ones with a spreadsheet, a deadline, and not enough hours. You do not need a data team, a budget, or a big project in mind. Everyone qualifies for free help, pending a quick conflict-of-interest check (we just want to be sure we are not working for someone on the other side of your question). If you are not sure you are a fit, ask anyway.</p>
+                <p class="text-muted fs-5 lh-lg mb-0">We know even free help costs something: the time of a person to explain the data and act on it. That is why the first things below are small on purpose. We also do the full job when it makes sense: framing the question, finding and cleaning the data, building the pipeline, analysis and modeling, charts, and explaining the results in plain words.</p>
             </div>
         </div>
     </div>
@@ -58,7 +58,7 @@ permalink: /community-health-data-help/
                 <div class="card h-100 border-0 shadow-sm rounded-4 bg-white">
                     <div class="card-body p-4 p-lg-5">
                         <h3 class="card-title h4 fw-bold mb-3">A Medicaid coverage what-if</h3>
-                        <p class="card-text text-muted fs-6 lh-lg">A simple what-if on your own counts, summarized or de-identified, to get a rough sense of how coverage changes could reach your patients before the dates arrive. Forecasts have wide error bars, and we will say so.</p>
+                        <p class="card-text text-muted fs-6 lh-lg">A simple what-if on your own counts, summarized or de-identified, to get a rough sense of how coverage changes could reach your patients before the dates arrive. Forecasts have wide error bars, and we will say so. Want to try it yourself first? There is a <a href="{{ site.baseurl }}/blog/medicaid-what-if-template/">free Medicaid what-if spreadsheet template and a post explaining it</a>, or <a href="{{ site.baseurl }}/downloads/medicaid-what-if-template.xlsx">download the Excel template (.xlsx, about 23 KB)</a>.</p>
                         <p class="card-text fs-6 lh-lg mb-0"><strong>What we need from you:</strong> a short call to agree on the question, then your own counts, ideally summarized or de-identified.</p>
                     </div>
                 </div>
@@ -77,22 +77,22 @@ permalink: /community-health-data-help/
         </div>
         <div class="row g-4">
             <div class="col-md-4">
-                <span class="badge bg-primary text-dark rounded-pill fs-5 mb-3 px-3 py-2 shadow-sm">01</span>
+                <span class="badge bg-primary text-dark rounded-pill fs-5 mb-3 px-3 py-2 shadow-sm" aria-hidden="true">01</span>
                 <h3 class="h4 fw-bold mb-3">Tell us</h3>
                 <p class="text-muted fs-6 lh-lg">Send a note through the <a href="{{ site.baseurl }}/#contact">contact form</a> about what you are stuck on. A sentence is enough, and messy is fine.</p>
             </div>
             <div class="col-md-4">
-                <span class="badge bg-primary text-dark rounded-pill fs-5 mb-3 px-3 py-2 shadow-sm">02</span>
+                <span class="badge bg-primary text-dark rounded-pill fs-5 mb-3 px-3 py-2 shadow-sm" aria-hidden="true">02</span>
                 <h3 class="h4 fw-bold mb-3">We scope a small ask together</h3>
                 <p class="text-muted fs-6 lh-lg">We turn your question into something small enough to finish, and tell you what we would need from your staff before anyone starts.</p>
             </div>
             <div class="col-md-4">
-                <span class="badge bg-primary text-dark rounded-pill fs-5 mb-3 px-3 py-2 shadow-sm">03</span>
+                <span class="badge bg-primary text-dark rounded-pill fs-5 mb-3 px-3 py-2 shadow-sm" aria-hidden="true">03</span>
                 <h3 class="h4 fw-bold mb-3">We deliver and hand it over</h3>
-                <p class="text-muted fs-6 lh-lg">We give you the result with plain notes on how it was made, so your team can keep using it without us.</p>
+                <p class="text-muted fs-6 lh-lg">We do a sanity check before we send it, then give you the result with plain notes on how it was made, so your team can keep using it without us. A walk-through is there if you want one.</p>
             </div>
         </div>
-        <p class="text-muted fs-6 mt-4 mb-0">Want the longer version? See <a href="{{ site.baseurl }}/process.html">how a free engagement works</a>.</p>
+        <p class="text-muted fs-6 mt-4 mb-0">Want the longer version? See <a href="{{ site.baseurl }}/process.html">how a free engagement works</a>. Want a feel for the kind of work first? See <a href="{{ site.baseurl }}/projects.html">worked examples on public data</a>, or run our <a href="{{ site.baseurl }}/blog/data-checklist-before-you-report/">data checklist before you report</a>.</p>
     </div>
 </section>
 
@@ -105,6 +105,7 @@ permalink: /community-health-data-help/
                 <ul class="text-muted fs-5 lh-lg mb-4">
                     <li class="mb-2">We prefer de-identified or aggregate data, such as counts, rates, and totals. Most small asks do not need names or other identifiers.</li>
                     <li class="mb-2">We will do our best to work within your organization's policies. If you have rules about sharing or storing data, tell us at the start.</li>
+                    <li class="mb-2">We generally don't sign BAAs or handle identifiable patient data. In very special cases we're open to it, so ask us.</li>
                     <li>Please do not email us patient-level or identifying data. We can work out how to share what is needed before anything is sent.</li>
                 </ul>
                 <p class="text-muted fs-6 mb-0">Questions about any of this are welcome, before you decide to work with us.</p>
@@ -128,13 +129,22 @@ permalink: /community-health-data-help/
                 <p class="text-muted fs-5 lh-lg mb-5">Send it. Small questions are welcome. If we cannot help, we will say so plainly.</p>
 
                 <h3 class="h4 fw-bold mb-2">Do you only work in Oregon?</h3>
-                <p class="text-muted fs-5 lh-lg mb-5">We are based in Portland, Oregon. If you are somewhere else, tell us where you are and what you need, and we will let you know whether we can help.</p>
+                <p class="text-muted fs-5 lh-lg mb-5">No. We are based in Portland, Oregon, and we work with organizations anywhere, remotely. Everyone qualifies, pending a quick conflict-of-interest check.</p>
 
                 <h3 class="h4 fw-bold mb-2">Who does the work?</h3>
-                <p class="text-muted fs-5 lh-lg mb-5">Our small team, with help from volunteer data scientists. You can read more on the <a href="{{ site.baseurl }}/people.html">People page</a>.</p>
+                <p class="text-muted fs-5 lh-lg mb-5">Ken Cavagnolo, the founder and data scientist, does the work himself, so you deal with one accountable person and there are no hand-offs. We welcome volunteers (see the People page), and if someone else works on your project, we will tell you up front. You can read more on the <a href="{{ site.baseurl }}/people.html">People page</a>.</p>
+
+                <h3 class="h4 fw-bold mb-2">Can you handle patient data or sign a BAA?</h3>
+                <p class="text-muted fs-5 lh-lg mb-5">We generally don't sign BAAs or handle identifiable patient data. In very special cases we're open to it, so ask us. For most small asks, counts and totals are all we need.</p>
+
+                <h3 class="h4 fw-bold mb-2">Who qualifies?</h3>
+                <p class="text-muted fs-5 lh-lg mb-5">Everyone, pending a quick conflict-of-interest check. We built this for community health organizations, but we will not turn someone away for not fitting a box.</p>
+
+                <h3 class="h4 fw-bold mb-2">How long until I hear back?</h3>
+                <p class="text-muted fs-5 lh-lg mb-5">We usually reply within a few business days.</p>
 
                 <h3 class="h4 fw-bold mb-2">Do you still do paid work?</h3>
-                <p class="text-muted fs-5 lh-lg mb-0">We still work with a few longtime clients. If you have a paid project in mind, <a href="{{ site.baseurl }}/#contact">get in touch</a> and we will talk it over.</p>
+                <p class="text-muted fs-5 lh-lg mb-0">We still do some paid work for longtime clients. If you have a paid project in mind, <a href="{{ site.baseurl }}/#contact">get in touch</a> and we will talk it over.</p>
             </div>
         </div>
     </div>
@@ -146,7 +156,8 @@ permalink: /community-health-data-help/
             <h2 class="fw-bold mb-3 display-6">Tell us what would help, even if it is small</h2>
             <p class="lead mb-4 text-white fs-4">A sentence about what you are stuck on is a fine place to start.</p>
             <a href="{{ site.baseurl }}/#contact" class="btn btn-primary btn-lg px-5 py-3 text-uppercase fw-bold rounded-pill shadow mt-3 text-dark">Ask for free data help</a>
-            <p class="mt-4 mb-0 text-white">Prefer email? <a href="mailto:{{ site.email }}" class="text-white">{{ site.email }}</a></p>
+            <p class="mt-4 mb-1 text-white">We usually reply within a few business days.</p>
+            <p class="mb-0 text-white">Prefer email? <a href="mailto:{{ site.email }}" class="text-white text-break">{{ site.email }}</a></p>
         </div>
     </div>
 </section>

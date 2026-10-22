@@ -5,8 +5,8 @@
         <div class="row mb-5 text-center">
             <div class="col-lg-8 offset-lg-2">
                 <h2 class="display-5 fw-bold mb-3 text-white">Tell us what would help, even if it's small</h2>
-                <p class="lead text-white-50 fs-4 mb-3">Our help is free for community health non-profits. Questions from data volunteers and paying clients are welcome too.</p>
-                <p class="text-white mb-2">Prefer email? Write to <a class="text-white fw-bold" href="mailto:{{ site.email }}">{{ site.email }}</a>.</p>
+                <p class="lead text-white-50 fs-4 mb-3">Our help is free, and everyone qualifies, pending a quick conflict-of-interest check. We built it for community health non-profits. Questions from data volunteers and paying clients are welcome too.</p>
+                <p class="text-white mb-2">Prefer email? Write to <a class="text-white fw-bold text-break" href="mailto:{{ site.email }}">{{ site.email }}</a>.</p>
                 <p class="text-white-50 mb-0">Please do not send patient names or other identifying details, here or by email.</p>
             </div>
         </div>
@@ -56,6 +56,7 @@
                                 <button id="sendMessageButton" class="btn btn-primary btn-lg px-5 py-3 text-uppercase fw-bold rounded-pill shadow text-dark" type="submit">
                                     Send Message
                                 </button>
+                                <p class="small text-muted mt-3 mb-0">We usually reply within a few business days. Your message goes to us by email and we use it only to reply. <a href="{{ site.baseurl }}/privacy/">How we handle your information</a>.</p>
                             </div>
                         </div>
                     </form>

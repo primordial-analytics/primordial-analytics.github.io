@@ -3,7 +3,7 @@ name: Primordial Analytics
 title: Primordial Analytics
 tagline: "Free volunteer data science for community health non-profits"
 email: contact@primordialanalytics.com
-description: "Free volunteer data science for non-profit community health organizations, from a small Portland, Oregon team. We still work with our longtime clients too."
+description: "Free volunteer data science for non-profit community health organizations, from Ken Cavagnolo in Portland, Oregon. Some paid work for longtime clients too."
 author:
   name: Primordial Analytics
   type: Organization
@@ -24,8 +24,6 @@ plugins:
 # add collections
 collections:
   team:
-    output: false
-  testimonials:
     output: false
   casestudies:
     output: true
