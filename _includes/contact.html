@@ -1,40 +1,58 @@
 <!-- Contact -->
-<section id="contact" class="py-5 bg-dark text-white position-relative" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; background-attachment: fixed;">
+<section id="contact" class="py-5 bg-dark text-white position-relative" style="background-image: url('/img/stock/cosmos.webp'); background-size: cover; background-position: center; background-attachment: fixed;">
     <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
     <div class="container py-5 position-relative z-1">
         <div class="row mb-5 text-center">
             <div class="col-lg-8 offset-lg-2">
-                <h2 class="display-5 fw-bold mb-3 text-white">Contact Us</h2>
-                <p class="lead text-white-50 fs-4">Ready to start your next project?</p>
+                <h2 class="display-5 fw-bold mb-3 text-white">Tell us what would help, even if it's small</h2>
+                <p class="lead text-white-50 fs-4 mb-3">Our help is free for community health non-profits. Questions from data volunteers and paying clients are welcome too.</p>
+                <p class="text-white mb-2">Prefer email? Write to <a class="text-white fw-bold" href="mailto:{{ site.email }}">{{ site.email }}</a>.</p>
+                <p class="text-white-50 mb-0">Please do not send patient names or other identifying details, here or by email.</p>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <div class="card border-0 shadow-lg rounded-4 bg-white p-4 p-md-5">
-                    <form id="contactForm" name="sentMessage" novalidate="novalidate">
+                    <p class="small text-muted mb-4">Fields marked * are required.</p>
+                    <form id="contactForm" name="sentMessage" novalidate="novalidate" data-email="{{ site.email }}">
                         <div class="row g-4">
                             <div class="col-md-6">
                                 <div class="form-group mb-4">
-                                    <input class="form-control form-control-lg bg-light border-0 rounded-3 px-4 py-3" id="name" type="text" placeholder="Your Name *" required="required" data-validation-required-message="Please enter your name.">
-                                    <p class="help-block text-danger small mt-1 mb-0"></p>
+                                    <label class="form-label fw-semibold text-dark" for="name">Your name <span aria-hidden="true">*</span></label>
+                                    <input class="form-control form-control-lg bg-light border-0 rounded-3 px-4 py-3" id="name" type="text" autocomplete="name" required="required" aria-describedby="name-error" data-validation-required-message="Please enter your name.">
+                                    <div class="help-block text-danger small mt-1 mb-0" id="name-error"></div>
                                 </div>
                                 <div class="form-group mb-4">
-                                    <input class="form-control form-control-lg bg-light border-0 rounded-3 px-4 py-3" id="email" type="email" placeholder="Your Email *" required="required" data-validation-required-message="Please enter your email address.">
-                                    <p class="help-block text-danger small mt-1 mb-0"></p>
+                                    <label class="form-label fw-semibold text-dark" for="email">Your email <span aria-hidden="true">*</span></label>
+                                    <input class="form-control form-control-lg bg-light border-0 rounded-3 px-4 py-3" id="email" type="email" autocomplete="email" required="required" aria-describedby="email-error" data-validation-required-message="Please enter your email address.">
+                                    <div class="help-block text-danger small mt-1 mb-0" id="email-error"></div>
                                 </div>
                                 <div class="form-group mb-4 mb-md-0">
-                                    <input class="form-control form-control-lg bg-light border-0 rounded-3 px-4 py-3" id="phone" type="tel" placeholder="Your Phone *" required="required" data-validation-required-message="Please enter your phone number.">
-                                    <p class="help-block text-danger small mt-1 mb-0"></p>
+                                    <label class="form-label fw-semibold text-dark" for="phone">Your phone (optional)</label>
+                                    <input class="form-control form-control-lg bg-light border-0 rounded-3 px-4 py-3" id="phone" type="tel" autocomplete="tel" aria-describedby="phone-error">
+                                    <div class="help-block text-danger small mt-1 mb-0" id="phone-error"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group h-100">
-                                    <textarea class="form-control form-control-lg bg-light border-0 rounded-3 px-4 py-3 h-100" id="message" placeholder="Tell us about your need or problem. *" required="required" data-validation-required-message="Please enter a message." style="min-height: 150px;"></textarea>
-                                    <p class="help-block text-danger small mt-1 mb-0"></p>
+                                <div class="form-group mb-4">
+                                    <label class="form-label fw-semibold text-dark" for="role">I am... <span aria-hidden="true">*</span></label>
+                                    <select class="form-select form-select-lg bg-light border-0 rounded-3 px-4 py-3" id="role" required="required" aria-describedby="role-error" data-validation-required-message="Please choose the option that fits best.">
+                                        <option value="" selected>Choose one</option>
+                                        <option>A community health organization looking for help</option>
+                                        <option>A data professional who wants to volunteer</option>
+                                        <option>A current or prospective client</option>
+                                        <option>Something else</option>
+                                    </select>
+                                    <div class="help-block text-danger small mt-1 mb-0" id="role-error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label fw-semibold text-dark" for="message">What are you hoping to get done? <span aria-hidden="true">*</span></label>
+                                    <textarea class="form-control form-control-lg bg-light border-0 rounded-3 px-4 py-3" id="message" rows="4" required="required" aria-describedby="message-error" data-validation-required-message="Please enter a message." style="min-height: 150px;"></textarea>
+                                    <div class="help-block text-danger small mt-1 mb-0" id="message-error"></div>
                                 </div>
                             </div>
                             <div class="col-12 text-center mt-5">
-                                <div id="success"></div>
+                                <div id="success" role="alert"></div>
                                 <button id="sendMessageButton" class="btn btn-primary btn-lg px-5 py-3 text-uppercase fw-bold rounded-pill shadow text-dark" type="submit">
                                     Send Message
                                 </button>

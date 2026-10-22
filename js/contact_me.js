@@ -1,24 +1,37 @@
 $(function() {
 
-  $("#contactForm input,#contactForm textarea").jqBootstrapValidation({
+  function showAlert(type, $content) {
+    return $("<div class='alert alert-dismissible fade show'>")
+      .addClass("alert-" + type)
+      .append($content)
+      .append("<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>")
+      .appendTo($("#success").empty());
+  }
+
+  $("#contactForm input,#contactForm select,#contactForm textarea").jqBootstrapValidation({
     preventSubmit: true,
     submitError: function($form, event, errors) {
-      // additional error messages or events
+      $form.find("[aria-invalid='true']").first().trigger("focus");
     },
     submitSuccess: function($form, event) {
       event.preventDefault(); // prevent default submit behaviour
+      var $this = $("#sendMessageButton");
+      if ($this.attr("aria-disabled") === "true") {
+        return; // a send is already in progress
+      }
       // get values from FORM
       var name = $("input#name").val();
       var email = $("input#email").val();
       var phone = $("input#phone").val();
-      var message = $("textarea#message").val();
+      var role = $("select#role").val();
+      var message = "I am: " + role + "\n\n" + $("textarea#message").val();
       var firstName = name; // For Success/Failure Message
       // Check for white space in name for Success/Fail message
       if (firstName.indexOf(' ') >= 0) {
         firstName = name.split(' ').slice(0, -1).join(' ');
       }
-      $this = $("#sendMessageButton");
-      $this.prop("disabled", true); // Disable submit button until AJAX call is complete to prevent duplicate messages
+      // Not the disabled property: that would drop keyboard focus to <body>
+      $this.attr("aria-disabled", "true").addClass("disabled"); // Block duplicate messages until the AJAX call is complete
       $.ajax({
         url: 'https://0yzesnukyh.execute-api.us-east-1.amazonaws.com/email',
         type: "POST",
@@ -32,30 +45,21 @@ $(function() {
         }),
         cache: false,
         success: function() {
-          // Success message
-          $('#success').html("<div class='alert alert-success'>");
-          $('#success > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
-            .append("</button>");
-          $('#success > .alert-success')
-            .append("<strong>Your message has been sent. </strong>");
-          $('#success > .alert-success')
-            .append('</div>');
+          showAlert("success", $("<strong>").text("Your message has been sent."));
+          if (typeof gtag === 'function') {
+            gtag('event', 'generate_lead', {form: 'contact', role: role});
+          }
           //clear all fields
           $('#contactForm').trigger("reset");
         },
         error: function() {
-          // Fail message
-          $('#success').html("<div class='alert alert-danger'>");
-          $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
-            .append("</button>");
-          $('#success > .alert-danger').append($("<strong>").text("Sorry " + firstName + ", it seems that my mail server is not responding. Please try again later!"));
-          $('#success > .alert-danger').append('</div>');
-          //clear all fields
-          //$('#contactForm').trigger("reset");
+          var contactEmail = $('#contactForm').data('email');
+          showAlert("danger", $("<strong>").text("Sorry " + firstName + ", the message did not go through. Please try again later, or email us at "))
+            .find("strong").append($("<a>").attr("href", "mailto:" + contactEmail).text(contactEmail)).append(".");
         },
         complete: function() {
           setTimeout(function() {
-            $this.prop("disabled", false); // Re-enable submit button when AJAX call is complete
+            $this.removeAttr("aria-disabled").removeClass("disabled"); // Re-enable submit button when AJAX call is complete
           }, 1000);
         }
       });
