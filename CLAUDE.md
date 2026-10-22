@@ -44,13 +44,13 @@ CI (`.github/workflows/jekyll.yml`) only runs `bundle exec jekyll build` on push
 - **JS**: pages load only the `.min.js` files (see `_includes/js.html`). After editing `js/*.js`, run `npx gulp js` and commit the `.min.js`.
 - **Vendor libs**: `libs/` is copied from `node_modules` by `gulp vendor` and committed. (`vendor/` is something else: it's gitignored and holds the bundler gems.)
 - Fancybox loads from cdnjs, only on `post` pages, and is deliberately pinned to 3.3.5 because newer versions broke the lightbox. The form-validation and `contact_me` scripts load only on the `home` layout (the contact form lives there). There is no icon font: icons are inline SVGs.
-- The hero video (`img/galaxy.webm` / `.mp4`) has `data-src` sources that `js/agency.js` fills in only on wide, hover-capable screens without reduced motion. Elsewhere the header shows `img/galaxy-poster.webp`.
+- The hero video (`img/galaxy.webm` / `.mp4`) has `data-src` sources that `js/agency.js` fills in only when the CSS shows the video (it hides it on phones and for reduced motion). Elsewhere the header shows `img/galaxy-poster.webp`.
 
 ## Content model
 
 Each page is assembled by a layout in `_layouts/` from partials in `_includes/`:
 
-- `home` (used by `index.html`): header, services, about, contact. The about section renders the single `site.team | first` entry (Ken Cavagnolo does the work).
+- `home` (used by `index.html`): header, services, about, contact. The about section is a timeline plus one statement box; it lists no people (`_team` is kept but rendered nowhere).
 - `default`: a `small_header` (shows `page.title`, plus `page.lead` when set; posts show their `description` instead) plus the page content. `privacy.html`, `projects.html`, `community-health-data-help.html` ("How it works"; `/process.html` and `/people.html` redirect to it) and the case-study pages use it. `projects.html` renders `portfolio_grid.html`, whose cards link to each `/casestudies/<slug>/` page.
 - `blog` / `post`: `blog_body.html` lists `site.posts`. `post_body.html` renders a post. There are no comments.
 
