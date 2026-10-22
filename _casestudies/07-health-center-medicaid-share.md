@@ -1,7 +1,8 @@
 ---
 title: Medicaid at Health Centers
-subtitle: Worked example. Who relies on Medicaid, state by state
-description: "A worked example on public data (not a client project): the share of health-center patients covered by Medicaid or CHIP in each state, from HRSA's 2025 Uniform Data System."
+subtitle: Who relies on Medicaid, state by state
+description: "Public data only. No patient information."
+lead: "Public data only. No patient information."
 layout: default
 modal-id: 7
 date: 2026-10-22
@@ -11,49 +12,34 @@ kind: example
 
 <div class="container py-5" style="max-width: 800px;" markdown="1">
 
-<div class="p-3 p-md-4 mb-5 rounded-3 bg-light border-start border-4" style="border-color: #645211 !important;" markdown="1">
-**This is a worked example on public data, not a client project.** No client, patient, or organization is involved. It shows what a small, free analysis could look like, using numbers anyone can download.
-</div>
-
 [hrsa-download]: https://data.hrsa.gov/data/download
-[hhs]: https://www.hhs.gov/press-room/hrsa-health-centers-serve-record-32-million-patients.html
 [snapshot]: https://data.hrsa.gov/tools/data-reporting/data-snapshot?year=2025
 
-## The question
+## Question
 
-*"Our board keeps hearing that Medicaid changes will hit health centers hard. How much of a health center's patient base does Medicaid actually cover, and how does our state compare?"*
+How much of a health center's patient base does Medicaid cover, state by state?
 
-It is a fair thing to wonder before you build a budget scenario. Before modeling your own patients, it helps to know where you sit among your peers.
+## Data
 
-## The data
+HRSA's Uniform Data System, calendar year 2025: one row per health center (1,356), with patient counts by insurance type. From HRSA's [Data Downloads page][hrsa-download], downloaded 2026-10-22. These are organization-level counts.
 
-- **Name:** Uniform Data System (UDS), awardee-level file for calendar year 2025 (`H80-2025.xlsx`), Table 4 (patients by insurance) and the health center info sheet.
-- **Publisher:** the Health Resources and Services Administration (HRSA), on its [Data Downloads page][hrsa-download].
-- **Vintage:** reporting year 2025, as refreshed by HRSA on 2026-05-07. Downloaded 2026-10-22.
-- **Shape:** one row per HRSA health center awardee, 1,356 in all, with patient counts by insurance type. It is organization-level counts, not patient-level records, so there is no protected health information in it.
+## What we did
 
-## What was done
-
-1. Read the two sheets that matter (Table 4 and the info sheet) and joined them on each awardee's ID and grant number.
-2. Added up each awardee's patients, its Medicaid/CHIP patients, and its uninsured patients. "Medicaid/CHIP" follows HRSA's own definition: Table 4 line 8 (Medicaid) plus line 10b (other public insurance, CHIP).
-3. Treated cells that HRSA marks with a dash as zero (a single dash means no data entered; two dashes mean a suppressed count of 1 to 15, so treating those as zero gives a slight lower bound). Fewer than 25 awardees have a dash in a Medicaid or total-patients column, and many more have one on the line 10b (other public insurance) columns. This barely matters: the national shares still come out at the published values (see step 5).
-4. Summed by state, then kept the 48 jurisdictions (states, DC and Puerto Rico) with at least 100,000 health-center patients for the state comparison. The eleven left out are small (American Samoa, Delaware, Micronesia, Guam, Marshall Islands, North Dakota, New Hampshire, Northern Mariana Islands, Palau, the Virgin Islands and Wyoming).
-5. Checked the national result against the published one. [HHS reported][hhs] a record 32.7 million health-center patients for 2025, and HRSA's [Data Snapshot for 2025][snapshot] gives 47.92% on Medicaid/CHIP and 17.21% uninsured. The file gives 32.75 million patients, 47.92% and 17.21%.
-6. Published only state totals. The source file also lists health center names and contact people, and none of that is reproduced here.
+We summed each health center's patients, Medicaid/CHIP patients (Table 4 lines 8 and 10b) and uninsured patients, then totaled them by state. We show the 48 states and territories with at least 100,000 patients. Dashes in the file count as zero. Our national totals match HRSA's [published figures][snapshot] of 47.92% Medicaid/CHIP and 17.21% uninsured.
 
 ## What it shows
 
-Across all 1,356 awardees, **32,746,371 patients** were counted in 2025. Of those, **15,692,019 (47.9%)** were covered by Medicaid or CHIP and **5,634,320 (17.2%)** were uninsured.
+Of 32,746,371 patients, **15,692,019 (47.9%)** had Medicaid or CHIP and **5,634,320 (17.2%)** were uninsured.
 
 <figure class="my-4">
-<a href="{{ site.baseurl }}/img/case_studies/example-uds-medicaid-share.webp"><img class="img-fluid" src="{{ site.baseurl }}/img/case_studies/example-uds-medicaid-share.webp" width="1200" height="1120" loading="lazy" alt="Horizontal bar chart of 48 states and territories ranked by the share of health-center patients covered by Medicaid or CHIP in 2025. California is highest at 71.8 percent, Oregon second at 61.4 percent, Puerto Rico 60.1 percent. Utah is lowest at 18.5 percent. A dashed line marks the all-health-center average of 47.9 percent. Oregon is highlighted."><span class="visually-hidden"> (open full-size chart)</span></a>
-<figcaption class="small text-muted mt-2">Medicaid/CHIP share of health-center patients by state, 2025. Oregon is highlighted. Source: HRSA UDS, calendar year 2025, downloaded 2026-10-22.</figcaption>
+<a href="{{ site.baseurl }}/img/case_studies/example-uds-medicaid-share.webp"><img class="img-fluid" src="{{ site.baseurl }}/img/case_studies/example-uds-medicaid-share.webp" width="1200" height="1120" loading="lazy" alt="Horizontal bar chart of 48 states and territories ranked by the share of health-center patients covered by Medicaid or CHIP in 2025. California is highest at 71.8 percent and Utah lowest at 18.5 percent. A dashed line marks the all-health-center average of 47.9 percent."><span class="visually-hidden"> (open full-size chart)</span></a>
+<figcaption class="small text-muted mt-2">Medicaid/CHIP share of health-center patients by state, 2025. Source: HRSA UDS, calendar year 2025.</figcaption>
 </figure>
 <details class="mt-3" markdown="0">
 <summary>Data table for this chart</summary>
 <table class="table table-sm">
 <caption>Medicaid/CHIP share of health-center patients by state, 2025, highest to lowest</caption>
-<thead><tr><th scope="col">State</th><th scope="col" class="text-end">Medicaid/CHIP share of patients</th><th scope="col" class="text-end">Medicaid/CHIP patients</th><th scope="col" class="text-end">All patients</th></tr></thead>
+<thead><tr><th scope="col">State</th><th scope="col" class="text-end">Medicaid/CHIP share</th><th scope="col" class="text-end">Medicaid/CHIP patients</th><th scope="col" class="text-end">All patients</th></tr></thead>
 <tbody>
 <tr><th scope="row">California</th><td class="text-end">71.8%</td><td class="text-end">4,235,855</td><td class="text-end">5,900,535</td></tr>
 <tr><th scope="row">Oregon</th><td class="text-end">61.4%</td><td class="text-end">270,052</td><td class="text-end">440,152</td></tr>
@@ -107,52 +93,18 @@ Across all 1,356 awardees, **32,746,371 patients** were counted in 2025. Of thos
 </table>
 </details>
 
-- **The spread is wide.** California is highest at 71.8% (4,235,855 of 5,900,535 patients). Utah is lowest at 18.5%. Seventeen of the 48 jurisdictions sit above the 47.9% average and ten are below 30%.
-- **Oregon is second.** Among the 48 jurisdictions, Oregon health centers come second after California: 61.4% of their patients (270,052 of 440,152) are covered by Medicaid or CHIP. Another 8.3% (36,519) are uninsured.
-- **Texas is the other kind of picture.** Texas health centers have 31.8% of patients on Medicaid/CHIP (604,229 of 1,898,301) and 32.2% uninsured (611,157), so more uninsured patients than Medicaid patients.
+- Seventeen states sit above the 47.9% average and ten are below 30%.
+- Texas has 31.8% on Medicaid/CHIP and 32.2% uninsured, so more uninsured patients than Medicaid patients.
+- California, New York, Illinois, Washington and Florida hold 48.2% of all Medicaid/CHIP health-center patients.
 
-A share tells you how exposed a patient base is. A count tells you how many people are in it. They point at different places:
+To turn a share into a count for your own health center, try the [Medicaid what-if template]({{ site.baseurl }}/blog/medicaid-what-if-template/).
 
-<figure class="my-4">
-<a href="{{ site.baseurl }}/img/case_studies/example-uds-top-states.webp"><img class="img-fluid" src="{{ site.baseurl }}/img/case_studies/example-uds-top-states.webp" width="1200" height="620" loading="lazy" alt="Horizontal bar chart of the ten states with the most Medicaid or CHIP health-center patients in 2025. California has 4.24 million, New York 1.21 million, Illinois 0.77 million, Washington 0.70 million, Florida 0.63 million, Texas 0.60 million, then Ohio, Pennsylvania, Massachusetts and Arizona at 0.36 to 0.44 million."><span class="visually-hidden"> (open full-size chart)</span></a>
-<figcaption class="small text-muted mt-2">The ten states with the most Medicaid/CHIP health-center patients, 2025. Source: HRSA UDS, calendar year 2025, downloaded 2026-10-22.</figcaption>
-</figure>
-<details class="mt-3" markdown="0">
-<summary>Data table for this chart</summary>
-<table class="table table-sm">
-<caption>The ten states with the most Medicaid/CHIP health-center patients, 2025</caption>
-<thead><tr><th scope="col">State</th><th scope="col" class="text-end">Medicaid/CHIP patients</th></tr></thead>
-<tbody>
-<tr><th scope="row">California</th><td class="text-end">4,235,855</td></tr>
-<tr><th scope="row">New York</th><td class="text-end">1,211,258</td></tr>
-<tr><th scope="row">Illinois</th><td class="text-end">774,676</td></tr>
-<tr><th scope="row">Washington</th><td class="text-end">704,637</td></tr>
-<tr><th scope="row">Florida</th><td class="text-end">634,910</td></tr>
-<tr><th scope="row">Texas</th><td class="text-end">604,229</td></tr>
-<tr><th scope="row">Ohio</th><td class="text-end">444,083</td></tr>
-<tr><th scope="row">Pennsylvania</th><td class="text-end">372,010</td></tr>
-<tr><th scope="row">Massachusetts</th><td class="text-end">363,104</td></tr>
-<tr><th scope="row">Arizona</th><td class="text-end">357,222</td></tr>
-</tbody>
-</table>
-</details>
+## Limits
 
-California, New York, Illinois, Washington and Florida together hold **48.2%** of all Medicaid/CHIP health-center patients nationally. Oregon's high share is a smaller number of people (270,052) than in states such as Illinois (774,676) or Washington (704,637).
-
-If you want one planning number: for any health center, a 10% drop in Medicaid/CHIP patients is just 10% of that count. For Oregon health centers overall it would be 27,005 patients. That is arithmetic, not a forecast. Where those patients go (to other coverage, or to uninsured) is the part that needs your own data, and it is what the [Medicaid what-if template]({{ site.baseurl }}/blog/medicaid-what-if-template/) is for.
-
-## Limits and caveats
-
-- **These are health-center patients, not the whole state.** UDS counts people who used HRSA-funded health centers in 2025. It says nothing about statewide Medicaid enrollment, or about people who did not use a health center.
-- **The data is self-reported.** Each awardee reports its own numbers to HRSA. HRSA checks them, but small errors are possible.
-- **One year, one snapshot.** This looks at 2025 only, so it says nothing about what is changing now.
-- **Dashes treated as zero.** See step 3. The national shares still match the published ones.
-- **Dual-eligible patients are counted as Medicare.** Patients covered by both Medicare and Medicaid appear on HRSA's Medicare line, not the Medicaid line, so "Medicaid/CHIP" here does not count them.
-- **Reprocessing is on us.** HRSA says that any manipulation or reprocessing of its data is the sole responsibility of the user. These figures are our own aggregation of the file, not HRSA's official statistics.
-
-## Want the same for your own area?
-
-If you run or work with a community health organization, a similar look can be done for your state, your service area, or your own numbers: peer comparisons, a chart for a board packet, a Medicaid what-if on your own patient data. It is free and starts with a short conversation. See [free data help for community health organizations]({{ site.baseurl }}/community-health-data-help/).
+- These are health-center patients, not statewide Medicaid enrollment.
+- Each health center reports its own numbers to HRSA. This is one year only.
+- Patients covered by both Medicare and Medicaid are counted as Medicare, so they are not in the Medicaid/CHIP figure.
+- These are our own totals from HRSA's file, not HRSA's official statistics.
 
 {% include casestudy_cta.html %}
 
