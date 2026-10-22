@@ -2,7 +2,6 @@
 layout: post
 title: Happy 4th Anniversary!
 description: "Four shalt thou not count, neither count thou two, excepting that thou then proceed to three."
-comments: true
 tweets: true
 ---
 

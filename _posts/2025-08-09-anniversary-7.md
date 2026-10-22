@@ -2,7 +2,6 @@
 layout: post
 title: Happy 7th Anniversary!
 description: "On the seventh count, thou shalt unleash the Sacred Sock of Mild Inconvenience, which doth smite thine enemies with laundry that never matches."
-comments: true
 tweets: true
 ---
 

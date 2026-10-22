@@ -2,7 +2,6 @@
 layout: post
 title: Happy 2nd Anniversary!
 description: Two years and rolling
-comments: true
 tweets: true
 ---
 

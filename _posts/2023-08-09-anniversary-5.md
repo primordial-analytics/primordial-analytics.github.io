@@ -2,7 +2,6 @@
 layout: post
 title: Happy 5th Anniversary!
 description: "Why did the Knights of the Round Table carry a calculator? To avoid the peril of counting to five instead of three!"
-comments: true
 tweets: true
 ---
 

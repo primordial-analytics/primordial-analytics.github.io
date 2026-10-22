@@ -2,7 +2,6 @@
 layout: post
 title: "Eight Years In: A Hard Year for Community Health"
 description: "On our eighth anniversary, a look at the coverage losses and funding cliffs community health centers face, and how our free volunteer data science can help."
-comments: true
 tweets: true
 ---
 

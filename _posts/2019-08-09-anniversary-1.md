@@ -2,7 +2,6 @@
 layout: post
 title: Happy 1st Anniversary!
 description: We made it through the first year
-comments: true
 tweets: true
 ---
 

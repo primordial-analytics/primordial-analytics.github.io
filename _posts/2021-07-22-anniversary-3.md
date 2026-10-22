@@ -2,7 +2,6 @@
 layout: post
 title: Happy 3rd Anniversary!
 description: "Then, shalt thou count to three."
-comments: true
 tweets: true
 ---
 

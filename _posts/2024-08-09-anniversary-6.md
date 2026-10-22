@@ -2,7 +2,6 @@
 layout: post
 title: Happy 6th Anniversary!
 description: "Why is 6 afraid of Monty Python? Because 7, 8, 'Ni!'"
-comments: true
 tweets: true
 ---
 
