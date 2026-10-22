@@ -6,6 +6,7 @@ layout: default
 modal-id: 6
 date: 2018-07-01
 thumbnail: careers-thumbnail.png
+kind: commercial
 ---
 
 <div class="container py-5" style="max-width: 800px;" markdown="1">
