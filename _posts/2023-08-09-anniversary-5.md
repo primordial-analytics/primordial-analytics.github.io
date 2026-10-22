@@ -6,7 +6,7 @@ comments: true
 tweets: true
 ---
 
-### Happy 5th Anniversary
+## Happy 5th Anniversary
 
 Primordial Analytics is celebrating its fifth anniversary, and we are proud of the significant growth and innovation we have achieved in the analytics and AI industry. This milestone is a testament to our dedication to providing advanced, client-focused solutions. Through diverse and challenging projects, we have gained invaluable experience and optimization. Looking ahead, we remain committed to keeping up with the evolving landscape of AI and analytics, and we will focus on utilizing cutting-edge technologies to continue delivering exceptional value to our clients.
 

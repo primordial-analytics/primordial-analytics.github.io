@@ -6,7 +6,7 @@ comments: true
 tweets: true
 ---
 
-### Happy 3rd Anniversary
+## Happy 3rd Anniversary
 
 After three years in operation, we are perfecting the art of AI for our clients. Nothing is ever "perfect," but from our perspective, happy clients are perfection. Thank you to everyone for supporting us and helping us grow. We are excited for another year of solving new, unique problems for you. We have also moved "HQ" to Portland, OR, USA. Exciting times.
 

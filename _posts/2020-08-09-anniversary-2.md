@@ -6,7 +6,7 @@ comments: true
 tweets: true
 ---
 
-### Happy 2nd Anniversary
+## Happy 2nd Anniversary
 
 Another anniversary! Our ultimate thanks to our clients. Primordial is your company, and we appreciate your confidence in us as a trusted partner.
 

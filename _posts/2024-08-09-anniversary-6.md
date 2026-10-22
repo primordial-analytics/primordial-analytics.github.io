@@ -6,7 +6,7 @@ comments: true
 tweets: true
 ---
 
-### Happy 6th Anniversary
+## Happy 6th Anniversary
 
 Today, we proudly celebrate Primordial Analytics' sixth anniversary! As we pivot to focus on **VOLUNTEER** data science initiatives for non-profit community healthcare organizations, we want to reassure our legacy clients that they remain a vital part of our journey. We will continue to serve them, albeit on a smaller scale, as we embark on this new direction.
 

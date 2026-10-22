@@ -6,7 +6,7 @@ comments: true
 tweets: true
 ---
 
-### Happy 1st Anniversary
+## Happy 1st Anniversary
 
 Today marks the first anniversary of Primordial Analytics operations! The first is always challenging, but we are still here, and our clients are fantastic. Our deepest thanks to them for taking a chance on us; without you, we do not exist.
 
