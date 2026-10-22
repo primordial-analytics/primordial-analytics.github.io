@@ -50,16 +50,16 @@ CI (`.github/workflows/jekyll.yml`) only runs `bundle exec jekyll build` on push
 
 Each page is assembled by a layout in `_layouts/` from partials in `_includes/`:
 
-- `home` (used by `index.html`): header, services, about, latest_posts, contact. The about section renders the single `site.team | first` entry (the firm is principal-led: Ken Cavagnolo does the work).
-- `default`: a `small_header` (which shows `page.title` / `page.description`) plus the page content. `people.html` (also renders `site.team | first`), `process.html`, `privacy.html`, `projects.html`, `community-health-data-help.html` (the main landing page for organizations seeking free help) and the case-study pages use it. `projects.html` renders `portfolio_grid.html`, whose cards link to each `/casestudies/<slug>/` page.
+- `home` (used by `index.html`): header, services, about, contact. The about section renders the single `site.team | first` entry (Ken Cavagnolo does the work).
+- `default`: a `small_header` (shows `page.title`, plus `page.lead` when set; posts show their `description` instead) plus the page content. `privacy.html`, `projects.html`, `community-health-data-help.html` ("How it works"; `/process.html` and `/people.html` redirect to it) and the case-study pages use it. `projects.html` renders `portfolio_grid.html`, whose cards link to each `/casestudies/<slug>/` page.
 - `blog` / `post`: `blog_body.html` lists `site.posts`. `post_body.html` renders a post. There are no comments.
 
 The collections are defined in `_config.yml`. Their front matter feeds the includes, and images resolve by convention:
 
 | Collection       | Key front matter                                     | Image path                       |
 | ---------------- | ---------------------------------------------------- | -------------------------------- |
-| `_team/`         | `name`, `position`, `pic`, `blurb`                   | `img/team/{{pic}}`               |
-| `_casestudies/`  | `title`, `subtitle`, `date`, `thumbnail`, `kind` (`example` or `commercial`; untagged entries do not appear on `/projects.html`) | `img/case_studies/{{thumbnail}}` |
+| `_team/`         | `name`, `position`, `pic`, `social`                   | `img/team/{{pic}}`               |
+| `_casestudies/`  | `title`, `subtitle`, `date`, `thumbnail`, `kind` (`example`; untagged entries do not appear on `/projects.html`) | `img/case_studies/{{thumbnail}}` |
 | `_posts/`        | `layout: post`, `title`, `description`            | anywhere under `img/`            |
 
 Posts get the permalink `/blog/:title/`. Post images use a custom `<blog-figure>` element, styled in `scss/_figures.scss` / `_blog.scss`.
