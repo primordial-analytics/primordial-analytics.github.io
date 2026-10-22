@@ -4,6 +4,10 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/primordial-analytics/blob/master/LICENSE)
  */
 @charset "UTF-8";
+html {
+  scroll-padding-top: 80px;
+}
+
 body {
   overflow-x: hidden;
   font-family: "Roboto", sans-serif;
@@ -14,14 +18,54 @@ p {
 }
 
 a {
-  color: #B3A369;
+  color: #645211;
 }
 a:hover {
-  color: #645211;
+  color: #191445;
 }
 
 .text-primary {
-  color: #B3A369 !important;
+  color: #645211 !important;
+}
+
+:focus-visible {
+  outline: 3px solid #645211;
+  outline-offset: 2px;
+}
+
+.btn:focus-visible {
+  outline: 3px solid #645211;
+  outline-offset: 2px;
+}
+
+#mainNav :focus-visible,
+.bg-dark :focus-visible,
+.hero :focus-visible {
+  outline-color: #B3A369;
+}
+
+section#contact .card :focus-visible {
+  outline-color: #645211;
+}
+
+main#main:focus {
+  outline: none;
+}
+
+.skip-link {
+  position: absolute;
+  top: -4rem;
+  left: 0.75rem;
+  z-index: 2000;
+  padding: 0.75rem 1.25rem;
+  color: #fff;
+  background-color: #191445;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0.75rem;
+  color: #fff;
+  outline-color: #B3A369;
 }
 
 .bg-primary {
@@ -90,10 +134,24 @@ section h3.section-subheading {
 .btn-primary:active, .btn-primary:focus, .btn-primary:hover {
   background-color: #645211 !important;
   border-color: #645211 !important;
-  color: white;
+  color: #fff !important;
 }
 .btn-primary:active, .btn-primary:focus {
   box-shadow: 0 0 0 0.2rem rgba(179, 163, 105, 0.5) !important;
+}
+
+.btn-outline-primary {
+  --bs-btn-color: #191445;
+  --bs-btn-border-color: #645211;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #645211;
+  --bs-btn-hover-border-color: #645211;
+  --bs-btn-focus-shadow-rgb: 100, 82, 17;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #645211;
+  --bs-btn-active-border-color: #645211;
+  --bs-btn-disabled-color: #191445;
+  --bs-btn-disabled-border-color: #645211;
 }
 
 ::-moz-selection {
@@ -130,7 +188,7 @@ img::-moz-selection {
   right: 0;
   padding: 10px;
   text-transform: uppercase;
-  color: white;
+  color: #191445;
   border: 0;
   background-color: #B3A369;
   font-family: "Sansation Regular", sans-serif;
@@ -152,6 +210,11 @@ img::-moz-selection {
 }
 #mainNav .navbar-nav .nav-item .nav-link.active, #mainNav .navbar-nav .nav-item .nav-link:hover {
   color: #B3A369;
+}
+#mainNav .navbar-nav .nav-item .nav-link:focus-visible {
+  outline: 3px solid #B3A369;
+  outline-offset: 2px;
+  box-shadow: none;
 }
 
 @media (min-width: 992px) {
@@ -187,7 +250,7 @@ header.mizzenhead {
   height: 0px;
   text-align: center;
   color: white;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("/img/galaxy-darkened.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("/img/galaxy-darkened.webp");
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;
@@ -474,7 +537,7 @@ header.mizzenhead .intro-text .intro-heading {
   margin-top: 1rem;
   font-size: 0.85rem;
   font-weight: bold;
-  color: #B3A369;
+  color: #645211;
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -482,11 +545,11 @@ header.mizzenhead .intro-text .intro-heading {
   transition: border-color 0.3s ease;
 }
 .tufte-timeline .tufte-event .tufte-link:hover {
-  border-color: #B3A369;
+  border-color: #645211;
 }
 .tufte-timeline .tufte-event:hover .tufte-year {
   background-color: #B3A369;
-  color: #fff;
+  color: #191445;
   border-color: #B3A369;
   transform: translateX(-50%) scale(1.25) translateY(-5px);
   box-shadow: 0 0 0 8px #f8f9fa, 0 10px 20px rgba(179, 163, 105, 0.4);
@@ -645,7 +708,6 @@ ul.social-buttons li a {
   transition: all 0.3s;
   color: white;
   border-radius: 100%;
-  outline: none;
   background-color: #191445;
 }
 ul.social-buttons li a:active, ul.social-buttons li a:focus, ul.social-buttons li a:hover {
@@ -696,7 +758,7 @@ header .overlay {
   header {
     text-align: center;
     color: white;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("/img/galaxy-darkened.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("/img/galaxy-darkened.webp");
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-position: center center;
@@ -727,6 +789,26 @@ header .overlay {
     display: none;
   }
 }
+header.hero {
+  background-image: url("/img/galaxy-poster.webp");
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-video {
+    display: none;
+  }
+}
+@media (max-width: 767.98px) {
+  .hero-video {
+    display: none;
+  }
+}
 .breadcrumb-item + .breadcrumb-item::before {
   content: "›";
   color: #55507C;
@@ -748,13 +830,11 @@ article.content p {
   color: #444;
 }
 article.content a {
-  color: #B3A369;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.3s ease;
+  color: #645211;
+  text-decoration: underline;
 }
 article.content a:hover {
-  border-color: #B3A369;
+  color: #191445;
 }
 article.content img {
   max-width: 100%;
@@ -795,10 +875,6 @@ article.content ul li, article.content ol li {
   color: #B3A369 !important;
 }
 
-.hover-white:hover {
-  color: #fff !important;
-}
-
 .playful blog-figure {
   cursor: pointer;
   float: left;
@@ -824,9 +900,15 @@ article.content ul li, article.content ol li {
 }
 
 .playful blog-figure h4,
+.playful blog-figure .h4,
 .playful blog-figure p {
   margin: 0;
   color: #fff;
+}
+
+.playful blog-figure .h4 {
+  font-family: "Sansation Regular", sans-serif;
+  font-weight: 700;
 }
 
 .playful blog-figure.softeffect {
@@ -848,7 +930,8 @@ blog-figure.softeffect:hover img {
   transition: opacity 0.35s ease 0s, transform 0.35s ease 0s;
 }
 
-.playful blog-figure.softeffect h4 {
+.playful blog-figure.softeffect h4,
+.playful blog-figure.softeffect .h4 {
   opacity: 0;
   padding: 20% 0 20px;
   transition: opacity 0.35s ease 0s, transform 0.35s ease 0s;
@@ -866,7 +949,8 @@ blog-figure.softeffect:hover img {
   transform: scale(1);
 }
 
-.playful blog-figure.softeffect:hover h4 {
+.playful blog-figure.softeffect:hover h4,
+.playful blog-figure.softeffect:hover .h4 {
   opacity: 1;
   transform: scale(1);
 }

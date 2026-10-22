@@ -27,13 +27,10 @@ article.content {
     }
     
     a {
-        color: $primary;
-        text-decoration: none;
-        border-bottom: 1px solid transparent;
-        transition: border-color 0.3s ease;
-        
+        color: $primary_dark;
+        text-decoration: underline;
         &:hover {
-            border-color: $primary;
+            color: $gray-900;
         }
     }
     
@@ -81,8 +78,4 @@ article.content {
 // Hover utilities for blog links
 .hover-primary:hover {
     color: $primary !important;
-}
-
-.hover-white:hover {
-    color: $white !important;
 }

@@ -2,6 +2,11 @@
 @use "mixins" as *;
 
 // Global styling for this template
+// Leave room for the fixed navbar when jumping to anchors
+html {
+  scroll-padding-top: 80px;
+}
+
 body {
   overflow-x: hidden;
   @include body-font;
@@ -11,15 +16,61 @@ p {
   line-height: 1.75;
 }
 
+// Gold ($primary) fails contrast as text on light backgrounds; use the dark gold.
 a {
-  color: $primary;
+  color: $primary_dark;
   &:hover {
-    color: $primary_dark;
+    color: $gray-900;
   }
 }
 
 .text-primary {
-  color: $primary !important;
+  color: $primary_dark !important;
+}
+
+// Keyboard focus
+:focus-visible {
+  outline: 3px solid $primary_dark;
+  outline-offset: 2px;
+}
+
+// Buttons: Bootstrap removes the outline in favour of a translucent shadow
+.btn:focus-visible {
+  outline: 3px solid $primary_dark;
+  outline-offset: 2px;
+}
+
+// Dark backgrounds: the light gold outline shows; the dark gold one would not
+#mainNav :focus-visible,
+.bg-dark :focus-visible,
+.hero :focus-visible {
+  outline-color: $primary;
+}
+
+// ...except on the white form card inside the dark contact section
+section#contact .card :focus-visible {
+  outline-color: $primary_dark;
+}
+
+// <main> is only focused programmatically (skip link target)
+main#main:focus {
+  outline: none;
+}
+
+.skip-link {
+  position: absolute;
+  top: -4rem;
+  left: 0.75rem;
+  z-index: 2000;
+  padding: 0.75rem 1.25rem;
+  color: $white;
+  background-color: $gray-900;
+  transition: top 0.2s;
+  &:focus {
+    top: 0.75rem;
+    color: $white;
+    outline-color: $primary;
+  }
 }
 
 .bg-primary {
@@ -90,12 +141,27 @@ section {
   &:hover {
     background-color: $primary_dark !important;
     border-color: $primary_dark !important;
-    color: white;
+    color: $white !important; // beats the text-dark utility on the markup
   }
   &:active,
   &:focus {
     box-shadow: 0 0 0 0.2rem rgba(179, 163, 105, 0.5) !important;
   }
+}
+
+// Outline buttons: dark gold border and text, filled dark gold on hover/focus
+.btn-outline-primary {
+  --bs-btn-color: #{$gray-900};
+  --bs-btn-border-color: #{$primary_dark};
+  --bs-btn-hover-color: #{$white};
+  --bs-btn-hover-bg: #{$primary_dark};
+  --bs-btn-hover-border-color: #{$primary_dark};
+  --bs-btn-focus-shadow-rgb: 100, 82, 17;
+  --bs-btn-active-color: #{$white};
+  --bs-btn-active-bg: #{$primary_dark};
+  --bs-btn-active-border-color: #{$primary_dark};
+  --bs-btn-disabled-color: #{$gray-900};
+  --bs-btn-disabled-border-color: #{$primary_dark};
 }
 
 // Highlight color customization

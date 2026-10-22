@@ -4,6 +4,26 @@
 
 window.addEventListener('DOMContentLoaded', event => {
 
+    // Load and play the hero video only where it is shown (wide screens with hover, no reduced-motion preference)
+    const heroVideo = document.querySelector('.hero-video');
+    if (heroVideo && window.matchMedia('(min-width: 768px) and (hover: hover) and (prefers-reduced-motion: no-preference)').matches) {
+        heroVideo.querySelectorAll('source').forEach(source => source.src = source.dataset.src);
+        heroVideo.load();
+        heroVideo.play().catch(() => {});
+
+        // Let people pause the looping background video (shown only once the video is loaded)
+        const videoToggle = document.querySelector('.hero-video-toggle');
+        const syncVideoToggle = () => {
+            const paused = heroVideo.paused;
+            videoToggle.setAttribute('aria-label', (paused ? 'Play' : 'Pause') + ' background video');
+            videoToggle.textContent = paused ? 'Play' : 'Pause';
+        };
+        heroVideo.addEventListener('play', syncVideoToggle);
+        heroVideo.addEventListener('pause', syncVideoToggle);
+        videoToggle.addEventListener('click', () => heroVideo.paused ? heroVideo.play() : heroVideo.pause());
+        videoToggle.classList.remove('d-none');
+    }
+
     // Navbar shrink function
     var navbarShrink = function () {
         const navbarCollapsible = document.body.querySelector('#mainNav');

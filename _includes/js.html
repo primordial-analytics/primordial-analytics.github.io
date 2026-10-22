@@ -2,7 +2,11 @@
 <script src="{{ site.baseurl }}/libs/jquery/jquery.min.js"></script>
 <script src="{{ site.baseurl }}/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="{{ site.baseurl }}/libs/jquery-easing/jquery.easing.min.js"></script>
+{% if page.layout == 'home' %}
 <script src="{{ site.baseurl }}/js/jqBootstrapValidation.min.js"></script>
 <script src="{{ site.baseurl }}/js/contact_me.min.js"></script>
+{% endif %}
 <script src="{{ site.baseurl }}/js/agency.min.js"></script>
+{% if page.layout == 'post' %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+{% endif %}

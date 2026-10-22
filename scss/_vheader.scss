@@ -45,7 +45,7 @@ header .overlay {
   header {
     text-align: center;
     color: white;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/img/galaxy-darkened.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/img/galaxy-darkened.webp');
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-position: center center;
@@ -70,6 +70,26 @@ header .overlay {
     }
   }
   header video {
+    display: none;
+  }
+}
+
+// Hero: poster image behind the video; skip the video on phones and for reduced motion
+header.hero {
+  background-image: url('/img/galaxy-poster.webp');
+  background-repeat: no-repeat;
+  background-position: center center;
+  @include background-cover;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-video {
+    display: none;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .hero-video {
     display: none;
   }
 }
