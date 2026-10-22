@@ -4,9 +4,9 @@
 
 window.addEventListener('DOMContentLoaded', event => {
 
-    // Load and play the hero video only where it is shown (wide screens with hover, no reduced-motion preference)
+    // Load and play the hero video only where the CSS shows it (it hides it on small screens, touch-only devices and reduced motion)
     const heroVideo = document.querySelector('.hero-video');
-    if (heroVideo && window.matchMedia('(min-width: 768px) and (hover: hover) and (prefers-reduced-motion: no-preference)').matches) {
+    if (heroVideo && getComputedStyle(heroVideo).display !== 'none') {
         heroVideo.querySelectorAll('source').forEach(source => source.src = source.dataset.src);
         heroVideo.load();
         heroVideo.play().catch(() => {});
