@@ -79,3 +79,20 @@ article.content {
 .hover-primary:hover {
     color: $primary !important;
 }
+// Checklist lists: decorative empty box in place of a bullet (not announced by screen readers)
+.checklist {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+        position: relative;
+        padding-left: 1.75rem;
+
+        &::before {
+            content: "\2610";
+            content: "\2610" / "";
+            position: absolute;
+            left: 0;
+        }
+    }
+}

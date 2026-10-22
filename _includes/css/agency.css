@@ -875,6 +875,21 @@ article.content ul li, article.content ol li {
   color: #B3A369 !important;
 }
 
+.checklist {
+  list-style: none;
+  padding-left: 0;
+}
+.checklist li {
+  position: relative;
+  padding-left: 1.75rem;
+}
+.checklist li::before {
+  content: "☐";
+  content: "☐"/"";
+  position: absolute;
+  left: 0;
+}
+
 .playful blog-figure {
   cursor: pointer;
   float: left;
