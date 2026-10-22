@@ -46,6 +46,15 @@ exclude:
   - gulpfile.js
   - gulpfile_example.js
   - README.md
+  - CLAUDE.md
+  - CHANGELOG.md
+  - SECURITY.md
+  - LICENSE
+  - Gemfile
+  - Gemfile.lock
+  - package.json
+  - package-lock.json
+  - scss
   - svg
   - .idea
 
