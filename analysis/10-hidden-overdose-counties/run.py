@@ -18,6 +18,7 @@ import figures
 import model
 import page_numbers
 import validate
+import web_data
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "output"
@@ -181,6 +182,7 @@ def main():
         nums.update(run_date=run_date, window_ending=END, nchs_data_as_of=data.data_as_of())
         json.dump(nums, open(OUT / "numbers.json", "w"), indent=1)
         figures.main(cs, results)
+        web_data.main()
     print("done")
 
 

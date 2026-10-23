@@ -1,214 +1,430 @@
 ---
-title: Overdose Rates Where Counts Are Hidden
+title: Overdose rates where counts are hidden
 subtitle: Estimating the county counts the CDC file hides
-description: "Public data only. No patient information."
-lead: "Public data only. No patient information."
-layout: default
+description: >-
+  A county map of overdose death rates with the hidden counties filled in, each
+  with a 90% interval and a chance of being above its state. Public data only.
+  No patient information.
+layout: example
 modal-id: 10
-date: 2026-10-22
+date: 2026-10-22T00:00:00.000Z
 thumbnail: example-overdose-thumbnail.webp
 kind: example
-persona: "For small health departments"
-need: "Defensible county overdose death rates with uncertainty for the counties where the national file hides the count."
+persona: For small health departments
+need: >-
+  Defensible county overdose death rates with uncertainty for the counties where
+  the national file hides the count.
+question: >-
+  In the 1,626 counties where the CDC file hides the overdose count, what rate
+  can you defend, and how unsure should you be?
+stats:
+  - value: "1,626"
+    label: Counties with a blank count in the CDC file
+    note: "52% of 3,142 counties and 42.2 million people (12.4%)"
+    kind: observed
+  - value: "5,800"
+    label: Deaths the model puts in those counties
+    note: "Median 5,818. Range after checks: 5,400 to 6,200"
+    kind: estimate
+  - value: "13.4"
+    label: "Median hidden-county rate per 100,000"
+    note: "Counties with 10 or more published deaths: 20.6"
+    kind: estimate
+  - value: 22 of 37
+    label: States where our 90% interval held the state check
+    note: "So the intervals are too narrow, and we say so"
+sections:
+  - id: tool
+    label: Your county
+  - id: findings
+    label: What we found
+  - id: check
+    label: Does it hold up?
+  - id: limits
+    label: Limits
+  - id: methods
+    label: How we did it
+downloads:
+  - title: "County overdose rates, all 3,142 counties"
+    file: /downloads/10-hidden-overdose-county-rates.csv
+    type: CSV
+    size: 377 KB
+    description: >-
+      Published count, the file's 1-to-9 bounds as rates, the model estimate
+      with a 90% interval, chance above state rate, chance in the top decile,
+      and a rank range.
+cta:
+  heading: Want this for your health department?
+  text: >-
+    Tell us your state and what you have been asked to decide. We will build the
+    county table and a one-page memo you can hand to your board.
+  button: Tell us about your department
+data: /assets/examples/10/data.json
+extra_css:
+  - /assets/examples/10/page.css
+extra_scripts:
+  - src: "https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"
+    integrity: >-
+      sha512-4UKI/XKm3xrvJ6pZS5oTRvIQGIzZFoXR71rRBb1y2N+PbwAsKa5tPl2J6WvbEvwN3TxQCm8hMzsl/pO+82iRlg==
+  - /assets/examples/10/page.js
 ---
 
-<div class="container py-5" style="max-width: 800px;" markdown="1">
-
-[nchs-county]: https://data.cdc.gov/d/gb4e-yj24
-[nchs-state]: https://data.cdc.gov/d/xkb8-kh2a
-[sahie]: https://www.census.gov/programs-surveys/sahie.html
 [quick]: https://www.cdc.gov/pcd/issues/2019/18_0441.htm
-[code]: https://github.com/primordial-analytics/primordial-analytics.github.io/tree/master/analysis/10-hidden-overdose-counties
 
-## Who this is for
+<section class="ex-section" id="tool">
+<div class="ex-prose ex-toolhead" markdown="1">
 
-A health department with one epidemiologist, or half of one. Someone has asked where naloxone, syringe services and opioid-settlement money should go, and the CDC county file is blank for 1,626 of 3,142 counties. This is an example built on public data, not a client engagement.
+## Find your county
 
-## Question
-
-For counties where the file hides the count, what overdose death rate is defensible, with what uncertainty, and does the method pass a check we can run?
-
-## Data
-
-- **CDC NCHS provisional county overdose deaths** ([data.cdc.gov][nchs-county]), 12 months ending March 2026, as of 2026-10-04. Counts of 1 to 9 are suppressed; 0 and 10 or more are published. That gives 3,142 counties: 1,514 published (554 zeros), 1,626 suppressed at 1 to 9, and 2 suppressed for data quality.
-- **NCHS state totals** for the same window ([data.cdc.gov][nchs-state]), which are not suppressed.
-- **Census** 2024 county population, county boundaries, and 2024 [SAHIE][sahie] uninsured and low-income shares.
-
-All aggregate, downloaded 2026-10-22.
-
-## Method
-
-A hidden cell says the count is at least 1 and at most 9, so the county is neither a zero nor a county with 10 or more. Published counts enter a Poisson model as exact values; a suppressed cell enters as the probability of 1 to 9 deaths at that county's rate. [Quick (2019)][quick] did this for suppressed CDC WONDER deaths.
-
-Each county's log rate is an intercept, four county measures (density, uninsured share, low-income share, urban-rural class), a state effect, and a spatial effect that lets neighbors inform each other (a Leroux CAR prior). The fit has 0 divergences and a largest R-hat of 1.02; effective sample size is at least 2,172 for county rates and 259 for hyperparameters.
-
-A state's total minus its published county counts is roughly the deaths in its suppressed counties. The files do not always agree, so we use that difference as a soft constraint only (standard deviation 5% of the state total), in the 37 states where it falls between 1 and 9 per hidden county and none has a data-quality county. A hidden county's own data say only "1 to 9," so its estimate rests mostly on covariates, neighbors and the state total.
-
-## What it shows
-
-The 1,626 hidden counties hold 42.2 million people (12.4%). The model puts about 5,800 deaths in them. Its 90% interval, 5,670 to 5,965, holds only if the model is right, and the state check below shows it is too narrow. Widened until 90% of checked states fall inside, the range is 5,400 to 6,200 (model variants give 5,818 to 5,880). The median rate is 13.4 per 100,000, against 20.6 in counties with 10 or more deaths.
-
-<figure class="my-4">
-<a href="{{ site.baseurl }}/img/case_studies/example-overdose-map.webp"><img class="img-fluid" src="{{ site.baseurl }}/img/case_studies/example-overdose-map.webp" width="1200" height="820" loading="lazy" alt="Map of the United States with every county shaded by its estimated overdose death rate for the 12 months ending March 2026. Rates run from under 10 per 100,000 across much of the Plains to 45 or more in 56 counties, mostly in New Mexico (14) and West Virginia (13), with a few each in California, Colorado and Kentucky. Counties whose count the national file hides are hatched and still shaded with the model estimate: 1,626 at 1 to 9 deaths, plus 2 more suppressed for data quality."><span class="visually-hidden"> (open full-size map)</span></a>
-<figcaption class="small text-muted mt-2">Estimated overdose deaths per 100,000 people by county, 12 months ending March 2026. Hatched counties are blank in the national file (1,626 at 1 to 9 deaths, plus 2 for data quality). Tap the image to open it full size. Source: CDC NCHS provisional counts; Primordial Analytics model.</figcaption>
-</figure>
-<details class="mt-3" markdown="0">
-<summary>Summary table for this map</summary>
-<div class="table-responsive">
-<table class="table table-sm">
-<caption>Counties by NCHS urban-rural class, with suppression and median rates per 100,000. Over half of published noncore counties report zero deaths (439 of 493), which is why their median including zeros is 0.0.</caption>
-<thead><tr><th scope="col">Urban-rural class</th><th scope="col" class="text-end">Counties</th><th scope="col" class="text-end">Suppressed (1 to 9)</th><th scope="col" class="text-end">Share suppressed</th><th scope="col" class="text-end">Median model rate, suppressed counties</th><th scope="col" class="text-end">Median published rate, including zeros</th><th scope="col" class="text-end">Median published rate, 10+ deaths only</th></tr></thead>
-<tbody>
-<tr><th scope="row">Large central metro</th><td class="text-end">68</td><td class="text-end">0</td><td class="text-end">0%</td><td class="text-end">n/a</td><td class="text-end">22.9</td><td class="text-end">22.9</td></tr>
-<tr><th scope="row">Large fringe metro</th><td class="text-end">368</td><td class="text-end">127</td><td class="text-end">35%</td><td class="text-end">12.5</td><td class="text-end">14.6</td><td class="text-end">15.1</td></tr>
-<tr><th scope="row">Medium metro</th><td class="text-end">372</td><td class="text-end">124</td><td class="text-end">33%</td><td class="text-end">14.2</td><td class="text-end">20.2</td><td class="text-end">21.0</td></tr>
-<tr><th scope="row">Small metro</th><td class="text-end">358</td><td class="text-end">135</td><td class="text-end">38%</td><td class="text-end">12.9</td><td class="text-end">17.4</td><td class="text-end">19.8</td></tr>
-<tr><th scope="row">Micropolitan</th><td class="text-end">641</td><td class="text-end">398</td><td class="text-end">62%</td><td class="text-end">13.4</td><td class="text-end">22.1</td><td class="text-end">26.0</td></tr>
-<tr><th scope="row">Noncore</th><td class="text-end">1,335</td><td class="text-end">842</td><td class="text-end">63%</td><td class="text-end">13.4</td><td class="text-end">0.0</td><td class="text-end">35.2</td></tr>
-</tbody>
-</table>
 </div>
-<p class="small text-muted">The full list of counties is in the download below.</p>
+
+<div class="ex-wide">
+<div class="ex-panel ov">
+
+<div class="ov-bar">
+<div id="pick-state"></div>
+<div id="pick-county"></div>
+<div class="ov-try" id="try" hidden>
+<span class="ov-try__label" id="try-label">Try one</span>
+<ul class="ov-try__list" id="try-list" aria-labelledby="try-label"></ul>
+</div>
+</div>
+
+<div class="ov-grid">
+
+<figure class="ov-map ex-figure" id="fig-map">
+<div class="ov-map__head">
+<h3 class="ex-figure__title" id="map-title" aria-live="polite">The file is blank for 1,626 counties</h3>
+<fieldset class="ex-field ov-mode">
+<legend class="ex-label">Color the map by</legend>
+<div class="ex-seg">
+<label><input type="radio" name="mapmode" value="file" checked><span><em class="ov-long">CDC file</em><em class="ov-short">CDC file</em></span></label>
+<label><input type="radio" name="mapmode" value="est"><span><em class="ov-long">With estimates</em><em class="ov-short">Estimates</em></span></label>
+<label><input type="radio" name="mapmode" value="above"><span><em class="ov-long">Chance above state</em><em class="ov-short">Chance above</em></span></label>
+</div>
+</fieldset>
+</div>
+<div class="ov-mapwrap">
+<div class="ex-chart ov-mapchart" id="chart-map"></div>
+<div class="ov-maptag" id="map-tag" hidden>
+<button class="ex-btn ex-btn--ink ex-btn--sm" type="button" id="map-reset">All states</button>
+<span class="ov-maptag__name" id="map-tag-name"></span>
+</div>
+</div>
+<div class="ov-legend">
+<div id="ramp-map"></div>
+<ul class="ex-legend" aria-label="Map legend" id="legend-map">
+<li><span class="ex-key ex-key--hatch" aria-hidden="true"></span><span id="legend-hatch">Blank in the CDC file</span></li>
+<li><span class="ex-key ex-key--ring" aria-hidden="true"></span>Selected county</li>
+</ul>
+</div>
+<p class="ov-hint" id="map-hint">Click a county to zoom to its state and read it. <a href="{{ site.baseurl }}/downloads/10-hidden-overdose-county-rates.csv">Download all 3,142 counties (CSV)</a><span class="ex-vh">. Without a mouse, use the State and County boxes; the data table under the map lists every county.</span></p>
+<figcaption id="map-caption">Published rate per 100,000 people per year, 12 months ending March 2026.</figcaption>
+<p class="ex-source">Source: CDC NCHS provisional county overdose deaths; Census population; Primordial Analytics model.</p>
+<details class="ex-data">
+<summary>Data table for the map (all 3,142 counties)</summary>
+<div id="table-map"></div>
 </details>
-
-- The model interval (a median 13.6 per 100,000 wide) is for the rate and the hard bounds (39.0 wide) are for the count, so narrower is not better. A county expecting 0.5 deaths can still record one: in 246 hidden counties the model median is outside the bounds, in 77 the whole interval is below the lower bound.
-- 87 hidden counties have better than an 80% chance of a rate above their state's, and 78 better than 50% of being in the top decile (above 27.3).
-- A published zero is not safe. The 554 zero counties have a median population of 5,948 and a modelled median rate of 9.4; in 146 the chance of exceeding the state rate is above 20%.
-- Do not rank: a hidden county's rank interval spans a median 1,819 places of 3,142.
-
-<figure class="my-4">
-<a href="{{ site.baseurl }}/img/case_studies/example-overdose-intervals.webp"><img class="img-fluid" src="{{ site.baseurl }}/img/case_studies/example-overdose-intervals.webp" width="1200" height="690" loading="lazy" alt="Two charts. Left: scatter of the width of the model 90 percent interval against the width of the hard 1-to-9 bounds for 1,626 suppressed counties, on log axes. Nearly all points fall below the equal-width line, with the model interval about 40 percent as wide at the median. Right: for the twelve most populous suppressed Kentucky counties, a pale bar for the hard bounds and a dark dot and line for the model median and 90 percent interval, eleven with medians of 11 to 18 deaths per 100,000 and Knox higher, at 31 (20 to 47)."><span class="visually-hidden"> (open full-size chart)</span></a>
-<figcaption class="small text-muted mt-2">Hard bounds on the observed count against the model's 90% interval for the underlying rate; they measure different things. Tap the image to open it full size. Source: CDC NCHS; Primordial Analytics model.</figcaption>
 </figure>
-<details class="mt-3" markdown="0">
-<summary>Data table for the Kentucky example</summary>
-<div class="table-responsive">
-<table class="table table-sm">
-<caption>Twelve most populous suppressed Kentucky counties, rates per 100,000</caption>
-<thead><tr><th scope="col">County</th><th scope="col" class="text-end">Population</th><th scope="col" class="text-end">Hard bounds</th><th scope="col" class="text-end">Model median</th><th scope="col" class="text-end">Model 90% interval</th><th scope="col" class="text-end">Chance above state rate</th></tr></thead>
-<tbody>
-<tr><th scope="row">Oldham</th><td class="text-end">70,525</td><td class="text-end">1.4 to 12.8</td><td class="text-end">11.1</td><td class="text-end">7.1 to 16.9</td><td class="text-end">0%</td></tr>
-<tr><th scope="row">McCracken</th><td class="text-end">67,550</td><td class="text-end">1.5 to 13.3</td><td class="text-end">14.5</td><td class="text-end">9.6 to 21.3</td><td class="text-end">1%</td></tr>
-<tr><th scope="row">Scott</th><td class="text-end">61,700</td><td class="text-end">1.6 to 14.6</td><td class="text-end">15.1</td><td class="text-end">10.5 to 21.9</td><td class="text-end">2%</td></tr>
-<tr><th scope="row">Nelson</th><td class="text-end">48,706</td><td class="text-end">2.1 to 18.5</td><td class="text-end">14.6</td><td class="text-end">9.3 to 21.7</td><td class="text-end">2%</td></tr>
-<tr><th scope="row">Barren</th><td class="text-end">45,609</td><td class="text-end">2.2 to 19.7</td><td class="text-end">16.1</td><td class="text-end">10.0 to 24.3</td><td class="text-end">6%</td></tr>
-<tr><th scope="row">Hopkins</th><td class="text-end">45,218</td><td class="text-end">2.2 to 19.9</td><td class="text-end">14.9</td><td class="text-end">9.2 to 22.9</td><td class="text-end">4%</td></tr>
-<tr><th scope="row">Henderson</th><td class="text-end">44,175</td><td class="text-end">2.3 to 20.4</td><td class="text-end">17.7</td><td class="text-end">11.8 to 26.4</td><td class="text-end">12%</td></tr>
-<tr><th scope="row">Calloway</th><td class="text-end">38,975</td><td class="text-end">2.6 to 23.1</td><td class="text-end">15.8</td><td class="text-end">9.7 to 25.2</td><td class="text-end">8%</td></tr>
-<tr><th scope="row">Graves</th><td class="text-end">36,821</td><td class="text-end">2.7 to 24.4</td><td class="text-end">16.5</td><td class="text-end">10.3 to 25.2</td><td class="text-end">8%</td></tr>
-<tr><th scope="row">Muhlenberg</th><td class="text-end">30,512</td><td class="text-end">3.3 to 29.5</td><td class="text-end">13.7</td><td class="text-end">8.6 to 21.6</td><td class="text-end">2%</td></tr>
-<tr><th scope="row">Meade</th><td class="text-end">30,442</td><td class="text-end">3.3 to 29.6</td><td class="text-end">15.1</td><td class="text-end">8.9 to 24.9</td><td class="text-end">7%</td></tr>
-<tr><th scope="row">Knox</th><td class="text-end">29,657</td><td class="text-end">3.4 to 30.3</td><td class="text-end">31.3</td><td class="text-end">19.9 to 46.8</td><td class="text-end">85%</td></tr>
-</tbody>
-</table>
+
+<div class="ov-card" id="card" aria-label="Selected county"></div>
+
 </div>
+
+<div class="ov-strip" id="strip">
+<div class="ex-figure__head">
+<h3 class="ex-figure__title" id="strip-title">Pick a state to see its counties side by side</h3>
+<p class="ex-figure__sub" id="strip-sub" aria-live="polite">Each row is a county. The gold bar is the model's 90% interval for its rate.</p>
+</div>
+<div class="ex-toolbar ov-strip__bar" id="strip-bar" hidden>
+<fieldset class="ex-field">
+<legend class="ex-label">Show</legend>
+<div class="ex-seg">
+<label><input type="radio" name="stripfilter" value="all" checked><span>All counties</span></label>
+<label><input type="radio" name="stripfilter" value="hidden"><span>Blank in file</span></label>
+<label><input type="radio" name="stripfilter" value="published"><span>Published</span></label>
+</div>
+</fieldset>
+<div class="ex-field">
+<label class="ex-label" for="stripsort">Sort by</label>
+<select class="ex-select" id="stripsort">
+<option value="pa">Chance above state rate</option>
+<option value="med">Estimated rate</option>
+<option value="pop">Population</option>
+<option value="name">Name</option>
+</select>
+</div>
+<div class="ex-field ov-strip__btns">
+<button class="ex-btn ex-btn--ghost ex-btn--sm" type="button" id="copy-table">Copy table</button>
+<button class="ex-btn ex-btn--ghost ex-btn--sm" type="button" id="dl-table">Download CSV</button>
+<button class="ex-btn ex-btn--ghost ex-btn--sm" type="button" id="strip-more" hidden>Show all</button>
+</div>
+</div>
+<ul class="ex-legend" aria-label="Strip legend" id="legend-strip" hidden>
+<li><span class="ov-key ov-key--ibar" aria-hidden="true"></span>Model median and 90% interval</li>
+<li><span class="ov-key ov-key--dot" aria-hidden="true"></span>Published rate</li>
+<li><span class="ov-key ov-key--bar" aria-hidden="true"></span>What the file allows: 1 to 9 deaths</li>
+<li><span class="ex-key ex-key--ref" aria-hidden="true"></span><span id="legend-state">State rate</span></li>
+<li><span class="ex-key ex-key--hatch" aria-hidden="true"></span>Blank in the file</li>
+</ul>
+<div class="ex-chart ov-stripchart" id="chart-strip"></div>
+<p class="ex-source" id="strip-source" hidden>Source: CDC NCHS provisional counts; Primordial Analytics model. Rates per 100,000 per year, 12 months ending March 2026.</p>
+<details class="ex-data" id="strip-details" hidden>
+<summary>Data table for this state</summary>
+<div id="table-strip"></div>
 </details>
+</div>
 
-### Does it hold up?
+</div>
+</div>
 
-Three checks, none on a truly suppressed cell, because no published cell is 1 to 9.
+<div class="ex-callout" markdown="1">
+<p class="ex-callout__title">Two ranges, two meanings</p>
+<p>The pale bar is what the file allows: 1 to 9 deaths, written as a rate. The gold bar is the model's 90% interval for the county's underlying rate. One is a count, the other a rate, so narrower is not better. The model interval is a median 13.6 per 100,000 wide and the file's bounds are 39.0 wide. A county expecting 0.5 deaths can still record one: in 246 hidden counties the model median falls outside the bounds, and in 77 the whole interval sits below the lower bound.</p>
+</div>
+</section>
 
-- **State totals.** A version of the model that never saw the state differences put 5,334 deaths in the hidden counties of the 37 plausible states, against 5,441 from the totals. 25 of the 37 agree within 20%, and the log correlation is 0.959. A naive rule comes close: hidden-county counts alone correlate 0.90 with the difference, and times the average per hidden county they put 18 of 37 within 20%. The 90% interval contains the state difference in only 22 of 37 states (59%), so the intervals are too narrow.
-- **Hide and score.** We treated every count under 30 as suppressed, refit, and scored the 537 counties with a known count of 10 to 29. Counts of 1 to 9 cannot be scored, so this tests only the upper range and is not a calibration estimate. The spatial model's ranked probability score (lower is better) is 3.04, against 3.20 for the same model without the spatial term (4.8% lower) and 3.37 for a Poisson-gamma model with no covariates and no state constraint. Its 90% interval holds 88% of true counts, against 87% without it. Its average miss is 4.16 deaths, against 5.20 for splitting the state difference by population and 4.63 for the range midpoint.
-- **Forecast.** Fit to March 2025, predict the 1,514 counties published for March 2026, using each state's 2026 total. The spatial and Poisson-gamma models score 3.25 and 3.35 (CRPS). On the 1,175 counties published in both years, the average miss is 5.66 for the spatial model, 5.75 for Poisson-gamma and 6.04 for last year's count with the same state adjustment.
+<section class="ex-section ex-band ex-band--tint" id="findings">
+<div class="ex-prose" markdown="1">
 
-Dropping the covariates moves a hidden county's rate by a median 11.3%, dropping the spatial term 9.4%.
+## What we found
 
-<figure class="my-4">
-<a href="{{ site.baseurl }}/img/case_studies/example-overdose-validation.webp"><img class="img-fluid" src="{{ site.baseurl }}/img/case_studies/example-overdose-validation.webp" width="1200" height="660" loading="lazy" alt="Two charts. Left: for each state, the model's total deaths in suppressed counties (fit without the state totals) against the state total minus published county counts, on log axes. States where the difference is plausible lie close to the equal line, with a log correlation of 0.959. The 37 states where the difference is plausible lie close to it, though the 90 percent interval contains the state value in only 22 of them. The seven excluded states that are plotted, such as California, all lie below it; three states with negative differences are not plotted. Right: share of scored true counts (counties with 10 to 29 deaths) inside intervals of nominal level 50 to 95 percent, for the spatial model, the same model without a spatial term, and a Poisson-gamma model with no covariates or constraint. All three track the equal line slightly below it, with 88 percent inside the 90 percent interval for the spatial model."><span class="visually-hidden"> (open full-size chart)</span></a>
-<figcaption class="small text-muted mt-2">Left: modelled deaths in suppressed counties against the state residual. Right: calibration when counts under 30 are hidden, scored on counties with 10 to 29 deaths. Tap the image to open it full size. Source: CDC NCHS; Primordial Analytics.</figcaption>
+Hidden does not mean low risk. Read these before you use a county number.
+{: .ex-lede}
+
+</div>
+
+<figure class="ex-wide ex-figure" id="fig-total">
+<div class="ex-figure__head">
+<h3 class="ex-figure__title">The hidden counties hold about 5,800 deaths; plan on 5,400 to 6,200</h3>
+<p class="ex-figure__sub">Deaths in the 1,626 hidden counties, 12 months ending March 2026. These counties have 42.2 million people (12.4%).</p>
+</div>
+<ul class="ex-legend" aria-label="Legend">
+<li><span class="ex-key ex-key--ci" aria-hidden="true"></span>Range</li>
+<li><span class="ov-key ov-key--dot ov-key--est" aria-hidden="true"></span>Median</li>
+</ul>
+<div class="ex-chart" id="chart-total"></div>
+<figcaption>The model's own 90% interval holds only if the model is right, and the state check below shows it is too narrow. We multiplied its half-widths by <span data-n="agg_coverage_scale" data-d="2">2.54</span>, the factor that put 90% of the checked states inside. That is a rough planning range fitted on state totals, not a formal interval. The last row is the lowest and highest of five totals (the main model and four variants), so it shows two totals, not an interval.</figcaption>
+<p class="ex-source">Source: Primordial Analytics model; CDC NCHS provisional counts.</p>
+<details class="ex-data">
+<summary>Data table for this chart</summary>
+<div id="table-total"></div>
+</details>
 </figure>
-<details class="mt-3" markdown="0">
-<summary>Data tables for these charts</summary>
-<div class="table-responsive">
-<table class="table table-sm">
-<caption>Hide-and-score results on counties with true counts of 10 to 19 (under 20) or 10 to 29 (under 30): average miss in deaths per county (MAE), ranked probability score (RPS) and 90% interval coverage</caption>
-<thead><tr><th scope="col">Method</th><th scope="col" class="text-end">MAE, under 20</th><th scope="col" class="text-end">RPS, under 20</th><th scope="col" class="text-end">90% coverage, under 20</th><th scope="col" class="text-end">MAE, under 30</th><th scope="col" class="text-end">RPS, under 30</th><th scope="col" class="text-end">90% coverage, under 30</th></tr></thead>
-<tbody>
-<tr><th scope="row">Spatial model (this page)</th><td class="text-end">3.30</td><td class="text-end">2.38</td><td class="text-end">88%</td><td class="text-end">4.16</td><td class="text-end">3.04</td><td class="text-end">88%</td></tr>
-<tr><th scope="row">Same model, no spatial term</th><td class="text-end">3.48</td><td class="text-end">2.53</td><td class="text-end">87%</td><td class="text-end">4.34</td><td class="text-end">3.20</td><td class="text-end">87%</td></tr>
-<tr><th scope="row">Poisson-gamma, no covariates, no state constraint</th><td class="text-end">3.68</td><td class="text-end">2.65</td><td class="text-end">87%</td><td class="text-end">4.63</td><td class="text-end">3.37</td><td class="text-end">90%</td></tr>
-<tr><th scope="row">State difference split by population</th><td class="text-end">4.06</td><td class="text-end">n/a</td><td class="text-end">n/a</td><td class="text-end">5.20</td><td class="text-end">n/a</td><td class="text-end">n/a</td></tr>
-<tr><th scope="row">Midpoint of the hidden range</th><td class="text-end">3.46</td><td class="text-end">n/a</td><td class="text-end">n/a</td><td class="text-end">4.63</td><td class="text-end">n/a</td><td class="text-end">n/a</td></tr>
-</tbody>
-</table>
-</div>
-<div class="table-responsive">
-<table class="table table-sm">
-<caption>Deaths in suppressed counties by state: the state total minus published county counts, and the model's total (90% interval)</caption>
-<thead><tr><th scope="col">State</th><th scope="col" class="text-end">Suppressed counties</th><th scope="col" class="text-end">State difference</th><th scope="col" class="text-end">Model total (90% interval)</th><th scope="col">Difference plausible?</th></tr></thead>
-<tbody>
-<tr><th scope="row">AK</th><td class="text-end">14</td><td class="text-end">50</td><td class="text-end">38 (28 to 49)</td><td>yes</td></tr>
-<tr><th scope="row">AL</th><td class="text-end">38</td><td class="text-end">102</td><td class="text-end">150 (129 to 174)</td><td>yes</td></tr>
-<tr><th scope="row">AR</th><td class="text-end">53</td><td class="text-end">169</td><td class="text-end">160 (137 to 184)</td><td>yes</td></tr>
-<tr><th scope="row">AZ</th><td class="text-end">1</td><td class="text-end">94</td><td class="text-end">2 (1 to 5)</td><td>no</td></tr>
-<tr><th scope="row">CA</th><td class="text-end">11</td><td class="text-end">582</td><td class="text-end">45 (35 to 56)</td><td>no</td></tr>
-<tr><th scope="row">CO</th><td class="text-end">35</td><td class="text-end">156</td><td class="text-end">118 (99 to 138)</td><td>yes</td></tr>
-<tr><th scope="row">FL</th><td class="text-end">21</td><td class="text-end">228</td><td class="text-end">76 (61 to 91)</td><td>no</td></tr>
-<tr><th scope="row">GA</th><td class="text-end">96</td><td class="text-end">315</td><td class="text-end">323 (292 to 357)</td><td>yes</td></tr>
-<tr><th scope="row">IA</th><td class="text-end">63</td><td class="text-end">150</td><td class="text-end">154 (136 to 174)</td><td>yes</td></tr>
-<tr><th scope="row">ID</th><td class="text-end">26</td><td class="text-end">42</td><td class="text-end">75 (62 to 91)</td><td>yes</td></tr>
-<tr><th scope="row">IL</th><td class="text-end">66</td><td class="text-end">201</td><td class="text-end">229 (204 to 255)</td><td>yes</td></tr>
-<tr><th scope="row">IN</th><td class="text-end">57</td><td class="text-end">228</td><td class="text-end">239 (210 to 267)</td><td>yes</td></tr>
-<tr><th scope="row">KS</th><td class="text-end">47</td><td class="text-end">130</td><td class="text-end">122 (105 to 141)</td><td>yes</td></tr>
-<tr><th scope="row">KY</th><td class="text-end">83</td><td class="text-end">333</td><td class="text-end">329 (295 to 363)</td><td>yes</td></tr>
-<tr><th scope="row">LA</th><td class="text-end">34</td><td class="text-end">157</td><td class="text-end">145 (125 to 164)</td><td>yes</td></tr>
-<tr><th scope="row">MA</th><td class="text-end">2</td><td class="text-end">-3</td><td class="text-end">6 (2 to 13)</td><td>no</td></tr>
-<tr><th scope="row">MD</th><td class="text-end">7</td><td class="text-end">-11</td><td class="text-end">36 (27 to 47)</td><td>no</td></tr>
-<tr><th scope="row">ME</th><td class="text-end">4</td><td class="text-end">18</td><td class="text-end">24 (17 to 30)</td><td>yes</td></tr>
-<tr><th scope="row">MI</th><td class="text-end">52</td><td class="text-end">187</td><td class="text-end">202 (176 to 229)</td><td>yes</td></tr>
-<tr><th scope="row">MN</th><td class="text-end">55</td><td class="text-end">213</td><td class="text-end">183 (159 to 209)</td><td>yes</td></tr>
-<tr><th scope="row">MO</th><td class="text-end">76</td><td class="text-end">263</td><td class="text-end">244 (216 to 274)</td><td>yes</td></tr>
-<tr><th scope="row">MS</th><td class="text-end">55</td><td class="text-end">142</td><td class="text-end">198 (172 to 226)</td><td>yes</td></tr>
-<tr><th scope="row">MT</th><td class="text-end">22</td><td class="text-end">59</td><td class="text-end">58 (47 to 71)</td><td>yes</td></tr>
-<tr><th scope="row">NC</th><td class="text-end">41</td><td class="text-end">180</td><td class="text-end">187 (166 to 209)</td><td>yes</td></tr>
-<tr><th scope="row">ND</th><td class="text-end">21</td><td class="text-end">47</td><td class="text-end">49 (40 to 61)</td><td>yes</td></tr>
-<tr><th scope="row">NE</th><td class="text-end">25</td><td class="text-end">38</td><td class="text-end">47 (38 to 59)</td><td>yes</td></tr>
-<tr><th scope="row">NH</th><td class="text-end">2</td><td class="text-end">18</td><td class="text-end">13 (7 to 17)</td><td>yes</td></tr>
-<tr><th scope="row">NJ</th><td class="text-end">1</td><td class="text-end">-6</td><td class="text-end">7 (3 to 9)</td><td>no</td></tr>
-<tr><th scope="row">NM</th><td class="text-end">10</td><td class="text-end">40</td><td class="text-end">43 (34 to 53)</td><td>yes</td></tr>
-<tr><th scope="row">NV</th><td class="text-end">10</td><td class="text-end">215</td><td class="text-end">35 (27 to 43)</td><td>no</td></tr>
-<tr><th scope="row">NY</th><td class="text-end">22</td><td class="text-end">236</td><td class="text-end">118 (101 to 133)</td><td>no</td></tr>
-<tr><th scope="row">OH</th><td class="text-end">45</td><td class="text-end">201</td><td class="text-end">224 (201 to 247)</td><td>yes</td></tr>
-<tr><th scope="row">OK</th><td class="text-end">44</td><td class="text-end">383</td><td class="text-end">165 (145 to 188)</td><td>no (data-quality counties)</td></tr>
-<tr><th scope="row">OR</th><td class="text-end">17</td><td class="text-end">88</td><td class="text-end">71 (59 to 86)</td><td>yes</td></tr>
-<tr><th scope="row">PA</th><td class="text-end">24</td><td class="text-end">122</td><td class="text-end">106 (89 to 122)</td><td>yes</td></tr>
-<tr><th scope="row">RI</th><td class="text-end">2</td><td class="text-end">19</td><td class="text-end">11 (6 to 16)</td><td>no</td></tr>
-<tr><th scope="row">SC</th><td class="text-end">17</td><td class="text-end">98</td><td class="text-end">82 (68 to 96)</td><td>yes</td></tr>
-<tr><th scope="row">SD</th><td class="text-end">26</td><td class="text-end">37</td><td class="text-end">59 (47 to 73)</td><td>yes</td></tr>
-<tr><th scope="row">TN</th><td class="text-end">48</td><td class="text-end">267</td><td class="text-end">221 (195 to 248)</td><td>yes</td></tr>
-<tr><th scope="row">TX</th><td class="text-end">136</td><td class="text-end">501</td><td class="text-end">409 (373 to 444)</td><td>yes</td></tr>
-<tr><th scope="row">UT</th><td class="text-end">17</td><td class="text-end">109</td><td class="text-end">58 (47 to 70)</td><td>yes</td></tr>
-<tr><th scope="row">VA</th><td class="text-end">88</td><td class="text-end">331</td><td class="text-end">333 (299 to 368)</td><td>yes</td></tr>
-<tr><th scope="row">VT</th><td class="text-end">7</td><td class="text-end">33</td><td class="text-end">36 (26 to 45)</td><td>yes</td></tr>
-<tr><th scope="row">WA</th><td class="text-end">13</td><td class="text-end">84</td><td class="text-end">56 (46 to 67)</td><td>yes</td></tr>
-<tr><th scope="row">WI</th><td class="text-end">48</td><td class="text-end">187</td><td class="text-end">177 (154 to 203)</td><td>yes</td></tr>
-<tr><th scope="row">WV</th><td class="text-end">31</td><td class="text-end">112</td><td class="text-end">132 (111 to 150)</td><td>yes</td></tr>
-<tr><th scope="row">WY</th><td class="text-end">13</td><td class="text-end">33</td><td class="text-end">40 (30 to 52)</td><td>yes</td></tr>
-</tbody>
-</table>
-</div>
-</details>
 
-## Limits
+<figure class="ex-wide ex-figure" id="fig-class">
+<div class="ex-figure__head">
+<h3 class="ex-figure__title">In every class that has hidden counties, the modeled hidden median is below the published median</h3>
+<p class="ex-figure__sub">Median rate per 100,000 by NCHS urban-rural class. The published dot is the median of counties with 10 or more deaths. A county can only be hidden if it had under 10 deaths, so some of the gap is built in. Over all counties the hidden median is <span data-n="rate_median_hidden_counties" data-d="1">13.4</span>, the published median with 10 or more deaths is <span data-n="rate_median_published_10_plus" data-d="1">20.6</span> and the published median including zeros is <span data-n="rate_median_published_incl_zeros" data-d="1">13.5</span>.</p>
+</div>
+<ul class="ex-legend" aria-label="Legend">
+<li><span class="ov-key ov-key--dot ov-key--est" aria-hidden="true"></span>Hidden counties, model median</li>
+<li><span class="ov-key ov-key--dot ov-key--obs" aria-hidden="true"></span>Published counties with 10 or more deaths</li>
+</ul>
+<div class="ex-chart" id="chart-class"></div>
+<figcaption>Over half of published noncore counties report zero deaths (439 of 493), which is why their median including zeros is 0.0. The table has that column too.</figcaption>
+<p class="ex-source">Source: CDC NCHS provisional counts; NCHS 2013 urban-rural classification; Primordial Analytics model.</p>
+<details class="ex-data">
+<summary>Data table for this chart</summary>
+<div id="table-class"></div>
+</details>
+</figure>
+
+<figure class="ex-wide ex-figure" id="fig-above">
+<div class="ex-figure__head">
+<h3 class="ex-figure__title">87 hidden counties are very likely above their state's rate</h3>
+<p class="ex-figure__sub">Counties grouped by the model's chance that the county's rate is above its state's. A 50% chance is a coin flip.</p>
+</div>
+<ul class="ex-legend" aria-label="Chance above state rate" id="legend-above"></ul>
+<div class="ex-chart" id="chart-above"></div>
+<figcaption>District of Columbia is left out because it is its own state.</figcaption>
+<p class="ex-source">Source: Primordial Analytics model. Counts of counties computed from the county table.</p>
+<details class="ex-data">
+<summary>Data table for this chart</summary>
+<div id="table-above"></div>
+</details>
+</figure>
+
+<div class="ex-prose" markdown="1">
+
+- 87 hidden counties have a better than 80% chance of a rate above their state's, and 78 have better than a 50% chance of being in the top decile (above 27.3 per 100,000).
+- A published zero is not safe. The 554 zero counties have a median population of 5,948 and a modeled median rate of 9.4. In 146 of them the chance of exceeding the state rate is above 20%.
+
+<div class="ex-keyfig">
+<span class="ex-keyfig__value">1,819</span>
+<p class="ex-keyfig__text"><strong>Do not rank.</strong> A hidden county's rank interval spans a median 1,819 places of 3,142, against 852 for a published county. Use ranges and probabilities, not a league table.</p>
+</div>
+
+</div>
+</section>
+
+<section class="ex-section" id="check">
+<div class="ex-prose" markdown="1">
+
+## Does it hold up?
+
+Three checks, none on a truly suppressed cell, because no published cell is 1 to 9. They are evidence, not proof.
+{: .ex-lede}
+
+</div>
+
+<figure class="ex-wide ex-figure" id="fig-agg">
+<div class="ex-figure__head">
+<h3 class="ex-figure__title">Modeled totals follow the state differences, but 15 of 37 intervals miss</h3>
+<p class="ex-figure__sub">For each state, the model's deaths in hidden counties (fit without the state totals) against the state total minus published county counts. Log axes.</p>
+</div>
+<ul class="ex-legend" aria-label="Legend">
+<li><span class="ov-key ov-key--circle" aria-hidden="true"></span>State used in the check (37)</li>
+<li><span class="ov-key ov-key--diamond" aria-hidden="true"></span>Difference not plausible, left out of the fit</li>
+<li><span class="ov-key ov-key--whisk" aria-hidden="true"></span>90% interval holds the state difference</li>
+<li><span class="ov-key ov-key--whisk ov-key--miss" aria-hidden="true"></span>Interval misses it</li>
+<li><span class="ex-key ex-key--ref" aria-hidden="true"></span>Equal</li>
+</ul>
+<div class="ex-chart" id="chart-agg"></div>
+<figcaption>A version of the model that never saw the state differences put 5,334 deaths in the hidden counties of the 37 plausible states, against 5,441 from the totals. 25 of 37 agree within 20% and the log correlation is 0.959. A naive rule comes close: hidden-county counts alone correlate 0.90 with the difference and put 18 of 37 within 20%. The 90% interval holds the state difference in only 22 of 37 states (59%). Three states with negative differences are not plotted.</figcaption>
+<p class="ex-source">Source: CDC NCHS provisional county and state counts; Primordial Analytics model.</p>
+<details class="ex-data">
+<summary>Data table for this chart (47 states)</summary>
+<div id="table-agg"></div>
+</details>
+</figure>
+
+<div class="ex-wide ex-panel ov-hide" id="hide">
+<div class="ov-hide__head">
+<div>
+<h3 class="ex-figure__title" id="hide-title">Hide the counts, then score the guesses</h3>
+<p class="ex-figure__sub" id="hide-sub">We treat every county below a cutoff as suppressed, refit, and score the counties whose true count we know.</p>
+</div>
+<fieldset class="ex-field">
+<legend class="ex-label">Counts hidden below</legend>
+<div class="ex-seg">
+<label><input type="radio" name="hidecut" value="20"><span>20 deaths</span></label>
+<label><input type="radio" name="hidecut" value="30" checked><span>30 deaths</span></label>
+</div>
+</fieldset>
+</div>
+<div class="ex-cols" style="--ex-col-min: 24rem">
+<figure class="ex-figure" id="fig-mae">
+<div class="ex-figure__head">
+<h4 class="ex-figure__title" id="mae-title">Average miss, in deaths per county</h4>
+<p class="ex-figure__sub">Lower is better.</p>
+</div>
+<ul class="ex-legend" aria-label="Legend">
+<li><span class="ex-key ex-key--est" aria-hidden="true"></span>Model</li>
+<li><span class="ov-key ov-key--rule" aria-hidden="true"></span>Simple rule</li>
+</ul>
+<div class="ex-chart" id="chart-mae"></div>
+<details class="ex-data">
+<summary>Data table for this chart</summary>
+<div id="table-mae"></div>
+</details>
+</figure>
+<figure class="ex-figure" id="fig-cal">
+<div class="ex-figure__head">
+<h4 class="ex-figure__title" id="cal-title">Intervals hold a little less than they claim</h4>
+<p class="ex-figure__sub">Share of true counts inside each interval, minus the interval level. At zero, an interval would be exactly right.</p>
+</div>
+<ul class="ex-legend" aria-label="Legend">
+<li><span class="ex-key ex-key--line-est" aria-hidden="true"></span>Spatial model</li>
+<li><span class="ov-key ov-key--l2" aria-hidden="true"></span>No spatial term</li>
+<li><span class="ov-key ov-key--l3" aria-hidden="true"></span>Poisson-gamma</li>
+<li><span class="ex-key ex-key--ref" aria-hidden="true"></span>Exactly right (zero)</li>
+</ul>
+<div class="ex-chart" id="chart-cal"></div>
+<details class="ex-data">
+<summary>Data table for this chart</summary>
+<div id="table-cal"></div>
+</details>
+</figure>
+</div>
+<p class="ex-caption" id="hide-caption" aria-live="polite"></p>
+</div>
+
+<div class="ex-prose" markdown="1">
+
+Counts of 1 to 9 cannot be scored, so this tests only the upper range and is not a calibration estimate.
+
+**Forecast.** We fit to March 2025 and predicted the 1,514 counties published for March 2026, using each state's 2026 total. The spatial and Poisson-gamma models score 3.25 and 3.35 (CRPS). On the 1,175 counties published in both years, the average miss is 5.66 for the spatial model, 5.75 for Poisson-gamma and 6.04 for last year's count with the same state adjustment.
+
+Dropping the covariates moves a hidden county's rate by a median 11.3%, and dropping the spatial term by 9.4%.
+
+</div>
+</section>
+
+<section class="ex-section ex-band ex-band--tint" id="limits">
+<div class="ex-prose" markdown="1">
+
+## What this does not tell you
+
+</div>
+
+<div class="ex-wide ex-callout" markdown="1">
+<p class="ex-callout__title">Read these before the numbers go in a memo</p>
 
 - Counts are provisional and get revised. Every run is date-stamped.
-- The hidden total depends on the model; we did no prior-sensitivity analysis.
-- 10 states are left out of the constraint: 9 with differences outside the bounds (3 negative) and Oklahoma, which has data-quality counties. Their differences sum to 1,737 deaths, against 501 in the model. We do not know why the files differ; the dataset description does not say.
-- Hide-and-score counties are larger than truly hidden ones: evidence, not proof.
+- The hidden total depends on the model. We did no prior-sensitivity analysis.
+- 10 states are left out of the state constraint: 9 with differences outside the 1-to-9 bounds (3 of them negative) and Oklahoma, which has data-quality counties. Their differences sum to 1,737 deaths, against 501 in the model. We do not know why the files differ, and the dataset description does not say.
+- Hide-and-score counties are larger than truly hidden ones. That makes the check evidence, not proof.
 - The interval is for the underlying rate, not the observed count. Rates are crude, not age-adjusted.
 - Connecticut and Kalawao have no SAHIE values, so their covariates are filled with medians.
+- Geography follows the CDC file, not the newest Census names. Connecticut is the 8 old counties, not the 9 planning regions, and their population is the 2020 county figure scaled to the state's 2024 growth. Valdez-Cordova (Alaska) is the area the Census split in 2019, merged back together. A "(CA)" after a name marks a census area. Search finds Kusilvak and Oglala Lakota under the file's older names.
+- The state rate on a card is the model's own: county medians weighted by population. It can run a little below the rate from the CDC state total, so the state card shows both when the file allows. The chance above the state rate is measured against the model's rate.
+- A hidden county's own data say only "1 to 9," so its estimate rests mostly on covariates, neighbors and the state total.
 - Not for inferring individual risk.
 
-## Use it
+</div>
+</section>
 
-Download the table: **[county overdose rates, all 3,142 counties (CSV)]({{ site.baseurl }}/downloads/10-hidden-overdose-county-rates.csv)**. Rates are expected deaths per 100,000 people per year, with a 90% interval. Reading a row:
+<section class="ex-section" id="methods">
+<h2 class="ex-h2">How we did it</h2>
+<details class="ex-methods ex-wide">
+<summary><span>Methods and sources<small>For the analyst who will check the work</small></span></summary>
+<div class="ex-methods__body">
 
-- **Probability above state rate** and **top decile** are shares of model draws: 0.90 is fairly sure, 0.50 a coin flip.
-- **Hard bounds** are the file's 1 and 9 deaths as rates.
+<div class="ex-prose" markdown="1">
 
-Code: [GitHub][code]. `python run.py` rebuilds everything from public files.
-
-{% include casestudy_cta.html %}
+A hidden cell says the count is at least 1 and at most 9, so the county is neither a zero nor a county with 10 or more. [Quick (2019)][quick] used the same idea for suppressed CDC WONDER deaths.
 
 </div>
+
+<ol class="ex-steps">
+<li><strong>Likelihood.</strong> Published counts enter a Poisson model as exact values, zeros included. A suppressed cell enters as the probability of 1 to 9 deaths at that county's rate. The 2 data-quality cells carry no information.</li>
+<li><strong>Rate model.</strong> Each county's log rate is an intercept, four county measures (density, uninsured share, low-income share, urban-rural class), a state effect, and a spatial effect that lets neighbors inform each other (a Leroux CAR prior). NUTS in NumPyro, 4 chains, 1,000 warm-up and 1,000 draws each. The fit has 0 divergences and a largest R-hat of 1.02. Effective sample size is at least 2,172 for county rates and 259 for hyperparameters.</li>
+<li><strong>State constraint.</strong> A state's total minus its published county counts is roughly the deaths in its suppressed counties. The files do not always agree, so we use that difference as a soft constraint only (standard deviation 5% of the state total), in the 37 states where it falls between 1 and 9 per hidden county and none has a data-quality county.</li>
+<li><strong>Validation.</strong> Compare the modeled hidden total with each state's difference. Hide all counts under 20 and under 30 and score the counties with known counts. Fit to March 2025 and predict March 2026. Each check is seeded separately.</li>
+<li><strong>Intervals.</strong> Draws give each county's median and 90% interval, the chance its rate is above its state's, the chance it is in the top decile, and a rank interval. The hidden-total range is widened, by a factor of <span data-n="agg_coverage_scale" data-d="2">2.54</span> on its half-widths, until 90% of checked states fall inside. That factor is fitted on state totals and applied to the national hidden total.</li>
+</ol>
+
+<h3 class="ex-h3" style="margin:2rem 0 1rem">Sources</h3>
+<dl class="ex-sources">
+<dt>CDC NCHS provisional county overdose deaths</dt>
+<dd><a href="https://data.cdc.gov/d/gb4e-yj24">data.cdc.gov</a>. 12 months ending March 2026, as of 2026-10-04. Counts of 1 to 9 are suppressed; 0 and 10 or more are published. That gives 3,142 counties: 1,514 published (554 zeros), 1,626 suppressed at 1 to 9, and 2 suppressed for data quality.</dd>
+<dt>NCHS state totals</dt>
+<dd><a href="https://data.cdc.gov/d/xkb8-kh2a">data.cdc.gov</a>. Same window, not suppressed.</dd>
+<dt>Census</dt>
+<dd>2024 county population (Connecticut: 2020 county population scaled to the state's 2024 growth), 2020 boundaries, and 2024 <a href="https://www.census.gov/programs-surveys/sahie.html">SAHIE</a> uninsured and low-income shares. Map shapes: us-atlas, from the Census cartographic boundaries.</dd>
+<dt>Downloaded</dt>
+<dd>All aggregate, public files, downloaded 2026-10-22.</dd>
+</dl>
+
+<h3 class="ex-h3" style="margin:2rem 0 1rem">Reading a row of the CSV</h3>
+<dl class="ex-sources">
+<dt>Rates</dt>
+<dd>Expected deaths per 100,000 people per year, with a 90% interval.</dd>
+<dt>Probability above state rate, top decile</dt>
+<dd>Shares of model draws. 0.90 is fairly sure and 0.50 is a coin flip.</dd>
+<dt>Hard bounds</dt>
+<dd>The file's 1 and 9 deaths written as rates.</dd>
+<dt>Code</dt>
+<dd><a href="https://github.com/primordial-analytics/primordial-analytics.github.io/tree/master/analysis/10-hidden-overdose-counties">GitHub</a>. <code>python run.py</code> rebuilds everything from public files.</dd>
+</dl>
+
+<div class="ex-prose" markdown="1">
+
+### Every validation number
+
+</div>
+<div id="table-val"></div>
+</div>
+</details>
+</section>

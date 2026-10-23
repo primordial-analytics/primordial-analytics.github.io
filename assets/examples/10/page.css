@@ -1,0 +1,671 @@
+/* Page-local styles for example 10 (hidden overdose counties). Loaded after the kit CSS. */
+
+/* ---------- explorer layout ---------- */
+.ex .ov {
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+}
+.ex .ov-bar {
+  display: grid;
+  gap: var(--ex-s3) var(--ex-s4);
+  grid-template-columns: minmax(0, 1fr);
+  margin-bottom: var(--ex-s4);
+}
+@media (min-width: 640px) {
+  .ex .ov-bar {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .ex .ov-try {
+    grid-column: 1 / -1;
+  }
+}
+.ex .ov-try {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ex-s2) var(--ex-s3);
+  font-family: var(--ex-font-ui);
+}
+.ex .ov-try[hidden] {
+  display: none;
+}
+.ex .ov-try__label {
+  font-size: var(--ex-t-sm);
+  font-weight: 600;
+  color: var(--ex-ink-2);
+}
+.ex .ov-try__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ex-s2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ex .ov-chip {
+  min-height: 44px;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--ex-line-strong);
+  background: var(--ex-paper);
+  color: var(--ex-ink);
+  font: 500 var(--ex-t-sm) / 1.2 var(--ex-font-ui);
+  cursor: pointer;
+  text-align: left;
+}
+.ex .ov-chip small {
+  display: block;
+  font-weight: 400;
+  font-size: var(--ex-t-xs);
+  color: var(--ex-muted);
+}
+.ex .ov-chip:hover {
+  border-color: var(--ex-ink);
+}
+.ex .ov-chip:focus-visible {
+  outline: 3px solid var(--ex-focus);
+  outline-offset: 2px;
+}
+.ex .ov-grid {
+  display: grid;
+  gap: var(--ex-s5);
+  grid-template-columns: minmax(0, 1fr);
+}
+.ex .ov-map,
+.ex .ov-card {
+  min-width: 0;
+}
+@media (min-width: 960px) {
+  .ex .ov-grid {
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    column-gap: var(--ex-s5);
+    align-items: start;
+  }
+  .ex .ov-card {
+    position: sticky;
+    top: calc(var(--ex-nav-h) + var(--ex-subnav-h) + 12px);
+  }
+}
+.ex .ov-card {
+  scroll-margin-top: calc(var(--ex-nav-h) + var(--ex-subnav-h) + 8px);
+}
+.ex .ov-map__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--ex-s3) var(--ex-s4);
+  margin-bottom: var(--ex-s3);
+}
+.ex .ov-map__head .ex-figure__title {
+  flex: 1 1 18rem;
+}
+.ex .ov-map__head .ex-figure__title {
+  font-size: var(--ex-t-lg);
+}
+.ex .ov-mode {
+  flex: 0 1 28rem;
+  min-width: 0;
+}
+.ex .ov-mode .ex-seg {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.ex .ov-mode .ex-seg span {
+  text-align: center;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+}
+.ex .ov-long,
+.ex .ov-short {
+  font-style: normal;
+}
+.ex .ov-short {
+  display: none;
+}
+@media (max-width: 639px) {
+  .ex .ov-long {
+    display: none;
+  }
+  .ex .ov-short {
+    display: inline;
+  }
+  .ex .ov-mode .ex-seg span {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+}
+.ex .ov-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--ex-s3) var(--ex-s5);
+  margin-top: var(--ex-s3);
+}
+@media (max-width: 639px) {
+  .ex .ov-chip small {
+    display: none;
+  }
+  .ex .ov-chip {
+    min-height: 44px;
+    padding: 0.35rem 0.75rem;
+  }
+}
+.ex .ov-legend .ex-legend {
+  margin-bottom: 0;
+}
+.ex .ov-mapwrap {
+  position: relative;
+}
+.ex .ov-maptag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  align-items: center;
+  gap: var(--ex-s2);
+  max-width: calc(100% - 16px);
+}
+.ex .ov-maptag[hidden] {
+  display: none;
+}
+.ex .ov-maptag__name {
+  font: 700 var(--ex-t-base) var(--ex-font-ui);
+  color: var(--ex-ink);
+  background: rgba(255, 255, 255, 0.88);
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+}
+.ex .ov-mapchart svg {
+  display: block;
+  width: 100%;
+  background: var(--ex-surface);
+  border-radius: var(--ex-r-md);
+  touch-action: manipulation;
+  overflow: hidden;
+}
+.ex .ov-mapchart .ex-county {
+  vector-effect: non-scaling-stroke;
+  cursor: pointer;
+}
+.ex .ov-mapchart .ex-state-line {
+  vector-effect: non-scaling-stroke;
+}
+.ex .ov-mapchart .ex-county--hidden {
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+.ex .ov-mapchart .ex-county.is-active,
+.ex .ov-mapchart .ov-statebox,
+.ex .ov-mapchart .ov-hover {
+  vector-effect: non-scaling-stroke;
+}
+.ex .ov-mapchart .ov-statebox {
+  fill: none;
+  stroke: var(--ex-strong);
+  stroke-width: 1.6px;
+  pointer-events: none;
+}
+.ex .ov-mapchart .ov-hover {
+  fill: none;
+  stroke: var(--ex-strong);
+  stroke-width: 1.4px;
+  pointer-events: none;
+}
+.ex .ov-mapchart .ov-fade {
+  opacity: 0.22;
+}
+.ex .ov-hint {
+  font: 400 var(--ex-t-sm) / 1.4 var(--ex-font-ui);
+  color: var(--ex-ink-2);
+  margin-top: var(--ex-s2);
+}
+.ex .ov-hint a {
+  color: var(--ex-ink);
+}
+.ex figcaption,
+.ex .ex-caption {
+  font-size: 0.875rem;
+  color: var(--ex-ink-2);
+}
+
+/* ---------- county card ---------- */
+.ex .ov-card__box {
+  border: 1px solid var(--ex-line);
+  border-radius: var(--ex-r-lg);
+  background: var(--ex-surface);
+  padding: var(--ex-s4);
+  display: grid;
+  gap: var(--ex-s3);
+  font-family: var(--ex-font-ui);
+}
+.ex .ov-card__name {
+  font-family: var(--ex-font-display);
+  font-size: 1.5rem;
+  line-height: 1.15;
+  color: var(--ex-ink);
+  overflow-wrap: anywhere;
+}
+.ex .ov-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--ex-t-sm);
+  font-weight: 600;
+  color: var(--ex-ink);
+}
+.ex .ov-verdict {
+  display: grid;
+  gap: 0.35rem;
+  padding: var(--ex-s3);
+  border-radius: var(--ex-r-md);
+  background: var(--ex-paper);
+  border: 1px solid var(--ex-line-strong);
+  border-left: 4px solid var(--ex-c-obs);
+}
+.ex .ov-verdict b {
+  font-size: var(--ex-t-base);
+  color: var(--ex-ink);
+  line-height: 1.3;
+}
+.ex .ov-verdict span {
+  font-size: var(--ex-t-sm);
+  color: var(--ex-ink-2);
+}
+.ex .ov-card__big {
+  display: grid;
+  gap: 0.15rem;
+}
+.ex .ov-card__label {
+  font-size: var(--ex-t-sm);
+  color: var(--ex-ink-2);
+}
+.ex .ov-card__value {
+  font-family: var(--ex-font-display);
+  font-size: clamp(2.5rem, 5vw, 3.25rem);
+  line-height: 1;
+  color: var(--ex-ink);
+  font-variant-numeric: tabular-nums;
+}
+.ex .ov-card__range {
+  font-size: var(--ex-t-base);
+  color: var(--ex-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.ex .ov-ruler svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.ex .ov-facts {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+.ex .ov-facts > div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.15rem 1rem;
+  padding: 0.55rem 0;
+  border-top: 1px solid var(--ex-line);
+  align-items: baseline;
+}
+.ex .ov-facts dt {
+  font-size: var(--ex-t-sm);
+  color: var(--ex-ink-2);
+  font-weight: 500;
+}
+.ex .ov-facts dd {
+  margin: 0;
+  font-size: var(--ex-t-base);
+  font-weight: 600;
+  color: var(--ex-ink);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.ex .ov-facts dd small {
+  display: block;
+  font: 400 var(--ex-t-xs) var(--ex-font-ui);
+  color: var(--ex-muted);
+}
+.ex .ov-meter {
+  grid-column: 1 / -1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--ex-surface-2);
+  box-shadow: inset 0 0 0 1px var(--ex-line-strong);
+  position: relative;
+  overflow: hidden;
+}
+.ex .ov-meter > i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: var(--ex-c-obs);
+  min-width: 3px;
+}
+.ex .ov-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ex-s2);
+}
+.ex .ov-card__note {
+  font-size: var(--ex-t-xs);
+  color: var(--ex-ink-2);
+  line-height: 1.45;
+}
+.ex .ov-nudge {
+  font-size: var(--ex-t-sm);
+  line-height: 1.4;
+  padding: var(--ex-s3);
+  border-radius: var(--ex-r-md);
+  background: var(--ex-gold-tint);
+  color: var(--ex-ink);
+}
+.ex .ov-nudge[hidden] {
+  display: none;
+}
+.ex .ov-nudge a {
+  color: var(--ex-ink);
+  font-weight: 600;
+}
+.ex .ov-picks {
+  display: grid;
+  gap: var(--ex-s2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ex .ov-picks button {
+  width: 100%;
+  min-height: 44px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: var(--ex-paper);
+  border: 1.5px solid var(--ex-line-strong);
+  border-radius: var(--ex-r-md);
+  font: 500 var(--ex-t-sm) var(--ex-font-ui);
+  color: var(--ex-ink);
+  cursor: pointer;
+}
+.ex .ov-picks button:hover {
+  border-color: var(--ex-ink);
+}
+.ex .ov-picks button:focus-visible {
+  outline: 3px solid var(--ex-focus);
+  outline-offset: 2px;
+}
+.ex .ov-picks b {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- state strip ---------- */
+.ex .ov-strip {
+  margin-top: var(--ex-s6);
+  padding-top: var(--ex-s5);
+  border-top: 1px solid var(--ex-line);
+}
+.ex .ov-strip__bar {
+  margin-bottom: var(--ex-s3);
+  align-items: flex-end;
+}
+.ex .ov-strip__btns {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--ex-s2);
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+.ex .ov-stripchart .ex-mark {
+  cursor: pointer;
+}
+.ex .ov-empty {
+  font: 400 var(--ex-t-base) / 1.5 var(--ex-font-ui);
+  color: var(--ex-ink-2);
+  padding: var(--ex-s4) 0;
+}
+
+/* ---------- chart pieces ---------- */
+.ex-chart .ov-hard {
+  fill: rgba(228, 226, 241, 0.55);
+  stroke: #8a87a6;
+  stroke-width: 1;
+}
+.ex-chart .ov-ibar {
+  fill: var(--ex-c-est);
+}
+.ex-chart .ov-hairtick {
+  stroke: var(--ex-strong);
+  stroke-width: 2px;
+}
+.ex-chart .ov-tick {
+  stroke: var(--ex-c-est);
+  stroke-width: 3;
+  stroke-linecap: butt;
+}
+.ex-chart .ov-pub {
+  fill: var(--ex-c-obs);
+  stroke: var(--ex-paper);
+  stroke-width: 2;
+}
+.ex-chart .ov-est-dot {
+  fill: var(--ex-c-est);
+  stroke: var(--ex-paper);
+  stroke-width: 2;
+}
+.ex-chart .ov-whisk-est {
+  stroke: var(--ex-c-est);
+  stroke-width: 2;
+  fill: none;
+}
+.ex-chart .ov-rule {
+  fill: #b5b2cc;
+  stroke: #8a87a6;
+  stroke-width: 1;
+}
+.ex-chart .ov-hold {
+  stroke: var(--ex-strong);
+  stroke-width: 1.2px;
+}
+.ex-chart .ov-miss {
+  stroke: var(--ex-bad);
+  stroke-width: 2.5px;
+  stroke-dasharray: 4 2;
+}
+.ex-chart .ov-diamond {
+  fill: var(--ex-paper);
+  stroke: var(--ex-c-est);
+  stroke-width: 2;
+}
+.ex-chart .ov-circle {
+  fill: var(--ex-c-est);
+  stroke: var(--ex-paper);
+  stroke-width: 1.5;
+}
+.ex-chart .ov-l2 {
+  stroke: var(--ex-ink-3);
+  stroke-width: 2;
+  fill: none;
+}
+.ex-chart .ov-l3 {
+  stroke: #8a87a6;
+  stroke-width: 2;
+  stroke-dasharray: 1 4;
+  stroke-linecap: round;
+  fill: none;
+}
+.ex-chart .ov-cap {
+  font-size: 12px;
+  fill: var(--ex-muted);
+  paint-order: stroke;
+  stroke: var(--ex-paper);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.ex .ov-card__box .ov-cap {
+  stroke: var(--ex-surface);
+}
+@media (max-width: 639px) {
+  .ex .ov-strip__bar .ex-seg span {
+    padding: 0.3rem 0.4rem;
+  }
+}
+.ex-chart .ov-seg-text {
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+/* legend keys */
+.ov-key {
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+}
+.ov-key--tick {
+  width: 1.4rem;
+  height: 0.85rem;
+  background: linear-gradient(var(--ex-c-est), var(--ex-c-est)) center / 100% 2px no-repeat, linear-gradient(var(--ex-c-est), var(--ex-c-est)) center / 3px 100% no-repeat;
+}
+.ov-key--dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: var(--ex-c-obs);
+}
+.ov-key--dot.ov-key--est {
+  background: var(--ex-c-est);
+}
+.ov-key--dot.ov-key--obs {
+  background: var(--ex-c-obs);
+}
+.ov-key--bar {
+  width: 1.4rem;
+  height: 0.5rem;
+  background: #e4e2f1;
+  box-shadow: inset 0 0 0 1px #8a87a6;
+}
+.ov-key--rule {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 2px;
+  background: #b5b2cc;
+  box-shadow: inset 0 0 0 1px #8a87a6;
+}
+.ov-key--circle {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: var(--ex-c-est);
+}
+.ov-key--diamond {
+  width: 0.62rem;
+  height: 0.62rem;
+  transform: rotate(45deg);
+  background: var(--ex-paper);
+  box-shadow: inset 0 0 0 2px var(--ex-c-est);
+}
+.ov-key--whisk {
+  width: 0.2rem;
+  height: 1rem;
+  border-radius: 1px;
+  background: var(--ex-strong);
+}
+.ov-key--whisk.ov-key--miss {
+  width: 0.28rem;
+  background: repeating-linear-gradient(to bottom, var(--ex-bad) 0 4px, transparent 4px 6px);
+}
+.ov-key--ibar {
+  width: 1.4rem;
+  height: 0.4rem;
+  border-radius: 2px;
+  background: var(--ex-c-est);
+  box-shadow: 0 0 0 0 transparent;
+  position: relative;
+}
+.ov-key--l2,
+.ov-key--l3 {
+  width: 1.3rem;
+  height: 0;
+  border-top: 3px solid var(--ex-ink-3);
+}
+.ov-key--l3 {
+  border-top: 3px dotted #8a87a6;
+}
+.ov-key--swatch {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px var(--ex-line-strong);
+}
+
+/* ---------- hide-and-score panel ---------- */
+.ex .ov-hide {
+  display: grid;
+  gap: var(--ex-s5);
+}
+.ex .ov-hide__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ex-s4) var(--ex-s6);
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.ex .ov-hide__head > div {
+  flex: 1 1 22rem;
+}
+
+@media (forced-colors: active) {
+  .ex .ov-meter > i {
+    background: Highlight;
+  }
+}
+
+/* selected row in the state strip: changes in place so keyboard focus stays put */
+.ex-chart .ov-selbg {
+  fill: transparent;
+  pointer-events: none;
+}
+.ex-chart .ex-mark.is-sel .ov-selbg {
+  fill: var(--ex-gold-tint);
+}
+.ex-chart .ex-mark:hover .ov-selbg {
+  fill: var(--ex-surface-2);
+}
+.ex-chart .ex-mark.is-sel:hover .ov-selbg {
+  fill: var(--ex-gold-tint);
+}
+.ex-chart .ov-gap {
+  stroke: var(--ex-c-axis);
+  stroke-dasharray: 2 4;
+}
+.ex-chart .ov-ring {
+  display: none;
+}
+.ex-chart .ex-mark.is-sel .ov-ring {
+  display: block;
+}
+.ex .ov-valtable + .ov-valtable {
+  margin-top: var(--ex-s5);
+}
+
+/* open data tables must scroll inside their wrapper, not widen the grid */
+.ex .ov-hide {
+  grid-template-columns: minmax(0, 1fr);
+}
+.ex .ov-hide .ex-cols > * {
+  min-width: 0;
+}
+
+.ex .ov-ruler.ex-chart {
+  min-height: 0;
+}
+.ex .ov-ruler .ov-cap {
+  font-size: 12px;
+}
