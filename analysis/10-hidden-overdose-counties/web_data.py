@@ -44,7 +44,9 @@ NUMBER_KEYS = [
     "zero_median_population", "agg_states_plausible", "agg_inside_90", "agg_within_20pct",
     "agg_corr_log", "agg_naive_within_20pct", "agg_naive_corr_log", "agg_residual_sum_plausible",
     "agg_model_sum_plausible", "pseudo20_n_scored", "pseudo30_n_scored", "rate_median_published_incl_zeros",
-    "agg_coverage_scale",
+    "agg_coverage_scale", "model_width_median", "hard_width_median", "hidden_median_outside_hard_bounds",
+    "hidden_interval_below_hard_lo", "rate_median_published_zero_modelled", "agg_excluded_residual_sum",
+    "agg_excluded_model_sum",
 ]
 
 

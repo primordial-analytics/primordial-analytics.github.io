@@ -15,32 +15,28 @@ need: >-
 question: >-
   How many sessions, volunteers and medication dollars will your clinic need in
   2027?
+brief: >-
+  Paid marketplace enrollment has fallen, and our model expects the uninsured
+  pool to grow fastest where Medicaid expanded. The planner turns your county's
+  growth into the sessions, volunteers and medication dollars to plan for, at a
+  certainty you choose. These are scenario ranges, not forecasts.
 stats:
-  - value: 1.64M
-    label: More low-income adults uninsured in 2027, all 30 states
-    note: >-
-      Central scenario. About 25.7% of the 2024 pool (the median of the draws'
-      ratios). 80% interval 1.04M to 2.45M.
-    kind: estimate
+  - value: 1.64 million
+    label: more low-income adults uninsured in 2027
+    note: Modeled, central scenario, 30 states
   - value: 40.9%
-    label: Median county growth in Medicaid expansion states
-    note: "15.0% in the other states, central scenario."
-    kind: estimate
+    label: median county growth in the uninsured pool
+    note: Modeled, expansion states
   - value: −14.8%
-    label: "Paid marketplace enrollment, Feb 2025 to Feb 2026"
-    note: "2,152,711 fewer people paid up."
-    kind: observed
+    label: paid marketplace enrollment, Feb 2025 to Feb 2026
+    note: Observed, 30 states
 sections:
   - id: tool
-    label: Your clinic
-  - id: map
-    label: Map
+    label: Clinic
   - id: observed
-    label: What changed
-  - id: scenarios
-    label: Scenarios
-  - id: drivers
-    label: What moves it
+    label: Changes
+  - id: ahead
+    label: Map
   - id: limits
     label: Limits
   - id: methods
@@ -50,16 +46,13 @@ downloads:
     file: /downloads/11-free-clinic-surge-planner-demand-planner.xlsx
     type: XLSX
     size: 970 KB
-    description: >-
-      The same formulas as the tool above, live in Excel. Pick your county,
-      enter 12 months of visits, and copy the Need statement sheet into an
-      application.
+    description: "The tool's formulas in Excel, plus a need statement sheet."
   - title: County table
     file: /downloads/11-free-clinic-surge-planner-county-table.csv
     type: CSV
     size: 1.1 MB
     description: >-
-      Observed changes, risk flags, ranking and scenario quantiles for all 2,054
+      Observed changes, risk flags, ranking and scenario quantiles for 2,054
       counties.
   - title: County table codebook
     file: /downloads/11-free-clinic-surge-planner-county-table-codebook.csv
@@ -93,29 +86,14 @@ extra_scripts:
 
 ## Plan your 2027 sessions
 
-Pick your county and enter your last 12 months. The clinic filled in below is made up: replace it with yours. The Excel planner gives the same answer.
-{: .ex-lede}
-
 </div>
 
-<div class="ex-wide">
-<div class="ex-panel">
+<div class="ex-wide ex-panel">
 <div class="ex-tool ex-tool--split p11-tool">
 
 <div class="ex-tool__controls">
-<div class="p11-headrow">
-<p class="ex-tool__title">Your clinic</p>
-<button class="ex-btn ex-btn--ghost ex-btn--sm" type="button" id="reset" aria-label="Reset to the example clinic">Reset</button>
-</div>
-<p class="ex-hint">Example values are filled in. Nothing you type leaves your browser.</p>
-
 <div id="pick-county"></div>
-<div class="p11-try" id="try-row"></div>
-<p class="ex-hint" id="cover-note"></p>
-<details class="p11-states">
-<summary>Which states are covered</summary>
-<div class="p11-states__body" id="states-list"></div>
-</details>
+<p class="ex-hint p11-try" id="try-row"></p>
 
 <div class="ex-field">
 <label class="ex-label" for="f-patients">Uninsured adult patients, last 12 months</label>
@@ -124,9 +102,8 @@ Pick your county and enter your last 12 months. The clinic filled in below is ma
 </div>
 
 <div class="ex-field">
-<label class="ex-label" for="f-visits">Visits by those patients, last 12 months</label>
+<label class="ex-label" for="f-visits">Their visits, last 12 months</label>
 <div class="ex-input-group"><input class="ex-input" id="f-visits" type="number" inputmode="numeric" min="0" step="any" aria-describedby="h-visits e-visits"><span class="ex-affix">visits</span></div>
-<div class="ex-hint" id="h-visits">Add up your 12 months. The Excel planner asks for each month.</div>
 <div class="ex-error" id="e-visits" hidden></div>
 </div>
 
@@ -137,9 +114,20 @@ Pick your county and enter your last 12 months. The clinic filled in below is ma
 <label><input type="radio" name="scen" value="1" checked><span>Central</span></label>
 <label><input type="radio" name="scen" value="2"><span>Higher</span></label>
 </div>
-<div class="ex-hint" id="gloss-scen" aria-live="polite"></div>
 </fieldset>
 
+<div class="ex-field">
+<label class="ex-label" for="f-cert">How sure you want to be</label>
+<div class="ex-range"><input id="f-cert" type="range" min="0" max="2" step="1" value="1" aria-describedby="h-cert"><output for="f-cert"></output></div>
+<div class="ex-range__ends"><span>50%</span><span>80%</span><span>95%</span></div>
+</div>
+
+<p class="ex-hint">Example clinic with made-up numbers. Replace them with yours. Nothing leaves your browser. <button class="ex-link" type="button" id="reset" aria-label="Reset to the example clinic">Reset</button></p>
+
+<div class="p11-aside">
+<details class="ex-notes p11-more">
+<summary>More settings and notes</summary>
+<div class="p11-more__body">
 <fieldset class="ex-field" id="layers-field">
 <legend class="ex-label">Include Medicaid work requirements</legend>
 <div class="ex-seg" id="seg-layers">
@@ -149,16 +137,6 @@ Pick your county and enter your last 12 months. The clinic filled in below is ma
 <div class="ex-hint">Adds adults who lose Medicaid in expansion states. It is a placeholder. <a href="#drivers">What moves your answer</a></div>
 </fieldset>
 
-<div class="ex-field">
-<label class="ex-label" for="f-cert">How sure you want to be</label>
-<div class="ex-range"><input id="f-cert" type="range" min="0" max="2" step="1" value="1" aria-describedby="h-cert"><output for="f-cert"></output></div>
-<div class="ex-range__ends"><span>50%</span><span>80%</span><span>95%</span></div>
-<div class="ex-hint" id="h-cert"></div>
-</div>
-
-<details class="p11-more">
-<summary>More settings</summary>
-<div class="p11-more__body">
 <div class="ex-field">
 <label class="ex-label" for="f-rho">New patients, compared with your rate today</label>
 <div class="ex-range"><input id="f-rho" type="range" min="0" max="5" step="0.05" aria-describedby="h-rho"><output for="f-rho"></output></div>
@@ -197,8 +175,17 @@ Pick your county and enter your last 12 months. The clinic filled in below is ma
 <div class="ex-error" id="e-medPerVisit" hidden></div>
 </div>
 </div>
+<div class="p11-about">
+<p>The clinic filled in is made up: replace it with yours. The Excel planner gives the same answer. Type a county or a state.</p>
+<p id="cover-note"></p>
+<div id="states-list"></div>
+<p id="h-visits">Visits: add up your 12 months. The Excel planner asks for each month.</p>
+<p id="gloss-scen"></p>
+<p id="h-cert"></p>
+</div>
 </div>
 </details>
+</div>
 </div>
 
 <div class="ex-tool__out">
@@ -206,65 +193,56 @@ Pick your county and enter your last 12 months. The clinic filled in below is ma
 
 <div id="tool-body" class="p11-body">
 <div class="ex-results" id="results">
-<div class="ex-result">
+<div class="ex-result ex-result--lead">
 <span class="ex-result__label" id="r1-label">Sessions a year</span>
 <span class="ex-result__value" id="r1">--</span>
 <span class="ex-result__range" id="r1-range"></span>
-<span class="ex-result__note" id="r1-note"></span>
 </div>
 <div class="ex-result">
 <span class="ex-result__label" id="r2-label">Volunteers needed</span>
 <span class="ex-result__value" id="r2">--</span>
 <span class="ex-result__range" id="r2-range"></span>
-<span class="ex-result__note" id="r2-note"></span>
 </div>
 <div class="ex-result">
 <span class="ex-result__label" id="r3-label">Medication dollars</span>
 <span class="ex-result__value" id="r3">--</span>
 <span class="ex-result__range" id="r3-range"></span>
-<span class="ex-result__note" id="r3-note"></span>
 </div>
 </div>
 
-<div class="p11-summary">
-<p class="p11-summary__line" id="summary-line"></p>
-<div class="p11-summary__btns">
-<button class="ex-btn ex-btn--gold ex-btn--sm" type="button" id="copy-line" data-ex-copy="">Copy this line</button>
-<button class="ex-btn ex-btn--ghost ex-btn--sm" type="button" data-p11-need data-ex-copy="">Copy funding paragraphs</button>
-<button class="ex-btn ex-btn--ghost ex-btn--sm" type="button" id="print-plan">Print or save as PDF</button>
-</div>
-</div>
+<p class="ex-actions p11-summary">
+<button class="ex-link" type="button" id="copy-line" data-ex-copy="">Copy as a sentence</button>
+<button class="ex-link" type="button" id="print-plan">Print or save as PDF</button>
+<a class="ex-link" href="{{ site.baseurl }}/downloads/11-free-clinic-surge-planner-demand-planner.xlsx">Excel version</a>
+</p>
 
-<figure class="ex-figure" id="fig-sessions">
+<figure class="ex-figure" id="fig-sessions" aria-labelledby="t-sessions">
 <div class="ex-figure__head">
-<h3 class="ex-figure__title" id="t-sessions">Sessions to plan for</h3>
-<p class="ex-figure__sub" id="s-sessions"></p>
+<h3 class="ex-figure__title" id="t-sessions">Sessions a year, by certainty</h3>
 </div>
-<ul class="ex-legend" aria-label="Legend">
-<li><span class="p11-key p11-key--est" aria-hidden="true"></span>Selected scenario, modeled</li>
-<li><span class="p11-key p11-key--whisker" aria-hidden="true"></span>Range from the lower to the higher scenario</li>
-<li><span class="ex-key ex-key--ref" aria-hidden="true"></span>Sessions today</li>
-</ul>
 <div class="ex-chart" id="chart-sessions"></div>
-<figcaption>Each row is a different level of certainty. The bar follows the scenario you picked.</figcaption>
+<p class="p11-choose" id="choose-line" data-needs-plan></p>
+<details class="ex-notes" data-p11-print>
+<summary>Source and data<span class="ex-vh"> for the sessions chart</span></summary>
+<p>Each row is a different level of certainty. The dot follows the scenario you picked; the line runs from the lower to the higher scenario.</p>
 <p class="ex-source">Source: CMS Open Enrollment 2025 and 2026; CMS effectuated enrollment; Census SAHIE 2024; Primordial Analytics model. Scenario inputs are assumptions.</p>
-<details class="ex-data"><summary>Data table for this chart</summary><div id="table-sessions"></div></details>
+<div id="table-sessions"></div>
+</details>
 </figure>
-</div>
-</div>
 
-</div>
-</div>
-</div>
-
-<div class="ex-wide p11-plan" data-needs-plan>
-<div class="p11-plan__head">
-<h3 class="ex-h3">The full plan</h3>
-<div class="p11-plan__btns">
-<button class="ex-btn ex-btn--ghost ex-btn--sm" type="button" id="toggle-steps" aria-expanded="false" aria-controls="plan-steps">Show how we got there</button>
-<button class="ex-btn ex-btn--ghost ex-btn--sm p11-only-narrow" type="button" id="toggle-cols" aria-pressed="false">Show all certainty levels</button>
-</div>
-</div>
+<div class="p11-disclosures">
+<details class="ex-notes p11-plan" data-needs-plan data-p11-print>
+<summary>Full plan</summary>
+<ul class="p11-plan__notes">
+<li id="r1-note"></li>
+<li id="r2-note"></li>
+<li id="r3-note"></li>
+</ul>
+<p id="choose-text"></p>
+<p class="ex-actions">
+<button class="ex-link" type="button" id="toggle-steps" aria-expanded="false" aria-controls="plan-steps">Show how we got there</button>
+<button class="ex-link p11-only-narrow" type="button" id="toggle-cols" aria-pressed="false">Show all certainty levels</button>
+</p>
 <div class="ex-table-wrap p11-full" role="region" tabindex="0" aria-label="Scrollable table of the plan for 2027">
 <table class="ex-table p11-table" id="plan-table" data-view="pick">
 <caption>Your plan for 2027. Today is your last 12 months.</caption>
@@ -273,47 +251,114 @@ Pick your county and enter your last 12 months. The clinic filled in below is ma
 <tbody id="plan-steps" hidden></tbody>
 </table>
 </div>
-</div>
+</details>
 
-<div class="ex-wide" data-needs-plan>
-<div class="ex-callout" id="choose">
-<p class="ex-callout__title">Choosing between 80% and 95%</p>
-<p id="choose-text"></p>
-</div>
-</div>
-
-<div class="ex-wide p11-need" data-needs-plan>
-<div class="p11-need__head">
-<h3 class="ex-h3">Draft paragraphs for a funding request</h3>
-<button class="ex-btn ex-btn--gold ex-btn--sm" type="button" id="copy-need" data-p11-need data-ex-copy="">Copy the text</button>
-</div>
-<p class="ex-hint">The same wording as the Need statement sheet in the Excel planner, with the scenario named. Edit it before you send it.</p>
+<details class="ex-notes p11-need" data-needs-plan data-p11-print>
+<summary>Funding paragraphs</summary>
+<p>Draft paragraphs for a funding request. The same wording as the Need statement sheet in the Excel planner, with the scenario named. Edit it before you send it.</p>
 <div id="need-text" class="p11-need__text"></div>
-<p class="ex-hint p11-need__check" id="need-check"></p>
+<p id="need-check"></p>
+<p class="ex-actions"><button class="ex-link" type="button" id="copy-need" data-p11-need data-ex-copy="">Copy the text</button></p>
+</details>
 </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<figure class="ex-wide ex-figure ex-figure--notes p11-drivers" id="drivers" aria-labelledby="t-tornado">
+<div class="ex-figure__head">
+<h3 class="ex-figure__title" id="t-tornado"></h3>
+</div>
+<div class="ex-chart" id="chart-tornado"></div>
+<div class="ex-sidenotes">
+<p class="ex-note"><strong>The number you control.</strong> Log new uninsured patients each month. After three months of 2027, compare your count with the plan's new patients expected, and move up or down a scenario.</p>
+<p class="ex-note"><strong>Reversed bars.</strong> A larger pool, or more of the 2026 loss already in your visits, means fewer sessions.</p>
+</div>
+<details class="ex-notes">
+<summary>Notes and data<span class="ex-vh"> for what moves the answer</span></summary>
+<p>Sessions a year at 80% certainty for the example clinic (480 patients, 1,440 visits and 120 sessions a year, in a county with 5,917 uninsured low-income adults) when one assumption moves from its low to its high end. All others stay central.</p>
+<p>The central scenario needs 156 sessions at 50% certainty, 174 at 80% and 196 at 95%. Going from 80% to 95% costs 22 sessions, 396 volunteer hours and 11 more volunteers. Each marketplace assumption moves the 80% answer by 10 sessions or less.</p>
+<p>The new-patient rate is the weakest link in the model and the one only you can replace. Log the month each patient's coverage ended. The Excel planner has an intake guide for this.</p>
+<p class="ex-source">Source: Primordial Analytics model, example clinic in a mid-sized Medicaid expansion county.</p>
+<div id="table-tornado"></div>
+</details>
+</figure>
 </section>
 
-<section class="ex-section" id="map">
+<section class="ex-section" id="observed">
 <div class="ex-prose" markdown="1">
 
-## Where the uninsured pool grows fastest
+## The paid share of plan selections fell in 28 of 30 states
 
-Losses are not spread evenly. The marketplace losses depend on the state, and the Medicaid layer lands only in states that expanded Medicaid. Switch the map between the modeled growth, the number of adults added, and what already happened to plan selections. Click a county to set the planner to it. [Go to the planner](#tool).
+Selections count everyone who picked a plan. Only some paid.
 {: .ex-lede}
 
 </div>
 
-<figure class="ex-wide ex-figure" id="fig-map">
+<figure class="ex-wide ex-figure ex-figure--notes" id="fig-states" aria-labelledby="t-states">
+<div class="ex-figure__head">
+<h3 class="ex-figure__title" id="t-states">Share of plan selections paid up, by state</h3>
+</div>
+<div class="p11-sortline">
+<label for="sort-states">Sorted by</label>
+<select class="ex-select" id="sort-states">
+<option value="paid">Paid share, February 2026</option>
+<option value="drop">Fall in paid share</option>
+<option value="name">State name</option>
+</select>
+</div>
+<div class="ex-chart" id="chart-states"></div>
+<div class="ex-sidenotes">
+<p class="ex-note" id="state-line" hidden></p>
+<p class="ex-note"><strong>Why they fell.</strong> Paid share falls as automatic re-enrollment rises across states (r = −0.76).</p>
+<p class="ex-note"><strong>Two exceptions.</strong> North Carolina and West Virginia did not fall.</p>
+</div>
+<details class="ex-notes">
+<summary>Notes and data<span class="ex-vh"> on what changed</span></summary>
+<p>Share of all plan selections paid up by February, 30 HealthCare.gov states. The data table also has low-income plan selections (100 to 200% of poverty) for 2025 and 2026.</p>
+<p class="ex-source">Source: CMS Open Enrollment 2025 and 2026; CMS monthly effectuated enrollment, February 2025 and 2026.</p>
+<div id="table-states"></div>
+<p>In the 2,054 matched counties, plan selections fell 5.4% between the 2025 and 2026 enrollment periods, from 16,662,905 to 15,771,373. Selections at 100 to 200% of poverty fell 3.9%. The larger change is who paid.</p>
+<p><strong>Fewer people with paid marketplace coverage, 14.8%.</strong> 87.4% of selections were paid up by February 2025 and 78.7% by February 2026: 2,152,711 fewer people. We estimate 1,344,887 fewer paid adults at 100 to 200% of poverty.</p>
+<p id="state-facts"></p>
+<p><strong>Your state tells you most of it.</strong> States explain 43% of the variance in county change in the 100 to 150% band. For a county's 150 to 200% change, the average of the state's other counties beat the national average and no change (error 0.111 against 0.135 and 0.175). The state's other counties predict your county better than your county's own numbers do.</p>
+<p><strong>Counties that fell furthest.</strong> These counties fell furthest after adjusting for noise (pulling each county toward its state average), among those with at least 500 selections in 2025. Seven of the ten are in North Carolina. The first and third rows are likely overstated: see Limits.</p>
+<div class="ex-table-wrap p11-full" role="region" tabindex="0" aria-label="Scrollable table of the ten counties with the largest fall in selections">
+<table class="ex-table" id="top10-table">
+<caption>Ten counties with the largest stability-adjusted fall in low-income selections (at least 500 in 2025)</caption>
+<thead><tr><th scope="col">County</th><th scope="col">Selections 2025</th><th scope="col">Selections 2026</th><th scope="col">Raw change</th><th scope="col">Adjusted change</th></tr></thead>
+<tbody></tbody>
+</table>
+</div>
+</details>
+</figure>
+</section>
+
+<section class="ex-section" id="ahead">
+<div class="ex-prose" markdown="1">
+
+## The uninsured pool grows fastest where Medicaid expanded
+
+Click a county to set the planner to it, or use the county search in the planner.
+{: .ex-lede}
+
+</div>
+
+<figure class="ex-wide ex-figure ex-figure--notes" id="fig-map" aria-labelledby="t-map">
+<div class="ex-figure__head">
+<h3 class="ex-figure__title" id="t-map">Growth in the uninsured pool, 2027 compared with 2024</h3>
+</div>
 <div class="ex-toolbar p11-maptools">
 <fieldset class="ex-field">
 <legend class="ex-label">Show</legend>
 <div class="ex-seg" id="seg-metric">
 <label><input type="radio" name="metric" value="growth" checked><span>Growth</span></label>
 <label><input type="radio" name="metric" value="added"><span>Adults added</span></label>
-<label><input type="radio" name="metric" value="obs"><span>Fall in selections</span></label>
 </div>
 </fieldset>
-<fieldset class="ex-field" id="map-scen-field">
+<fieldset class="ex-field">
 <legend class="ex-label">Scenario</legend>
 <div class="ex-seg" id="seg-scen2">
 <label><input type="radio" name="scen2" value="0"><span>Lower</span></label>
@@ -326,219 +371,77 @@ Losses are not spread evenly. The marketplace losses depend on the state, and th
 <select class="ex-select" id="zoom-state"><option value="">All 30 states</option></select>
 </div>
 </div>
-<p class="ex-hint" id="map-scen-note" hidden>Plan selections are observed, so the scenario does not apply.</p>
-<div class="ex-figure__head">
-<h3 class="ex-figure__title" id="t-map"></h3>
-<p class="ex-figure__sub" id="s-map"></p>
-</div>
 <div class="p11-maplegend">
 <div id="ramp-map"></div>
 <ul class="ex-legend" aria-label="Legend" id="legend-map"></ul>
 </div>
 <div class="ex-chart p11-map" id="chart-map"></div>
-<div class="p11-pin" id="map-pin" hidden>
-<p class="p11-pin__title" id="pin-title"></p>
-<p class="p11-pin__text" id="pin-text"></p>
-<a class="ex-btn ex-btn--gold ex-btn--sm" href="#tool" id="pin-go">See the plan for this county</a>
+<p class="p11-pin" id="map-pin" hidden>
+<strong id="pin-title"></strong>
+<span id="pin-text"></span>
+<a class="ex-link" href="#tool" id="pin-go">See the plan for this county</a>
+</p>
+<div class="ex-sidenotes">
+<p class="ex-note" id="nat-note"></p>
+<p class="ex-note"><strong>Grey.</strong> The state is not in the CMS county files.</p>
 </div>
-<figcaption>Hover, tap or click a county to read it and set the planner to it. On a phone, use Zoom to for your state. With a keyboard, use the county search in the planner and the data table below.</figcaption>
+<details class="ex-notes">
+<summary>Notes and data<span class="ex-vh"> on the map</span></summary>
+<p id="map-def"></p>
 <p class="ex-source">Source: CMS Open Enrollment 2025 and 2026; CMS effectuated enrollment; Census SAHIE 2024; Medicaid.gov; Primordial Analytics model. County shapes: us-atlas 3.0.1 (Census).</p>
-<details class="ex-data"><summary>Data table for this map (2,054 counties)</summary><div id="table-map"></div></details>
-</figure>
-
-<figure class="ex-wide ex-figure" id="fig-rank">
-<div class="ex-figure__head">
-<h3 class="ex-figure__title" id="t-rank"></h3>
-<p class="ex-figure__sub" id="s-rank"></p>
-</div>
-<ul class="ex-legend" aria-label="Legend">
-<li><span class="p11-key p11-key--est" aria-hidden="true"></span>Median county, modeled</li>
-<li><span class="p11-key p11-key--dot" aria-hidden="true"></span>Medicaid expansion state</li>
-<li><span class="ex-key ex-key--ring" aria-hidden="true"></span>Your state</li>
-</ul>
-<div class="ex-chart" id="chart-rank"></div>
-<div class="p11-figbtn"><button class="ex-btn ex-btn--ghost ex-btn--sm" type="button" id="toggle-rank" aria-pressed="false">Show all 30 states</button></div>
-<figcaption>The 30 HealthCare.gov states. Other states run their own exchanges and are not in the CMS county files.</figcaption>
-<p class="ex-source">Source: Primordial Analytics model on CMS, Census and Medicaid.gov data.</p>
-<details class="ex-data"><summary>Data table for this chart</summary><div id="table-rank"></div></details>
+<p>The adjusted change in the county table is pulled toward the state average. It is noisy where a county had under 100 selections or a suppressed cell, and the county CSV flags those counties.</p>
+<div id="table-map"></div>
+<div id="table-rank"></div>
+<div id="table-hist"></div>
+<div id="table-nat"></div>
+<p>The central scenario adds a median of 1,640,179 uninsured adults at or below 200% of poverty (80% interval 1,039,504 to 2,454,496), about 25.7% of the 2024 pool of 6,364,883 (the median of the draws' ratios). Marketplace losses alone add 965,227; the Medicaid layer alone adds 609,298. These are medians of separate draws, so the two layers do not add up to the total.</p>
+<p>This counts the whole rise from the 2024 baseline, including the losses your last 12 months of visits already hold. The clinic planner above removes that part.</p>
+<p>The Medicaid layer roughly doubles the higher scenario. Scenario inputs are assumptions, not forecasts. Marketplace losses alone cluster in one group of counties; the Medicaid layer adds a second group in expansion states. In the tables above, the national rows show the 10th, 50th and 90th percentile of 10,000 draws, and counties at 95% growth or more are in the last row of the histogram table.</p>
+<p>The map covers the 30 HealthCare.gov states. Other states run their own exchanges and are not in the CMS county files. Hover, tap or click a county to read it and set the planner to it. On a phone, use Zoom to for your state. With a keyboard, use the county search in the planner and the data table above. Where people moved into a state program, the observed fall and the growth built on it are overstated: see Limits.</p>
+</details>
 </figure>
 </section>
 
-<section class="ex-section" id="observed">
+<section class="ex-section" id="limits">
 <div class="ex-prose" markdown="1">
 
-## What already changed
+## Six limits on these numbers
 
-In the 2,054 matched counties, plan selections fell 5.4% between the 2025 and 2026 enrollment periods, from 16,662,905 to 15,771,373. Selections at 100 to 200% of poverty fell 3.9%. The larger change is who paid.
-{: .ex-lede}
-
-<div class="ex-keyfig">
-<span class="ex-keyfig__value">14.8%</span>
-<p class="ex-keyfig__text"><strong>Fewer people with paid marketplace coverage.</strong> 87.4% of selections were paid up by February 2025 and 78.7% by February 2026: 2,152,711 fewer people. We estimate 1,344,887 fewer paid adults at 100 to 200% of poverty.</p>
-</div>
-
-</div>
-
-<figure class="ex-wide ex-figure" id="fig-states">
-<div class="ex-toolbar">
-<div class="ex-field">
-<label class="ex-label" for="sort-states">Sort states by</label>
-<select class="ex-select" id="sort-states">
-<option value="paid">Paid share, February 2026</option>
-<option value="change">Change in selections</option>
-<option value="name">State name</option>
-</select>
-</div>
-</div>
-<p class="p11-stateline" id="state-line" hidden></p>
-<div class="ex-figure__head">
-<h3 class="ex-figure__title" id="t-states"></h3>
-<p class="ex-figure__sub">Low-income plan selections (100 to 200% of poverty) and the share of all selections paid up by February, 30 HealthCare.gov states.</p>
-</div>
-<ul class="ex-legend" aria-label="Legend">
-<li><span class="ex-key ex-key--obs" aria-hidden="true"></span>Change in selections, 2025 to 2026</li>
-<li><span class="p11-key p11-key--open" aria-hidden="true"></span>Paid share, Feb 2025</li>
-<li><span class="p11-key p11-key--solid" aria-hidden="true"></span>Paid share, Feb 2026</li>
-<li><span class="ex-key ex-key--ring" aria-hidden="true"></span>Your state</li>
+<ul class="ex-limits">
+<li>Plan selections are not paid coverage; we apply the state's paid share everywhere.</li>
+<li>Some of the drop is people who never used care.</li>
+<li>Nothing here is causal: credit expiry, enrollment cleanup and the economy move together.</li>
+<li>The Medicaid layer is a placeholder, not a forecast.</li>
+<li>Intervals hold only inside each scenario's assumptions, and outcomes cannot check them.</li>
+<li>Some county falls are overstated where people moved to a state program.</li>
 </ul>
-<div class="ex-chart" id="chart-states"></div>
-<figcaption>Every state's paid share fell except North Carolina's and West Virginia's. Paid share falls as automatic re-enrollment rises across states (r = −0.76).</figcaption>
-<p class="ex-source">Source: CMS Open Enrollment 2025 and 2026; CMS monthly effectuated enrollment, February 2025 and 2026.</p>
-<details class="ex-data"><summary>Data table for this chart</summary><div id="table-states"></div></details>
-</figure>
 
+</div>
+
+<details class="ex-notes p11-detail">
+<summary>Detail on each limit</summary>
 <div class="ex-prose" markdown="1">
 
-### Your state tells you most of it
-
-States explain 43% of the variance in county change in the 100 to 150% band. For a county's 150 to 200% change, the average of the state's other counties beat the national average and no change (error 0.111 against 0.135 and 0.175). The state's other counties predict your county better than your county's own numbers do.
-
-The counties below fell furthest after adjusting for noise (pulling each county toward its state average), among those with at least 500 selections in 2025. Seven of the ten are in North Carolina.
-
-</div>
-
-<div class="ex-wide">
-<div class="ex-table-wrap p11-full" role="region" tabindex="0" aria-label="Scrollable table of the ten counties with the largest fall in selections">
-<table class="ex-table" id="top10-table">
-<caption>Ten counties with the largest stability-adjusted fall in low-income selections (at least 500 in 2025)</caption>
-<thead><tr><th scope="col">County</th><th scope="col">Selections 2025</th><th scope="col">Selections 2026</th><th scope="col">Raw change</th><th scope="col">Adjusted change</th></tr></thead>
-<tbody></tbody>
-</table>
-</div>
-</div>
-
-<div class="ex-callout ex-callout--caution">
-<p class="ex-callout__title">Read the 43% fall with care</p>
-<p>In the state with the 43% fall, some people moved to a <a href="https://healthcare.oregon.gov/Documents/HIMAC%20Materials/2-CY2026%20Assessment%20Analysis%20HIMAC%20FINAL%2006.17.25.pdf">state program</a> for adults at 138 to 200% of poverty rather than becoming uninsured. We did not adjust, so its counties, including the first and third rows of the table, are likely overstated.</p>
-</div>
-</section>
-
-<section class="ex-section" id="scenarios">
-<div class="ex-prose" markdown="1">
-
-## What 2027 could look like
-
-The central scenario adds a median of 1,640,179 uninsured adults at or below 200% of poverty (80% interval 1,039,504 to 2,454,496), about 25.7% of the 2024 pool of 6,364,883 (the median of the draws' ratios). Marketplace losses alone add 965,227; the Medicaid layer alone adds 609,298. These are medians of separate draws, so the two layers do not add up to the total.
-{: .ex-lede}
-
-This counts the whole rise from the 2024 baseline, including the losses your last 12 months of visits already hold. The clinic planner above removes that part.
-
-</div>
-
-<figure class="ex-wide ex-figure" id="fig-nat">
-<div class="ex-figure__head">
-<h3 class="ex-figure__title" id="t-nat"></h3>
-<p class="ex-figure__sub">Additional uninsured adults at or below 200% of poverty in 2027 compared with 2024, across 2,054 counties. Lines show the 10th to 90th percentile of 10,000 draws.</p>
-</div>
-<ul class="ex-legend" aria-label="Legend">
-<li><span class="p11-key p11-key--est" aria-hidden="true"></span>Median, modeled</li>
-<li><span class="p11-key p11-key--whisker" aria-hidden="true"></span>10th to 90th percentile</li>
-</ul>
-<div class="ex-chart" id="chart-nat"></div>
-<figcaption>The Medicaid layer roughly doubles the higher scenario. Scenario inputs are assumptions, not forecasts.</figcaption>
-<p class="ex-source">Source: Primordial Analytics model, 10,000 draws per scenario.</p>
-<details class="ex-data"><summary>Data table for this chart</summary><div id="table-nat"></div></details>
-</figure>
-
-<figure class="ex-wide ex-figure" id="fig-hist">
-<div class="ex-figure__head">
-<h3 class="ex-figure__title" id="t-hist"></h3>
-<p class="ex-figure__sub" id="s-hist"></p>
-</div>
-<ul class="ex-legend" aria-label="Legend">
-<li><span class="p11-key p11-key--est" aria-hidden="true"></span>With the Medicaid layer</li>
-<li><span class="ex-key ex-key--line-strong" aria-hidden="true"></span>Marketplace losses only</li>
-<li><span class="p11-key p11-key--vline" aria-hidden="true"></span>Your county</li>
-</ul>
-<div class="ex-chart" id="chart-hist"></div>
-<figcaption>Marketplace losses alone cluster in one group of counties. The Medicaid layer adds a second group in expansion states. The scenario follows the planner.</figcaption>
-<p class="ex-source">Source: Primordial Analytics model. Counties at 95% growth or more are in the last bar.</p>
-<details class="ex-data"><summary>Data table for this chart</summary><div id="table-hist"></div></details>
-</figure>
-</section>
-
-<section class="ex-section" id="drivers">
-<div class="ex-prose" markdown="1">
-
-## What moves your answer
-
-For the example clinic (480 patients, 1,440 visits and 120 sessions a year, in a county with 5,917 uninsured low-income adults), the central scenario needs 156 sessions at 50% certainty, **174 at 80%** and **196 at 95%**. Going from 80% to 95% costs 22 sessions, 396 volunteer hours and 11 more volunteers.
-{: .ex-lede}
-
-Two assumptions move the 80% answer by about 50 sessions each. Each marketplace assumption moves it by 10 sessions or less.
-
-</div>
-
-<figure class="ex-wide ex-figure" id="fig-tornado">
-<div class="ex-figure__head">
-<h3 class="ex-figure__title" id="t-tornado"></h3>
-<p class="ex-figure__sub">Sessions a year at 80% certainty for the example clinic when one assumption moves from its low to its high end. All others stay central.</p>
-</div>
-<ul class="ex-legend" aria-label="Legend">
-<li><span class="p11-key p11-key--est" aria-hidden="true"></span>Sessions with that assumption moved, modeled</li>
-<li><span class="ex-key ex-key--ref" aria-hidden="true"></span>Central case</li>
-</ul>
-<div class="ex-chart" id="chart-tornado"></div>
-<figcaption>A larger pool, or more of the 2026 loss already in your visits, means fewer sessions. That is why some bars run the other way.</figcaption>
-<p class="ex-source">Source: Primordial Analytics model, example clinic in a mid-sized Medicaid expansion county.</p>
-<details class="ex-data"><summary>Data table for this chart</summary><div id="table-tornado"></div></details>
-</figure>
-
-<div class="ex-prose" markdown="1">
-
-<div class="ex-callout">
-<p class="ex-callout__title">The number you control</p>
-<p>The new-patient rate is the weakest link in the model and the one only you can replace. Log new uninsured patients each month, and the month their coverage ended. After three months of 2027, compare your count with the planner's "new patients expected" row and move up or down a scenario. The Excel planner has an intake guide for this.</p>
-</div>
-
-</div>
-</section>
-
-<section class="ex-section ex-band ex-band--tint" id="limits">
-<div class="ex-prose" markdown="1">
-
-## What this does not tell you
-
-</div>
-
-<div class="ex-wide ex-callout" markdown="1">
-<p class="ex-callout__title">A planning range, not a forecast</p>
-
-Read these before you put a number in a request.
+**A planning range, not a forecast.** Read these before you put a number in a request.
 
 - **Selections are not paid coverage.** Paid share is observed by state only, and we apply it to every county and income level.
 - **Some of the drop is people who never used care.** HHS's [ASPE brief][aspe] estimates 2.6 million improper or phantom enrollments remain after 2.9 million were removed or blocked. Our assumed uninsured share (30% to 70%) absorbs that.
 - **Nothing here is causal.** Credit expiry, enrollment cleanup, North Carolina's Medicaid expansion and the economy move the same numbers. Losses are counted from February 2025 against a 2024 baseline, so any change in between is missing.
 - **The Medicaid layer is a placeholder.** Hawaii shows the problem: 73% median county growth. Counties with under 500 uninsured low-income adults (785) have unstable growth rates, and the CSV flags them. The map hatches them.
 - **The intervals are conditional.** The 80% interval and the 80% and 95% session answers hold within one scenario's assumptions and leave out the spread between scenarios. Nothing here can be checked against outcomes, so an 80% is a statement about our assumptions, not a hit rate.
+- **Read the 43% fall with care.** In the state with the 43% fall, some people moved to a <a href="https://healthcare.oregon.gov/Documents/HIMAC%20Materials/2-CY2026%20Assessment%20Analysis%20HIMAC%20FINAL%2006.17.25.pdf">state program</a> for adults at 138 to 200% of poverty rather than becoming uninsured. We did not adjust, so its counties, including the first and third rows of the table of counties that fell furthest, are likely overstated.
 
 </div>
+</details>
 </section>
 
 <section class="ex-section" id="methods">
-<h2 class="ex-h2">How we did it</h2>
+<div class="ex-prose">
+<h2>Method and downloads</h2>
+<p>We combined public CMS, Census and Medicaid files and ran 10,000 simulations for each scenario. Sources and checks are in the notes below.</p>
+</div>
 <details class="ex-methods ex-wide">
-<summary><span>Methods, validation and sources<small>For the analyst who will check the work</small></span></summary>
+<summary><span>Methods, sources and checks</span></summary>
 <div class="ex-methods__body">
 
 <div class="ex-prose" markdown="1">

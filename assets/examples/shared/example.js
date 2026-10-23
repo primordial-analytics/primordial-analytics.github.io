@@ -4,7 +4,7 @@
 
     Ex.ready(fn)                       run fn when the DOM is ready
     Ex.el(tag, attrs, kids)            build a DOM node (text goes in as text, never as HTML)
-    Ex.fmt.*                           number, percent, currency formatting
+    Ex.fmt.*                           number, percent, currency formatting; approx and oneIn round for prose
     Ex.reducedMotion()                 true when the viewer asked for less motion
     Ex.css(name)                       read a CSS custom property, e.g. Ex.css("--ex-c-est")
     Ex.live(msg)                       announce a message to screen readers
@@ -17,11 +17,12 @@
     Ex.range(input, opts)              range slider with a live output and filled track
     Ex.copy(text)                      copy to clipboard; buttons with [data-ex-copy] are wired up
     Ex.dataTable(host, opts)           accessible table fallback, built lazily inside <details>
+    Ex.directLabels(g, items, opts)    labels on the marks themselves (spread so they do not overlap), instead of a legend
     Ex.assetUrl(name)                  URL of a file in assets/examples/shared/ (e.g. the county map)
     Ex.loadData(url)                   fetch JSON (default: the page's data-ex-data file)
     Ex.showError(el, msg)              plain error message in place of a chart
 
-  The page chrome (sticky nav, scrollspy, reading progress) starts by itself.
+  The page chrome (sticky nav, scrollspy) starts by itself.
 */
 (function (global) {
   "use strict";
@@ -123,6 +124,33 @@
         }
       }
       return fixMinus(intl(0).format(v));
+    },
+    /**
+     * Round for prose: to `sig` significant digits (default 2), words for millions and billions.
+     * approx(5818) -> "5,800"; approx(1640179, 3) -> "1.64 million"; approx(2.45e9) -> "2.5 billion".
+     * Exact figures belong in tables, tooltips and downloads.
+     */
+    approx: function (v, sig) {
+      if (v == null || isNaN(v)) return "n/a";
+      var d = sig || 2;
+      var a = Math.abs(v);
+      var units = [
+        [1e9, " billion"],
+        [1e6, " million"],
+      ];
+      for (var i = 0; i < units.length; i++) {
+        if (a >= units[i][0] * 0.9995) {
+          return (v < 0 ? MINUS : "") + intl(d, 0).format(Number((a / units[i][0]).toPrecision(d))) + units[i][1];
+        }
+      }
+      return (v < 0 ? MINUS : "") + intl(0).format(Number(a.toPrecision(d)));
+    },
+    /** a share in words: 0.159 -> "about 1 in 6"; 0.5 -> "about half"; 0.72 -> "about 7 in 10" */
+    oneIn: function (frac) {
+      if (frac == null || isNaN(frac) || frac <= 0 || frac >= 1) return "n/a";
+      if (frac >= 0.45 && frac <= 0.55) return "about half";
+      if (frac < 0.5) return "about 1 in " + Math.round(1 / frac);
+      return "about " + Math.round(frac * 10) + " in 10";
     },
     /** fraction to percent: 0.159 -> "15.9%" */
     pct: function (frac, digits) {
@@ -956,6 +984,52 @@
     el.classList.toggle("is-on", !!text);
   };
 
+  /**
+   * Ex.directLabels(g, items, {x, anchor, gap, min, max, cls})
+   * Put the label on the mark instead of in a legend. items = [{y, text, x?, cls?}] in the plot's pixel space.
+   * Labels are pushed apart to at least `gap` px (default 14) inside [min, max] so none overlap. Returns the d3 selection.
+   * Typical use: the end of each line, one label per series, x = plot width + 8, anchor "start".
+   */
+  Ex.directLabels = function (g, items, o) {
+    o = o || {};
+    var gap = o.gap || 14;
+    var list = items
+      .map(function (it, i) {
+        return { i: i, y: it.y, it: it };
+      })
+      .sort(function (a, b) {
+        return a.y - b.y;
+      });
+    var lo = o.min == null ? -Infinity : o.min;
+    var hi = o.max == null ? Infinity : o.max;
+    list.forEach(function (d, k) {
+      d.p = Math.max(d.y, k ? list[k - 1].p + gap : lo);
+    });
+    for (var k = list.length - 1; k >= 0; k--) {
+      if (list[k].p > hi) list[k].p = hi;
+      if (k < list.length - 1 && list[k].p > list[k + 1].p - gap) list[k].p = list[k + 1].p - gap;
+    }
+    return g
+      .selectAll(null)
+      .data(list)
+      .enter()
+      .append("text")
+      .attr("class", function (d) {
+        return "ex-svg-label ex-svg-label--direct " + (d.it.cls || o.cls || "");
+      })
+      .attr("x", function (d) {
+        return d.it.x == null ? o.x || 0 : d.it.x;
+      })
+      .attr("y", function (d) {
+        return d.p;
+      })
+      .attr("dy", "0.32em")
+      .attr("text-anchor", o.anchor || "start")
+      .text(function (d) {
+        return d.it.text;
+      });
+  };
+
   /* ---------- data ---------- */
 
   var cache = {};
@@ -983,7 +1057,7 @@
     el.appendChild(Ex.el("div", { class: "ex-callout ex-callout--caution", role: "alert" }, [Ex.el("p", { class: "ex-callout__title", text: msg || "This chart did not load. The data table below has the same numbers." })]));
   };
 
-  /* ---------- page chrome: nav offsets, scrollspy, progress ---------- */
+  /* ---------- page chrome: nav offsets, scrollspy ---------- */
 
   function initChrome() {
     var root = doc.documentElement;
@@ -999,9 +1073,12 @@
     var current = -1;
     var ticking = false;
 
+    var navEl = sub.querySelector(".ex-subnav__nav");
     function measure() {
+      navEl.classList.toggle("is-scrollable", scroller.scrollWidth > scroller.clientWidth + 1);
       if (nav) root.style.setProperty("--ex-nav-h", Math.round(nav.getBoundingClientRect().height) + "px");
-      root.style.setProperty("--ex-subnav-h", Math.round(sub.getBoundingClientRect().height) + "px");
+      var stuck = global.getComputedStyle(sub).position === "sticky";
+      root.style.setProperty("--ex-subnav-h", stuck ? Math.round(sub.getBoundingClientRect().height) + "px" : "0px");
     }
     function update() {
       ticking = false;
@@ -1025,10 +1102,6 @@
           scroller.scrollTo({ left: a.offsetLeft - (scroller.clientWidth - a.offsetWidth) / 2, behavior: Ex.reducedMotion() ? "auto" : "smooth" });
         }
       }
-      var mr = main.getBoundingClientRect();
-      var total = mr.height - global.innerHeight;
-      var p = total > 0 ? Math.min(1, Math.max(0, -mr.top / total)) : 0;
-      sub.style.setProperty("--ex-progress", p.toFixed(4));
     }
     function onScroll() {
       if (!ticking) {

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
 {%- comment -%}
-  Layout for the example pages (09, 10, 11): short hero, headline tiles, sticky section nav, content, downloads, CTA.
+  Layout for the example pages (09, 10, 11): hero (persona, title, question), sticky section nav (five links at most), "In brief" (sentences plus headline numbers), content, downloads list, closing CTA.
   Page code lives in assets/examples/<nn>/ and the shared kit in assets/examples/shared/ (CLAUDE.md, content model).
   Front matter read here:
-    persona, title, question, hero_note, stats[], sections[], downloads[],
+    persona, title, question, hero_note, brief, stats[], sections[], downloads[],
     cta {heading, text, button}, data, extra_css[], extra_scripts[]
 {%- endcomment -%}
 
@@ -36,8 +36,6 @@
 
 <noscript><div class="ex-noscript"><div class="ex-callout ex-callout--caution"><p class="ex-callout__title">The charts and tools on this page need JavaScript.</p><p>The text and the downloads work without it.</p></div></div></noscript>
 
-{%- assign stats = page.stats -%}
-
 {%- comment -%} A div, not <header>: the site stylesheet gives every <header> a 75vh height and a hero background. {%- endcomment -%}
 <div class="ex-hero">
   <div class="ex-hero__inner">
@@ -50,8 +48,6 @@
   </div>
 </div>
 
-{% include example/stat-tiles.html stats=stats %}
-
 <div class="ex-subnav" id="ex-subnav">
   <div class="ex-subnav__inner">
     <nav class="ex-subnav__nav" aria-label="On this page">
@@ -59,14 +55,23 @@
         {%- for s in page.sections %}
         <li><a href="#{{ s.id }}">{{ s.label }}</a></li>
         {%- endfor %}
-        {%- if page.downloads %}
+        {%- if page.downloads and page.sections.size < 5 %}
         <li><a href="#downloads">Downloads</a></li>
         {%- endif %}
       </ol>
     </nav>
   </div>
-  <div class="ex-subnav__progress" aria-hidden="true"><span></span></div>
 </div>
+
+{%- if page.brief or page.stats %}
+<section class="ex-section ex-brief">
+  <div class="ex-wide">
+    <p class="ex-brief__label">In brief</p>
+    {% if page.brief %}<p class="ex-brief__text">{{ page.brief }}</p>{% endif %}
+    {% include example/stat-tiles.html stats=page.stats %}
+  </div>
+</section>
+{%- endif %}
 
 {{ content }}
 

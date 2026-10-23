@@ -1,19 +1,19 @@
 {%- comment -%}
-  Downloads band. Input: include.downloads = page.downloads
-  Each: title, file (site path, e.g. /downloads/x.csv), type (CSV, XLSX, JSON), size ("1.1 MB"), description
+  Downloads: a plain list under the method (the layout renders it after the page content).
+  Input: include.downloads = page.downloads
+  Each: title, file (site path, e.g. /downloads/x.csv), type (CSV, XLSX, JSON), size ("1.1 MB"), description (one sentence)
 {%- endcomment -%}
-<section class="ex-section ex-band ex-band--tint ex-downloads" id="downloads" aria-labelledby="downloads-h">
+<section class="ex-section ex-downloads" id="downloads" aria-labelledby="downloads-h">
   <div class="ex-wide">
-    <h2 class="ex-h2" id="downloads-h">Take the data with you</h2>
+    <h3 class="ex-h3" id="downloads-h">Downloads</h3>
     <ul class="ex-downloads__list">
       {%- for d in include.downloads %}
       <li class="ex-file">
-        <span class="ex-file__type" aria-hidden="true">{{ d.type }}</span>
-        <div class="ex-file__body">
-          <h3 class="ex-file__title"><a href="{{ d.file | relative_url }}" download>{{ d.title }}<span class="ex-vh"> ({{ d.type }}, {{ d.size }})</span></a></h3>
-          <p class="ex-file__desc">{{ d.description }}</p>
-          <p class="ex-file__meta">{{ d.type }}, {{ d.size }}</p>
+        <div>
+          <p class="ex-file__title"><a href="{{ d.file | relative_url }}" download>{{ d.title }}<span class="ex-vh"> ({{ d.type }}, {{ d.size }})</span></a></p>
+          <p class="ex-file__meta" aria-hidden="true">{{ d.type }}, {{ d.size }}</p>
         </div>
+        <p class="ex-file__desc">{{ d.description }}</p>
       </li>
       {%- endfor %}
     </ul>

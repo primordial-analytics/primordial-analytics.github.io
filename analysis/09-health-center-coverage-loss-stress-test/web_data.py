@@ -161,7 +161,7 @@ def main():
                     "admin_share": r(n["centers_admin_lost_adults_p50"] / n["centers_lost_adults_p50"], 3),
                     "n": int(nums["uds"]["expansion_centers"])},
         "bench": {"n": nb["benchmark_centers"], "reporting": int(nb["centers_expansion_reporting_9d"]), "dropped": int(nb["centers_dropped_by_filters"]), "med": r(nb["benchmark_pct_p50_median"], 2),
-                  "p10": r(nb["benchmark_pct_p50_p10"], 2), "p90": r(nb["benchmark_pct_p50_p90"], 2),
+                  "p10": r(nb["benchmark_pct_p50_p10"], 3), "p90": r(nb["benchmark_pct_p50_p90"], 3),
                   "o3": r(nb["benchmark_share_over_3pct"], 3)},
         "ne": {"subj": [r(ne[f"ne_subject_loss_p{p}"] * 100, 1) for p in (5, 50, 95)],
                "half": [r(ne[f"ne_half_year_equiv_p{p}"] * 100, 1) for p in (5, 50, 95)],

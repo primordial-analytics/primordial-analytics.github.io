@@ -47,6 +47,7 @@
   --ex-line: #dfdcec;
   --ex-line-strong: #c3c0d6;
   --ex-focus: #645211;
+  --ex-ctl: #6f6b91; /* underline of an input: 4.6:1 on white */
 
   /* chart colors: fixed order, never cycled. observed = indigo, estimate = gold, reference = teal.
      Checked with the dataviz validator (--pairs all): lightness band, chroma, CVD and contrast pass. */
@@ -57,8 +58,8 @@
   --ex-c-band-obs: rgba(75, 68, 184, 0.14);
   --ex-strong: var(--ex-ink); /* strong chart ink: values, whiskers, crosshair */
   --ex-sub: var(--ex-ink-2); /* chart labels, legend text */
-  --ex-c-grid: #e6e4ef;
-  --ex-c-axis: #aaa7c2;
+  --ex-c-grid: #eeecf5;
+  --ex-c-axis: #b4b1cb;
   --ex-c-dim: #cfcde0;
   /* sequential, one hue light to dark (7 steps) */
   --ex-seq-1: #f3f2fb;
@@ -80,7 +81,8 @@
   --ex-t-xs: 0.75rem;
   --ex-t-sm: 0.875rem;
   --ex-t-base: 1rem;
-  --ex-t-prose: 1.1875rem;
+  --ex-t-note: 0.8125rem;
+  --ex-t-prose: 1.125rem;
   --ex-t-lg: 1.375rem;
   --ex-t-xl: 1.875rem;
   --ex-t-2xl: 2.5rem;
@@ -94,11 +96,16 @@
   --ex-s6: 2rem;
   --ex-s7: 3rem;
   --ex-s8: 4.5rem;
+  --ex-s9: 6rem;
+  /* whitespace between sections; blocks inside a section use s5 and s6 */
+  --ex-section-pad: clamp(3.25rem, 7vw, 5.5rem);
 
   /* layout */
   --ex-gutter: clamp(1rem, 4vw, 2rem);
   --ex-wide: 72.5rem; /* 1160px */
-  --ex-text-w: 41rem; /* about 68 characters at the prose size */
+  --ex-text-w: 42rem; /* running paragraphs only: about 68 characters at the prose size */
+  --ex-note-w: 15rem; /* margin column beside a figure */
+  --ex-note-gap: 2.5rem;
   --ex-nav-h: 56px; /* set by example.js from #mainNav */
   --ex-subnav-h: 52px;
   --ex-r-lg: 14px;
@@ -215,37 +222,37 @@ main#main.ex:focus {
   overflow: hidden;
 }
 
-/* ---------- hero: short, so the tool is on the first screen ---------- */
+/* ---------- hero: title, the question, and the headline numbers on one dark surface ---------- */
 .ex-hero {
   position: relative;
   isolation: isolate;
   color: #fff;
   background-color: var(--ex-ink);
-  background-image: linear-gradient(105deg, rgba(25, 20, 69, 0.96) 0%, rgba(25, 20, 69, 0.82) 55%, rgba(25, 20, 69, 0.6) 100%),
+  background-image: linear-gradient(105deg, rgba(25, 20, 69, 0.96) 0%, rgba(25, 20, 69, 0.84) 55%, rgba(25, 20, 69, 0.66) 100%),
     url("../../../img/galaxy-darkened.webp");
   background-size: cover;
   background-position: center;
-  padding: 6.25rem var(--ex-gutter) 5rem;
+  padding: 5.5rem var(--ex-gutter) var(--ex-s6);
 }
 .ex-hero__inner {
   max-width: var(--ex-wide);
   margin: 0 auto;
 }
+/* one quiet line: who it is for, and that it is an example. Plain text, no pill. */
 .ex-hero__meta {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem var(--ex-s4);
-  margin-bottom: 0.9rem;
+  align-items: baseline;
+  gap: 0.15rem var(--ex-s5);
+  margin-bottom: var(--ex-s3);
+  font-size: var(--ex-t-sm);
 }
 .ex-hero__persona {
-  display: inline-block;
-  font-size: var(--ex-t-sm);
   font-weight: 500;
   color: #e9e3c6;
-  padding: 0.3rem 0.85rem;
-  border: 1px solid rgba(179, 163, 105, 0.7);
-  border-radius: 999px;
+}
+.ex-hero__note {
+  color: #c9c6e0;
 }
 .ex-hero__title {
   font-family: var(--ex-font-display);
@@ -260,23 +267,16 @@ main#main.ex:focus {
   font-size: clamp(1.05rem, 1.6vw, 1.25rem);
   line-height: 1.4;
   color: #dcd9ee;
-  max-width: 44em;
-  margin-top: 0.75rem;
+  max-width: 40em;
+  margin-top: var(--ex-s3);
   text-wrap: pretty;
-}
-.ex-hero__note {
-  font-size: var(--ex-t-sm);
-  color: #c9c6e0;
 }
 @media (max-width: 639px) {
   .ex-hero {
     padding-top: 5.25rem;
-    padding-bottom: 4.25rem;
+    padding-bottom: var(--ex-s6);
   }
   .ex-hero__meta {
-    margin-bottom: 0.6rem;
-  }
-  .ex-hero__persona {
     font-size: var(--ex-t-xs);
   }
   .ex-hero__title {
@@ -284,10 +284,6 @@ main#main.ex:focus {
   }
   .ex-hero__question {
     font-size: 1rem;
-    margin-top: 0.5rem;
-  }
-  .ex-hero__note {
-    font-size: var(--ex-t-xs);
   }
 }
 .ex-hero :focus-visible,
@@ -295,19 +291,32 @@ main#main.ex:focus {
   outline-color: var(--ex-gold);
 }
 
-/* ---------- stat tiles: one slim row that overlaps the hero edge ---------- */
-.ex-stats-wrap {
-  position: relative;
-  z-index: 2;
-  max-width: calc(var(--ex-wide) + 2 * var(--ex-gutter));
-  margin: -3.5rem auto 0;
-  padding: 0 var(--ex-gutter);
+/* ---------- "In brief": the answer in a few sentences, then the headline numbers in a quiet row. First thing after the section nav. ---------- */
+.ex-section.ex-brief {
+  padding-bottom: var(--ex-s7);
+}
+.ex-brief__label {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ex-ink-3);
+}
+.ex-brief__text {
+  font-family: var(--ex-font-prose);
+  font-size: var(--ex-t-prose);
+  line-height: 1.55;
+  color: var(--ex-text);
+  max-width: 46rem;
+  margin-top: var(--ex-s2);
+  text-wrap: balance;
 }
 .ex-stats {
   display: grid;
-  gap: var(--ex-s3);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin: 0;
+  gap: var(--ex-s4) var(--ex-s6);
+  grid-template-columns: minmax(0, 1fr);
+  margin: var(--ex-s5) 0 0;
 }
 @media (min-width: 900px) {
   .ex-stats--3 {
@@ -319,80 +328,65 @@ main#main.ex:focus {
 }
 .ex-stat {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-rows: auto auto 1fr;
-  align-items: start;
-  background: var(--ex-paper);
-  border: 1px solid var(--ex-line);
-  border-top: 3px solid var(--ex-gold);
-  border-radius: var(--ex-r-lg);
-  padding: var(--ex-s3) var(--ex-s4);
-  box-shadow: var(--ex-shadow);
+  align-content: start;
   min-width: 0;
+  border-top: 1px solid var(--ex-line-strong);
+  padding-top: var(--ex-s3);
 }
 .ex-stat dt,
 .ex-stat dd {
   margin: 0;
 }
 .ex-stat__value {
-  grid-column: 1;
-  grid-row: 1;
+  order: 1;
   font-family: var(--ex-font-display);
-  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  font-size: clamp(1.5rem, 2.4vw, 1.875rem);
   line-height: 1.1;
   color: var(--ex-ink);
   letter-spacing: -0.01em;
   overflow-wrap: break-word;
 }
 .ex-stat__label {
-  grid-column: 1 / -1;
-  grid-row: 2;
+  order: 2;
   font-size: var(--ex-t-sm);
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--ex-ink-2);
-  margin-top: 0.2rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--ex-ink);
+  margin-top: 0.3rem;
 }
 .ex-stat__note {
-  grid-column: 1 / -1;
-  grid-row: 3;
+  order: 3;
   font-size: var(--ex-t-xs);
   line-height: 1.4;
   color: var(--ex-muted);
-  margin-top: 0.25rem;
+  margin-top: 0.2rem;
 }
-/* observed or estimate: the same swatches as the charts, top right of the tile */
-.ex-stat__kind {
-  grid-column: 2;
-  grid-row: 1;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: var(--ex-t-xs);
-  font-weight: 500;
-  color: var(--ex-muted);
-  margin-top: 0.3rem;
+
+@media (max-width: 639px) {
+  .ex-brief__text {
+    font-size: 1.0625rem;
+    line-height: 1.5;
+  }
 }
 @media (max-width: 899px) {
-  .ex-stats--3 .ex-stat:last-child {
-    grid-column: 1 / -1;
-  }
-}
-@media (max-width: 639px) {
-  .ex-stats-wrap {
-    margin-top: -3rem;
+  .ex-stats {
+    gap: var(--ex-s3);
+    margin-top: var(--ex-s4);
   }
   .ex-stat {
-    padding: var(--ex-s2) var(--ex-s3);
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    column-gap: var(--ex-s3);
+    padding-top: var(--ex-s2);
   }
   .ex-stat__value {
-    font-size: 1.375rem;
+    grid-row: 1 / span 2;
+    font-size: 1.25rem;
   }
   .ex-stat__label {
-    font-size: var(--ex-t-xs);
+    margin-top: 0.15rem;
   }
   .ex-stat__note {
-    display: none;
+    grid-column: 2;
   }
 }
 
@@ -464,23 +458,18 @@ main#main.ex:focus {
   border-top: 3px dashed var(--ex-strong);
 }
 
-/* ---------- sticky in-page nav ---------- */
+/* ---------- sticky in-page nav: five text links at most ---------- */
 .ex-subnav {
   position: sticky;
   top: var(--ex-nav-h);
   z-index: 900;
-  margin-top: var(--ex-s5);
-  background: rgba(255, 255, 255, 0.97);
-  -webkit-backdrop-filter: saturate(1.4) blur(10px);
-  backdrop-filter: saturate(1.4) blur(10px);
+  background: var(--ex-paper);
   border-bottom: 1px solid var(--ex-line);
 }
 .ex-subnav__inner {
   max-width: calc(var(--ex-wide) + 2 * var(--ex-gutter));
   margin: 0 auto;
   padding: 0 var(--ex-gutter);
-}
-.ex-subnav__inner {
   display: flex;
   align-items: center;
   gap: var(--ex-s5);
@@ -489,7 +478,7 @@ main#main.ex:focus {
   flex: 1 1 auto;
   min-width: 0;
 }
-/* a live readout (Ex.navReadout) rides in the section nav on wide screens */
+/* a live readout (Ex.navReadout) rides in the section nav on wide screens: plain text */
 .ex-navread {
   display: none;
   flex: none;
@@ -498,10 +487,6 @@ main#main.ex:focus {
   color: var(--ex-ink);
   font-weight: 600;
   white-space: nowrap;
-  padding: 0.25rem 0.75rem;
-  border-radius: 999px;
-  background: var(--ex-gold-tint);
-  border: 1px solid var(--ex-line);
 }
 @media (min-width: 900px) {
   .ex-navread.is-on {
@@ -510,7 +495,7 @@ main#main.ex:focus {
 }
 .ex-subnav__nav ol {
   display: flex;
-  gap: var(--ex-s5);
+  gap: var(--ex-s6);
   overflow-x: auto;
   scrollbar-width: none;
   scroll-snap-type: x proximity;
@@ -523,12 +508,12 @@ main#main.ex:focus {
 .ex-subnav__nav a {
   display: block;
   white-space: nowrap;
-  padding: 0.95rem 0 0.8rem;
+  padding: 0.9rem 0 0.75rem;
   font-size: var(--ex-t-sm);
   font-weight: 500;
   color: var(--ex-muted);
   text-decoration: none;
-  border-bottom: 3px solid transparent;
+  border-bottom: 2px solid transparent;
   scroll-snap-align: center;
 }
 .ex-subnav__nav a:hover {
@@ -537,29 +522,20 @@ main#main.ex:focus {
 .ex-subnav__nav a[aria-current="location"] {
   color: var(--ex-ink);
   font-weight: 600;
-  border-bottom-color: var(--ex-gold);
-}
-.ex-subnav__progress {
-  height: 2px;
-  background: transparent;
-}
-.ex-subnav__progress span {
-  display: block;
-  height: 100%;
-  width: 100%;
-  background: var(--ex-ink);
-  transform-origin: 0 50%;
-  transform: scaleX(var(--ex-progress, 0));
+  border-bottom-color: var(--ex-ink);
 }
 @media (max-width: 639px) {
   .ex-subnav {
-    margin-top: var(--ex-s4);
+    position: static;
   }
   .ex-subnav__nav ol {
     gap: var(--ex-s4);
   }
-  /* a fade on the right edge says the row scrolls */
-  .ex-subnav__nav {
+  .ex-subnav__nav a {
+    font-size: 0.8125rem;
+  }
+  /* a fade on the right edge says the row scrolls, only when it does */
+  .ex-subnav__nav.is-scrollable {
     -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 2.25rem), transparent);
     mask-image: linear-gradient(90deg, #000 calc(100% - 2.25rem), transparent);
   }
@@ -567,7 +543,8 @@ main#main.ex:focus {
 
 /* ---------- content grid ----------
    Every .ex-section (and band) is a grid: text column in the middle, a wide track around it,
-   gutters outside. Children default to the text column; add .ex-wide or .ex-full to break out. */
+   gutters outside. Children default to the text column; add .ex-wide or .ex-full to break out.
+   Whitespace does the separating: sections are far apart, blocks inside a section are near. */
 .ex-section {
   display: grid;
   grid-template-columns:
@@ -575,17 +552,23 @@ main#main.ex:focus {
     [text-start] min(var(--ex-text-w), calc(100% - 2 * var(--ex-gutter)))
     [text-end] minmax(var(--ex-gutter), 1fr)
     [full-end];
-  padding-block: clamp(2.25rem, 5vw, 3.75rem);
+  padding-block: var(--ex-section-pad);
 }
 .ex-section > * {
   grid-column: text;
   min-width: 0;
 }
 /* the text column lines up with the left edge of the wide content instead of floating in the middle */
-.ex-section > :not(.ex-wide):not(.ex-full) {
+.ex-section > :not(.ex-wide):not(.ex-full):not(.ex-prose) {
   grid-column: full;
   justify-self: start;
   width: min(var(--ex-text-w), calc(100% - 2 * var(--ex-gutter)));
+  margin-left: max(var(--ex-gutter), calc((100% - var(--ex-wide)) / 2));
+}
+.ex-section > .ex-prose {
+  grid-column: full;
+  justify-self: start;
+  width: min(var(--ex-wide), calc(100% - 2 * var(--ex-gutter)));
   margin-left: max(var(--ex-gutter), calc((100% - var(--ex-wide)) / 2));
 }
 .ex-section > .ex-wide {
@@ -596,8 +579,11 @@ main#main.ex:focus {
 .ex-section > .ex-full {
   grid-column: full;
 }
-.ex-section:not(.ex-band) + .ex-section:not(.ex-band) {
+.ex-section:not(.ex-band--ink) + .ex-section:not(.ex-band--ink) {
   padding-top: 0;
+}
+.ex-subnav + .ex-section {
+  padding-top: var(--ex-s5);
 }
 .ex-section > * + * {
   margin-top: var(--ex-s6);
@@ -605,12 +591,13 @@ main#main.ex:focus {
 .ex-section > .ex-h2 + * {
   margin-top: var(--ex-s4);
 }
+/* bands: only the ink band is a surface. "tint" is kept so old markup still works, but it is plain page now. */
 .ex-band {
-  padding-block: clamp(2.25rem, 5vw, 3.75rem);
+  padding-block: var(--ex-section-pad);
 }
 .ex-band--tint {
-  background: var(--ex-surface);
-  border-block: 1px solid var(--ex-line);
+  background: none;
+  border: 0;
 }
 .ex-band--ink {
   --ex-text: #ecebf7;
@@ -646,22 +633,21 @@ main#main.ex:focus {
   --ex-line: rgba(255, 255, 255, 0.16);
   --ex-paper: #191445;
 }
-/* page background behind a chart band that follows prose */
+/* section headline: the finding, in 12 words or fewer */
 .ex-section > .ex-h2,
 .ex-h2 {
   font-family: var(--ex-font-display);
-  font-size: clamp(1.75rem, 3.2vw, 2.375rem);
-  line-height: 1.12;
+  font-size: clamp(1.625rem, 2.8vw, 2.125rem);
+  line-height: 1.15;
   letter-spacing: -0.01em;
   color: var(--ex-ink);
   text-wrap: balance;
 }
 .ex-h3 {
   font-family: var(--ex-font-ui);
-  font-size: var(--ex-t-lg);
+  font-size: var(--ex-t-base);
   font-weight: 600;
-  line-height: 1.25;
-  letter-spacing: -0.005em;
+  line-height: 1.3;
   color: var(--ex-ink);
 }
 .ex-dek {
@@ -673,10 +659,9 @@ main#main.ex:focus {
 
 /* a short heading and one line above a tool, so the tool is on the first screen */
 .ex-prose.ex-toolhead {
-  max-width: 44rem;
+  max-width: none;
 }
 .ex-prose.ex-toolhead h2 {
-  font-size: clamp(1.5rem, 2.4vw, 1.875rem);
   margin-top: 0;
 }
 .ex-prose.ex-toolhead .ex-lede {
@@ -691,7 +676,7 @@ main#main.ex:focus {
 .ex-prose {
   font-family: var(--ex-font-prose);
   font-size: var(--ex-t-prose);
-  line-height: 1.62;
+  line-height: 1.65;
   color: var(--ex-text);
   font-optical-sizing: auto;
   hanging-punctuation: first;
@@ -699,23 +684,27 @@ main#main.ex:focus {
 .ex-prose > * + * {
   margin-top: 1.1em;
 }
+/* the heading takes the full content width; running text keeps a readable measure */
+.ex-prose > :where(p, ul, ol, table, hr, dl, blockquote, .ex-callout, .ex-keyfig) {
+  max-width: var(--ex-text-w);
+}
 .ex-prose p {
   line-height: inherit;
   text-wrap: pretty;
 }
 .ex-prose h2 {
   font-family: var(--ex-font-display);
-  font-size: clamp(1.75rem, 3.2vw, 2.375rem);
-  line-height: 1.12;
+  font-size: clamp(1.625rem, 2.8vw, 2.125rem);
+  line-height: 1.15;
   letter-spacing: -0.01em;
   margin-top: 2.2em;
   text-wrap: balance;
 }
 .ex-prose h3 {
   font-family: var(--ex-font-ui);
-  font-size: var(--ex-t-lg);
+  font-size: var(--ex-t-base);
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.3;
   margin-top: 1.9em;
 }
 .ex-prose h2 + *,
@@ -760,7 +749,7 @@ main#main.ex:focus {
 }
 .ex-prose .ex-lede,
 .ex-lede {
-  font-size: 1.375rem;
+  font-size: 1.3125rem;
   line-height: 1.5;
   color: var(--ex-ink);
 }
@@ -804,15 +793,14 @@ main#main.ex:focus {
   font-variant-numeric: tabular-nums;
 }
 
-/* ---------- callouts, margin notes, key figure ---------- */
+/* ---------- callouts, notes, key figure: typography, not boxes ---------- */
+/* A callout is a paragraph with a rule on its left edge. No tint, no border box. */
 .ex-callout {
   font-family: var(--ex-font-ui);
-  font-size: var(--ex-t-base);
+  font-size: 0.9375rem;
   line-height: 1.55;
-  background: var(--ex-gold-tint);
-  border-left: 4px solid var(--ex-gold);
-  border-radius: 0 var(--ex-r-md) var(--ex-r-md) 0;
-  padding: var(--ex-s4) var(--ex-s5);
+  border-left: 2px solid var(--ex-gold);
+  padding-left: var(--ex-s4);
 }
 .ex-callout > * + * {
   margin-top: var(--ex-s2);
@@ -820,72 +808,218 @@ main#main.ex:focus {
 .ex-callout__title {
   font-weight: 600;
   color: var(--ex-ink);
-  font-size: var(--ex-t-base);
 }
 .ex-callout p {
   line-height: 1.55;
 }
 .ex-callout--caution {
-  background: var(--ex-paper);
-  border: 1px solid var(--ex-line-strong);
-  border-left: 4px solid var(--ex-ink);
+  border-left-color: var(--ex-ink);
 }
 .ex-callout ul {
   display: grid;
-  gap: var(--ex-s3);
+  gap: var(--ex-s2);
   list-style: disc;
   padding-left: 1.2rem;
 }
 .ex-callout li {
   line-height: 1.55;
 }
+
+/* Notes: a qualifier, a definition or a source, set small and quiet.
+   .ex-note is the name to use; .ex-aside stays as an alias for older markup.
+   Inline by default. Three places it can sit:
+   - before a paragraph in .ex-prose, with .ex-aside--margin: floats into the right margin at 1280px and up
+   - inside figure.ex-figure--notes, in a .ex-sidenotes column: beside the chart at 1180px and up
+   - anywhere else: a small muted paragraph with a hairline on its left */
+.ex-note,
 .ex-aside {
   font-family: var(--ex-font-ui);
-  font-size: var(--ex-t-sm);
+  font-size: var(--ex-t-note);
   line-height: 1.5;
   color: var(--ex-muted);
-  border-top: 2px solid var(--ex-gold);
-  padding-top: var(--ex-s2);
+  border-left: 1px solid var(--ex-line-strong);
+  padding-left: var(--ex-s3);
 }
+.ex-note p,
 .ex-aside p {
   line-height: 1.5;
 }
+.ex-note p + p,
+.ex-aside p + p {
+  margin-top: var(--ex-s2);
+}
+.ex-note strong,
 .ex-aside strong {
   color: var(--ex-ink);
   font-weight: 600;
 }
-/* On wide screens a margin note floats out beside the text. Place it just before the paragraph it explains. */
+.ex-note a,
+.ex-aside a {
+  color: var(--ex-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--ex-gold);
+  text-underline-offset: 0.18em;
+}
 @media (min-width: 1280px) {
-  .ex-aside--margin {
+  .ex-aside--margin,
+  .ex-note--margin {
     float: right;
     clear: right;
-    width: 14.5rem;
-    margin: 0.35rem -17.25rem 1rem 0;
+    width: var(--ex-note-w);
+    margin: 0.3rem calc(100% - var(--ex-text-w) - var(--ex-note-gap) - var(--ex-note-w)) 1rem 0;
+    border-left: 0;
+    padding-left: 0;
   }
 }
 @media (max-width: 1279px) {
-  .ex-aside--margin {
-    margin-block: var(--ex-s5);
+  .ex-aside--margin,
+  .ex-note--margin {
+    margin-block: var(--ex-s4);
   }
 }
+.ex-sidenotes > * + * {
+  margin-top: var(--ex-s4);
+}
+
+/* A section's "Notes" disclosure, and the same quiet toggle under a chart (.ex-data is an alias).
+   One per section or figure: definitions, intervals, sources and the data table go inside it. */
+.ex-notes,
+.ex-data {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-note);
+  line-height: 1.5;
+  color: var(--ex-muted);
+  margin-top: var(--ex-s4);
+}
+.ex-notes > summary,
+.ex-data > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 1.75rem;
+  padding: 0.2rem 0;
+  font-size: var(--ex-t-note);
+  font-weight: 400;
+  color: var(--ex-ink-3);
+  cursor: pointer;
+}
+.ex-notes > summary:hover,
+.ex-data > summary:hover {
+  color: var(--ex-ink);
+}
+.ex-notes > summary::before,
+.ex-data > summary::before,
+.ex-methods > summary::after {
+  content: "";
+  width: 0.4rem;
+  height: 0.4rem;
+  border: solid currentColor;
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(-45deg);
+  transition: transform 0.15s;
+  flex: none;
+}
+.ex-notes[open] > summary::before,
+.ex-data[open] > summary::before {
+  transform: rotate(45deg);
+}
+.ex-notes__body,
+.ex-notes > :not(summary) {
+  max-width: 42rem;
+}
+.ex-notes > :not(summary) {
+  margin-top: var(--ex-s2);
+}
+/* a disclosure that holds a figure or a wide table: add .ex-wide, text stays at reading width */
+.ex-notes.ex-wide > :not(summary) {
+  max-width: none;
+}
+.ex-notes.ex-wide > p,
+.ex-notes.ex-wide > ul,
+.ex-notes.ex-wide > .ex-source {
+  max-width: 42rem;
+}
+.ex-notes ul {
+  list-style: disc;
+  padding-left: 1.2rem;
+}
+.ex-notes li + li {
+  margin-top: var(--ex-s2);
+}
+.ex-notes dt {
+  font-weight: 600;
+  color: var(--ex-ink);
+  margin-top: var(--ex-s2);
+}
+.ex-notes dd {
+  margin: 0;
+}
+.ex-notes a,
+.ex-data a {
+  color: var(--ex-ink);
+  text-decoration-color: var(--ex-gold);
+  text-underline-offset: 0.18em;
+}
+
+/* a row of text actions (copy, print, link). Not buttons: underlined words. */
+.ex-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem var(--ex-s5);
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+}
+.ex-link,
+.ex a.ex-link {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.2rem 0;
+  margin: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  font: inherit;
+  font-weight: 500;
+  color: var(--ex-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--ex-gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  cursor: pointer;
+}
+.ex-link:hover,
+.ex a.ex-link:hover {
+  color: var(--ex-ink);
+  text-decoration-thickness: 2px;
+}
+.ex-link.is-done {
+  color: var(--ex-good);
+}
+.ex-link[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* one big number with a sentence beside it, inside prose. No rules. */
 .ex-keyfig {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: var(--ex-s4) var(--ex-s5);
+  gap: var(--ex-s2) var(--ex-s5);
   align-items: baseline;
-  padding-block: var(--ex-s5);
-  border-block: 1px solid var(--ex-line);
   font-family: var(--ex-font-ui);
 }
 .ex-keyfig__value {
   font-family: var(--ex-font-display);
-  font-size: clamp(2.5rem, 7vw, 3.75rem);
+  font-size: clamp(2rem, 5vw, 3rem);
   line-height: 1;
   color: var(--ex-ink);
   letter-spacing: -0.01em;
 }
 .ex-keyfig__text {
-  font-size: var(--ex-t-base);
+  font-size: 0.9375rem;
   line-height: 1.45;
   color: var(--ex-muted);
 }
@@ -896,38 +1030,37 @@ main#main.ex:focus {
 @media (max-width: 479px) {
   .ex-keyfig {
     grid-template-columns: 1fr;
-    gap: var(--ex-s2);
   }
 }
 
-/* ---------- figure + caption ---------- */
+/* ---------- figure: title, chart, then get out of the way ---------- */
 .ex-figure {
   font-family: var(--ex-font-ui);
 }
 .ex-figure__head {
-  margin-bottom: var(--ex-s4);
+  margin-bottom: var(--ex-s3);
 }
 .ex-figure__title {
-  font-size: var(--ex-t-lg);
+  font-size: var(--ex-t-base);
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.3;
   color: var(--ex-ink);
-  letter-spacing: -0.005em;
   text-wrap: balance;
 }
 .ex-figure__sub {
-  font-size: var(--ex-t-base);
+  font-size: var(--ex-t-sm);
+  line-height: 1.45;
   color: var(--ex-muted);
-  margin-top: var(--ex-s1);
-  max-width: 44rem;
+  margin-top: 0.15rem;
+  max-width: 40rem;
 }
 .ex-figure figcaption,
 .ex-caption {
-  font-size: var(--ex-t-sm);
+  font-size: var(--ex-t-note);
   line-height: 1.5;
   color: var(--ex-muted);
-  margin-top: var(--ex-s3);
-  max-width: 48rem;
+  margin-top: var(--ex-s2);
+  max-width: 42rem;
 }
 .ex-source {
   font-size: var(--ex-t-xs);
@@ -939,28 +1072,79 @@ main#main.ex:focus {
   display: block;
   max-width: 100%;
   height: auto;
-  border-radius: var(--ex-r-md);
 }
 /* a figure inside the text column that needs more room */
 .ex-figure--bleed {
   margin-inline: calc(var(--ex-gutter) * -1);
 }
-
-/* ---------- panels and the interactive tool ---------- */
-.ex-panel {
-  background: var(--ex-paper);
-  border: 1px solid var(--ex-line);
-  border-radius: var(--ex-r-lg);
-  box-shadow: var(--ex-shadow);
-  padding: clamp(1rem, 3vw, 2rem);
+/* chart on the left, margin notes right beside it: together they fill the content width (inline below 1180px) */
+@media (min-width: 1180px) {
+  .ex-figure--notes:not([hidden]) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--ex-note-w);
+    column-gap: var(--ex-note-gap);
+  }
+  .ex-figure--notes > * {
+    grid-column: 1;
+    min-width: 0;
+  }
+  .ex-figure--notes > .ex-figure__head {
+    grid-column: 1 / -1;
+  }
+  .ex-figure--notes > .ex-sidenotes {
+    grid-column: 2;
+    grid-row: 2 / span 6;
+    align-self: start;
+    padding-top: 0.2rem;
+  }
+  .ex-figure--notes > .ex-sidenotes .ex-note {
+    border-left: 0;
+    padding-left: 0;
+  }
 }
-.ex-band--ink .ex-panel {
-  background: #221c58;
-  box-shadow: none;
+@media (max-width: 1179px) {
+  .ex-figure--notes > .ex-sidenotes {
+    margin-top: var(--ex-s3);
+  }
+  .ex-figure--notes .ex-note {
+    border-left: 0;
+    padding-left: 0;
+  }
+}
+/* a link set inside a hint line reads as part of the sentence */
+.ex .ex-hint .ex-link {
+  display: inline;
+  min-height: 0;
+  font-size: inherit;
+  margin-left: 0.25rem;
+}
+/* the short list of limits: plain lines, no bullets, no box */
+.ex .ex-limits {
+  list-style: none;
+  padding: 0;
+  max-width: none;
+  column-width: 24rem;
+  column-gap: var(--ex-s7);
+  font-family: var(--ex-font-ui);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--ex-ink);
+}
+.ex .ex-limits li {
+  break-inside: avoid;
+  padding: 0 0 var(--ex-s2);
+}
+.ex .ex-limits + .ex-notes {
+  margin-top: var(--ex-s3);
+}
+
+/* ---------- the interactive tool: one hairline above it, no box ---------- */
+.ex-panel {
+  padding-top: var(--ex-s2);
 }
 .ex-tool {
   display: grid;
-  gap: var(--ex-s5);
+  gap: var(--ex-s6);
 }
 .ex-tool__controls {
   display: grid;
@@ -975,66 +1159,70 @@ main#main.ex:focus {
 }
 @media (min-width: 960px) {
   .ex-tool--split {
-    grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr);
-    gap: var(--ex-s6);
+    grid-template-columns: minmax(15rem, 19rem) minmax(0, 1fr);
+    gap: var(--ex-s8);
     align-items: start;
   }
   .ex-tool--split .ex-tool__controls {
     position: sticky;
     top: calc(var(--ex-nav-h) + var(--ex-subnav-h) + var(--ex-s4));
-    padding-right: var(--ex-s6);
-    border-right: 1px solid var(--ex-line);
   }
 }
 .ex-tool__title {
-  font-size: var(--ex-t-lg);
+  font-size: var(--ex-t-base);
   font-weight: 600;
   color: var(--ex-ink);
   line-height: 1.25;
-  margin-bottom: var(--ex-s1);
 }
-/* the answer: a result that updates as controls change (give it aria-live="polite") */
+/* The answer: a number on the page, not a box. Give the wrapper aria-live="polite".
+   One .ex-result on its own is the lead. In .ex-results the first can be .ex-result--lead. */
 .ex-result {
-  background: var(--ex-ink);
-  color: #fff;
-  border-radius: var(--ex-r-lg);
-  padding: var(--ex-s5);
   display: grid;
-  gap: var(--ex-s2);
+  gap: 0.2rem;
+  color: var(--ex-ink);
 }
 .ex-result__label {
   font-size: var(--ex-t-sm);
-  color: #cfcce6;
+  color: var(--ex-muted);
   font-weight: 500;
 }
 .ex-result__value {
   font-family: var(--ex-font-display);
-  font-size: clamp(2.5rem, 6vw, 3.75rem);
+  font-size: clamp(2.75rem, 6.5vw, 4.25rem);
   line-height: 1;
   letter-spacing: -0.01em;
-  color: #fff;
+  color: var(--ex-ink);
   overflow-wrap: anywhere;
 }
 .ex-result__range {
   font-size: var(--ex-t-base);
-  color: #e9e3c6;
+  color: var(--ex-ink-3);
   font-variant-numeric: tabular-nums;
 }
 .ex-result__note {
-  font-size: var(--ex-t-sm);
-  color: #b9b6d3;
+  font-size: var(--ex-t-note);
+  color: var(--ex-muted);
   line-height: 1.45;
 }
 .ex-results {
   display: grid;
-  gap: var(--ex-s3);
-  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--ex-s5) var(--ex-s6);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
 }
 .ex-results .ex-result {
-  padding: var(--ex-s4) var(--ex-s5);
+  border-top: 1px solid var(--ex-line);
+  padding-top: var(--ex-s2);
 }
 .ex-results .ex-result__value {
-  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+}
+.ex-results .ex-result--lead {
+  grid-column: 1 / -1;
+  border-top: 0;
+  padding-top: 0;
+}
+.ex-results .ex-result--lead .ex-result__value {
+  font-size: clamp(2.75rem, 6.5vw, 4.25rem);
 }
 
 /* ---------- side-by-side figures and filter rows ---------- */
@@ -1057,22 +1245,22 @@ main#main.ex:focus {
   max-width: 24rem;
 }
 
-/* ---------- form controls ---------- */
+/* ---------- form controls: labels and underlined fields, no boxes ---------- */
 .ex-field {
   display: grid;
-  gap: var(--ex-s2);
+  gap: var(--ex-s1);
   min-width: 0;
 }
 .ex-label {
   font-family: var(--ex-font-ui);
   font-size: var(--ex-t-sm);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.3;
-  color: var(--ex-ink);
+  color: var(--ex-ink-2);
 }
 .ex-hint {
   font-family: var(--ex-font-ui);
-  font-size: var(--ex-t-xs);
+  font-size: var(--ex-t-note);
   line-height: 1.45;
   color: var(--ex-muted);
 }
@@ -1086,32 +1274,38 @@ main#main.ex:focus {
   font-family: var(--ex-font-ui);
   font-size: 1rem; /* 16px stops iOS zooming on focus */
   color: var(--ex-ink);
-  background: var(--ex-paper);
-  border: 1.5px solid var(--ex-line-strong);
-  border-radius: var(--ex-r-md);
-  padding: 0.62rem 0.85rem;
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1.5px solid var(--ex-ctl);
+  border-radius: 0;
+  padding: 0.55rem 0.1rem 0.45rem;
   min-height: 2.75rem;
   line-height: 1.3;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s;
 }
 .ex-select:hover,
 .ex-input:hover,
 .ex-combo__input:hover {
-  border-color: var(--ex-ink-3);
+  border-bottom-color: var(--ex-ink);
 }
 .ex-select:focus-visible,
 .ex-input:focus-visible,
 .ex-combo__input:focus-visible {
   outline: 3px solid var(--ex-focus);
-  outline-offset: 1px;
-  border-color: var(--ex-ink);
-  border-radius: var(--ex-r-md);
+  outline-offset: 2px;
+  border-bottom-color: var(--ex-ink);
+  border-radius: 2px;
+}
+.ex-input::placeholder,
+.ex-combo__input::placeholder {
+  color: var(--ex-muted);
+  opacity: 1;
 }
 .ex-select {
-  padding-right: 2.5rem;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9' fill='none'%3E%3Cpath d='M1.5 1.75 7 7.25l5.5-5.5' stroke='%2335305E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  padding-right: 1.9rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 14 9' fill='none'%3E%3Cpath d='M1.5 1.75 7 7.25l5.5-5.5' stroke='%2335305E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 0.95rem center;
+  background-position: right 0.15rem center;
   cursor: pointer;
 }
 .ex-input[type="number"] {
@@ -1123,43 +1317,40 @@ main#main.ex:focus {
 .ex-input[type="number"]::-webkit-outer-spin-button {
   opacity: 1;
 }
+/* a number with a unit: the underline belongs to the group, the unit is plain text */
 .ex-input-group {
   display: flex;
   align-items: stretch;
+  border-bottom: 1.5px solid var(--ex-ctl);
+  transition: border-color 0.15s;
+}
+.ex-input-group:hover,
+.ex-input-group:focus-within {
+  border-bottom-color: var(--ex-ink);
 }
 .ex-input-group .ex-input {
-  border-radius: 0;
+  border-bottom: 0;
   min-width: 0;
   flex: 1;
-}
-.ex-input-group .ex-input:first-child {
-  border-top-left-radius: var(--ex-r-md);
-  border-bottom-left-radius: var(--ex-r-md);
-}
-.ex-input-group .ex-input:last-child {
-  border-top-right-radius: var(--ex-r-md);
-  border-bottom-right-radius: var(--ex-r-md);
 }
 .ex-affix {
   display: inline-flex;
   align-items: center;
-  padding: 0 0.8rem;
-  background: var(--ex-surface-2);
-  border: 1.5px solid var(--ex-line-strong);
   font-size: var(--ex-t-sm);
-  color: var(--ex-ink-3);
+  color: var(--ex-muted);
   white-space: nowrap;
 }
 .ex-affix:first-child {
-  border-right: 0;
-  border-radius: var(--ex-r-md) 0 0 var(--ex-r-md);
+  padding-right: 0.35rem;
 }
 .ex-affix:last-child {
-  border-left: 0;
-  border-radius: 0 var(--ex-r-md) var(--ex-r-md) 0;
+  padding-left: 0.5rem;
 }
 .ex-input[aria-invalid="true"] {
-  border-color: var(--ex-bad);
+  border-bottom-color: var(--ex-bad);
+}
+.ex-input-group:has(.ex-input[aria-invalid="true"]) {
+  border-bottom-color: var(--ex-bad);
 }
 .ex-error {
   font-size: var(--ex-t-sm);
@@ -1196,33 +1387,31 @@ main#main.ex:focus {
 .ex-range input[type="range"]::-webkit-slider-runnable-track {
   height: 6px;
   border-radius: 3px;
-  background: linear-gradient(to right, var(--ex-ink) 0 var(--fill), var(--ex-surface-2) var(--fill) 100%);
-  box-shadow: inset 0 0 0 1px var(--ex-line-strong);
+  background: linear-gradient(to right, var(--ex-ink) 0 var(--fill), var(--ex-ctl) var(--fill) 100%);
 }
 .ex-range input[type="range"]::-moz-range-track {
   height: 6px;
   border-radius: 3px;
-  background: linear-gradient(to right, var(--ex-ink) 0 var(--fill), var(--ex-surface-2) var(--fill) 100%);
-  box-shadow: inset 0 0 0 1px var(--ex-line-strong);
+  background: linear-gradient(to right, var(--ex-ink) 0 var(--fill), var(--ex-ctl) var(--fill) 100%);
 }
 .ex-range input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 1.5rem;
-  height: 1.5rem;
-  margin-top: calc((6px - 1.5rem) / 2);
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: calc((6px - 1.25rem) / 2);
   border-radius: 50%;
-  background: var(--ex-gold);
-  border: 3px solid var(--ex-ink);
-  box-shadow: 0 2px 6px rgba(25, 20, 69, 0.3);
+  background: var(--ex-ink);
+  border: 2px solid var(--ex-paper);
+  box-shadow: 0 0 0 1px var(--ex-ink);
   transition: transform 0.12s;
 }
 .ex-range input[type="range"]::-moz-range-thumb {
   width: 1.1rem;
   height: 1.1rem;
   border-radius: 50%;
-  background: var(--ex-gold);
-  border: 3px solid var(--ex-ink);
-  box-shadow: 0 2px 6px rgba(25, 20, 69, 0.3);
+  background: var(--ex-ink);
+  border: 2px solid var(--ex-paper);
+  box-shadow: 0 0 0 1px var(--ex-ink);
 }
 .ex-range input[type="range"]:hover::-webkit-slider-thumb {
   transform: scale(1.08);
@@ -1247,16 +1436,12 @@ main#main.ex:focus {
   font-variant-numeric: tabular-nums;
 }
 
-/* segmented toggle: real radios, so arrow keys and labels work natively */
+/* segmented toggle: real radios, so arrow keys and labels work natively. Looks like a row of words;
+   the chosen one is dark with an underline. */
 .ex-seg {
-  display: inline-grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-  background: var(--ex-surface-2);
-  border: 1.5px solid var(--ex-line-strong);
-  border-radius: var(--ex-r-md);
-  padding: 3px;
-  gap: 2px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0 var(--ex-s5);
   max-width: 100%;
 }
 .ex-seg label {
@@ -1273,24 +1458,21 @@ main#main.ex:focus {
 .ex-seg span {
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
   min-height: 2.25rem;
-  padding: 0.3rem 0.9rem;
-  border-radius: 5px;
+  padding: 0.2rem 0;
+  border-bottom: 2px solid transparent;
   font-family: var(--ex-font-ui);
   font-size: var(--ex-t-sm);
   font-weight: 500;
   color: var(--ex-ink-3);
-  transition: background-color 0.15s, color 0.15s;
+  transition: color 0.15s, border-color 0.15s;
 }
 .ex-seg input:hover + span {
   color: var(--ex-ink);
 }
 .ex-seg input:checked + span {
-  background: var(--ex-ink);
-  color: #fff;
-  font-weight: 600;
+  color: var(--ex-ink);
+  border-bottom-color: var(--ex-ink);
 }
 .ex-seg input:focus-visible + span {
   outline: 3px solid var(--ex-focus);
@@ -1305,14 +1487,14 @@ main#main.ex:focus {
   position: relative;
 }
 .ex-combo__input {
-  padding-right: 4.4rem;
+  padding-right: 3.6rem;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2355507C' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='m20 20-4.8-4.8'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 0.85rem center;
+  background-position: right 0.15rem center;
 }
 .ex-combo__clear {
   position: absolute;
-  right: 2.55rem;
+  right: 1.9rem;
   top: 50%;
   transform: translateY(-50%);
   width: 1.9rem;
@@ -1403,7 +1585,7 @@ main#main.ex:focus {
   color: var(--ex-muted);
 }
 
-/* buttons */
+/* buttons: a filled pill is for the one real call to action. Small buttons look like text links. */
 .ex-btn {
   display: inline-flex;
   align-items: center;
@@ -1466,15 +1648,45 @@ main#main.ex:focus {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
 }
-.ex-btn--sm {
-  min-height: 2.25rem;
-  padding: 0.3rem 0.95rem;
-  font-size: var(--ex-t-sm);
-}
 .ex-btn--lg {
   min-height: 3.25rem;
   padding: 0.75rem 1.9rem;
   font-size: 1.0625rem;
+}
+/* Quiet by default: .ex-btn--sm and .ex-btn--ghost render as an underlined word (the same as .ex-link),
+   so existing markup gets the one-quiet-row look. Use .ex-btn--gold or --ink without --sm for a real CTA. */
+.ex .ex-btn--sm,
+.ex a.ex-btn--sm,
+.ex .ex-btn--ghost,
+.ex a.ex-btn--ghost,
+.ex .ex-btn--sm:hover,
+.ex a.ex-btn--sm:hover,
+.ex .ex-btn--ghost:hover,
+.ex a.ex-btn--ghost:hover {
+  min-height: 2rem;
+  padding: 0.2rem 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  font-size: var(--ex-t-sm);
+  font-weight: 500;
+  color: var(--ex-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--ex-gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+.ex .ex-btn--sm:hover,
+.ex a.ex-btn--sm:hover,
+.ex .ex-btn--ghost:hover,
+.ex a.ex-btn--ghost:hover {
+  text-decoration-thickness: 2px;
+}
+.ex .ex-btn--sm.ex-btn--gold,
+.ex a.ex-btn--sm.ex-btn--gold,
+.ex .ex-btn--sm.ex-btn--ink,
+.ex a.ex-btn--sm.ex-btn--ink {
+  font-weight: 600;
 }
 .ex-btn[disabled] {
   opacity: 0.5;
@@ -1486,6 +1698,10 @@ main#main.ex:focus {
   flex: none;
 }
 .ex-btn.is-done {
+  color: var(--ex-good);
+}
+.ex-btn--lg.is-done,
+.ex-btn--gold.is-done {
   background: var(--ex-good);
   border-color: var(--ex-good);
   color: #fff;
@@ -1521,8 +1737,7 @@ main#main.ex:focus {
   stroke-width: 1;
 }
 .ex-axis .tick line {
-  stroke: var(--ex-c-axis);
-  stroke-width: 1;
+  display: none; /* labels are enough; add display: inline for a dense axis */
 }
 .ex-axis .tick text {
   font-size: 12px;
@@ -1541,7 +1756,8 @@ main#main.ex:focus {
   font-weight: 500;
   fill: var(--ex-sub);
 }
-/* hairline, solid, recessive */
+/* Gridlines are optional and should be rare: none on ranked bars and dots (the value is on the mark),
+   at most three on a line chart. Hairline, near-white. */
 .ex-gridlines line {
   stroke: var(--ex-c-grid);
   stroke-width: 1;
@@ -1604,6 +1820,40 @@ main#main.ex:focus {
   stroke: var(--ex-paper);
   stroke-width: 2; /* surface ring so overlapping dots stay legible */
 }
+/* dot plot: a thin stem and a dot. Observed is a solid dot; an estimate is a ring (form carries the difference). */
+.ex-stem {
+  stroke: var(--ex-c-obs);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  fill: none;
+}
+.ex-stem--est {
+  stroke: var(--ex-c-est);
+}
+.ex-dot--obs {
+  fill: var(--ex-c-obs);
+}
+.ex-dot--est {
+  fill: var(--ex-paper);
+  stroke: var(--ex-c-est);
+  stroke-width: 2.25;
+}
+/* a chosen mark and its label: darker and bolder, no highlight box, no dimming of the rest */
+.ex-chart text.ex-sel {
+  font-weight: 700;
+  fill: var(--ex-strong);
+}
+.ex-chart rect.ex-sel,
+.ex-chart circle.ex-sel {
+  fill: var(--ex-strong);
+}
+.ex-chart circle.ex-dot--est.ex-sel {
+  stroke: var(--ex-strong);
+}
+.ex-chart line.ex-sel,
+.ex-chart path.ex-stem.ex-sel {
+  stroke: var(--ex-strong);
+}
 .ex-ref-line {
   stroke: var(--ex-c-ref);
   stroke-width: 1.5;
@@ -1623,6 +1873,10 @@ main#main.ex:focus {
   stroke: var(--ex-paper);
   stroke-width: 4px;
   stroke-linejoin: round;
+}
+.ex-chart .ex-svg-label--direct {
+  font-weight: 600;
+  fill: var(--ex-strong);
 }
 .ex-chart .ex-svg-value {
   font-size: 12px;
@@ -1698,7 +1952,7 @@ main#main.ex:focus {
 .ex-ramp {
   font-family: var(--ex-font-ui);
   font-size: var(--ex-t-xs);
-  color: var(--ex-sub);
+  color: var(--ex-muted);
   max-width: 22rem;
 }
 .ex-ramp__title {
@@ -1716,15 +1970,16 @@ main#main.ex:focus {
   font-variant-numeric: tabular-nums;
 }
 
-/* legend. Two or more series always get one; the swatch matches the mark. */
+/* legend: use only where direct labels cannot sit on the marks (a map, a color ramp, more than two series).
+   Label the marks themselves first (Ex.directLabels). */
 .ex-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ex-s2) var(--ex-s5);
+  gap: var(--ex-s1) var(--ex-s4);
   font-family: var(--ex-font-ui);
-  font-size: var(--ex-t-sm);
-  color: var(--ex-sub);
-  margin-bottom: var(--ex-s3);
+  font-size: var(--ex-t-note);
+  color: var(--ex-muted);
+  margin-bottom: var(--ex-s2);
 }
 .ex-legend li {
   display: inline-flex;
@@ -1816,40 +2071,11 @@ main#main.ex:focus {
   }
 }
 
-/* data table fallback (inside <details class="ex-data">) */
-.ex-data {
-  font-family: var(--ex-font-ui);
-  margin-top: var(--ex-s4);
-  border-top: 1px solid var(--ex-line);
-}
-.ex-data > summary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: var(--ex-s3) 0;
-  font-size: var(--ex-t-sm);
-  font-weight: 600;
-  color: var(--ex-ink);
-}
-.ex-data > summary::before,
-.ex-methods > summary::after {
-  content: "";
-  width: 0.5rem;
-  height: 0.5rem;
-  border: solid currentColor;
-  border-width: 0 2px 2px 0;
-  transform: rotate(-45deg);
-  transition: transform 0.15s;
-  flex: none;
-}
-.ex-data[open] > summary::before {
-  transform: rotate(45deg);
-}
+/* tables: two rules and quiet rows. A chosen row or column is bold (.is-sel), not tinted. */
 .ex-table-wrap {
   overflow: auto;
   max-height: 24rem;
-  border: 1px solid var(--ex-line);
-  border-radius: var(--ex-r-md);
+  border-block: 1px solid var(--ex-line-strong);
   background: var(--ex-paper);
 }
 .ex-table-wrap.is-short {
@@ -1866,13 +2092,13 @@ main#main.ex:focus {
 }
 .ex-table caption {
   text-align: left;
-  padding: var(--ex-s3) var(--ex-s4);
-  font-size: var(--ex-t-sm);
+  padding: var(--ex-s2) 0;
+  font-size: var(--ex-t-note);
   color: var(--ex-muted);
 }
 .ex-table th,
 .ex-table td {
-  padding: 0.5rem var(--ex-s4);
+  padding: 0.4rem var(--ex-s4);
   text-align: right;
   white-space: nowrap;
   border-bottom: 1px solid var(--ex-line);
@@ -1882,13 +2108,19 @@ main#main.ex:focus {
 .ex-table td:first-child,
 .ex-table .is-text {
   text-align: left;
+  padding-left: 0;
+}
+.ex-table th:last-child,
+.ex-table td:last-child {
+  padding-right: 0;
 }
 .ex-table thead th {
   position: sticky;
   top: 0;
-  background: var(--ex-surface);
-  color: var(--ex-ink);
-  font-weight: 600;
+  background: var(--ex-paper);
+  color: var(--ex-muted);
+  font-size: var(--ex-t-note);
+  font-weight: 500;
   border-bottom: 1px solid var(--ex-line-strong);
 }
 .ex-table tbody th {
@@ -1898,90 +2130,95 @@ main#main.ex:focus {
 .ex-table tbody tr:last-child > * {
   border-bottom: 0;
 }
+.ex-table .is-sel,
+.ex-table tr.is-sel > * {
+  font-weight: 700;
+  color: var(--ex-ink);
+}
 
-/* ---------- methods (collapsible) ---------- */
+/* ---------- methods (collapsible): a heading line with a rule, no box ---------- */
 .ex-methods {
   font-family: var(--ex-font-ui);
-  border: 1px solid var(--ex-line-strong);
-  border-radius: var(--ex-r-lg);
-  background: var(--ex-paper);
+  border-top: 1px solid var(--ex-line-strong);
 }
 .ex-methods > summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--ex-s4);
-  padding: var(--ex-s4) var(--ex-s5);
-  font-size: var(--ex-t-lg);
+  padding: var(--ex-s3) 0;
+  font-size: var(--ex-t-base);
   font-weight: 600;
   color: var(--ex-ink);
-  line-height: 1.25;
+  line-height: 1.3;
 }
 .ex-methods > summary small {
   display: block;
-  font-size: var(--ex-t-sm);
+  font-size: var(--ex-t-note);
   font-weight: 400;
   color: var(--ex-muted);
-  margin-top: 0.2rem;
+  margin-top: 0.15rem;
 }
 .ex-methods > summary::after {
-  width: 0.65rem;
-  height: 0.65rem;
+  width: 0.5rem;
+  height: 0.5rem;
   transform: rotate(45deg);
-  margin-right: 0.2rem;
 }
 .ex-methods[open] > summary::after {
   transform: rotate(-135deg);
 }
-.ex-methods[open] > summary {
-  border-bottom: 1px solid var(--ex-line);
-}
 .ex-methods__body {
-  padding: var(--ex-s5);
+  padding: var(--ex-s4) 0 var(--ex-s5);
 }
 .ex-methods__body > * {
-  max-width: 48rem;
+  max-width: 44rem;
 }
+.ex-methods__body > * + * {
+  margin-top: var(--ex-s4);
+}
+.ex-methods__body h3,
+.ex-methods__body .ex-h3 {
+  margin-top: var(--ex-s6);
+}
+.ex-methods__body p,
+.ex-methods__body dd {
+  font-size: var(--ex-t-sm);
+  line-height: 1.55;
+}
+/* steps in order: plain numbers, no badges */
 .ex-steps {
   counter-reset: ex-step;
   display: grid;
-  gap: var(--ex-s4);
+  gap: var(--ex-s3);
   font-family: var(--ex-font-prose);
-  font-size: var(--ex-t-prose);
-  line-height: 1.55;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 .ex-steps > li {
   counter-increment: ex-step;
   position: relative;
-  padding-left: 3rem;
+  padding-left: 1.75rem;
 }
 .ex-steps > li::before {
-  content: counter(ex-step);
+  content: counter(ex-step) ".";
   position: absolute;
   left: 0;
-  top: -0.05rem;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  border: 2px solid var(--ex-gold);
-  color: var(--ex-ink);
+  top: 0;
   font-family: var(--ex-font-ui);
   font-size: var(--ex-t-sm);
   font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: var(--ex-gold-deep);
 }
 .ex-steps strong {
   font-family: var(--ex-font-ui);
-  font-size: var(--ex-t-base);
+  font-size: var(--ex-t-sm);
   color: var(--ex-ink);
   font-weight: 600;
 }
 /* source list inside methods: a plain two-column definition list */
 .ex-sources {
   display: grid;
-  gap: var(--ex-s3);
+  gap: var(--ex-s2);
   font-family: var(--ex-font-ui);
   font-size: var(--ex-t-sm);
 }
@@ -1997,91 +2234,67 @@ main#main.ex:focus {
 @media (min-width: 720px) {
   .ex-sources {
     grid-template-columns: minmax(12rem, 16rem) 1fr;
-    gap: var(--ex-s3) var(--ex-s5);
+    gap: var(--ex-s2) var(--ex-s5);
   }
 }
+.ex-section:has(+ .ex-downloads) {
+  padding-bottom: var(--ex-s7);
+}
 
-/* ---------- downloads ---------- */
+/* ---------- downloads: a plain list under the method (the layout renders it) ---------- */
+.ex-downloads {
+  padding-top: 0;
+}
 .ex-downloads__list {
-  display: grid;
-  gap: var(--ex-s4);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
-  margin-top: var(--ex-s5);
+  margin-top: var(--ex-s3);
 }
 .ex-file {
-  position: relative;
-  display: flex;
-  gap: var(--ex-s4);
-  align-items: flex-start;
-  background: var(--ex-paper);
-  border: 1px solid var(--ex-line);
-  border-radius: var(--ex-r-lg);
-  padding: var(--ex-s5);
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-.ex-file:hover,
-.ex-file:focus-within {
-  border-color: var(--ex-ink);
-  box-shadow: var(--ex-shadow);
-}
-.ex-file__type {
-  flex: none;
   display: grid;
-  place-items: end center;
-  width: 3rem;
-  height: 3.75rem;
-  padding-bottom: 0.4rem;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.15rem var(--ex-s5);
+  padding: var(--ex-s3) 0;
+  border-top: 1px solid var(--ex-line);
   font-family: var(--ex-font-ui);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--ex-ink);
-  background: var(--ex-gold-tint);
-  border: 1.5px solid var(--ex-gold);
-  /* folded corner */
-  clip-path: polygon(0 0, 70% 0, 100% 24%, 100% 100%, 0 100%);
 }
-.ex-file__body {
-  min-width: 0;
+@media (min-width: 720px) {
+  .ex-file {
+    grid-template-columns: minmax(11rem, 15rem) minmax(0, 1fr);
+  }
 }
 .ex-file__title {
-  font-family: var(--ex-font-ui);
-  font-size: var(--ex-t-base);
+  font-size: var(--ex-t-sm);
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 .ex-file__title a {
+  display: inline-block;
+  padding-block: 0.3rem;
   color: var(--ex-ink);
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: var(--ex-gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
 }
-/* the whole card is the link target */
-.ex-file__title a::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: var(--ex-r-lg);
+.ex-file__title a:hover {
+  text-decoration-thickness: 2px;
 }
-.ex-file__title a:focus-visible {
-  outline: none;
-}
-.ex-file__title a:focus-visible::after {
-  outline: 3px solid var(--ex-focus);
-  outline-offset: 2px;
+.ex-file__meta {
+  font-size: var(--ex-t-xs);
+  color: var(--ex-muted);
 }
 .ex-file__desc {
   font-size: var(--ex-t-sm);
   line-height: 1.5;
   color: var(--ex-muted);
-  margin-top: var(--ex-s1);
 }
-.ex-file__meta {
-  font-size: var(--ex-t-xs);
-  font-weight: 500;
-  color: var(--ex-ink-3);
-  margin-top: var(--ex-s2);
+@media (min-width: 720px) {
+  .ex-file__desc {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
 }
 
-/* ---------- closing CTA ---------- */
+/* ---------- closing call to action: the one dark band after the hero ---------- */
 .ex-cta__grid {
   display: grid;
   gap: var(--ex-s7);
@@ -2096,38 +2309,37 @@ main#main.ex:focus {
 .ex-cta__main > * + * {
   margin-top: var(--ex-s4);
 }
-.ex-cta .ex-h2 {
-  font-size: clamp(2rem, 4.2vw, 3rem);
+.ex-cta__h {
+  font-family: var(--ex-font-display);
+  font-size: clamp(1.625rem, 3.4vw, 2.375rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
   color: #fff;
-  max-width: 16em;
+  max-width: 18em;
+  text-wrap: balance;
 }
 .ex-cta__text {
   font-family: var(--ex-font-prose);
-  font-size: var(--ex-t-lg);
+  font-size: var(--ex-t-prose);
   line-height: 1.5;
   color: #dcd9ee;
   max-width: 32em;
 }
 .ex-cta__fine {
-  font-size: var(--ex-t-sm);
+  font-size: var(--ex-t-xs);
   color: #b9b6d3;
 }
 .ex-cta__more {
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  padding-top: var(--ex-s4);
+  font-size: var(--ex-t-sm);
 }
 .ex-cta__more-h {
-  font-size: var(--ex-t-sm);
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: var(--ex-s2);
-}
-.ex-cta__more li + li {
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: var(--ex-t-xs);
+  color: #b9b6d3;
+  margin-bottom: var(--ex-s1);
 }
 .ex-cta__more li a {
   display: block;
-  padding: var(--ex-s3) 0;
+  padding: var(--ex-s2) 0;
   text-decoration: none;
 }
 .ex-cta__more-who {
@@ -2137,10 +2349,9 @@ main#main.ex:focus {
 }
 .ex-cta__more-t {
   display: block;
-  font-size: var(--ex-t-lg);
-  line-height: 1.25;
+  font-size: var(--ex-t-base);
+  line-height: 1.3;
   color: #fff;
-  font-family: var(--ex-font-display);
 }
 .ex-cta__more li a:hover .ex-cta__more-t {
   text-decoration: underline;
@@ -2148,8 +2359,9 @@ main#main.ex:focus {
   text-underline-offset: 4px;
 }
 .ex-cta__all {
+  display: inline-block;
+  padding: 0.35rem 0;
   font-size: var(--ex-t-sm);
-  font-weight: 600;
 }
 
 .ex-noscript {
@@ -2161,21 +2373,15 @@ main#main.ex:focus {
 /* ---------- small screens ---------- */
 @media (max-width: 639px) {
   .ex-prose {
-    font-size: 1.125rem;
+    font-size: 1.0625rem;
   }
-  .ex-methods > summary {
-    padding: var(--ex-s4);
-    font-size: 1.125rem;
-  }
-  .ex-methods__body {
-    padding: var(--ex-s4);
-  }
-  .ex-seg {
-    display: grid;
+  .ex-prose .ex-lede,
+  .ex-lede {
+    font-size: 1.1875rem;
   }
   .ex-chart text,
   .ex-axis .tick text {
-    font-size: 11px;
+    font-size: 12px;
   }
 }
 
@@ -2192,20 +2398,20 @@ main#main.ex:focus {
   }
   .ex-hero__title,
   .ex-hero__question,
-  .ex-hero__note {
+  .ex-hero__note,
+  .ex-hero__persona {
     color: #000;
   }
 }
 
 @media (forced-colors: active) {
-  .ex-stat,
-  .ex-panel,
-  .ex-file,
-  .ex-methods {
-    border: 1px solid CanvasText;
-  }
   .ex-seg input:checked + span {
     outline: 2px solid Highlight;
+  }
+  .ex-select,
+  .ex-input,
+  .ex-input-group {
+    border-bottom: 1px solid CanvasText;
   }
 }
 

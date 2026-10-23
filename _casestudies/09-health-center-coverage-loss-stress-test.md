@@ -17,13 +17,16 @@ need: >-
 question: >-
   Under CMS's 2027 work-requirement rules, how many of your expansion adults
   could lose Medicaid, and what does it cost your health center?
+brief: >-
+  Under CMS's 2027 rules, the share of expansion adults who lose Medicaid runs
+  from about 10% in Kentucky to 21% in Utah. About 4 in 10 of those losses are
+  people who meet the rule but are dropped over paperwork. The tool puts your
+  state and center type on that range.
 sections:
   - id: tool
     label: Your center
-  - id: states
-    label: States
-  - id: peers
-    label: Peers
+  - id: compare
+    label: Compare
   - id: drivers
     label: Drivers
   - id: limits
@@ -31,37 +34,26 @@ sections:
   - id: methods
     label: Method
 stats:
-  - value: 15.9%
-    label: National median share of expansion adults who lose Medicaid in a year
-    note: "11.7% to 21.6% across draws. CMS's central case is 15.3%."
-    kind: estimate
-  - value: 41%
-    label: Administrative share of the loss, median state
-    note: People who comply or are exempt, dropped anyway.
-    kind: estimate
+  - value: About 1 in 6
+    label: expansion adults lose Medicaid in a year, nationally
+    note: Modeled. Median 15.9%, range 11.7% to 21.6% across draws
   - value: 1.9%
-    label: Net revenue lost by the median center, as a share of revenue
-    note: 0.8% to 3.5%, 10th to 90th percentile of centers.
-    kind: estimate
+    label: of net revenue lost by the median center
+    note: Modeled. Middle 80% of centers 0.7% to 3.5%
   - value: $1.5 billion
-    label: Net revenue lost a year across 1,042 expansion-state centers
-    note: $0.9 to $2.5 billion.
-    kind: estimate
+    label: net revenue lost a year, 1,042 expansion-state centers
+    note: Modeled. Range $0.9 to $2.5 billion
 downloads:
   - title: State ranges
     file: /downloads/09-health-center-coverage-loss-stress-test-state-ranges.csv
     type: CSV
     size: 6 KB
-    description: >-
-      Coverage loss, the administrative part, and revenue effect for each of the
-      41 states, plus the columns for the what-if workbook.
+    description: Coverage loss, administrative part and revenue effect for all 41 states.
   - title: Peer benchmark
     file: /downloads/09-health-center-coverage-loss-stress-test-peer-benchmark.csv
     type: CSV
     size: 1 KB
-    description: >-
-      Revenue effect for eight groups of centers by size and setting. Grouped
-      figures only; no center is named.
+    description: Eight peer groups, by size and setting. No center is named.
 cta:
   heading: Want this for your health centers?
   text: >-
@@ -76,317 +68,220 @@ extra_scripts:
 ---
 
 
-<section class="ex-section p9-toolsec" id="tool">
-  <div class="ex-wide">
-    <div class="ex-panel p9-panel">
-      <div class="ex-tool ex-tool--split">
-        <div class="ex-tool__controls">
-          <div>
-            <h2 class="p9-h2">Your center</h2>
-            <p class="p9-lede">Pick your state. Add your Medicaid patients. See what 2027 could cost.</p>
+<section class="ex-section" id="tool">
+  <div class="ex-prose ex-toolhead"><h2>See what 2027 could cost your center</h2></div>
+
+  <div class="ex-wide ex-panel">
+    <div class="ex-tool ex-tool--split">
+      <div class="ex-tool__controls">
+        <div id="pick-state"></div>
+        <div class="p9-pair">
+          <div class="ex-field">
+            <label class="ex-label" for="in-pts">Medicaid patients</label>
+            <input class="ex-input" id="in-pts" type="text" inputmode="numeric" aria-describedby="hint-pts err-pts" autocomplete="off">
+            <div class="ex-error" id="err-pts" role="alert" hidden></div>
           </div>
-          <div id="pick-state"></div>
-          <div class="p9-pair">
-            <div class="ex-field">
-              <label class="ex-label" for="in-pts">Medicaid patients</label>
-              <input class="ex-input" id="in-pts" type="text" inputmode="numeric" aria-describedby="hint-pts err-pts" placeholder="Average center" autocomplete="off">
-              <div class="ex-error" id="err-pts" role="alert" hidden></div>
+          <div class="ex-field">
+            <label class="ex-label" for="in-rev">Total revenue <span class="p9-opt">(optional)</span></label>
+            <div class="ex-input-group">
+              <span class="ex-affix">$</span><input class="ex-input" id="in-rev" type="text" inputmode="numeric" aria-describedby="hint-rev err-rev" placeholder="Per year" autocomplete="off">
             </div>
-            <div class="ex-field">
-              <label class="ex-label" for="in-rev">Total revenue <span class="p9-opt">(optional)</span></label>
-              <div class="ex-input-group">
-                <span class="ex-affix">$</span><input class="ex-input" id="in-rev" type="text" inputmode="numeric" aria-describedby="hint-rev err-rev" placeholder="Per year" autocomplete="off">
-              </div>
-              <div class="ex-error" id="err-rev" role="alert" hidden></div>
-              <div class="ex-hint" id="hint-rev"></div>
-            </div>
-          </div>
-          <div class="p9-helpers">
-            <p class="ex-hint" id="hint-pts"></p>
-            <button class="ex-btn ex-btn--ghost ex-btn--sm" type="button" id="btn-avg">Use the average center</button>
-            <p class="ex-hint">What you type stays in your browser. You can type 800K or 30M.</p>
+            <div class="ex-error" id="err-rev" role="alert" hidden></div>
           </div>
         </div>
-        <div class="ex-tool__out">
-          <p class="p9-tag" id="p9-tag">Loading</p>
-          <div class="p9-results" id="p9-results">
-            <div class="p9-answer" id="p9-answer">
-              <span class="p9-answer__label" id="r3-label">Net revenue lost per year</span>
-              <span class="p9-answer__value" id="r3-val">&mdash;</span>
-              <span class="p9-answer__range" id="r3-range"></span>
-              <p class="p9-answer__share"><strong id="r4-val">&mdash;</strong> <span id="r4-text"></span></p>
-              <span class="p9-answer__note" id="r3-note"></span>
-            </div>
-            <div class="p9-subs">
-              <div class="p9-sub">
-                <span class="p9-sub__label" id="r1-label">Expansion adults who lose coverage</span>
-                <span class="p9-sub__value" id="r1-val">&mdash;</span>
-                <span class="p9-sub__range" id="r1-range"></span>
-                <span class="p9-sub__note" id="r1-note"></span>
-              </div>
-              <div class="p9-sub">
-                <span class="p9-sub__label" id="r2-label">Expansion adults at your center who lose coverage</span>
-                <span class="p9-sub__value" id="r2-val">&mdash;</span>
-                <span class="p9-sub__range" id="r2-range"></span>
-                <span class="p9-sub__note" id="r2-note"></span>
-              </div>
-              <div class="p9-sub">
-                <span class="p9-sub__label" id="r5-label">Compared with peer centers</span>
-                <span class="p9-sub__value" id="r5-val">&mdash;</span>
-                <span class="p9-sub__range" id="r5-range"></span>
-                <span class="p9-sub__note" id="r5-note"></span>
-              </div>
-            </div>
-          </div>
-          <div class="p9-summary">
-            <p class="p9-summary__title">For the board deck</p>
-            <p id="p9-summary" class="p9-summary__text"></p>
-            <div class="p9-summary__actions">
-              <button class="ex-btn ex-btn--ink ex-btn--sm" type="button" data-ex-copy-from="#p9-summary" id="btn-copy">Copy summary</button>
-              <button class="ex-btn ex-btn--ghost ex-btn--sm" type="button" data-ex-copy="" id="btn-tsv">Copy numbers as table</button>
-              <button class="ex-btn ex-btn--ghost ex-btn--sm" type="button" id="btn-png">Download as slide (PNG)</button>
-              <button class="ex-btn ex-btn--ghost ex-btn--sm" type="button" data-ex-copy="url" id="btn-link">Copy link to this state</button>
-            </div>
-            <p class="ex-hint" id="p9-png-msg" role="status">The link carries the state only, not your patient or revenue figures. The table pastes into Excel.</p>
-          </div>
-          <div class="p9-cta">
-            <p><strong>Want this built on your real patient and payer data?</strong> Tell us your state and center type.</p>
-            <a class="ex-btn ex-btn--gold ex-btn--sm" href="{{ site.baseurl }}/#contact">Get this for my centers</a>
-          </div>
-        </div>
+        <p class="ex-hint p9-privacy">What you type stays in your browser.</p>
+        <p class="ex-actions"><button class="ex-link" type="button" id="btn-avg">Use the average center</button></p>
       </div>
-      <div class="p9-mini" id="p9-mini" aria-hidden="true"><span id="p9-mini-text"></span><a href="#p9-results" tabindex="-1">Details</a></div>
+
+      <div class="ex-tool__out">
+        <div class="ex-results p9-results" id="p9-results" aria-live="polite" aria-atomic="true">
+          <div class="ex-result ex-result--lead" id="p9-answer">
+            <span class="ex-result__label" id="r3-label">Net revenue at risk a year</span>
+            <span class="ex-result__value" id="r3-val">&mdash;</span>
+            <span class="ex-result__range" id="r3-range"></span>
+          </div>
+          <div class="ex-result">
+            <span class="ex-result__label" id="r2-label">Adults who lose coverage</span>
+            <span class="ex-result__value" id="r2-val">&mdash;</span>
+            <span class="ex-result__range" id="r2-range"></span>
+          </div>
+          <div class="ex-result">
+            <span class="ex-result__label" id="r4-label">Share of revenue</span>
+            <span class="ex-result__value" id="r4-val">&mdash;</span>
+            <span class="ex-result__range" id="r4-range"></span>
+          </div>
+        </div>
+
+        <div>
+          <p class="ex-actions">
+            <button class="ex-link" type="button" data-ex-copy-from="#p9-summary" id="btn-copy">Copy summary</button>
+            <button class="ex-link" type="button" data-ex-copy="" id="btn-tsv">Copy table</button>
+            <button class="ex-link" type="button" id="btn-png">Download slide</button>
+            <button class="ex-link" type="button" data-ex-copy="url" id="btn-link">Copy link</button>
+          </p>
+          <p class="ex-hint" id="p9-png-msg" role="status"></p>
+        </div>
+
+        <figure class="ex-figure" id="fig-split" aria-labelledby="split-title">
+          <div class="ex-figure__head">
+            <h3 class="ex-figure__title" id="split-title"></h3>
+            <p class="ex-hint" id="split-warn" hidden></p>
+          </div>
+          <div class="p9-stack" id="p9-stack" role="img" aria-label="Split of the loss"></div>
+          <p class="ex-hint">The paperwork part is administrative loss. Outreach and renewal support could in principle reduce it.</p>
+        </figure>
+
+        <details class="ex-notes">
+          <summary>Notes, summary and data table</summary>
+          <h4 class="ex-h3">Board summary</h4>
+          <p id="p9-summary"></p>
+          <ul>
+            <li id="r1-note"></li>
+            <li id="r2-note"></li>
+            <li id="r3-note"></li>
+            <li id="r5-note"></li>
+          </ul>
+          <h4 class="ex-h3">The two causes</h4>
+          <p id="split-sub"></p>
+          <dl class="p9-split-list" id="p9-split-list"></dl>
+          <p id="split-cap"></p>
+          <p class="ex-source">Source: Primordial Analytics model on CMS interim final rule parameters, ACS 2024 PUMS and CMS renewal data. Not a forecast.</p>
+          <div id="table-split"></div>
+          <h4 class="ex-h3">How the inputs work</h4>
+          <p>Type a state name or 2-letter code. You can type 800K or 30M.</p>
+          <p class="ex-hint" id="hint-pts"></p>
+          <p class="ex-hint" id="hint-rev"></p>
+          <p>The link carries the state only, not your patient or revenue figures. The table pastes into Excel.</p>
+        </details>
+      </div>
     </div>
   </div>
-
-  <figure class="ex-wide ex-figure" id="fig-split">
-    <div class="ex-figure__head">
-      <h3 class="ex-figure__title" id="split-title">Where the loss comes from</h3>
-      <p class="ex-figure__sub" id="split-sub"></p>
-    </div>
-    <div class="p9-stack" id="p9-stack" role="img" aria-label="Split of the loss"></div>
-    <dl class="p9-split-list" id="p9-split-list"></dl>
-    <figcaption id="split-cap"></figcaption>
-    <p class="ex-source">Source: Primordial Analytics model on CMS interim final rule parameters, ACS 2024 PUMS and CMS renewal data. Not a forecast.</p>
-    <details class="ex-data">
-      <summary>Data table for this figure</summary>
-      <div id="table-split"></div>
-    </details>
-  </figure>
 </section>
 
-<section class="ex-section" id="states">
-  <div class="ex-wide">
-    <div class="ex-prose">
-      <h2>How far states differ</h2>
-      <p class="ex-lede" id="states-lede">Pick a ranking, then click a state to use it above.</p>
-    </div>
+<section class="ex-section" id="compare">
+  <div class="ex-prose">
+    <h2 id="compare-h">Coverage loss differs widely across states</h2>
+    <p class="ex-lede">These are medians. Each state's own range is wide, so close ranks mean little.</p>
   </div>
 
-  <div class="ex-wide ex-toolbar p9-statebar">
-    <div id="pick-state-3"></div>
-    <fieldset class="ex-field p9-wide-field">
-      <legend class="ex-label">Rank the 40 expansion states and DC by</legend>
-      <div class="ex-seg p9-seg-wrap" id="metric-seg">
-        <label><input type="radio" name="metric" value="t" checked><span>Coverage loss</span></label>
-        <label><input type="radio" name="metric" value="s"><span>Administrative share</span></label>
-        <label><input type="radio" name="metric" value="r"><span>% of revenue</span></label>
-        <label><input type="radio" name="metric" value="d"><span>$ per 1,000 patients</span></label>
-      </div>
-    </fieldset>
-    <div class="ex-field p9-check" id="wrap-ranges">
-      <label><input type="checkbox" id="show-ranges"> <span>Show 5th to 95th ranges for every state</span></label>
-    </div>
-  </div>
-
-  <figure class="ex-wide ex-figure" id="fig-states">
+  <figure class="ex-wide ex-figure ex-figure--notes" id="fig-states" aria-labelledby="states-title">
     <div class="ex-figure__head">
       <h3 class="ex-figure__title" id="states-title">States ranked</h3>
-      <p class="ex-figure__sub" id="states-sub"></p>
     </div>
-    <div class="p9-sel" id="p9-sel" role="group" aria-label="Selected state">
-      <div class="p9-sel__body">
-        <p class="p9-sel__head"><span class="p9-sel__tag" id="sel-tag">Example</span> <strong id="sel-name"></strong> <span id="sel-rank"></span></p>
-        <p class="p9-sel__text" id="sel-text"></p>
-      </div>
-      <a class="ex-btn ex-btn--ink ex-btn--sm" href="#tool">Open in tool</a>
+    <div class="ex-toolbar">
+      <fieldset class="ex-field p9-wide-field">
+        <legend class="ex-label">Rank by</legend>
+        <div class="ex-seg p9-seg-wrap" id="metric-seg">
+          <label><input type="radio" name="metric" value="t" checked><span>Coverage loss</span></label>
+          <label><input type="radio" name="metric" value="s"><span>Administrative share</span></label>
+          <label><input type="radio" name="metric" value="r"><span>% of revenue</span></label>
+        </div>
+      </fieldset>
     </div>
-    <p class="p9-hint-line">Hover, tap or use the arrow keys to read a state. Click, tap or press Enter to use it above.</p>
-    <ul class="ex-legend" aria-label="Legend">
-      <li><span class="ex-key ex-key--est" aria-hidden="true"></span>Median</li>
-      <li><span class="p9-key p9-key--sel" aria-hidden="true"></span>Your state</li>
-      <li id="states-leg-ci"><span class="p9-key p9-key--band" aria-hidden="true"></span>5th to 95th percentile</li>
-      <li><span class="ex-key ex-key--ref" aria-hidden="true"></span><span id="states-leg-ref">Reference</span></li>
-    </ul>
+    <p class="ex-hint" id="states-hint"></p>
     <div class="ex-chart" id="chart-states"></div>
-    <figcaption id="states-cap">Model output, not a forecast.</figcaption>
-    <p class="ex-source">Source: Primordial Analytics model; CMS interim final rule; ACS 2024 PUMS; CMS renewal outcomes; HRSA UDS 2025.</p>
-    <details class="ex-data">
-      <summary>Data table for this chart</summary>
-      <div id="table-states"></div>
-    </details>
+    <p class="ex-actions"><button class="ex-link" type="button" id="btn-all" aria-controls="chart-states" aria-expanded="false"></button></p>
+    <div class="ex-sidenotes">
+      <p class="ex-note" id="note-spread"></p>
+      <p class="ex-note" id="note-cms"></p>
+    </div>
   </figure>
 
-  <div class="ex-wide p9-finds" id="finds-states"></div>
-</section>
-
-<section class="ex-section ex-band ex-band--tint" id="peers">
-  <div class="ex-wide">
-    <div class="ex-prose">
-      <h2>Where your center sits among peers</h2>
-      <p class="p9-plede" id="peers-lede"></p>
-    </div>
-  </div>
-
-  <div class="ex-wide">
-    <div class="ex-panel">
-      <div class="p9-peerbar">
-        <p class="p9-chip" id="peer-chip"></p>
-        <div class="ex-toolbar">
-          <div class="ex-field">
-            <label class="ex-label" for="sel-size">Your center's total patients, all payers</label>
-            <select class="ex-select" id="sel-size"></select>
-          </div>
-          <fieldset class="ex-field">
-            <legend class="ex-label">Setting</legend>
-            <div class="ex-seg" id="seg-set"></div>
-          </fieldset>
-        </div>
-        <p class="ex-hint" id="peer-basis"></p>
-      </div>
-      <p class="p9-readout" id="peer-readout" aria-live="polite"></p>
-      <div class="ex-cols" style="--ex-col-min: 26rem">
-        <figure class="ex-figure" id="fig-peers">
-          <div class="ex-figure__head">
-            <h3 class="ex-figure__title" id="peers-title">Eight peer groups</h3>
-            <p class="ex-figure__sub">Net revenue loss as a share of total revenue, for the median center in each group. The dot is the middle estimate and the line is the 5th to 95th percentile.</p>
-          </div>
-          <ul class="ex-legend" aria-label="Legend">
-            <li><span class="p9-key p9-key--dot" aria-hidden="true"></span>Middle estimate</li>
-            <li><span class="p9-key p9-key--whisker" aria-hidden="true"></span>5th to 95th percentile</li>
-            <li><span class="p9-key p9-key--you" aria-hidden="true"></span>Your center</li>
-            <li><span class="ex-key ex-key--ring" aria-hidden="true"></span>Your peer group</li>
-          </ul>
-          <div class="ex-chart" id="chart-peers"></div>
-          <figcaption>Click a group to use it as your peer group.</figcaption>
-          <p class="ex-source">Source: HRSA UDS 2025 (Tables 4, 9D, 9E); Primordial Analytics model.</p>
-          <details class="ex-data">
-            <summary>Data table for this chart</summary>
-            <div id="table-peers"></div>
-          </details>
-        </figure>
-        <figure class="ex-figure" id="fig-hist">
-          <div class="ex-figure__head">
-            <h3 class="ex-figure__title" id="hist-title">The centers, one bar per 0.4 points</h3>
-            <p class="ex-figure__sub" id="hist-sub">Number of centers by middle-estimate net loss as a share of total revenue.</p>
-          </div>
-          <ul class="ex-legend" aria-label="Legend">
-            <li><span class="ex-key ex-key--est" aria-hidden="true"></span>Centers (modeled)</li>
-            <li><span class="ex-key ex-key--ref" aria-hidden="true"></span><span id="hist-leg-med">Median center</span></li>
-            <li><span class="p9-key p9-key--you" aria-hidden="true"></span>Your center</li>
-          </ul>
-          <div class="ex-chart" id="chart-hist"></div>
-          <figcaption>The last bar holds every center at 7.6% or more.</figcaption>
-          <p class="ex-source">Source: HRSA UDS 2025; Primordial Analytics model. Your position is read off these bars, so it is approximate.</p>
-          <details class="ex-data">
-            <summary>Data table for this chart</summary>
-            <div id="table-hist"></div>
-          </details>
-        </figure>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="ex-section" id="drivers">
-  <div class="ex-wide">
-    <div class="ex-prose">
-      <h2>What drives your state's answer</h2>
-      <p class="p9-plede" id="drv-lede"></p>
-    </div>
-  </div>
-
-  <div class="ex-wide ex-toolbar">
-    <div id="pick-state-2"></div>
-    <fieldset class="ex-field">
-      <legend class="ex-label">Answer</legend>
-      <div class="ex-seg">
-        <label><input type="radio" name="out" value="L" checked><span>Coverage loss</span></label>
-        <label><input type="radio" name="out" value="R"><span>Revenue effect</span></label>
-      </div>
-    </fieldset>
-    <div class="ex-field p9-check">
-      <label><input type="checkbox" id="show-all"> <span id="show-all-label">Show all inputs</span></label>
-    </div>
-  </div>
-
-  <figure class="ex-wide ex-figure" id="fig-sobol">
+  <figure class="ex-wide ex-figure ex-figure--notes" id="fig-peers" aria-labelledby="peers-title">
     <div class="ex-figure__head">
-      <h3 class="ex-figure__title" id="sobol-title">Drivers</h3>
-      <p class="ex-figure__sub" id="sobol-sub"></p>
+      <h3 class="ex-figure__title" id="peers-title">Revenue lost, by center size and setting</h3>
     </div>
-    <ul class="ex-legend" aria-label="Legend">
-      <li><span class="ex-key ex-key--est" aria-hidden="true"></span>On its own</li>
-      <li><span class="p9-key p9-key--dot-ink" aria-hidden="true"></span>Including interactions with other inputs</li>
-    </ul>
-    <div class="ex-chart" id="chart-sobol"></div>
-    <figcaption id="sobol-cap"></figcaption>
-    <p class="ex-source">Source: Primordial Analytics model; variance shares (Sobol indices) from 20,000-draw simulations per state.</p>
-    <details class="ex-data">
-      <summary>Data table for this chart</summary>
-      <div id="table-sobol"></div>
-    </details>
+    <p class="ex-hint">Net revenue lost as a share of total revenue, by center size and setting. Click a row to use it as your peer group.</p>
+    <div class="ex-chart" id="chart-peers"></div>
+    <div class="ex-sidenotes">
+      <p class="ex-note"><strong>Range.</strong> The dot is the middle estimate for the median center in each group; the line is the 5th to 95th percentile.</p>
+    </div>
   </figure>
 
-  <div class="ex-wide ex-callout p9-ask" id="drv-ask" hidden>
-    <p class="ex-callout__title">What to ask</p>
-    <ul id="drv-ask-list"></ul>
-  </div>
-
-  <div class="ex-wide p9-finds" id="finds-drivers"></div>
-
-  <details class="ex-methods ex-wide" id="tornado-details">
-    <summary><span id="tornado-sum">One assumption at a time<small>This chart is for the typical state, not your state</small></span></summary>
-    <div class="ex-methods__body">
-      <figure class="ex-figure" id="fig-tornado">
-        <div class="ex-figure__head">
-          <p class="p9-tag p9-tag--typ" id="tornado-tag"></p>
-          <h3 class="ex-figure__title" id="tornado-title">One assumption at a time</h3>
-          <p class="ex-figure__sub" id="tornado-sub"></p>
-        </div>
-        <fieldset class="ex-field">
-          <legend class="ex-label">Answer</legend>
-          <div class="ex-seg">
-            <label><input type="radio" name="tout" value="L" checked><span>Coverage loss</span></label>
-            <label><input type="radio" name="tout" value="R"><span>Revenue effect</span></label>
-          </div>
-        </fieldset>
-        <ul class="ex-legend" aria-label="Legend" style="margin-top:1rem">
-          <li><span class="p9-key p9-key--dot-hollow" aria-hidden="true"></span>Input at its 10th percentile</li>
-          <li><span class="p9-key p9-key--dot-ink" aria-hidden="true"></span>Input at its 90th percentile</li>
-          <li><span class="ex-key ex-key--ref" aria-hidden="true"></span>Middle estimate</li>
-        </ul>
-        <div class="ex-chart" id="chart-tornado"></div>
-        <figcaption id="tornado-cap">For some inputs a higher value lowers the loss, so the filled dot sits to the left of the hollow one.</figcaption>
-        <p class="ex-source">Source: Primordial Analytics model, one input moved at a time with the rest at their middle values.</p>
-        <details class="ex-data">
-          <summary>Data table for this chart</summary>
-          <div id="table-tornado"></div>
-        </details>
-      </figure>
-    </div>
+  <details class="ex-notes ex-wide">
+    <summary>Notes and data tables</summary>
+    <h4 class="ex-h3">All states</h4>
+    <ul id="compare-notes"></ul>
+    <p id="states-sub"></p>
+    <p>The line on the selected state is the 5th to 95th percentile. Hover, tap or use the arrow keys to read any state; click, tap or press Enter to use it in the tool above.</p>
+    <p class="ex-source">Source: Primordial Analytics model; CMS interim final rule; ACS 2024 PUMS; CMS renewal outcomes; HRSA UDS 2025.</p>
+    <div id="table-states"></div>
+    <h4 class="ex-h3">Peer centers</h4>
+    <p id="peers-lede"></p>
+    <p id="peer-basis"></p>
+    <p id="peer-more"></p>
+    <p class="ex-source">Source: HRSA UDS 2025 (Tables 4, 9D, 9E); Primordial Analytics model.</p>
+    <div id="table-peers"></div>
+    <p id="hist-cap">The distribution behind the percentile, one row per 0.4 points of net loss as a share of total revenue. The last row holds every center at 7.6% or more. Your position is read off these counts, so it is approximate.</p>
+    <div id="table-hist"></div>
   </details>
 </section>
 
-<section class="ex-section ex-band ex-band--tint" id="limits">
-  <div class="ex-wide">
-    <div class="ex-prose">
-      <h2>What this does not tell you</h2>
+<section class="ex-section" id="drivers">
+  <div class="ex-prose">
+    <h2 id="drv-h">What drives your state's answer</h2>
+  </div>
+
+  <figure class="ex-wide ex-figure ex-figure--notes" id="fig-sobol" aria-labelledby="sobol-title">
+    <div class="ex-figure__head">
+      <h3 class="ex-figure__title" id="sobol-title">Share of uncertainty explained, by input</h3>
     </div>
+    <div class="ex-toolbar">
+      <fieldset class="ex-field">
+        <legend class="ex-label">Answer</legend>
+        <div class="ex-seg">
+          <label><input type="radio" name="out" value="L" checked><span>Coverage loss</span></label>
+          <label><input type="radio" name="out" value="R"><span>Revenue effect</span></label>
+        </div>
+      </fieldset>
+    </div>
+    <div class="ex-chart" id="chart-sobol"></div>
+    <div class="ex-sidenotes" id="drv-notes"></div>
+  </figure>
+
+  <details class="ex-notes ex-wide" id="drivers-details">
+    <summary>Notes, data table and one-at-a-time chart</summary>
+    <p id="sobol-sub"></p>
+    <p id="sobol-cap"></p>
+    <p id="drv-more"></p>
+    <p class="ex-source">Source: Primordial Analytics model; variance shares (Sobol indices) from 20,000-draw simulations per state.</p>
+    <div id="table-sobol"></div>
+    <figure class="ex-figure" id="fig-tornado" aria-labelledby="tornado-title">
+      <div class="ex-figure__head">
+        <h3 class="ex-figure__title" id="tornado-title">One assumption at a time</h3>
+        <p class="ex-figure__sub" id="tornado-sub"></p>
+        <p class="ex-figure__sub" id="tornado-tag"></p>
+      </div>
+      <fieldset class="ex-field">
+        <legend class="ex-label">Answer</legend>
+        <div class="ex-seg">
+          <label><input type="radio" name="tout" value="L" checked><span>Coverage loss</span></label>
+          <label><input type="radio" name="tout" value="R"><span>Revenue effect</span></label>
+        </div>
+      </fieldset>
+      <div class="ex-chart" id="chart-tornado"></div>
+      <p class="ex-caption" id="tornado-cap">For some inputs a higher value lowers the loss, so the filled dot sits to the left of the hollow one.</p>
+      <p class="ex-source">Source: Primordial Analytics model, one input moved at a time with the rest at their middle values.</p>
+      <div id="table-tornado"></div>
+    </figure>
+  </details>
+</section>
+
+<section class="ex-section" id="limits">
+  <div class="ex-prose">
+    <h2>Six limits on these numbers</h2>
   </div>
   <div class="ex-wide">
-    <div class="ex-callout">
-      <p class="ex-callout__title">What the numbers rest on</p>
+    <ul class="ex-limits">
+      <li>Exposure is a proxy: the <span id="lim-exp1">60%</span> expansion share is an assumption.</li>
+      <li>The 2023-24 Medicaid unwinding was a different process; Kentucky and Maine are least certain.</li>
+      <li>Every state starts January 1, 2027; delays or litigation would change that.</li>
+      <li>UDS Table 9D (collections by payer) is blank for many centers, and reporters skew smaller.</li>
+      <li>Retroactive coverage, churn, grants and costs are not modeled.</li>
+      <li>Your dollars scale your state's per-patient rate; unusual payer mix will sit outside it.</li>
+    </ul>
+    <details class="ex-notes">
+      <summary>Detail on each limit</summary>
       <ul>
         <li>The survey cannot see eligibility group, monthly hours or frailty, so exposure is a proxy, and the <span id="lim-exp">60%</span> expansion share is an assumption.</li>
         <li>The unwinding was a different process and covers all Medicaid and CHIP enrollees, children included. Kentucky and Maine report near-zero procedural terminations for months, a pause or a reporting artifact, so their low administrative figures (<span id="lim-kyme"></span>) are the least certain.</li>
@@ -395,14 +290,17 @@ extra_scripts:
         <li>Retroactive coverage, churn, grants and costs are not modeled. Peer groups are aggregates; no center is projected.</li>
         <li>Your dollars and share of revenue are your state's per-1,000-patient rates scaled to your Medicaid count. They do not know your payer mix, so a center with an unusual payer mix or revenue base will sit away from its state's range.</li>
       </ul>
-    </div>
+    </details>
   </div>
 </section>
 
 <section class="ex-section" id="methods">
-  <div class="ex-wide"><h2 class="ex-h2">How we did it</h2></div>
+  <div class="ex-prose">
+    <h2>Method and downloads</h2>
+    <p>We combined public Medicaid, Census and health center data and ran 20,000 simulations for each state. Sources and checks are in the notes below.</p>
+  </div>
   <details class="ex-methods ex-wide">
-    <summary><span>Methods, sources and checks<small>For the analyst who will check the work</small></span></summary>
+    <summary><span>Methods, sources and checks</span></summary>
     <div class="ex-methods__body">
       <ol class="ex-steps">
         <li><strong>Reproduce CMS.</strong> CMS applies 12% non-compliance to the 74% of adult-group enrollees who are not excluded or excepted (8.9% of all), then 7% net procedural loss to everyone left (6.4%): 15.3% together. On 20 million adults that is 3.05 million a year, or 2.29 million in fiscal 2027 (three quarters of a year), matching CMS's Table 41. We treat it as an assumption set, not an observation.</li>
@@ -412,20 +310,12 @@ extra_scripts:
       </ol>
 
       <h3 class="ex-h3" style="margin:2rem 0 1rem">Checks against outside numbers</h3>
-      <div class="ex-keyfig">
-        <span class="ex-keyfig__value">$1,986</span>
-        <p class="ex-keyfig__text"><strong>Medicaid payment per patient at the 661 reporting centers</strong>, 5% below the $2,097 we derived from <a href="https://data.hrsa.gov/topics/healthcenters/uds/overview/national/table?tableName=9D&amp;year=2025">HRSA's national figures</a>.</p>
-      </div>
+      <p><strong>$1,986 Medicaid payment per patient at the 661 reporting centers</strong>, 5% below the $2,097 we derived from <a href="https://data.hrsa.gov/topics/healthcenters/uds/overview/national/table?tableName=9D&amp;year=2025">HRSA's national figures</a>.</p>
       <figure class="ex-figure" id="fig-ne" style="margin-top:2rem">
         <div class="ex-figure__head">
           <h3 class="ex-figure__title" id="ne-title">Nebraska</h3>
           <p class="ex-figure__sub" id="ne-sub"></p>
         </div>
-        <ul class="ex-legend" aria-label="Legend">
-          <li><span class="ex-key ex-key--obs" aria-hidden="true"></span>Observed (KFF)</li>
-          <li><span class="p9-key p9-key--dot" aria-hidden="true"></span>Modeled median</li>
-          <li><span class="p9-key p9-key--whisker" aria-hidden="true"></span>5th to 95th percentile</li>
-        </ul>
         <div class="ex-chart" id="chart-ne"></div>
         <p class="ex-source">Sources: <a href="https://www.kff.org/medicaid/early-medicaid-work-requirement-insights-from-nebraska/">KFF</a>; Primordial Analytics model.</p>
         <details class="ex-data">
@@ -451,9 +341,8 @@ extra_scripts:
       <p>For each state we draw the 14 inputs 65,536 times and ask how much of the spread in the answer each input explains. That is a variance decomposition (Sobol indices). "On its own" is the share an input explains by itself. "Including interactions" adds what it explains in combination with other inputs, so those shares can add to more than 100%. The one-at-a-time chart moves a single input from its 10th to its 90th percentile for the typical state and holds the rest at their middle values. With everything at the middle the answer is a little different from the median of the draws, because the model is not linear.</p>
 
       <h3 class="ex-h3" style="margin:2rem 0 1rem">Using the files</h3>
-      <p>In the <a href="{{ site.baseurl }}/blog/medicaid-what-if-template/">what-if workbook</a>, paste each state's Low, Mid and High work-requirement columns into Inputs C24:E24 and the paperwork columns into C25:E25. The workbook adds them, so the summed Low and High are wider than the model's range (in the median state 1.8 points under and 4.8 points over). The CSV's <code>total_loss_p5</code>, <code>total_loss_p50</code> and <code>total_loss_p95</code> columns hold the modeled range. For C6, divide "expansion adults per 1,000 Medicaid patients" by 1,000 and multiply by your Medicaid patients of all ages.</p>
+      <p>The state CSV also holds the columns for the what-if workbook. In the <a href="{{ site.baseurl }}/blog/medicaid-what-if-template/">what-if workbook</a>, paste each state's Low, Mid and High work-requirement columns into Inputs C24:E24 and the paperwork columns into C25:E25. The workbook adds them, so the summed Low and High are wider than the model's range (in the median state 1.8 points under and 4.8 points over). The CSV's <code>total_loss_p5</code>, <code>total_loss_p50</code> and <code>total_loss_p95</code> columns hold the modeled range. For C6, divide "expansion adults per 1,000 Medicaid patients" by 1,000 and multiply by your Medicaid patients of all ages.</p>
       <p>Code, method and sources: <a href="https://github.com/primordial-analytics/primordial-analytics.github.io/tree/master/analysis/09-health-center-coverage-loss-stress-test">analysis/09-health-center-coverage-loss-stress-test</a>. Every number on this page comes from <code>output/numbers.json</code> or the other files in <code>output/</code>, through <code>web_data.py</code>.</p>
     </div>
-
   </details>
 </section>

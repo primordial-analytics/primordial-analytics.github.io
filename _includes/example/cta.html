@@ -1,11 +1,12 @@
 {%- comment -%}
   Closing call to action plus the other examples. Reads page.cta {heading, text, button}.
+  The heading is a styled paragraph naming the region (aria-labelledby), not an h2: the closing ask is not one of the page's content sections.
 {%- endcomment -%}
 {%- assign cta = page.cta -%}
 <section class="ex-section ex-band ex-band--ink ex-cta" id="want-this" aria-labelledby="want-this-h">
   <div class="ex-wide ex-cta__grid">
     <div class="ex-cta__main">
-      <h2 class="ex-h2" id="want-this-h">{{ cta.heading | default: "Want this for your organization?" }}</h2>
+      <p class="ex-cta__h" id="want-this-h">{{ cta.heading | default: "Want this for your organization?" }}</p>
       <p class="ex-cta__text">{{ cta.text | default: "Tell us what you are deciding and what data you have." }}</p>
       <p><a class="ex-btn ex-btn--gold ex-btn--lg" href="{{ site.baseurl }}/#contact">{{ cta.button | default: "Get in touch" }}</a></p>
       <p class="ex-cta__fine">This page is an example built on public data. It is not client work.</p>
