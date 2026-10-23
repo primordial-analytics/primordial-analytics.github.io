@@ -1,0 +1,319 @@
+{
+ "files": [
+  {
+   "file": "fr_2026-11094.txt",
+   "url": "https://www.federalregister.gov/documents/full_text/text/2026/06/03/2026-11094.txt",
+   "bytes": 870982,
+   "sha256_16": "46789def4447bb6a",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "H80-2025.xlsx",
+   "url": "https://data.hrsa.gov/DataDownload/StaticDocuments/H80-2025.xlsx",
+   "bytes": 29059572,
+   "sha256_16": "1f8a7503f5489216",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "hrsa_national_table9d_2025.html",
+   "url": "https://data.hrsa.gov/topics/healthcenters/uds/overview/national/table?tableName=9D&year=2025",
+   "bytes": 83533,
+   "sha256_16": "8ccfe93f84d097ba",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "renewals.csv",
+   "url": "https://download.medicaid.gov/data/updated-renewal-outcomes-october-2024-releasefinal.csv",
+   "bytes": 1672639,
+   "sha256_16": "a21e0c7692981a16",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pak.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pak.zip",
+   "bytes": 1298531,
+   "sha256_16": "009d1341ae7d7fd9",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_paz.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_paz.zip",
+   "bytes": 13370392,
+   "sha256_16": "6cdaacc565b26373",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_par.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_par.zip",
+   "bytes": 5682646,
+   "sha256_16": "9d1e16743e38f1f5",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pca.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pca.zip",
+   "bytes": 70114146,
+   "sha256_16": "fa3e473e13b09bb6",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pco.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pco.zip",
+   "bytes": 11095418,
+   "sha256_16": "1993da2baad5777d",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pct.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pct.zip",
+   "bytes": 6794283,
+   "sha256_16": "c5869e3738d5c0a8",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pde.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pde.zip",
+   "bytes": 1846505,
+   "sha256_16": "7f836f7c574182db",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pdc.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pdc.zip",
+   "bytes": 1267545,
+   "sha256_16": "8e7e51aae5f3ddb7",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_phi.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_phi.zip",
+   "bytes": 2782259,
+   "sha256_16": "fec8312f7220c693",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pid.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pid.zip",
+   "bytes": 3706541,
+   "sha256_16": "eaa68478ac73e872",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pil.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pil.zip",
+   "bytes": 22775093,
+   "sha256_16": "197c1b07c3d95b2d",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pin.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pin.zip",
+   "bytes": 12512276,
+   "sha256_16": "b75875743ce3e193",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pia.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pia.zip",
+   "bytes": 5918149,
+   "sha256_16": "1d0b889c4e194010",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pky.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pky.zip",
+   "bytes": 8410227,
+   "sha256_16": "610daad8dd623664",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pla.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pla.zip",
+   "bytes": 8129320,
+   "sha256_16": "8af1a1d0ad321dae",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pme.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pme.zip",
+   "bytes": 2671718,
+   "sha256_16": "6cab10e5e8360910",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pmd.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pmd.zip",
+   "bytes": 11247489,
+   "sha256_16": "69f34a71d5fdbdf2",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pma.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pma.zip",
+   "bytes": 13274236,
+   "sha256_16": "bb7d4009feaf8d19",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pmi.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pmi.zip",
+   "bytes": 18018130,
+   "sha256_16": "278fed34406d9939",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pmn.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pmn.zip",
+   "bytes": 10376881,
+   "sha256_16": "74d7237ce11c157b",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pmo.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pmo.zip",
+   "bytes": 11452948,
+   "sha256_16": "f371aa3fa89e1860",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pmt.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pmt.zip",
+   "bytes": 2097281,
+   "sha256_16": "6e11bf6e2826bff4",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pne.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pne.zip",
+   "bytes": 3655873,
+   "sha256_16": "ed80ad9e07fec397",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pnv.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pnv.zip",
+   "bytes": 5710805,
+   "sha256_16": "fdd021ee4dff6fc9",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pnh.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pnh.zip",
+   "bytes": 2627209,
+   "sha256_16": "a8d41ea342b40270",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pnj.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pnj.zip",
+   "bytes": 16969210,
+   "sha256_16": "f57ef6363b349251",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pnm.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pnm.zip",
+   "bytes": 3762433,
+   "sha256_16": "78c1d216bfd9d15c",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pny.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pny.zip",
+   "bytes": 37187628,
+   "sha256_16": "89d73997653d2a1d",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pnc.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pnc.zip",
+   "bytes": 20137517,
+   "sha256_16": "c7a3c2091f8979bd",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pnd.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pnd.zip",
+   "bytes": 1522208,
+   "sha256_16": "6e7cda6989459d36",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_poh.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_poh.zip",
+   "bytes": 21364118,
+   "sha256_16": "9ac86fe4193d2cba",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pok.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pok.zip",
+   "bytes": 7000894,
+   "sha256_16": "1aa5ddc1e2ebd671",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_por.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_por.zip",
+   "bytes": 7914577,
+   "sha256_16": "63097ea60a3d2703",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_ppa.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_ppa.zip",
+   "bytes": 23500063,
+   "sha256_16": "cb32fe6908465935",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pri.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pri.zip",
+   "bytes": 1944668,
+   "sha256_16": "44af112cffc9615e",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_psd.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_psd.zip",
+   "bytes": 1751142,
+   "sha256_16": "617eb0b2d1bf5835",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_put.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_put.zip",
+   "bytes": 6351045,
+   "sha256_16": "7b9887472dde9ee8",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pvt.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pvt.zip",
+   "bytes": 1309643,
+   "sha256_16": "c5ea448bc37f909a",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pva.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pva.zip",
+   "bytes": 16032897,
+   "sha256_16": "d9295b9fb1fd0d6e",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pwa.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pwa.zip",
+   "bytes": 14716206,
+   "sha256_16": "669cd9b434610373",
+   "downloaded": "2026-10-22"
+  },
+  {
+   "file": "pums/csv_pwv.zip",
+   "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pwv.zip",
+   "bytes": 3285258,
+   "sha256_16": "3a9078ab5fa4ea06",
+   "downloaded": "2026-10-22"
+  }
+ ]
+}

@@ -1,0 +1,1149 @@
+state,output,input,S1,ST,label
+AK,L,regime,0.2577,0.3052,Verification regime (CMS scenario)
+AK,L,nc_noise,0.0762,0.0905,Non-compliance rate
+AK,L,excl_mult,0.0806,0.0900,Share excluded or exempt
+AK,L,hardship,0.0016,0.0020,Hardship exception adopted
+AK,L,ex_nat,0.0213,0.0400,Share verified by data matching
+AK,L,eps_ex,0.0404,0.0638,State's data matching vs peers
+AK,L,eps_pd,0.4322,0.4916,State's paperwork loss vs peers
+AK,L,theta,-0.0005,0.0038,Loss among data-matched members
+AK,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+AK,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+AK,L,r_keep,0.0000,0.0000,Share who keep coming
+AK,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+AK,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+AK,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+AZ,L,regime,0.3039,0.3456,Verification regime (CMS scenario)
+AZ,L,nc_noise,0.1244,0.1353,Non-compliance rate
+AZ,L,excl_mult,0.0222,0.0245,Share excluded or exempt
+AZ,L,hardship,0.0013,0.0016,Hardship exception adopted
+AZ,L,ex_nat,0.0307,0.0544,Share verified by data matching
+AZ,L,eps_ex,0.0575,0.0886,State's data matching vs peers
+AZ,L,eps_pd,0.3665,0.4242,State's paperwork loss vs peers
+AZ,L,theta,0.0069,0.0162,Loss among data-matched members
+AZ,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+AZ,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+AZ,L,r_keep,0.0000,0.0000,Share who keep coming
+AZ,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+AZ,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+AZ,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+AR,L,regime,0.3022,0.3398,Verification regime (CMS scenario)
+AR,L,nc_noise,0.1146,0.1235,Non-compliance rate
+AR,L,excl_mult,0.0183,0.0200,Share excluded or exempt
+AR,L,hardship,0.0011,0.0014,Hardship exception adopted
+AR,L,ex_nat,0.0306,0.0514,Share verified by data matching
+AR,L,eps_ex,0.0554,0.0842,State's data matching vs peers
+AR,L,eps_pd,0.4045,0.4520,State's paperwork loss vs peers
+AR,L,theta,-0.0001,0.0065,Loss among data-matched members
+AR,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+AR,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+AR,L,r_keep,0.0000,0.0000,Share who keep coming
+AR,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+AR,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+AR,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+CA,L,regime,0.3157,0.3571,Verification regime (CMS scenario)
+CA,L,nc_noise,0.1239,0.1327,Non-compliance rate
+CA,L,excl_mult,0.0085,0.0092,Share excluded or exempt
+CA,L,hardship,0.0010,0.0013,Hardship exception adopted
+CA,L,ex_nat,0.0278,0.0487,Share verified by data matching
+CA,L,eps_ex,0.0515,0.0798,State's data matching vs peers
+CA,L,eps_pd,0.3927,0.4482,State's paperwork loss vs peers
+CA,L,theta,0.0002,0.0060,Loss among data-matched members
+CA,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+CA,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+CA,L,r_keep,0.0000,0.0000,Share who keep coming
+CA,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+CA,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+CA,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+CO,L,regime,0.2965,0.3320,Verification regime (CMS scenario)
+CO,L,nc_noise,0.0879,0.0947,Non-compliance rate
+CO,L,excl_mult,0.0106,0.0113,Share excluded or exempt
+CO,L,hardship,0.0009,0.0010,Hardship exception adopted
+CO,L,ex_nat,0.0224,0.0365,Share verified by data matching
+CO,L,eps_ex,0.0406,0.0587,State's data matching vs peers
+CO,L,eps_pd,0.4878,0.5240,State's paperwork loss vs peers
+CO,L,theta,0.0009,0.0042,Loss among data-matched members
+CO,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+CO,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+CO,L,r_keep,0.0000,0.0000,Share who keep coming
+CO,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+CO,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+CO,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+CT,L,regime,0.3278,0.3687,Verification regime (CMS scenario)
+CT,L,nc_noise,0.1517,0.1632,Non-compliance rate
+CT,L,excl_mult,0.0137,0.0151,Share excluded or exempt
+CT,L,hardship,0.0013,0.0016,Hardship exception adopted
+CT,L,ex_nat,0.0274,0.0486,Share verified by data matching
+CT,L,eps_ex,0.0505,0.0783,State's data matching vs peers
+CT,L,eps_pd,0.3439,0.3981,State's paperwork loss vs peers
+CT,L,theta,0.0029,0.0098,Loss among data-matched members
+CT,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+CT,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+CT,L,r_keep,0.0000,0.0000,Share who keep coming
+CT,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+CT,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+CT,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+DE,L,regime,0.3223,0.3641,Verification regime (CMS scenario)
+DE,L,nc_noise,0.1377,0.1490,Non-compliance rate
+DE,L,excl_mult,0.0193,0.0211,Share excluded or exempt
+DE,L,hardship,0.0012,0.0015,Hardship exception adopted
+DE,L,ex_nat,0.0175,0.0323,Share verified by data matching
+DE,L,eps_ex,0.0326,0.0511,State's data matching vs peers
+DE,L,eps_pd,0.3971,0.4488,State's paperwork loss vs peers
+DE,L,theta,-0.0003,0.0035,Loss among data-matched members
+DE,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+DE,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+DE,L,r_keep,0.0000,0.0000,Share who keep coming
+DE,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+DE,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+DE,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+DC,L,regime,0.2830,0.3207,Verification regime (CMS scenario)
+DC,L,nc_noise,0.1019,0.1096,Non-compliance rate
+DC,L,excl_mult,0.0137,0.0149,Share excluded or exempt
+DC,L,hardship,0.0009,0.0011,Hardship exception adopted
+DC,L,ex_nat,0.0369,0.0589,Share verified by data matching
+DC,L,eps_ex,0.0652,0.0971,State's data matching vs peers
+DC,L,eps_pd,0.4249,0.4698,State's paperwork loss vs peers
+DC,L,theta,0.0021,0.0104,Loss among data-matched members
+DC,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+DC,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+DC,L,r_keep,0.0000,0.0000,Share who keep coming
+DC,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+DC,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+DC,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+HI,L,regime,0.3375,0.3761,Verification regime (CMS scenario)
+HI,L,nc_noise,0.1812,0.1959,Non-compliance rate
+HI,L,excl_mult,0.0231,0.0256,Share excluded or exempt
+HI,L,hardship,0.0017,0.0020,Hardship exception adopted
+HI,L,ex_nat,0.0230,0.0437,Share verified by data matching
+HI,L,eps_ex,0.0460,0.0710,State's data matching vs peers
+HI,L,eps_pd,0.2950,0.3472,State's paperwork loss vs peers
+HI,L,theta,0.0122,0.0229,Loss among data-matched members
+HI,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+HI,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+HI,L,r_keep,0.0000,0.0000,Share who keep coming
+HI,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+HI,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+HI,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+ID,L,regime,0.2620,0.2981,Verification regime (CMS scenario)
+ID,L,nc_noise,0.0612,0.0659,Non-compliance rate
+ID,L,excl_mult,0.0102,0.0109,Share excluded or exempt
+ID,L,hardship,0.0008,0.0007,Hardship exception adopted
+ID,L,ex_nat,0.0311,0.0440,Share verified by data matching
+ID,L,eps_ex,0.0496,0.0706,State's data matching vs peers
+ID,L,eps_pd,0.5355,0.5701,State's paperwork loss vs peers
+ID,L,theta,0.0013,0.0046,Loss among data-matched members
+ID,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+ID,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+ID,L,r_keep,0.0000,0.0000,Share who keep coming
+ID,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+ID,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+ID,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+IL,L,regime,0.3050,0.3432,Verification regime (CMS scenario)
+IL,L,nc_noise,0.1123,0.1202,Non-compliance rate
+IL,L,excl_mult,0.0099,0.0106,Share excluded or exempt
+IL,L,hardship,0.0010,0.0012,Hardship exception adopted
+IL,L,ex_nat,0.0299,0.0507,Share verified by data matching
+IL,L,eps_ex,0.0551,0.0839,State's data matching vs peers
+IL,L,eps_pd,0.4135,0.4637,State's paperwork loss vs peers
+IL,L,theta,-0.0000,0.0059,Loss among data-matched members
+IL,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+IL,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+IL,L,r_keep,0.0000,0.0000,Share who keep coming
+IL,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+IL,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+IL,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+IN,L,regime,0.2943,0.3326,Verification regime (CMS scenario)
+IN,L,nc_noise,0.1002,0.1078,Non-compliance rate
+IN,L,excl_mult,0.0136,0.0147,Share excluded or exempt
+IN,L,hardship,0.0010,0.0012,Hardship exception adopted
+IN,L,ex_nat,0.0308,0.0517,Share verified by data matching
+IN,L,eps_ex,0.0560,0.0850,State's data matching vs peers
+IN,L,eps_pd,0.4322,0.4806,State's paperwork loss vs peers
+IN,L,theta,-0.0007,0.0056,Loss among data-matched members
+IN,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+IN,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+IN,L,r_keep,0.0000,0.0000,Share who keep coming
+IN,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+IN,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+IN,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+IA,L,regime,0.2876,0.3299,Verification regime (CMS scenario)
+IA,L,nc_noise,0.0926,0.1003,Non-compliance rate
+IA,L,excl_mult,0.0131,0.0141,Share excluded or exempt
+IA,L,hardship,0.0008,0.0011,Hardship exception adopted
+IA,L,ex_nat,0.0247,0.0440,Share verified by data matching
+IA,L,eps_ex,0.0461,0.0716,State's data matching vs peers
+IA,L,eps_pd,0.4604,0.5156,State's paperwork loss vs peers
+IA,L,theta,-0.0005,0.0040,Loss among data-matched members
+IA,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+IA,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+IA,L,r_keep,0.0000,0.0000,Share who keep coming
+IA,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+IA,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+IA,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+KY,L,regime,0.4186,0.4473,Verification regime (CMS scenario)
+KY,L,nc_noise,0.3771,0.4032,Non-compliance rate
+KY,L,excl_mult,0.0560,0.0621,Share excluded or exempt
+KY,L,hardship,0.0042,0.0046,Hardship exception adopted
+KY,L,ex_nat,0.0042,0.0101,Share verified by data matching
+KY,L,eps_ex,0.0121,0.0169,State's data matching vs peers
+KY,L,eps_pd,0.0763,0.1001,State's paperwork loss vs peers
+KY,L,theta,0.0006,0.0018,Loss among data-matched members
+KY,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+KY,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+KY,L,r_keep,0.0000,0.0000,Share who keep coming
+KY,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+KY,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+KY,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+LA,L,regime,0.2865,0.3234,Verification regime (CMS scenario)
+LA,L,nc_noise,0.0918,0.0983,Non-compliance rate
+LA,L,excl_mult,0.0097,0.0104,Share excluded or exempt
+LA,L,hardship,0.0009,0.0010,Hardship exception adopted
+LA,L,ex_nat,0.0342,0.0539,Share verified by data matching
+LA,L,eps_ex,0.0613,0.0889,State's data matching vs peers
+LA,L,eps_pd,0.4529,0.4943,State's paperwork loss vs peers
+LA,L,theta,-0.0002,0.0058,Loss among data-matched members
+LA,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+LA,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+LA,L,r_keep,0.0000,0.0000,Share who keep coming
+LA,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+LA,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+LA,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+ME,L,regime,0.4293,0.4574,Verification regime (CMS scenario)
+ME,L,nc_noise,0.3769,0.4015,Non-compliance rate
+ME,L,excl_mult,0.0473,0.0524,Share excluded or exempt
+ME,L,hardship,0.0039,0.0043,Hardship exception adopted
+ME,L,ex_nat,0.0010,0.0027,Share verified by data matching
+ME,L,eps_ex,0.0033,0.0040,State's data matching vs peers
+ME,L,eps_pd,0.0941,0.1138,State's paperwork loss vs peers
+ME,L,theta,-0.0002,0.0014,Loss among data-matched members
+ME,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+ME,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+ME,L,r_keep,0.0000,0.0000,Share who keep coming
+ME,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+ME,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+ME,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+MD,L,regime,0.2763,0.3152,Verification regime (CMS scenario)
+MD,L,nc_noise,0.0863,0.0927,Non-compliance rate
+MD,L,excl_mult,0.0092,0.0099,Share excluded or exempt
+MD,L,hardship,0.0008,0.0009,Hardship exception adopted
+MD,L,ex_nat,0.0360,0.0584,Share verified by data matching
+MD,L,eps_ex,0.0642,0.0964,State's data matching vs peers
+MD,L,eps_pd,0.4539,0.5027,State's paperwork loss vs peers
+MD,L,theta,0.0005,0.0080,Loss among data-matched members
+MD,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+MD,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+MD,L,r_keep,0.0000,0.0000,Share who keep coming
+MD,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+MD,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+MD,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+MA,L,regime,0.2939,0.3297,Verification regime (CMS scenario)
+MA,L,nc_noise,0.0882,0.0946,Non-compliance rate
+MA,L,excl_mult,0.0086,0.0092,Share excluded or exempt
+MA,L,hardship,0.0009,0.0010,Hardship exception adopted
+MA,L,ex_nat,0.0256,0.0414,Share verified by data matching
+MA,L,eps_ex,0.0462,0.0668,State's data matching vs peers
+MA,L,eps_pd,0.4813,0.5192,State's paperwork loss vs peers
+MA,L,theta,0.0003,0.0040,Loss among data-matched members
+MA,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+MA,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+MA,L,r_keep,0.0000,0.0000,Share who keep coming
+MA,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+MA,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+MA,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+MI,L,regime,0.2874,0.3238,Verification regime (CMS scenario)
+MI,L,nc_noise,0.0844,0.0906,Non-compliance rate
+MI,L,excl_mult,0.0093,0.0100,Share excluded or exempt
+MI,L,hardship,0.0009,0.0010,Hardship exception adopted
+MI,L,ex_nat,0.0288,0.0458,Share verified by data matching
+MI,L,eps_ex,0.0520,0.0747,State's data matching vs peers
+MI,L,eps_pd,0.4802,0.5193,State's paperwork loss vs peers
+MI,L,theta,0.0001,0.0042,Loss among data-matched members
+MI,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+MI,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+MI,L,r_keep,0.0000,0.0000,Share who keep coming
+MI,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+MI,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+MI,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+MN,L,regime,0.2786,0.3164,Verification regime (CMS scenario)
+MN,L,nc_noise,0.0746,0.0806,Non-compliance rate
+MN,L,excl_mult,0.0106,0.0115,Share excluded or exempt
+MN,L,hardship,0.0008,0.0009,Hardship exception adopted
+MN,L,ex_nat,0.0252,0.0422,Share verified by data matching
+MN,L,eps_ex,0.0467,0.0686,State's data matching vs peers
+MN,L,eps_pd,0.5030,0.5470,State's paperwork loss vs peers
+MN,L,theta,0.0000,0.0042,Loss among data-matched members
+MN,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+MN,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+MN,L,r_keep,0.0000,0.0000,Share who keep coming
+MN,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+MN,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+MN,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+MO,L,regime,0.2715,0.3104,Verification regime (CMS scenario)
+MO,L,nc_noise,0.0814,0.0878,Non-compliance rate
+MO,L,excl_mult,0.0116,0.0125,Share excluded or exempt
+MO,L,hardship,0.0008,0.0010,Hardship exception adopted
+MO,L,ex_nat,0.0364,0.0581,Share verified by data matching
+MO,L,eps_ex,0.0651,0.0964,State's data matching vs peers
+MO,L,eps_pd,0.4620,0.5092,State's paperwork loss vs peers
+MO,L,theta,0.0002,0.0073,Loss among data-matched members
+MO,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+MO,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+MO,L,r_keep,0.0000,0.0000,Share who keep coming
+MO,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+MO,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+MO,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+MT,L,regime,0.2621,0.2984,Verification regime (CMS scenario)
+MT,L,nc_noise,0.0617,0.0678,Non-compliance rate
+MT,L,excl_mult,0.0192,0.0209,Share excluded or exempt
+MT,L,hardship,0.0009,0.0009,Hardship exception adopted
+MT,L,ex_nat,0.0278,0.0391,Share verified by data matching
+MT,L,eps_ex,0.0443,0.0633,State's data matching vs peers
+MT,L,eps_pd,0.5338,0.5674,State's paperwork loss vs peers
+MT,L,theta,0.0018,0.0048,Loss among data-matched members
+MT,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+MT,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+MT,L,r_keep,0.0000,0.0000,Share who keep coming
+MT,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+MT,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+MT,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+NE,L,regime,0.3162,0.3604,Verification regime (CMS scenario)
+NE,L,nc_noise,0.1321,0.1433,Non-compliance rate
+NE,L,excl_mult,0.0214,0.0237,Share excluded or exempt
+NE,L,hardship,0.0012,0.0016,Hardship exception adopted
+NE,L,ex_nat,0.0202,0.0376,Share verified by data matching
+NE,L,eps_ex,0.0372,0.0591,State's data matching vs peers
+NE,L,eps_pd,0.3916,0.4468,State's paperwork loss vs peers
+NE,L,theta,-0.0008,0.0036,Loss among data-matched members
+NE,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+NE,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+NE,L,r_keep,0.0000,0.0000,Share who keep coming
+NE,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+NE,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+NE,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+NV,L,regime,0.2697,0.3053,Verification regime (CMS scenario)
+NV,L,nc_noise,0.0794,0.0844,Non-compliance rate
+NV,L,excl_mult,0.0086,0.0093,Share excluded or exempt
+NV,L,hardship,0.0008,0.0009,Hardship exception adopted
+NV,L,ex_nat,0.0397,0.0598,Share verified by data matching
+NV,L,eps_ex,0.0685,0.0976,State's data matching vs peers
+NV,L,eps_pd,0.4736,0.5107,State's paperwork loss vs peers
+NV,L,theta,-0.0001,0.0068,Loss among data-matched members
+NV,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+NV,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+NV,L,r_keep,0.0000,0.0000,Share who keep coming
+NV,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+NV,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+NV,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+NH,L,regime,0.2818,0.3213,Verification regime (CMS scenario)
+NH,L,nc_noise,0.0993,0.1077,Non-compliance rate
+NH,L,excl_mult,0.0193,0.0212,Share excluded or exempt
+NH,L,hardship,0.0009,0.0012,Hardship exception adopted
+NH,L,ex_nat,0.0334,0.0559,Share verified by data matching
+NH,L,eps_ex,0.0597,0.0910,State's data matching vs peers
+NH,L,eps_pd,0.4263,0.4780,State's paperwork loss vs peers
+NH,L,theta,0.0004,0.0077,Loss among data-matched members
+NH,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+NH,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+NH,L,r_keep,0.0000,0.0000,Share who keep coming
+NH,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+NH,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+NH,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+NJ,L,regime,0.3007,0.3346,Verification regime (CMS scenario)
+NJ,L,nc_noise,0.0889,0.0953,Non-compliance rate
+NJ,L,excl_mult,0.0074,0.0078,Share excluded or exempt
+NJ,L,hardship,0.0009,0.0009,Hardship exception adopted
+NJ,L,ex_nat,0.0220,0.0329,Share verified by data matching
+NJ,L,eps_ex,0.0372,0.0533,State's data matching vs peers
+NJ,L,eps_pd,0.4965,0.5278,State's paperwork loss vs peers
+NJ,L,theta,0.0018,0.0046,Loss among data-matched members
+NJ,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+NJ,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+NJ,L,r_keep,0.0000,0.0000,Share who keep coming
+NJ,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+NJ,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+NJ,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+NM,L,regime,0.2750,0.3188,Verification regime (CMS scenario)
+NM,L,nc_noise,0.0851,0.0934,Non-compliance rate
+NM,L,excl_mult,0.0221,0.0242,Share excluded or exempt
+NM,L,hardship,0.0009,0.0012,Hardship exception adopted
+NM,L,ex_nat,0.0294,0.0516,Share verified by data matching
+NM,L,eps_ex,0.0541,0.0839,State's data matching vs peers
+NM,L,eps_pd,0.4504,0.5089,State's paperwork loss vs peers
+NM,L,theta,-0.0004,0.0052,Loss among data-matched members
+NM,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+NM,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+NM,L,r_keep,0.0000,0.0000,Share who keep coming
+NM,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+NM,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+NM,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+NY,L,regime,0.3522,0.3927,Verification regime (CMS scenario)
+NY,L,nc_noise,0.1636,0.1752,Non-compliance rate
+NY,L,excl_mult,0.0116,0.0126,Share excluded or exempt
+NY,L,hardship,0.0014,0.0017,Hardship exception adopted
+NY,L,ex_nat,0.0168,0.0313,Share verified by data matching
+NY,L,eps_ex,0.0315,0.0497,State's data matching vs peers
+NY,L,eps_pd,0.3520,0.4004,State's paperwork loss vs peers
+NY,L,theta,-0.0008,0.0032,Loss among data-matched members
+NY,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+NY,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+NY,L,r_keep,0.0000,0.0000,Share who keep coming
+NY,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+NY,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+NY,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+NC,L,regime,0.2411,0.2753,Verification regime (CMS scenario)
+NC,L,nc_noise,0.0669,0.0723,Non-compliance rate
+NC,L,excl_mult,0.0099,0.0107,Share excluded or exempt
+NC,L,hardship,0.0008,0.0008,Hardship exception adopted
+NC,L,ex_nat,0.0471,0.0748,Share verified by data matching
+NC,L,eps_ex,0.0851,0.1252,State's data matching vs peers
+NC,L,eps_pd,0.4427,0.4809,State's paperwork loss vs peers
+NC,L,theta,0.0320,0.0561,Loss among data-matched members
+NC,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+NC,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+NC,L,r_keep,0.0000,0.0000,Share who keep coming
+NC,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+NC,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+NC,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+ND,L,regime,0.2711,0.3085,Verification regime (CMS scenario)
+ND,L,nc_noise,0.0731,0.0814,Non-compliance rate
+ND,L,excl_mult,0.0281,0.0308,Share excluded or exempt
+ND,L,hardship,0.0010,0.0011,Hardship exception adopted
+ND,L,ex_nat,0.0242,0.0391,Share verified by data matching
+ND,L,eps_ex,0.0435,0.0629,State's data matching vs peers
+ND,L,eps_pd,0.5002,0.5388,State's paperwork loss vs peers
+ND,L,theta,0.0008,0.0042,Loss among data-matched members
+ND,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+ND,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+ND,L,r_keep,0.0000,0.0000,Share who keep coming
+ND,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+ND,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+ND,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+OH,L,regime,0.3088,0.3507,Verification regime (CMS scenario)
+OH,L,nc_noise,0.1170,0.1262,Non-compliance rate
+OH,L,excl_mult,0.0160,0.0175,Share excluded or exempt
+OH,L,hardship,0.0011,0.0014,Hardship exception adopted
+OH,L,ex_nat,0.0271,0.0476,Share verified by data matching
+OH,L,eps_ex,0.0497,0.0771,State's data matching vs peers
+OH,L,eps_pd,0.4015,0.4567,State's paperwork loss vs peers
+OH,L,theta,-0.0002,0.0051,Loss among data-matched members
+OH,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+OH,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+OH,L,r_keep,0.0000,0.0000,Share who keep coming
+OH,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+OH,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+OH,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+OK,L,regime,0.2662,0.3029,Verification regime (CMS scenario)
+OK,L,nc_noise,0.0592,0.0647,Non-compliance rate
+OK,L,excl_mult,0.0158,0.0171,Share excluded or exempt
+OK,L,hardship,0.0009,0.0009,Hardship exception adopted
+OK,L,ex_nat,0.0248,0.0343,Share verified by data matching
+OK,L,eps_ex,0.0386,0.0551,State's data matching vs peers
+OK,L,eps_pd,0.5471,0.5794,State's paperwork loss vs peers
+OK,L,theta,0.0028,0.0053,Loss among data-matched members
+OK,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+OK,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+OK,L,r_keep,0.0000,0.0000,Share who keep coming
+OK,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+OK,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+OK,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+OR,L,regime,0.3814,0.4188,Verification regime (CMS scenario)
+OR,L,nc_noise,0.2532,0.2729,Non-compliance rate
+OR,L,excl_mult,0.0364,0.0402,Share excluded or exempt
+OR,L,hardship,0.0026,0.0031,Hardship exception adopted
+OR,L,ex_nat,0.0136,0.0281,Share verified by data matching
+OR,L,eps_ex,0.0320,0.0494,State's data matching vs peers
+OR,L,eps_pd,0.2056,0.2537,State's paperwork loss vs peers
+OR,L,theta,0.0031,0.0076,Loss among data-matched members
+OR,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+OR,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+OR,L,r_keep,0.0000,0.0000,Share who keep coming
+OR,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+OR,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+OR,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+PA,L,regime,0.3382,0.3745,Verification regime (CMS scenario)
+PA,L,nc_noise,0.1183,0.1284,Non-compliance rate
+PA,L,excl_mult,0.0154,0.0163,Share excluded or exempt
+PA,L,hardship,0.0012,0.0014,Hardship exception adopted
+PA,L,ex_nat,0.0039,0.0100,Share verified by data matching
+PA,L,eps_ex,0.0103,0.0154,State's data matching vs peers
+PA,L,eps_pd,0.4562,0.4983,State's paperwork loss vs peers
+PA,L,theta,0.0039,0.0073,Loss among data-matched members
+PA,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+PA,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+PA,L,r_keep,0.0000,0.0000,Share who keep coming
+PA,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+PA,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+PA,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+RI,L,regime,0.2684,0.3043,Verification regime (CMS scenario)
+RI,L,nc_noise,0.0874,0.0934,Non-compliance rate
+RI,L,excl_mult,0.0105,0.0115,Share excluded or exempt
+RI,L,hardship,0.0009,0.0009,Hardship exception adopted
+RI,L,ex_nat,0.0421,0.0654,Share verified by data matching
+RI,L,eps_ex,0.0748,0.1076,State's data matching vs peers
+RI,L,eps_pd,0.4471,0.4860,State's paperwork loss vs peers
+RI,L,theta,0.0018,0.0120,Loss among data-matched members
+RI,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+RI,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+RI,L,r_keep,0.0000,0.0000,Share who keep coming
+RI,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+RI,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+RI,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+SD,L,regime,0.2778,0.3234,Verification regime (CMS scenario)
+SD,L,nc_noise,0.0820,0.0939,Non-compliance rate
+SD,L,excl_mult,0.0490,0.0543,Share excluded or exempt
+SD,L,hardship,0.0014,0.0015,Hardship exception adopted
+SD,L,ex_nat,0.0130,0.0261,Share verified by data matching
+SD,L,eps_ex,0.0257,0.0405,State's data matching vs peers
+SD,L,eps_pd,0.4737,0.5295,State's paperwork loss vs peers
+SD,L,theta,0.0015,0.0051,Loss among data-matched members
+SD,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+SD,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+SD,L,r_keep,0.0000,0.0000,Share who keep coming
+SD,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+SD,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+SD,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+UT,L,regime,0.2504,0.2907,Verification regime (CMS scenario)
+UT,L,nc_noise,0.0621,0.0656,Non-compliance rate
+UT,L,excl_mult,0.0084,0.0089,Share excluded or exempt
+UT,L,hardship,0.0009,0.0007,Hardship exception adopted
+UT,L,ex_nat,0.0312,0.0452,Share verified by data matching
+UT,L,eps_ex,0.0520,0.0736,State's data matching vs peers
+UT,L,eps_pd,0.5395,0.5814,State's paperwork loss vs peers
+UT,L,theta,0.0017,0.0052,Loss among data-matched members
+UT,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+UT,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+UT,L,r_keep,0.0000,0.0000,Share who keep coming
+UT,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+UT,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+UT,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+VT,L,regime,0.2978,0.3392,Verification regime (CMS scenario)
+VT,L,nc_noise,0.1190,0.1289,Non-compliance rate
+VT,L,excl_mult,0.0201,0.0220,Share excluded or exempt
+VT,L,hardship,0.0011,0.0013,Hardship exception adopted
+VT,L,ex_nat,0.0278,0.0487,Share verified by data matching
+VT,L,eps_ex,0.0517,0.0797,State's data matching vs peers
+VT,L,eps_pd,0.4036,0.4577,State's paperwork loss vs peers
+VT,L,theta,0.0000,0.0055,Loss among data-matched members
+VT,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+VT,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+VT,L,r_keep,0.0000,0.0000,Share who keep coming
+VT,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+VT,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+VT,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+VA,L,regime,0.3627,0.4052,Verification regime (CMS scenario)
+VA,L,nc_noise,0.2033,0.2188,Non-compliance rate
+VA,L,excl_mult,0.0207,0.0231,Share excluded or exempt
+VA,L,hardship,0.0018,0.0023,Hardship exception adopted
+VA,L,ex_nat,0.0170,0.0344,Share verified by data matching
+VA,L,eps_ex,0.0358,0.0552,State's data matching vs peers
+VA,L,eps_pd,0.2798,0.3317,State's paperwork loss vs peers
+VA,L,theta,0.0000,0.0041,Loss among data-matched members
+VA,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+VA,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+VA,L,r_keep,0.0000,0.0000,Share who keep coming
+VA,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+VA,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+VA,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+WA,L,regime,0.2797,0.3175,Verification regime (CMS scenario)
+WA,L,nc_noise,0.0928,0.1000,Non-compliance rate
+WA,L,excl_mult,0.0137,0.0149,Share excluded or exempt
+WA,L,hardship,0.0010,0.0011,Hardship exception adopted
+WA,L,ex_nat,0.0391,0.0620,Share verified by data matching
+WA,L,eps_ex,0.0687,0.1020,State's data matching vs peers
+WA,L,eps_pd,0.4288,0.4739,State's paperwork loss vs peers
+WA,L,theta,0.0037,0.0133,Loss among data-matched members
+WA,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+WA,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+WA,L,r_keep,0.0000,0.0000,Share who keep coming
+WA,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+WA,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+WA,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+WV,L,regime,0.2863,0.3223,Verification regime (CMS scenario)
+WV,L,nc_noise,0.0756,0.0821,Non-compliance rate
+WV,L,excl_mult,0.0114,0.0122,Share excluded or exempt
+WV,L,hardship,0.0008,0.0009,Hardship exception adopted
+WV,L,ex_nat,0.0206,0.0335,Share verified by data matching
+WV,L,eps_ex,0.0368,0.0533,State's data matching vs peers
+WV,L,eps_pd,0.5157,0.5521,State's paperwork loss vs peers
+WV,L,theta,0.0017,0.0047,Loss among data-matched members
+WV,L,f_ref,0.0000,0.0000,Expansion share of Medicaid adults
+WV,L,kappa,0.0000,0.0000,"Medicaid pay, adults vs all patients"
+WV,L,r_keep,0.0000,0.0000,Share who keep coming
+WV,L,v_rel,0.0000,0.0000,Visit rate once uninsured
+WV,L,eps_M,0.0000,0.0000,Medicaid payment per patient
+WV,L,eps_S,0.0000,0.0000,Self-pay per uninsured patient
+AK,pct_rev,regime,0.1833,0.2269,Verification regime (CMS scenario)
+AK,pct_rev,nc_noise,0.0541,0.0699,Non-compliance rate
+AK,pct_rev,excl_mult,0.0526,0.0673,Share excluded or exempt
+AK,pct_rev,hardship,0.0015,0.0015,Hardship exception adopted
+AK,pct_rev,ex_nat,0.0152,0.0322,Share verified by data matching
+AK,pct_rev,eps_ex,0.0295,0.0479,State's data matching vs peers
+AK,pct_rev,eps_pd,0.3022,0.3683,State's paperwork loss vs peers
+AK,pct_rev,theta,0.0001,0.0028,Loss among data-matched members
+AK,pct_rev,f_ref,0.0577,0.0721,Expansion share of Medicaid adults
+AK,pct_rev,kappa,0.0855,0.1089,"Medicaid pay, adults vs all patients"
+AK,pct_rev,r_keep,0.0011,0.0012,Share who keep coming
+AK,pct_rev,v_rel,0.0003,0.0004,Visit rate once uninsured
+AK,pct_rev,eps_M,0.1046,0.1333,Medicaid payment per patient
+AK,pct_rev,eps_S,0.0037,0.0034,Self-pay per uninsured patient
+AZ,pct_rev,regime,0.2088,0.2512,Verification regime (CMS scenario)
+AZ,pct_rev,nc_noise,0.0862,0.1011,Non-compliance rate
+AZ,pct_rev,excl_mult,0.0144,0.0183,Share excluded or exempt
+AZ,pct_rev,hardship,0.0011,0.0012,Hardship exception adopted
+AZ,pct_rev,ex_nat,0.0210,0.0417,Share verified by data matching
+AZ,pct_rev,eps_ex,0.0425,0.0654,State's data matching vs peers
+AZ,pct_rev,eps_pd,0.2502,0.3066,State's paperwork loss vs peers
+AZ,pct_rev,theta,0.0052,0.0120,Loss among data-matched members
+AZ,pct_rev,f_ref,0.0739,0.0882,Expansion share of Medicaid adults
+AZ,pct_rev,kappa,0.1051,0.1295,"Medicaid pay, adults vs all patients"
+AZ,pct_rev,r_keep,0.0008,0.0009,Share who keep coming
+AZ,pct_rev,v_rel,0.0001,0.0003,Visit rate once uninsured
+AZ,pct_rev,eps_M,0.0901,0.1099,Medicaid payment per patient
+AZ,pct_rev,eps_S,0.0023,0.0020,Self-pay per uninsured patient
+AR,pct_rev,regime,0.1864,0.2252,Verification regime (CMS scenario)
+AR,pct_rev,nc_noise,0.0712,0.0851,Non-compliance rate
+AR,pct_rev,excl_mult,0.0100,0.0137,Share excluded or exempt
+AR,pct_rev,hardship,0.0009,0.0009,Hardship exception adopted
+AR,pct_rev,ex_nat,0.0191,0.0364,Share verified by data matching
+AR,pct_rev,eps_ex,0.0353,0.0572,State's data matching vs peers
+AR,pct_rev,eps_pd,0.2497,0.3018,State's paperwork loss vs peers
+AR,pct_rev,theta,0.0003,0.0043,Loss among data-matched members
+AR,pct_rev,f_ref,0.0692,0.0835,Expansion share of Medicaid adults
+AR,pct_rev,kappa,0.1019,0.1270,"Medicaid pay, adults vs all patients"
+AR,pct_rev,r_keep,0.0013,0.0015,Share who keep coming
+AR,pct_rev,v_rel,0.0003,0.0005,Visit rate once uninsured
+AR,pct_rev,eps_M,0.1536,0.1875,Medicaid payment per patient
+AR,pct_rev,eps_S,0.0046,0.0044,Self-pay per uninsured patient
+CA,pct_rev,regime,0.2377,0.2809,Verification regime (CMS scenario)
+CA,pct_rev,nc_noise,0.0943,0.1057,Non-compliance rate
+CA,pct_rev,excl_mult,0.0062,0.0073,Share excluded or exempt
+CA,pct_rev,hardship,0.0009,0.0010,Hardship exception adopted
+CA,pct_rev,ex_nat,0.0216,0.0394,Share verified by data matching
+CA,pct_rev,eps_ex,0.0399,0.0636,State's data matching vs peers
+CA,pct_rev,eps_pd,0.2929,0.3493,State's paperwork loss vs peers
+CA,pct_rev,theta,0.0005,0.0047,Loss among data-matched members
+CA,pct_rev,f_ref,0.0841,0.0969,Expansion share of Medicaid adults
+CA,pct_rev,kappa,0.1101,0.1320,"Medicaid pay, adults vs all patients"
+CA,pct_rev,r_keep,0.0002,0.0002,Share who keep coming
+CA,pct_rev,v_rel,0.0000,0.0001,Visit rate once uninsured
+CA,pct_rev,eps_M,0.0236,0.0282,Medicaid payment per patient
+CA,pct_rev,eps_S,0.0004,0.0002,Self-pay per uninsured patient
+CO,pct_rev,regime,0.1935,0.2301,Verification regime (CMS scenario)
+CO,pct_rev,nc_noise,0.0581,0.0680,Non-compliance rate
+CO,pct_rev,excl_mult,0.0060,0.0081,Share excluded or exempt
+CO,pct_rev,hardship,0.0007,0.0007,Hardship exception adopted
+CO,pct_rev,ex_nat,0.0158,0.0270,Share verified by data matching
+CO,pct_rev,eps_ex,0.0241,0.0413,State's data matching vs peers
+CO,pct_rev,eps_pd,0.3175,0.3674,State's paperwork loss vs peers
+CO,pct_rev,theta,0.0015,0.0029,Loss among data-matched members
+CO,pct_rev,f_ref,0.0744,0.0883,Expansion share of Medicaid adults
+CO,pct_rev,kappa,0.1110,0.1367,"Medicaid pay, adults vs all patients"
+CO,pct_rev,r_keep,0.0017,0.0019,Share who keep coming
+CO,pct_rev,v_rel,0.0005,0.0006,Visit rate once uninsured
+CO,pct_rev,eps_M,0.1080,0.1323,Medicaid payment per patient
+CO,pct_rev,eps_S,0.0046,0.0042,Self-pay per uninsured patient
+CT,pct_rev,regime,0.2070,0.2483,Verification regime (CMS scenario)
+CT,pct_rev,nc_noise,0.0960,0.1138,Non-compliance rate
+CT,pct_rev,excl_mult,0.0076,0.0105,Share excluded or exempt
+CT,pct_rev,hardship,0.0011,0.0011,Hardship exception adopted
+CT,pct_rev,ex_nat,0.0171,0.0351,Share verified by data matching
+CT,pct_rev,eps_ex,0.0347,0.0534,State's data matching vs peers
+CT,pct_rev,eps_pd,0.2165,0.2681,State's paperwork loss vs peers
+CT,pct_rev,theta,0.0022,0.0067,Loss among data-matched members
+CT,pct_rev,f_ref,0.0717,0.0863,Expansion share of Medicaid adults
+CT,pct_rev,kappa,0.1084,0.1335,"Medicaid pay, adults vs all patients"
+CT,pct_rev,r_keep,0.0015,0.0017,Share who keep coming
+CT,pct_rev,v_rel,0.0003,0.0006,Visit rate once uninsured
+CT,pct_rev,eps_M,0.1341,0.1625,Medicaid payment per patient
+CT,pct_rev,eps_S,0.0047,0.0046,Self-pay per uninsured patient
+DE,pct_rev,regime,0.1781,0.2182,Verification regime (CMS scenario)
+DE,pct_rev,nc_noise,0.0752,0.0940,Non-compliance rate
+DE,pct_rev,excl_mult,0.0087,0.0134,Share excluded or exempt
+DE,pct_rev,hardship,0.0009,0.0009,Hardship exception adopted
+DE,pct_rev,ex_nat,0.0094,0.0217,Share verified by data matching
+DE,pct_rev,eps_ex,0.0191,0.0309,State's data matching vs peers
+DE,pct_rev,eps_pd,0.2191,0.2745,State's paperwork loss vs peers
+DE,pct_rev,theta,0.0003,0.0021,Loss among data-matched members
+DE,pct_rev,f_ref,0.0578,0.0730,Expansion share of Medicaid adults
+DE,pct_rev,kappa,0.0868,0.1108,"Medicaid pay, adults vs all patients"
+DE,pct_rev,r_keep,0.0013,0.0015,Share who keep coming
+DE,pct_rev,v_rel,0.0002,0.0005,Visit rate once uninsured
+DE,pct_rev,eps_M,0.2312,0.2833,Medicaid payment per patient
+DE,pct_rev,eps_S,0.0055,0.0055,Self-pay per uninsured patient
+DC,pct_rev,regime,0.1444,0.1836,Verification regime (CMS scenario)
+DC,pct_rev,nc_noise,0.0521,0.0661,Non-compliance rate
+DC,pct_rev,excl_mult,0.0055,0.0091,Share excluded or exempt
+DC,pct_rev,hardship,0.0006,0.0006,Hardship exception adopted
+DC,pct_rev,ex_nat,0.0190,0.0369,Share verified by data matching
+DC,pct_rev,eps_ex,0.0347,0.0573,State's data matching vs peers
+DC,pct_rev,eps_pd,0.2189,0.2730,State's paperwork loss vs peers
+DC,pct_rev,theta,0.0015,0.0060,Loss among data-matched members
+DC,pct_rev,f_ref,0.0563,0.0719,Expansion share of Medicaid adults
+DC,pct_rev,kappa,0.0808,0.1057,"Medicaid pay, adults vs all patients"
+DC,pct_rev,r_keep,0.0009,0.0010,Share who keep coming
+DC,pct_rev,v_rel,0.0002,0.0003,Visit rate once uninsured
+DC,pct_rev,eps_M,0.2696,0.3308,Medicaid payment per patient
+DC,pct_rev,eps_S,0.0042,0.0041,Self-pay per uninsured patient
+HI,pct_rev,regime,0.2038,0.2444,Verification regime (CMS scenario)
+HI,pct_rev,nc_noise,0.1095,0.1319,Non-compliance rate
+HI,pct_rev,excl_mult,0.0125,0.0172,Share excluded or exempt
+HI,pct_rev,hardship,0.0014,0.0013,Hardship exception adopted
+HI,pct_rev,ex_nat,0.0134,0.0307,Share verified by data matching
+HI,pct_rev,eps_ex,0.0312,0.0464,State's data matching vs peers
+HI,pct_rev,eps_pd,0.1776,0.2264,State's paperwork loss vs peers
+HI,pct_rev,theta,0.0078,0.0157,Loss among data-matched members
+HI,pct_rev,f_ref,0.0713,0.0862,Expansion share of Medicaid adults
+HI,pct_rev,kappa,0.1057,0.1306,"Medicaid pay, adults vs all patients"
+HI,pct_rev,r_keep,0.0012,0.0014,Share who keep coming
+HI,pct_rev,v_rel,0.0001,0.0005,Visit rate once uninsured
+HI,pct_rev,eps_M,0.1602,0.1917,Medicaid payment per patient
+HI,pct_rev,eps_S,0.0039,0.0040,Self-pay per uninsured patient
+ID,pct_rev,regime,0.1603,0.1967,Verification regime (CMS scenario)
+ID,pct_rev,nc_noise,0.0378,0.0453,Non-compliance rate
+ID,pct_rev,excl_mult,0.0050,0.0075,Share excluded or exempt
+ID,pct_rev,hardship,0.0005,0.0005,Hardship exception adopted
+ID,pct_rev,ex_nat,0.0199,0.0319,Share verified by data matching
+ID,pct_rev,eps_ex,0.0262,0.0470,State's data matching vs peers
+ID,pct_rev,eps_pd,0.3282,0.3815,State's paperwork loss vs peers
+ID,pct_rev,theta,0.0021,0.0031,Loss among data-matched members
+ID,pct_rev,f_ref,0.0675,0.0819,Expansion share of Medicaid adults
+ID,pct_rev,kappa,0.0942,0.1200,"Medicaid pay, adults vs all patients"
+ID,pct_rev,r_keep,0.0009,0.0010,Share who keep coming
+ID,pct_rev,v_rel,0.0003,0.0003,Visit rate once uninsured
+ID,pct_rev,eps_M,0.1611,0.1982,Medicaid payment per patient
+ID,pct_rev,eps_S,0.0035,0.0031,Self-pay per uninsured patient
+IL,pct_rev,regime,0.2162,0.2563,Verification regime (CMS scenario)
+IL,pct_rev,nc_noise,0.0806,0.0920,Non-compliance rate
+IL,pct_rev,excl_mult,0.0066,0.0081,Share excluded or exempt
+IL,pct_rev,hardship,0.0008,0.0009,Hardship exception adopted
+IL,pct_rev,ex_nat,0.0217,0.0393,Share verified by data matching
+IL,pct_rev,eps_ex,0.0396,0.0638,State's data matching vs peers
+IL,pct_rev,eps_pd,0.2915,0.3456,State's paperwork loss vs peers
+IL,pct_rev,theta,0.0004,0.0045,Loss among data-matched members
+IL,pct_rev,f_ref,0.0795,0.0925,Expansion share of Medicaid adults
+IL,pct_rev,kappa,0.1175,0.1426,"Medicaid pay, adults vs all patients"
+IL,pct_rev,r_keep,0.0016,0.0017,Share who keep coming
+IL,pct_rev,v_rel,0.0004,0.0006,Visit rate once uninsured
+IL,pct_rev,eps_M,0.0539,0.0655,Medicaid payment per patient
+IL,pct_rev,eps_S,0.0028,0.0024,Self-pay per uninsured patient
+IN,pct_rev,regime,0.2018,0.2416,Verification regime (CMS scenario)
+IN,pct_rev,nc_noise,0.0696,0.0807,Non-compliance rate
+IN,pct_rev,excl_mult,0.0087,0.0109,Share excluded or exempt
+IN,pct_rev,hardship,0.0008,0.0009,Hardship exception adopted
+IN,pct_rev,ex_nat,0.0217,0.0392,Share verified by data matching
+IN,pct_rev,eps_ex,0.0384,0.0628,State's data matching vs peers
+IN,pct_rev,eps_pd,0.2948,0.3498,State's paperwork loss vs peers
+IN,pct_rev,theta,-0.0002,0.0041,Loss among data-matched members
+IN,pct_rev,f_ref,0.0752,0.0885,Expansion share of Medicaid adults
+IN,pct_rev,kappa,0.1159,0.1421,"Medicaid pay, adults vs all patients"
+IN,pct_rev,r_keep,0.0022,0.0025,Share who keep coming
+IN,pct_rev,v_rel,0.0006,0.0009,Visit rate once uninsured
+IN,pct_rev,eps_M,0.0756,0.0927,Medicaid payment per patient
+IN,pct_rev,eps_S,0.0048,0.0044,Self-pay per uninsured patient
+IA,pct_rev,regime,0.1953,0.2373,Verification regime (CMS scenario)
+IA,pct_rev,nc_noise,0.0634,0.0746,Non-compliance rate
+IA,pct_rev,excl_mult,0.0079,0.0105,Share excluded or exempt
+IA,pct_rev,hardship,0.0007,0.0008,Hardship exception adopted
+IA,pct_rev,ex_nat,0.0170,0.0340,Share verified by data matching
+IA,pct_rev,eps_ex,0.0321,0.0523,State's data matching vs peers
+IA,pct_rev,eps_pd,0.3105,0.3729,State's paperwork loss vs peers
+IA,pct_rev,theta,0.0001,0.0029,Loss among data-matched members
+IA,pct_rev,f_ref,0.0664,0.0801,Expansion share of Medicaid adults
+IA,pct_rev,kappa,0.0963,0.1208,"Medicaid pay, adults vs all patients"
+IA,pct_rev,r_keep,0.0012,0.0013,Share who keep coming
+IA,pct_rev,v_rel,0.0003,0.0004,Visit rate once uninsured
+IA,pct_rev,eps_M,0.1088,0.1360,Medicaid payment per patient
+IA,pct_rev,eps_S,0.0037,0.0033,Self-pay per uninsured patient
+KY,pct_rev,regime,0.2651,0.2981,Verification regime (CMS scenario)
+KY,pct_rev,nc_noise,0.2381,0.2765,Non-compliance rate
+KY,pct_rev,excl_mult,0.0334,0.0425,Share excluded or exempt
+KY,pct_rev,hardship,0.0033,0.0031,Hardship exception adopted
+KY,pct_rev,ex_nat,0.0019,0.0070,Share verified by data matching
+KY,pct_rev,eps_ex,0.0087,0.0115,State's data matching vs peers
+KY,pct_rev,eps_pd,0.0453,0.0698,State's paperwork loss vs peers
+KY,pct_rev,theta,0.0005,0.0014,Loss among data-matched members
+KY,pct_rev,f_ref,0.0862,0.1010,Expansion share of Medicaid adults
+KY,pct_rev,kappa,0.1292,0.1542,"Medicaid pay, adults vs all patients"
+KY,pct_rev,r_keep,0.0014,0.0014,Share who keep coming
+KY,pct_rev,v_rel,0.0000,0.0005,Visit rate once uninsured
+KY,pct_rev,eps_M,0.1062,0.1208,Medicaid payment per patient
+KY,pct_rev,eps_S,0.0023,0.0030,Self-pay per uninsured patient
+LA,pct_rev,regime,0.1946,0.2328,Verification regime (CMS scenario)
+LA,pct_rev,nc_noise,0.0633,0.0729,Non-compliance rate
+LA,pct_rev,excl_mult,0.0060,0.0077,Share excluded or exempt
+LA,pct_rev,hardship,0.0007,0.0007,Hardship exception adopted
+LA,pct_rev,ex_nat,0.0242,0.0406,Share verified by data matching
+LA,pct_rev,eps_ex,0.0397,0.0648,State's data matching vs peers
+LA,pct_rev,eps_pd,0.3065,0.3571,State's paperwork loss vs peers
+LA,pct_rev,theta,0.0005,0.0042,Loss among data-matched members
+LA,pct_rev,f_ref,0.0786,0.0917,Expansion share of Medicaid adults
+LA,pct_rev,kappa,0.1175,0.1439,"Medicaid pay, adults vs all patients"
+LA,pct_rev,r_keep,0.0019,0.0020,Share who keep coming
+LA,pct_rev,v_rel,0.0005,0.0007,Visit rate once uninsured
+LA,pct_rev,eps_M,0.0770,0.0936,Medicaid payment per patient
+LA,pct_rev,eps_S,0.0041,0.0037,Self-pay per uninsured patient
+ME,pct_rev,regime,0.2424,0.2748,Verification regime (CMS scenario)
+ME,pct_rev,nc_noise,0.2108,0.2510,Non-compliance rate
+ME,pct_rev,excl_mult,0.0241,0.0327,Share excluded or exempt
+ME,pct_rev,hardship,0.0028,0.0026,Hardship exception adopted
+ME,pct_rev,ex_nat,0.0007,0.0017,Share verified by data matching
+ME,pct_rev,eps_ex,0.0017,0.0025,State's data matching vs peers
+ME,pct_rev,eps_pd,0.0514,0.0725,State's paperwork loss vs peers
+ME,pct_rev,theta,0.0001,0.0010,Loss among data-matched members
+ME,pct_rev,f_ref,0.0773,0.0928,Expansion share of Medicaid adults
+ME,pct_rev,kappa,0.1264,0.1520,"Medicaid pay, adults vs all patients"
+ME,pct_rev,r_keep,0.0026,0.0029,Share who keep coming
+ME,pct_rev,v_rel,0.0001,0.0010,Visit rate once uninsured
+ME,pct_rev,eps_M,0.1728,0.1976,Medicaid payment per patient
+ME,pct_rev,eps_S,0.0061,0.0076,Self-pay per uninsured patient
+MD,pct_rev,regime,0.1736,0.2142,Verification regime (CMS scenario)
+MD,pct_rev,nc_noise,0.0549,0.0654,Non-compliance rate
+MD,pct_rev,excl_mult,0.0048,0.0070,Share excluded or exempt
+MD,pct_rev,hardship,0.0006,0.0007,Hardship exception adopted
+MD,pct_rev,ex_nat,0.0231,0.0424,Share verified by data matching
+MD,pct_rev,eps_ex,0.0409,0.0671,State's data matching vs peers
+MD,pct_rev,eps_pd,0.2859,0.3442,State's paperwork loss vs peers
+MD,pct_rev,theta,0.0007,0.0055,Loss among data-matched members
+MD,pct_rev,f_ref,0.0664,0.0809,Expansion share of Medicaid adults
+MD,pct_rev,kappa,0.0906,0.1151,"Medicaid pay, adults vs all patients"
+MD,pct_rev,r_keep,0.0006,0.0006,Share who keep coming
+MD,pct_rev,v_rel,0.0001,0.0002,Visit rate once uninsured
+MD,pct_rev,eps_M,0.1539,0.1906,Medicaid payment per patient
+MD,pct_rev,eps_S,0.0022,0.0018,Self-pay per uninsured patient
+MA,pct_rev,regime,0.1765,0.2130,Verification regime (CMS scenario)
+MA,pct_rev,nc_noise,0.0533,0.0638,Non-compliance rate
+MA,pct_rev,excl_mult,0.0041,0.0062,Share excluded or exempt
+MA,pct_rev,hardship,0.0006,0.0006,Hardship exception adopted
+MA,pct_rev,ex_nat,0.0165,0.0288,Share verified by data matching
+MA,pct_rev,eps_ex,0.0256,0.0439,State's data matching vs peers
+MA,pct_rev,eps_pd,0.2883,0.3400,State's paperwork loss vs peers
+MA,pct_rev,theta,0.0011,0.0026,Loss among data-matched members
+MA,pct_rev,f_ref,0.0677,0.0821,Expansion share of Medicaid adults
+MA,pct_rev,kappa,0.1061,0.1324,"Medicaid pay, adults vs all patients"
+MA,pct_rev,r_keep,0.0023,0.0027,Share who keep coming
+MA,pct_rev,v_rel,0.0007,0.0009,Visit rate once uninsured
+MA,pct_rev,eps_M,0.1598,0.1959,Medicaid payment per patient
+MA,pct_rev,eps_S,0.0078,0.0077,Self-pay per uninsured patient
+MI,pct_rev,regime,0.2012,0.2390,Verification regime (CMS scenario)
+MI,pct_rev,nc_noise,0.0600,0.0686,Non-compliance rate
+MI,pct_rev,excl_mult,0.0060,0.0075,Share excluded or exempt
+MI,pct_rev,hardship,0.0007,0.0007,Hardship exception adopted
+MI,pct_rev,ex_nat,0.0213,0.0353,Share verified by data matching
+MI,pct_rev,eps_ex,0.0341,0.0558,State's data matching vs peers
+MI,pct_rev,eps_pd,0.3349,0.3856,State's paperwork loss vs peers
+MI,pct_rev,theta,0.0010,0.0031,Loss among data-matched members
+MI,pct_rev,f_ref,0.0798,0.0930,Expansion share of Medicaid adults
+MI,pct_rev,kappa,0.1123,0.1372,"Medicaid pay, adults vs all patients"
+MI,pct_rev,r_keep,0.0010,0.0010,Share who keep coming
+MI,pct_rev,v_rel,0.0003,0.0004,Visit rate once uninsured
+MI,pct_rev,eps_M,0.0642,0.0785,Medicaid payment per patient
+MI,pct_rev,eps_S,0.0021,0.0016,Self-pay per uninsured patient
+MN,pct_rev,regime,0.1931,0.2322,Verification regime (CMS scenario)
+MN,pct_rev,nc_noise,0.0525,0.0609,Non-compliance rate
+MN,pct_rev,excl_mult,0.0066,0.0086,Share excluded or exempt
+MN,pct_rev,hardship,0.0006,0.0007,Hardship exception adopted
+MN,pct_rev,ex_nat,0.0187,0.0326,Share verified by data matching
+MN,pct_rev,eps_ex,0.0306,0.0512,State's data matching vs peers
+MN,pct_rev,eps_pd,0.3470,0.4044,State's paperwork loss vs peers
+MN,pct_rev,theta,0.0008,0.0031,Loss among data-matched members
+MN,pct_rev,f_ref,0.0720,0.0855,Expansion share of Medicaid adults
+MN,pct_rev,kappa,0.1009,0.1256,"Medicaid pay, adults vs all patients"
+MN,pct_rev,r_keep,0.0009,0.0010,Share who keep coming
+MN,pct_rev,v_rel,0.0003,0.0003,Visit rate once uninsured
+MN,pct_rev,eps_M,0.0860,0.1071,Medicaid payment per patient
+MN,pct_rev,eps_S,0.0026,0.0021,Self-pay per uninsured patient
+MO,pct_rev,regime,0.1890,0.2295,Verification regime (CMS scenario)
+MO,pct_rev,nc_noise,0.0577,0.0668,Non-compliance rate
+MO,pct_rev,excl_mult,0.0075,0.0095,Share excluded or exempt
+MO,pct_rev,hardship,0.0006,0.0007,Hardship exception adopted
+MO,pct_rev,ex_nat,0.0259,0.0449,Share verified by data matching
+MO,pct_rev,eps_ex,0.0444,0.0725,State's data matching vs peers
+MO,pct_rev,eps_pd,0.3204,0.3772,State's paperwork loss vs peers
+MO,pct_rev,theta,0.0005,0.0055,Loss among data-matched members
+MO,pct_rev,f_ref,0.0736,0.0869,Expansion share of Medicaid adults
+MO,pct_rev,kappa,0.1062,0.1320,"Medicaid pay, adults vs all patients"
+MO,pct_rev,r_keep,0.0013,0.0014,Share who keep coming
+MO,pct_rev,v_rel,0.0004,0.0005,Visit rate once uninsured
+MO,pct_rev,eps_M,0.0769,0.0949,Medicaid payment per patient
+MO,pct_rev,eps_S,0.0031,0.0026,Self-pay per uninsured patient
+MT,pct_rev,regime,0.1692,0.2055,Verification regime (CMS scenario)
+MT,pct_rev,nc_noise,0.0404,0.0485,Non-compliance rate
+MT,pct_rev,excl_mult,0.0110,0.0147,Share excluded or exempt
+MT,pct_rev,hardship,0.0007,0.0006,Hardship exception adopted
+MT,pct_rev,ex_nat,0.0191,0.0293,Share verified by data matching
+MT,pct_rev,eps_ex,0.0246,0.0440,State's data matching vs peers
+MT,pct_rev,eps_pd,0.3440,0.3955,State's paperwork loss vs peers
+MT,pct_rev,theta,0.0025,0.0033,Loss among data-matched members
+MT,pct_rev,f_ref,0.0704,0.0844,Expansion share of Medicaid adults
+MT,pct_rev,kappa,0.1048,0.1317,"Medicaid pay, adults vs all patients"
+MT,pct_rev,r_keep,0.0017,0.0019,Share who keep coming
+MT,pct_rev,v_rel,0.0006,0.0007,Visit rate once uninsured
+MT,pct_rev,eps_M,0.1196,0.1476,Medicaid payment per patient
+MT,pct_rev,eps_S,0.0050,0.0048,Self-pay per uninsured patient
+NE,pct_rev,regime,0.1789,0.2206,Verification regime (CMS scenario)
+NE,pct_rev,nc_noise,0.0740,0.0923,Non-compliance rate
+NE,pct_rev,excl_mult,0.0102,0.0153,Share excluded or exempt
+NE,pct_rev,hardship,0.0010,0.0010,Hardship exception adopted
+NE,pct_rev,ex_nat,0.0113,0.0257,Share verified by data matching
+NE,pct_rev,eps_ex,0.0226,0.0364,State's data matching vs peers
+NE,pct_rev,eps_pd,0.2208,0.2780,State's paperwork loss vs peers
+NE,pct_rev,theta,0.0001,0.0022,Loss among data-matched members
+NE,pct_rev,f_ref,0.0570,0.0719,Expansion share of Medicaid adults
+NE,pct_rev,kappa,0.0938,0.1192,"Medicaid pay, adults vs all patients"
+NE,pct_rev,r_keep,0.0025,0.0030,Share who keep coming
+NE,pct_rev,v_rel,0.0006,0.0010,Visit rate once uninsured
+NE,pct_rev,eps_M,0.2095,0.2582,Medicaid payment per patient
+NE,pct_rev,eps_S,0.0100,0.0106,Self-pay per uninsured patient
+NV,pct_rev,regime,0.1515,0.1871,Verification regime (CMS scenario)
+NV,pct_rev,nc_noise,0.0448,0.0541,Non-compliance rate
+NV,pct_rev,excl_mult,0.0036,0.0060,Share excluded or exempt
+NV,pct_rev,hardship,0.0005,0.0005,Hardship exception adopted
+NV,pct_rev,ex_nat,0.0226,0.0402,Share verified by data matching
+NV,pct_rev,eps_ex,0.0346,0.0601,State's data matching vs peers
+NV,pct_rev,eps_pd,0.2678,0.3182,State's paperwork loss vs peers
+NV,pct_rev,theta,0.0010,0.0042,Loss among data-matched members
+NV,pct_rev,f_ref,0.0677,0.0823,Expansion share of Medicaid adults
+NV,pct_rev,kappa,0.0923,0.1175,"Medicaid pay, adults vs all patients"
+NV,pct_rev,r_keep,0.0006,0.0007,Share who keep coming
+NV,pct_rev,v_rel,0.0002,0.0002,Visit rate once uninsured
+NV,pct_rev,eps_M,0.2094,0.2527,Medicaid payment per patient
+NV,pct_rev,eps_S,0.0026,0.0023,Self-pay per uninsured patient
+NH,pct_rev,regime,0.1476,0.1878,Verification regime (CMS scenario)
+NH,pct_rev,nc_noise,0.0520,0.0665,Non-compliance rate
+NH,pct_rev,excl_mult,0.0083,0.0131,Share excluded or exempt
+NH,pct_rev,hardship,0.0007,0.0007,Hardship exception adopted
+NH,pct_rev,ex_nat,0.0175,0.0360,Share verified by data matching
+NH,pct_rev,eps_ex,0.0337,0.0551,State's data matching vs peers
+NH,pct_rev,eps_pd,0.2248,0.2846,State's paperwork loss vs peers
+NH,pct_rev,theta,0.0007,0.0045,Loss among data-matched members
+NH,pct_rev,f_ref,0.0531,0.0688,Expansion share of Medicaid adults
+NH,pct_rev,kappa,0.0783,0.1030,"Medicaid pay, adults vs all patients"
+NH,pct_rev,r_keep,0.0011,0.0013,Share who keep coming
+NH,pct_rev,v_rel,0.0003,0.0004,Visit rate once uninsured
+NH,pct_rev,eps_M,0.2601,0.3239,Medicaid payment per patient
+NH,pct_rev,eps_S,0.0051,0.0051,Self-pay per uninsured patient
+NJ,pct_rev,regime,0.1983,0.2339,Verification regime (CMS scenario)
+NJ,pct_rev,nc_noise,0.0593,0.0687,Non-compliance rate
+NJ,pct_rev,excl_mult,0.0041,0.0056,Share excluded or exempt
+NJ,pct_rev,hardship,0.0007,0.0007,Hardship exception adopted
+NJ,pct_rev,ex_nat,0.0157,0.0246,Share verified by data matching
+NJ,pct_rev,eps_ex,0.0217,0.0377,State's data matching vs peers
+NJ,pct_rev,eps_pd,0.3270,0.3729,State's paperwork loss vs peers
+NJ,pct_rev,theta,0.0022,0.0032,Loss among data-matched members
+NJ,pct_rev,f_ref,0.0790,0.0928,Expansion share of Medicaid adults
+NJ,pct_rev,kappa,0.1104,0.1352,"Medicaid pay, adults vs all patients"
+NJ,pct_rev,r_keep,0.0008,0.0009,Share who keep coming
+NJ,pct_rev,v_rel,0.0002,0.0003,Visit rate once uninsured
+NJ,pct_rev,eps_M,0.1004,0.1222,Medicaid payment per patient
+NJ,pct_rev,eps_S,0.0024,0.0020,Self-pay per uninsured patient
+NM,pct_rev,regime,0.1799,0.2223,Verification regime (CMS scenario)
+NM,pct_rev,nc_noise,0.0560,0.0678,Non-compliance rate
+NM,pct_rev,excl_mult,0.0130,0.0173,Share excluded or exempt
+NM,pct_rev,hardship,0.0008,0.0009,Hardship exception adopted
+NM,pct_rev,ex_nat,0.0193,0.0387,Share verified by data matching
+NM,pct_rev,eps_ex,0.0369,0.0596,State's data matching vs peers
+NM,pct_rev,eps_pd,0.2925,0.3573,State's paperwork loss vs peers
+NM,pct_rev,theta,0.0002,0.0037,Loss among data-matched members
+NM,pct_rev,f_ref,0.0608,0.0751,Expansion share of Medicaid adults
+NM,pct_rev,kappa,0.0961,0.1220,"Medicaid pay, adults vs all patients"
+NM,pct_rev,r_keep,0.0022,0.0026,Share who keep coming
+NM,pct_rev,v_rel,0.0006,0.0009,Visit rate once uninsured
+NM,pct_rev,eps_M,0.1301,0.1639,Medicaid payment per patient
+NM,pct_rev,eps_S,0.0081,0.0081,Self-pay per uninsured patient
+NY,pct_rev,regime,0.2541,0.2955,Verification regime (CMS scenario)
+NY,pct_rev,nc_noise,0.1184,0.1343,Non-compliance rate
+NY,pct_rev,excl_mult,0.0078,0.0096,Share excluded or exempt
+NY,pct_rev,hardship,0.0012,0.0013,Hardship exception adopted
+NY,pct_rev,ex_nat,0.0128,0.0248,Share verified by data matching
+NY,pct_rev,eps_ex,0.0236,0.0375,State's data matching vs peers
+NY,pct_rev,eps_pd,0.2514,0.3000,State's paperwork loss vs peers
+NY,pct_rev,theta,-0.0000,0.0023,Loss among data-matched members
+NY,pct_rev,f_ref,0.0861,0.0991,Expansion share of Medicaid adults
+NY,pct_rev,kappa,0.1180,0.1406,"Medicaid pay, adults vs all patients"
+NY,pct_rev,r_keep,0.0006,0.0006,Share who keep coming
+NY,pct_rev,v_rel,0.0001,0.0002,Visit rate once uninsured
+NY,pct_rev,eps_M,0.0439,0.0523,Medicaid payment per patient
+NY,pct_rev,eps_S,0.0010,0.0007,Self-pay per uninsured patient
+NC,pct_rev,regime,0.1591,0.1957,Verification regime (CMS scenario)
+NC,pct_rev,nc_noise,0.0452,0.0532,Non-compliance rate
+NC,pct_rev,excl_mult,0.0062,0.0078,Share excluded or exempt
+NC,pct_rev,hardship,0.0005,0.0006,Hardship exception adopted
+NC,pct_rev,ex_nat,0.0301,0.0558,Share verified by data matching
+NC,pct_rev,eps_ex,0.0546,0.0903,State's data matching vs peers
+NC,pct_rev,eps_pd,0.2959,0.3443,State's paperwork loss vs peers
+NC,pct_rev,theta,0.0212,0.0409,Loss among data-matched members
+NC,pct_rev,f_ref,0.0782,0.0914,Expansion share of Medicaid adults
+NC,pct_rev,kappa,0.1247,0.1532,"Medicaid pay, adults vs all patients"
+NC,pct_rev,r_keep,0.0031,0.0035,Share who keep coming
+NC,pct_rev,v_rel,0.0008,0.0012,Visit rate once uninsured
+NC,pct_rev,eps_M,0.0781,0.0940,Medicaid payment per patient
+NC,pct_rev,eps_S,0.0061,0.0062,Self-pay per uninsured patient
+ND,pct_rev,regime,0.1527,0.1899,Verification regime (CMS scenario)
+ND,pct_rev,nc_noise,0.0411,0.0526,Non-compliance rate
+ND,pct_rev,excl_mult,0.0132,0.0194,Share excluded or exempt
+ND,pct_rev,hardship,0.0007,0.0007,Hardship exception adopted
+ND,pct_rev,ex_nat,0.0144,0.0265,Share verified by data matching
+ND,pct_rev,eps_ex,0.0224,0.0395,State's data matching vs peers
+ND,pct_rev,eps_pd,0.2804,0.3378,State's paperwork loss vs peers
+ND,pct_rev,theta,0.0013,0.0026,Loss among data-matched members
+ND,pct_rev,f_ref,0.0569,0.0720,Expansion share of Medicaid adults
+ND,pct_rev,kappa,0.0832,0.1080,"Medicaid pay, adults vs all patients"
+ND,pct_rev,r_keep,0.0011,0.0013,Share who keep coming
+ND,pct_rev,v_rel,0.0004,0.0004,Visit rate once uninsured
+ND,pct_rev,eps_M,0.2223,0.2774,Medicaid payment per patient
+ND,pct_rev,eps_S,0.0048,0.0047,Self-pay per uninsured patient
+OH,pct_rev,regime,0.2228,0.2652,Verification regime (CMS scenario)
+OH,pct_rev,nc_noise,0.0852,0.0977,Non-compliance rate
+OH,pct_rev,excl_mult,0.0111,0.0134,Share excluded or exempt
+OH,pct_rev,hardship,0.0010,0.0011,Hardship exception adopted
+OH,pct_rev,ex_nat,0.0200,0.0374,Share verified by data matching
+OH,pct_rev,eps_ex,0.0370,0.0591,State's data matching vs peers
+OH,pct_rev,eps_pd,0.2871,0.3435,State's paperwork loss vs peers
+OH,pct_rev,theta,0.0002,0.0039,Loss among data-matched members
+OH,pct_rev,f_ref,0.0777,0.0906,Expansion share of Medicaid adults
+OH,pct_rev,kappa,0.1196,0.1447,"Medicaid pay, adults vs all patients"
+OH,pct_rev,r_keep,0.0020,0.0023,Share who keep coming
+OH,pct_rev,v_rel,0.0005,0.0008,Visit rate once uninsured
+OH,pct_rev,eps_M,0.0444,0.0540,Medicaid payment per patient
+OH,pct_rev,eps_S,0.0031,0.0027,Self-pay per uninsured patient
+OK,pct_rev,regime,0.1622,0.1979,Verification regime (CMS scenario)
+OK,pct_rev,nc_noise,0.0366,0.0442,Non-compliance rate
+OK,pct_rev,excl_mult,0.0083,0.0115,Share excluded or exempt
+OK,pct_rev,hardship,0.0006,0.0006,Hardship exception adopted
+OK,pct_rev,ex_nat,0.0166,0.0247,Share verified by data matching
+OK,pct_rev,eps_ex,0.0194,0.0363,State's data matching vs peers
+OK,pct_rev,eps_pd,0.3316,0.3834,State's paperwork loss vs peers
+OK,pct_rev,theta,0.0032,0.0035,Loss among data-matched members
+OK,pct_rev,f_ref,0.0674,0.0813,Expansion share of Medicaid adults
+OK,pct_rev,kappa,0.1244,0.1549,"Medicaid pay, adults vs all patients"
+OK,pct_rev,r_keep,0.0062,0.0077,Share who keep coming
+OK,pct_rev,v_rel,0.0022,0.0026,Visit rate once uninsured
+OK,pct_rev,eps_M,0.1216,0.1496,Medicaid payment per patient
+OK,pct_rev,eps_S,0.0161,0.0174,Self-pay per uninsured patient
+OR,pct_rev,regime,0.2558,0.2964,Verification regime (CMS scenario)
+OR,pct_rev,nc_noise,0.1708,0.1975,Non-compliance rate
+OR,pct_rev,excl_mult,0.0231,0.0290,Share excluded or exempt
+OR,pct_rev,hardship,0.0023,0.0022,Hardship exception adopted
+OR,pct_rev,ex_nat,0.0084,0.0204,Share verified by data matching
+OR,pct_rev,eps_ex,0.0239,0.0346,State's data matching vs peers
+OR,pct_rev,eps_pd,0.1336,0.1842,State's paperwork loss vs peers
+OR,pct_rev,theta,0.0023,0.0059,Loss among data-matched members
+OR,pct_rev,f_ref,0.0830,0.0975,Expansion share of Medicaid adults
+OR,pct_rev,kappa,0.1140,0.1373,"Medicaid pay, adults vs all patients"
+OR,pct_rev,r_keep,0.0005,0.0004,Share who keep coming
+OR,pct_rev,v_rel,-0.0000,0.0001,Visit rate once uninsured
+OR,pct_rev,eps_M,0.0883,0.1031,Medicaid payment per patient
+OR,pct_rev,eps_S,0.0009,0.0009,Self-pay per uninsured patient
+PA,pct_rev,regime,0.2401,0.2773,Verification regime (CMS scenario)
+PA,pct_rev,nc_noise,0.0844,0.0976,Non-compliance rate
+PA,pct_rev,excl_mult,0.0100,0.0124,Share excluded or exempt
+PA,pct_rev,hardship,0.0010,0.0010,Hardship exception adopted
+PA,pct_rev,ex_nat,0.0034,0.0080,Share verified by data matching
+PA,pct_rev,eps_ex,0.0069,0.0116,State's data matching vs peers
+PA,pct_rev,eps_pd,0.3213,0.3716,State's paperwork loss vs peers
+PA,pct_rev,theta,0.0035,0.0053,Loss among data-matched members
+PA,pct_rev,f_ref,0.0782,0.0906,Expansion share of Medicaid adults
+PA,pct_rev,kappa,0.1155,0.1398,"Medicaid pay, adults vs all patients"
+PA,pct_rev,r_keep,0.0016,0.0018,Share who keep coming
+PA,pct_rev,v_rel,0.0004,0.0006,Visit rate once uninsured
+PA,pct_rev,eps_M,0.0584,0.0707,Medicaid payment per patient
+PA,pct_rev,eps_S,0.0029,0.0026,Self-pay per uninsured patient
+RI,pct_rev,regime,0.1553,0.1915,Verification regime (CMS scenario)
+RI,pct_rev,nc_noise,0.0509,0.0614,Non-compliance rate
+RI,pct_rev,excl_mult,0.0050,0.0076,Share excluded or exempt
+RI,pct_rev,hardship,0.0006,0.0006,Hardship exception adopted
+RI,pct_rev,ex_nat,0.0246,0.0445,Share verified by data matching
+RI,pct_rev,eps_ex,0.0405,0.0684,State's data matching vs peers
+RI,pct_rev,eps_pd,0.2604,0.3100,State's paperwork loss vs peers
+RI,pct_rev,theta,0.0017,0.0076,Loss among data-matched members
+RI,pct_rev,f_ref,0.0693,0.0837,Expansion share of Medicaid adults
+RI,pct_rev,kappa,0.0972,0.1231,"Medicaid pay, adults vs all patients"
+RI,pct_rev,r_keep,0.0009,0.0010,Share who keep coming
+RI,pct_rev,v_rel,0.0002,0.0003,Visit rate once uninsured
+RI,pct_rev,eps_M,0.1897,0.2288,Medicaid payment per patient
+RI,pct_rev,eps_S,0.0035,0.0033,Self-pay per uninsured patient
+SD,pct_rev,regime,0.1742,0.2155,Verification regime (CMS scenario)
+SD,pct_rev,nc_noise,0.0510,0.0658,Non-compliance rate
+SD,pct_rev,excl_mult,0.0268,0.0367,Share excluded or exempt
+SD,pct_rev,hardship,0.0012,0.0010,Hardship exception adopted
+SD,pct_rev,ex_nat,0.0082,0.0194,Share verified by data matching
+SD,pct_rev,eps_ex,0.0162,0.0273,State's data matching vs peers
+SD,pct_rev,eps_pd,0.2919,0.3596,State's paperwork loss vs peers
+SD,pct_rev,theta,0.0015,0.0033,Loss among data-matched members
+SD,pct_rev,f_ref,0.0525,0.0669,Expansion share of Medicaid adults
+SD,pct_rev,kappa,0.0874,0.1135,"Medicaid pay, adults vs all patients"
+SD,pct_rev,r_keep,0.0028,0.0034,Share who keep coming
+SD,pct_rev,v_rel,0.0008,0.0012,Visit rate once uninsured
+SD,pct_rev,eps_M,0.1672,0.2127,Medicaid payment per patient
+SD,pct_rev,eps_S,0.0105,0.0112,Self-pay per uninsured patient
+UT,pct_rev,regime,0.1482,0.1838,Verification regime (CMS scenario)
+UT,pct_rev,nc_noise,0.0368,0.0429,Non-compliance rate
+UT,pct_rev,excl_mult,0.0037,0.0058,Share excluded or exempt
+UT,pct_rev,hardship,0.0006,0.0004,Hardship exception adopted
+UT,pct_rev,ex_nat,0.0203,0.0308,Share verified by data matching
+UT,pct_rev,eps_ex,0.0258,0.0459,State's data matching vs peers
+UT,pct_rev,eps_pd,0.3196,0.3711,State's paperwork loss vs peers
+UT,pct_rev,theta,0.0022,0.0033,Loss among data-matched members
+UT,pct_rev,f_ref,0.0810,0.0962,Expansion share of Medicaid adults
+UT,pct_rev,kappa,0.1181,0.1452,"Medicaid pay, adults vs all patients"
+UT,pct_rev,r_keep,0.0012,0.0015,Share who keep coming
+UT,pct_rev,v_rel,0.0004,0.0005,Visit rate once uninsured
+UT,pct_rev,eps_M,0.1484,0.1745,Medicaid payment per patient
+UT,pct_rev,eps_S,0.0039,0.0036,Self-pay per uninsured patient
+VT,pct_rev,regime,0.1685,0.2081,Verification regime (CMS scenario)
+VT,pct_rev,nc_noise,0.0672,0.0836,Non-compliance rate
+VT,pct_rev,excl_mult,0.0100,0.0142,Share excluded or exempt
+VT,pct_rev,hardship,0.0008,0.0008,Hardship exception adopted
+VT,pct_rev,ex_nat,0.0157,0.0323,Share verified by data matching
+VT,pct_rev,eps_ex,0.0310,0.0499,State's data matching vs peers
+VT,pct_rev,eps_pd,0.2276,0.2836,State's paperwork loss vs peers
+VT,pct_rev,theta,0.0005,0.0034,Loss among data-matched members
+VT,pct_rev,f_ref,0.0570,0.0716,Expansion share of Medicaid adults
+VT,pct_rev,kappa,0.1200,0.1504,"Medicaid pay, adults vs all patients"
+VT,pct_rev,r_keep,0.0092,0.0114,Share who keep coming
+VT,pct_rev,v_rel,0.0027,0.0039,Visit rate once uninsured
+VT,pct_rev,eps_M,0.1625,0.2011,Medicaid payment per patient
+VT,pct_rev,eps_S,0.0281,0.0316,Self-pay per uninsured patient
+VA,pct_rev,regime,0.2423,0.2859,Verification regime (CMS scenario)
+VA,pct_rev,nc_noise,0.1363,0.1584,Non-compliance rate
+VA,pct_rev,excl_mult,0.0128,0.0167,Share excluded or exempt
+VA,pct_rev,hardship,0.0016,0.0016,Hardship exception adopted
+VA,pct_rev,ex_nat,0.0112,0.0251,Share verified by data matching
+VA,pct_rev,eps_ex,0.0257,0.0391,State's data matching vs peers
+VA,pct_rev,eps_pd,0.1838,0.2363,State's paperwork loss vs peers
+VA,pct_rev,theta,0.0005,0.0031,Loss among data-matched members
+VA,pct_rev,f_ref,0.0780,0.0923,Expansion share of Medicaid adults
+VA,pct_rev,kappa,0.1194,0.1446,"Medicaid pay, adults vs all patients"
+VA,pct_rev,r_keep,0.0017,0.0019,Share who keep coming
+VA,pct_rev,v_rel,0.0003,0.0007,Visit rate once uninsured
+VA,pct_rev,eps_M,0.0869,0.1034,Medicaid payment per patient
+VA,pct_rev,eps_S,0.0037,0.0039,Self-pay per uninsured patient
+WA,pct_rev,regime,0.1806,0.2198,Verification regime (CMS scenario)
+WA,pct_rev,nc_noise,0.0608,0.0718,Non-compliance rate
+WA,pct_rev,excl_mult,0.0081,0.0106,Share excluded or exempt
+WA,pct_rev,hardship,0.0007,0.0008,Hardship exception adopted
+WA,pct_rev,ex_nat,0.0253,0.0452,Share verified by data matching
+WA,pct_rev,eps_ex,0.0444,0.0722,State's data matching vs peers
+WA,pct_rev,eps_pd,0.2770,0.3294,State's paperwork loss vs peers
+WA,pct_rev,theta,0.0027,0.0093,Loss among data-matched members
+WA,pct_rev,f_ref,0.0723,0.0862,Expansion share of Medicaid adults
+WA,pct_rev,kappa,0.1100,0.1366,"Medicaid pay, adults vs all patients"
+WA,pct_rev,r_keep,0.0019,0.0022,Share who keep coming
+WA,pct_rev,v_rel,0.0005,0.0008,Visit rate once uninsured
+WA,pct_rev,eps_M,0.1159,0.1415,Medicaid payment per patient
+WA,pct_rev,eps_S,0.0054,0.0053,Self-pay per uninsured patient
+WV,pct_rev,regime,0.1762,0.2120,Verification regime (CMS scenario)
+WV,pct_rev,nc_noise,0.0473,0.0567,Non-compliance rate
+WV,pct_rev,excl_mult,0.0060,0.0083,Share excluded or exempt
+WV,pct_rev,hardship,0.0006,0.0006,Hardship exception adopted
+WV,pct_rev,ex_nat,0.0140,0.0236,Share verified by data matching
+WV,pct_rev,eps_ex,0.0199,0.0358,State's data matching vs peers
+WV,pct_rev,eps_pd,0.3149,0.3690,State's paperwork loss vs peers
+WV,pct_rev,theta,0.0020,0.0032,Loss among data-matched members
+WV,pct_rev,f_ref,0.0638,0.0771,Expansion share of Medicaid adults
+WV,pct_rev,kappa,0.1317,0.1629,"Medicaid pay, adults vs all patients"
+WV,pct_rev,r_keep,0.0093,0.0114,Share who keep coming
+WV,pct_rev,v_rel,0.0032,0.0039,Visit rate once uninsured
+WV,pct_rev,eps_M,0.1053,0.1308,Medicaid payment per patient
+WV,pct_rev,eps_S,0.0218,0.0236,Self-pay per uninsured patient
