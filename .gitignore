@@ -109,3 +109,6 @@ fabric.properties
 
 # Jekyll serves downloads/ (the global gitignore ignores it)
 !downloads/
+
+# Raw downloads for the analysis/ projects (each project re-downloads them)
+analysis/*/data/raw/

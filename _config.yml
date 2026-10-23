@@ -73,6 +73,7 @@ exclude:
   - svg
   - .idea
   - ruby-build
+  - analysis
 
 # Social profiles (jekyll-seo-tag emits these as sameAs on the home page)
 social:
