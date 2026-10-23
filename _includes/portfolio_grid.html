@@ -1,23 +1,20 @@
-<!-- Portfolio Grid -->
-<section class="bg-light py-5" id="portfolio">
-    <div class="container py-5">
-        <div class="row g-4 justify-content-center">
+<!-- Examples grid: text first, then a framed preview of the page inside -->
+<section class="bg-light" id="portfolio">
+    <div class="container">
+        <div class="example-grid">
             {% assign examples = site.casestudies | where: "kind", "example" | sort: "path" | reverse %}
             {% for casestudy in examples %}
-            <div class="col-md-4 col-sm-6">
-                <a href="{{ casestudy.url | relative_url }}" class="text-decoration-none">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden transition-hover">
-                        <div class="ratio ratio-4x3">
-                            <img class="object-fit-cover w-100 h-100" src="{{ site.baseurl }}/img/case_studies/{{ casestudy.thumbnail }}" width="400" height="300" loading="lazy" alt="">
-                        </div>
-                        <div class="card-body p-4 bg-white text-center">
-                            {% if casestudy.persona %}<p class="text-primary text-uppercase fw-bold small mb-2" style="letter-spacing: 0.1em;">{{ casestudy.persona }}</p>{% endif %}
-                            <h2 class="card-title h5 fw-bold text-dark mb-2">{{ casestudy.title }}</h2>
-                            <p class="card-text text-muted fs-6 mb-0">{{ casestudy.subtitle }}</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
+            <article class="example-card">
+                <div class="example-card__text">
+                    {% if casestudy.persona %}<p class="example-card__eyebrow">{{ casestudy.persona }}</p>{% endif %}
+                    <h2 class="example-card__title"><a class="example-card__link" href="{{ casestudy.url | relative_url }}">{{ casestudy.title }}</a></h2>
+                    <p class="example-card__sub">{{ casestudy.subtitle }}</p>
+                </div>
+                <div class="example-card__frame">
+                    <img src="{{ site.baseurl }}/img/case_studies/{{ casestudy.thumbnail }}" width="400" height="300"{% if forloop.index > 3 %} loading="lazy"{% endif %} alt="">
+                </div>
+                <p class="example-card__cta" aria-hidden="true">Open the example <svg viewBox="0 0 16 16" width="16" height="16" focusable="false"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
+            </article>
             {% endfor %}
         </div>
     </div>
