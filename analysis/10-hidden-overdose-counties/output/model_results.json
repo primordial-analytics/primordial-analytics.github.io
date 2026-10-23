@@ -1,0 +1,843 @@
+{
+ "sensitivity": {
+  "main": {
+   "median_abs_pct_change": 0.0,
+   "spearman_vs_main": 0.9999999999999999,
+   "median_width_ratio": 1.0,
+   "hidden_total_median": 5818.0,
+   "hidden_total_lo90": 5670.95,
+   "hidden_total_hi90": 5965.05,
+   "divergences": 0,
+   "hyper_rhat_max": 1.020149174823465,
+   "hyper_ess_min": 258.6599896307532,
+   "eta_ess_min": 2172.107911289126,
+   "eta_rhat_max": 1.0028451285424216,
+   "sigma_median": 0.6130330112800286,
+   "rho_median": 0.8575749040919689,
+   "n_constrained_states": 37
+  },
+  "no_constraint": {
+   "median_abs_pct_change": 0.7697656960258814,
+   "spearman_vs_main": 0.9967280916816542,
+   "median_width_ratio": 1.0017402588719087,
+   "hidden_total_median": 5850.5,
+   "hidden_total_lo90": 5698.0,
+   "hidden_total_hi90": 5996.05,
+   "divergences": 0,
+   "hyper_rhat_max": 1.0103869099607814,
+   "hyper_ess_min": 324.7506707504734,
+   "eta_ess_min": 2098.9983476747725,
+   "eta_rhat_max": 1.0031233615973523,
+   "sigma_median": 0.6101440943437526,
+   "rho_median": 0.8598059245636054,
+   "n_constrained_states": 0
+  },
+  "no_covariates": {
+   "median_abs_pct_change": 11.314102487858456,
+   "spearman_vs_main": 0.8364153532471922,
+   "median_width_ratio": 1.2449415748210844,
+   "hidden_total_median": 5880.0,
+   "hidden_total_lo90": 5732.0,
+   "hidden_total_hi90": 6019.0,
+   "divergences": 0,
+   "hyper_rhat_max": 1.0184027619056484,
+   "hyper_ess_min": 367.98216697240804,
+   "eta_ess_min": 1479.0576925120915,
+   "eta_rhat_max": 1.0048402088283712,
+   "sigma_median": 0.6891782657580698,
+   "rho_median": 0.5794891721894038,
+   "n_constrained_states": 37
+  },
+  "no_spatial": {
+   "median_abs_pct_change": 9.37927667205513,
+   "spearman_vs_main": 0.9106801897653509,
+   "median_width_ratio": 1.1398597748603307,
+   "hidden_total_median": 5819.0,
+   "hidden_total_lo90": 5667.95,
+   "hidden_total_hi90": 5967.0,
+   "divergences": 0,
+   "hyper_rhat_max": 1.002297146850407,
+   "hyper_ess_min": 503.9875191304287,
+   "eta_ess_min": 3759.1429279159756,
+   "eta_rhat_max": 1.0014505054071,
+   "sigma_median": 0.3484502009516772,
+   "rho_median": null,
+   "n_constrained_states": 37
+  },
+  "pending_adjusted": {
+   "median_abs_pct_change": 0.5008044065476058,
+   "spearman_vs_main": 0.9996630044273115,
+   "median_width_ratio": 1.0004820332433169,
+   "hidden_total_median": 5819.0,
+   "hidden_total_lo90": 5669.0,
+   "hidden_total_hi90": 5964.05,
+   "divergences": 0,
+   "hyper_rhat_max": 1.0108909777312667,
+   "hyper_ess_min": 244.25785808298468,
+   "eta_ess_min": 1944.6418587714254,
+   "eta_rhat_max": 1.0031879616686579,
+   "sigma_median": 0.6122387116259629,
+   "rho_median": 0.854207445225746,
+   "n_constrained_states": 37
+  }
+ },
+ "coefficients": {
+  "log_density": [
+   0.09002221626110439,
+   0.05094054222241873,
+   0.12873084811751204
+  ],
+  "pct_uninsured": [
+   -0.05317790968633811,
+   -0.09763487872753578,
+   -0.00803311613561496
+  ],
+  "pct_low_income": [
+   0.2778804418760269,
+   0.24794067208827394,
+   0.3080518668627609
+  ],
+  "urban_rural_2": [
+   -0.23725320958097604,
+   -0.32167316010735403,
+   -0.15817523375637096
+  ],
+  "urban_rural_3": [
+   -0.13460865149568751,
+   -0.23011107817413887,
+   -0.044667427584441914
+  ],
+  "urban_rural_4": [
+   -0.23500187449212379,
+   -0.3314837580468755,
+   -0.1397198038102956
+  ],
+  "urban_rural_5": [
+   -0.25241731257674876,
+   -0.3597393648639627,
+   -0.148146274121634
+  ],
+  "urban_rural_6": [
+   -0.3761738910013685,
+   -0.5047134678718096,
+   -0.2538127490553224
+  ]
+ },
+ "aggregate": [
+  {
+   "state": "AK",
+   "n_suppressed": 14,
+   "residual": 50.0,
+   "model_median": 38.0,
+   "model_lo90": 28.0,
+   "model_hi90": 49.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "AL",
+   "n_suppressed": 38,
+   "residual": 102.0,
+   "model_median": 150.0,
+   "model_lo90": 129.0,
+   "model_hi90": 174.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "AR",
+   "n_suppressed": 53,
+   "residual": 169.0,
+   "model_median": 160.0,
+   "model_lo90": 137.0,
+   "model_hi90": 184.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "AZ",
+   "n_suppressed": 1,
+   "residual": 94.0,
+   "model_median": 2.0,
+   "model_lo90": 1.0,
+   "model_hi90": 5.0,
+   "within_bounds": false,
+   "has_dq": false
+  },
+  {
+   "state": "CA",
+   "n_suppressed": 11,
+   "residual": 582.0,
+   "model_median": 45.0,
+   "model_lo90": 35.0,
+   "model_hi90": 56.0,
+   "within_bounds": false,
+   "has_dq": false
+  },
+  {
+   "state": "CO",
+   "n_suppressed": 35,
+   "residual": 156.0,
+   "model_median": 118.0,
+   "model_lo90": 99.0,
+   "model_hi90": 138.04999999999995,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "FL",
+   "n_suppressed": 21,
+   "residual": 228.0,
+   "model_median": 76.0,
+   "model_lo90": 61.0,
+   "model_hi90": 91.04999999999995,
+   "within_bounds": false,
+   "has_dq": false
+  },
+  {
+   "state": "GA",
+   "n_suppressed": 96,
+   "residual": 315.0,
+   "model_median": 323.0,
+   "model_lo90": 292.0,
+   "model_hi90": 357.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "IA",
+   "n_suppressed": 63,
+   "residual": 150.0,
+   "model_median": 154.0,
+   "model_lo90": 136.0,
+   "model_hi90": 174.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "ID",
+   "n_suppressed": 26,
+   "residual": 42.0,
+   "model_median": 75.0,
+   "model_lo90": 62.0,
+   "model_hi90": 91.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "IL",
+   "n_suppressed": 66,
+   "residual": 201.0,
+   "model_median": 229.0,
+   "model_lo90": 203.95,
+   "model_hi90": 255.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "IN",
+   "n_suppressed": 57,
+   "residual": 228.0,
+   "model_median": 239.0,
+   "model_lo90": 210.0,
+   "model_hi90": 267.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "KS",
+   "n_suppressed": 47,
+   "residual": 130.0,
+   "model_median": 122.0,
+   "model_lo90": 105.0,
+   "model_hi90": 141.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "KY",
+   "n_suppressed": 83,
+   "residual": 333.0,
+   "model_median": 329.0,
+   "model_lo90": 295.0,
+   "model_hi90": 363.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "LA",
+   "n_suppressed": 34,
+   "residual": 157.0,
+   "model_median": 145.0,
+   "model_lo90": 125.0,
+   "model_hi90": 164.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "MA",
+   "n_suppressed": 2,
+   "residual": -3.0,
+   "model_median": 6.0,
+   "model_lo90": 2.0,
+   "model_hi90": 13.0,
+   "within_bounds": false,
+   "has_dq": false
+  },
+  {
+   "state": "MD",
+   "n_suppressed": 7,
+   "residual": -11.0,
+   "model_median": 36.0,
+   "model_lo90": 27.0,
+   "model_hi90": 47.0,
+   "within_bounds": false,
+   "has_dq": false
+  },
+  {
+   "state": "ME",
+   "n_suppressed": 4,
+   "residual": 18.0,
+   "model_median": 24.0,
+   "model_lo90": 17.0,
+   "model_hi90": 30.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "MI",
+   "n_suppressed": 52,
+   "residual": 187.0,
+   "model_median": 202.0,
+   "model_lo90": 176.0,
+   "model_hi90": 229.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "MN",
+   "n_suppressed": 55,
+   "residual": 213.0,
+   "model_median": 183.0,
+   "model_lo90": 159.0,
+   "model_hi90": 209.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "MO",
+   "n_suppressed": 76,
+   "residual": 263.0,
+   "model_median": 244.0,
+   "model_lo90": 216.0,
+   "model_hi90": 274.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "MS",
+   "n_suppressed": 55,
+   "residual": 142.0,
+   "model_median": 198.0,
+   "model_lo90": 172.0,
+   "model_hi90": 226.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "MT",
+   "n_suppressed": 22,
+   "residual": 59.0,
+   "model_median": 58.0,
+   "model_lo90": 46.95,
+   "model_hi90": 71.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "NC",
+   "n_suppressed": 41,
+   "residual": 180.0,
+   "model_median": 187.0,
+   "model_lo90": 166.0,
+   "model_hi90": 209.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "ND",
+   "n_suppressed": 21,
+   "residual": 47.0,
+   "model_median": 49.0,
+   "model_lo90": 40.0,
+   "model_hi90": 61.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "NE",
+   "n_suppressed": 25,
+   "residual": 38.0,
+   "model_median": 47.0,
+   "model_lo90": 38.0,
+   "model_hi90": 59.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "NH",
+   "n_suppressed": 2,
+   "residual": 18.0,
+   "model_median": 13.0,
+   "model_lo90": 7.0,
+   "model_hi90": 17.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "NJ",
+   "n_suppressed": 1,
+   "residual": -6.0,
+   "model_median": 7.0,
+   "model_lo90": 3.0,
+   "model_hi90": 9.0,
+   "within_bounds": false,
+   "has_dq": false
+  },
+  {
+   "state": "NM",
+   "n_suppressed": 10,
+   "residual": 40.0,
+   "model_median": 43.0,
+   "model_lo90": 33.95,
+   "model_hi90": 53.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "NV",
+   "n_suppressed": 10,
+   "residual": 215.0,
+   "model_median": 35.0,
+   "model_lo90": 27.0,
+   "model_hi90": 43.0,
+   "within_bounds": false,
+   "has_dq": false
+  },
+  {
+   "state": "NY",
+   "n_suppressed": 22,
+   "residual": 236.0,
+   "model_median": 118.0,
+   "model_lo90": 101.0,
+   "model_hi90": 133.0,
+   "within_bounds": false,
+   "has_dq": false
+  },
+  {
+   "state": "OH",
+   "n_suppressed": 45,
+   "residual": 201.0,
+   "model_median": 224.0,
+   "model_lo90": 201.0,
+   "model_hi90": 247.04999999999995,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "OK",
+   "n_suppressed": 44,
+   "residual": 383.0,
+   "model_median": 165.0,
+   "model_lo90": 145.0,
+   "model_hi90": 188.0,
+   "within_bounds": true,
+   "has_dq": true
+  },
+  {
+   "state": "OR",
+   "n_suppressed": 17,
+   "residual": 88.0,
+   "model_median": 71.0,
+   "model_lo90": 59.0,
+   "model_hi90": 86.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "PA",
+   "n_suppressed": 24,
+   "residual": 122.0,
+   "model_median": 106.5,
+   "model_lo90": 89.0,
+   "model_hi90": 122.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "RI",
+   "n_suppressed": 2,
+   "residual": 19.0,
+   "model_median": 11.0,
+   "model_lo90": 6.0,
+   "model_hi90": 16.0,
+   "within_bounds": false,
+   "has_dq": false
+  },
+  {
+   "state": "SC",
+   "n_suppressed": 17,
+   "residual": 98.0,
+   "model_median": 82.0,
+   "model_lo90": 68.0,
+   "model_hi90": 96.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "SD",
+   "n_suppressed": 26,
+   "residual": 37.0,
+   "model_median": 59.0,
+   "model_lo90": 47.0,
+   "model_hi90": 73.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "TN",
+   "n_suppressed": 48,
+   "residual": 267.0,
+   "model_median": 221.0,
+   "model_lo90": 195.0,
+   "model_hi90": 248.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "TX",
+   "n_suppressed": 136,
+   "residual": 501.0,
+   "model_median": 409.0,
+   "model_lo90": 373.0,
+   "model_hi90": 444.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "UT",
+   "n_suppressed": 17,
+   "residual": 109.0,
+   "model_median": 58.0,
+   "model_lo90": 47.0,
+   "model_hi90": 70.04999999999995,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "VA",
+   "n_suppressed": 88,
+   "residual": 331.0,
+   "model_median": 333.0,
+   "model_lo90": 299.0,
+   "model_hi90": 368.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "VT",
+   "n_suppressed": 7,
+   "residual": 33.0,
+   "model_median": 36.0,
+   "model_lo90": 26.0,
+   "model_hi90": 45.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "WA",
+   "n_suppressed": 13,
+   "residual": 84.0,
+   "model_median": 56.0,
+   "model_lo90": 45.95,
+   "model_hi90": 67.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "WI",
+   "n_suppressed": 48,
+   "residual": 187.0,
+   "model_median": 177.0,
+   "model_lo90": 154.0,
+   "model_hi90": 203.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "WV",
+   "n_suppressed": 31,
+   "residual": 112.0,
+   "model_median": 132.0,
+   "model_lo90": 111.0,
+   "model_hi90": 150.0,
+   "within_bounds": true,
+   "has_dq": false
+  },
+  {
+   "state": "WY",
+   "n_suppressed": 13,
+   "residual": 33.0,
+   "model_median": 40.0,
+   "model_lo90": 30.0,
+   "model_hi90": 52.0,
+   "within_bounds": true,
+   "has_dq": false
+  }
+ ],
+ "validation": {
+  "pseudo_20": {
+   "T": 20,
+   "n_scored": 366,
+   "n_hidden": 1992,
+   "models": {
+    "spatial": {
+     "rps": 2.375367070931874,
+     "log_score": -2.867717011591111,
+     "mae": 3.300530010382188,
+     "spearman": 0.8485728324474024,
+     "coverage": [
+      0.44808743169398907,
+      0.5327868852459017,
+      0.6338797814207651,
+      0.7759562841530054,
+      0.8797814207650273,
+      0.9262295081967213
+     ]
+    },
+    "covariates_only": {
+     "rps": 2.5324860262533986,
+     "log_score": -2.935467123121359,
+     "mae": 3.4819249640661027,
+     "spearman": 0.842249691142915,
+     "coverage": [
+      0.41530054644808745,
+      0.5218579234972678,
+      0.6338797814207651,
+      0.76775956284153,
+      0.8661202185792349,
+      0.9098360655737705
+     ]
+    },
+    "poisson_gamma": {
+     "rps": 2.6476751043910203,
+     "log_score": -2.96730880325696,
+     "mae": 3.6769271311048044,
+     "spearman": 0.8535904215447933,
+     "coverage": [
+      0.4344262295081967,
+      0.5546448087431693,
+      0.6721311475409836,
+      0.7486338797814208,
+      0.8743169398907104,
+      0.9234972677595629
+     ]
+    },
+    "residual_split": {
+     "mae": 4.056396366498503,
+     "spearman": 0.6498174876220237
+    },
+    "midpoint": {
+     "mae": 3.4562841530054644
+    }
+   },
+   "constrained_states": 44,
+   "fit": {
+    "divergences": 0,
+    "mean_steps": 156.824,
+    "hyper_rhat_max": 1.0220107378927357,
+    "hyper_ess_min": 194.90653323843864,
+    "eta_rhat_max": 1.0041222735063078,
+    "eta_rhat_gt_1p05": 0,
+    "eta_ess_min": 1589.904166363061
+   }
+  },
+  "pseudo_30": {
+   "T": 30,
+   "n_scored": 537,
+   "n_hidden": 2163,
+   "models": {
+    "spatial": {
+     "rps": 3.044129240503211,
+     "log_score": -3.1449623774621154,
+     "mae": 4.163908822461551,
+     "spearman": 0.7907634781999536,
+     "coverage": [
+      0.4581005586592179,
+      0.5810055865921788,
+      0.6685288640595903,
+      0.7802607076350093,
+      0.8752327746741154,
+      0.925512104283054
+     ]
+    },
+    "covariates_only": {
+     "rps": 3.1981612863615485,
+     "log_score": -3.198658086332692,
+     "mae": 4.338571545531989,
+     "spearman": 0.780627763965163,
+     "coverage": [
+      0.45623836126629425,
+      0.5661080074487895,
+      0.6685288640595903,
+      0.7783985102420856,
+      0.8696461824953445,
+      0.9292364990689013
+     ]
+    },
+    "poisson_gamma": {
+     "rps": 3.368519121563385,
+     "log_score": -3.2475339668541174,
+     "mae": 4.63179089506546,
+     "spearman": 0.7712826286213424,
+     "coverage": [
+      0.4729981378026071,
+      0.5940409683426443,
+      0.7206703910614525,
+      0.7914338919925512,
+      0.8975791433891993,
+      0.9515828677839852
+     ]
+    },
+    "residual_split": {
+     "mae": 5.20341235137378,
+     "spearman": 0.6101845431088618
+    },
+    "midpoint": {
+     "mae": 4.631284916201118
+    }
+   },
+   "constrained_states": 46,
+   "fit": {
+    "divergences": 0,
+    "mean_steps": 134.136,
+    "hyper_rhat_max": 1.0133951628670372,
+    "hyper_ess_min": 169.62950949900988,
+    "eta_rhat_max": 1.0043302902770421,
+    "eta_rhat_gt_1p05": 0,
+    "eta_ess_min": 1084.7483579632005
+   }
+  },
+  "temporal": {
+   "spatial_no_trend": {
+    "crps": 5.81496867668428,
+    "mae": 7.751981505944518,
+    "coverage": [
+     0.3996036988110964,
+     0.5066050198150595,
+     0.6043593130779392,
+     0.7060766182298547,
+     0.8196829590488771,
+     0.8791281373844122
+    ],
+    "cov90_interval": 0.8778071334214003
+   },
+   "spatial_state_trend": {
+    "crps": 3.2509128418097757,
+    "mae": 4.559114927344782,
+    "coverage": [
+     0.4821664464993395,
+     0.5799207397622193,
+     0.6803170409511229,
+     0.7747688243064729,
+     0.8863936591809776,
+     0.9517833553500661
+    ],
+    "cov90_interval": 0.9352708058124174
+   },
+   "poisson_gamma_state_trend": {
+    "crps": 3.352574558454425,
+    "mae": 4.697490092470278,
+    "mae_same_counties": 5.746382978723404,
+    "coverage": [
+     0.4795244385733157,
+     0.583883751651255,
+     0.6849405548216645,
+     0.7754293262879789,
+     0.8857331571994715,
+     0.9379128137384413
+    ],
+    "cov90_interval": 0.929326287978864
+   },
+   "last_year_state_trend": {
+    "mae": 6.037134070377681,
+    "n": 1175,
+    "spatial_mae_same_counties": 5.662127659574468
+   },
+   "n_scored": 1514,
+   "fit": {
+    "divergences": 0,
+    "mean_steps": 127.0,
+    "hyper_rhat_max": 1.0252268783696588,
+    "hyper_ess_min": 156.66812377238782,
+    "eta_rhat_max": 1.0035571367881901,
+    "eta_rhat_gt_1p05": 0,
+    "eta_ess_min": 1439.688464478364
+   }
+  }
+ },
+ "fit": {
+  "divergences": 0,
+  "mean_steps": 162.968,
+  "hyper_rhat_max": 1.020149174823465,
+  "hyper_ess_min": 258.6599896307532,
+  "eta_rhat_max": 1.0028451285424216,
+  "eta_rhat_gt_1p05": 0,
+  "eta_ess_min": 2172.107911289126,
+  "n_constrained_states": 37,
+  "constrained_states": [
+   "AK",
+   "AL",
+   "AR",
+   "CO",
+   "GA",
+   "IA",
+   "ID",
+   "IL",
+   "IN",
+   "KS",
+   "KY",
+   "LA",
+   "ME",
+   "MI",
+   "MN",
+   "MO",
+   "MS",
+   "MT",
+   "NC",
+   "ND",
+   "NE",
+   "NH",
+   "NM",
+   "OH",
+   "OR",
+   "PA",
+   "SC",
+   "SD",
+   "TN",
+   "TX",
+   "UT",
+   "VA",
+   "VT",
+   "WA",
+   "WI",
+   "WV",
+   "WY"
+  ]
+ },
+ "hidden_total": [
+  5818.0,
+  5670.95,
+  5965.05
+ ]
+}
