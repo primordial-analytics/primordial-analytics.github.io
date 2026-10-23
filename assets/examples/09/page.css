@@ -1,0 +1,691 @@
+/* Page-local styles for example 09 (coverage loss and health center revenue). Kit tokens only. */
+
+/* ---------- page frame ---------- */
+.ex-section.p9-toolsec {
+  padding-top: 1.5rem;
+}
+/* text blocks inside a wide track keep the text measure */
+.ex-section > .ex-wide > .ex-prose {
+  max-width: 41rem;
+}
+.ex-section > .ex-wide > .ex-prose h2 {
+  margin-top: 0;
+}
+
+/* type: hints and chart text a board-deck screenshot can read */
+.ex .ex-hint {
+  font-size: 0.8125rem;
+  color: #4a4a68;
+}
+.ex .ex-chart text,
+.ex .ex-axis .tick text {
+  font-size: 13px;
+}
+@media (max-width: 639px) {
+  .ex .ex-chart text,
+  .ex .ex-axis .tick text {
+    font-size: 12px;
+  }
+}
+
+/* ---------- the tool ---------- */
+@media (min-width: 960px) {
+  .ex .ex-tool--split {
+    grid-template-columns: minmax(17rem, 21rem) minmax(0, 1fr);
+  }
+}
+.ex .p9-panel {
+  padding: clamp(1rem, 2.6vw, 1.75rem);
+}
+.ex .p9-h2 {
+  font-family: var(--ex-font-display);
+  font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+  line-height: 1.1;
+  color: var(--ex-ink);
+}
+.ex .p9-lede {
+  font-size: var(--ex-t-base);
+  color: var(--ex-ink-2);
+  margin-top: 0.35rem;
+  line-height: 1.45;
+}
+.ex .p9-opt {
+  font-weight: 400;
+  color: #4a4a68;
+}
+.ex .p9-pair {
+  display: grid;
+  gap: var(--ex-s4);
+}
+@media (max-width: 959px) {
+  .ex .p9-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+  .ex .ex-tool__controls {
+    gap: var(--ex-s4);
+  }
+  .ex .p9-helpers {
+    display: none;
+  }
+}
+.ex .p9-pair .ex-input-group .ex-input {
+  min-width: 0;
+}
+.ex .p9-helpers {
+  display: grid;
+  gap: var(--ex-s2);
+  justify-items: start;
+}
+.ex .p9-note {
+  font-size: var(--ex-t-sm);
+  line-height: 1.45;
+  color: var(--ex-ink);
+  background: var(--ex-gold-tint);
+  border-left: 3px solid var(--ex-gold);
+  border-radius: 0 var(--ex-r-md) var(--ex-r-md) 0;
+  padding: 0.55rem 0.8rem;
+}
+.ex .p9-note a {
+  color: var(--ex-gold-deep);
+}
+
+/* example / your-state tag above the answer */
+.ex .p9-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--ex-t-sm);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ex-ink);
+  background: var(--ex-gold-tint);
+  border: 1px solid var(--ex-gold);
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+}
+.ex .p9-tag.is-yours {
+  background: var(--ex-ink);
+  border-color: var(--ex-ink);
+  color: #fff;
+}
+.ex .p9-tag--typ {
+  margin-bottom: var(--ex-s3);
+}
+
+/* the answer: dollars first */
+.ex .p9-results {
+  display: grid;
+  gap: var(--ex-s3);
+  margin-top: var(--ex-s3);
+  transition: opacity 0.15s;
+}
+.ex .p9-results.is-stale {
+  opacity: 0.4;
+}
+.ex .p9-answer {
+  background: var(--ex-ink);
+  color: #fff;
+  border-radius: var(--ex-r-lg);
+  padding: var(--ex-s5) var(--ex-s5) var(--ex-s4);
+  display: grid;
+  gap: var(--ex-s2);
+  min-width: 0;
+}
+.ex .p9-answer__label {
+  font-size: var(--ex-t-sm);
+  font-weight: 500;
+  color: #d8d5ec;
+}
+.ex .p9-answer__value {
+  font-family: var(--ex-font-display);
+  font-size: clamp(3rem, 7vw, 4.25rem);
+  line-height: 1;
+  letter-spacing: -0.015em;
+  color: #fff;
+  overflow-wrap: anywhere;
+}
+.ex .p9-answer__range {
+  font-size: var(--ex-t-base);
+  color: #e9e3c6;
+  font-variant-numeric: tabular-nums;
+}
+.ex .p9-answer__share {
+  font-size: var(--ex-t-lg);
+  line-height: 1.3;
+  color: #fff;
+  margin-top: var(--ex-s2);
+  padding-top: var(--ex-s3);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+.ex .p9-answer__share strong {
+  font-family: var(--ex-font-display);
+  font-weight: 400;
+  font-size: 1.75rem;
+  letter-spacing: -0.01em;
+}
+.ex .p9-answer__note {
+  font-size: 0.8125rem;
+  color: #c9c6e3;
+  line-height: 1.45;
+}
+.ex .p9-subs {
+  display: grid;
+  gap: var(--ex-s3);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 1099px) {
+  .ex .p9-subs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ex .p9-subs .p9-sub:last-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 559px) {
+  .ex .p9-subs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.ex .p9-sub {
+  background: var(--ex-surface);
+  border: 1px solid var(--ex-line);
+  border-radius: var(--ex-r-lg);
+  padding: var(--ex-s3) var(--ex-s4) var(--ex-s4);
+  display: grid;
+  gap: 0.3rem;
+  align-content: start;
+  min-width: 0;
+}
+.ex .p9-sub__label {
+  font-size: var(--ex-t-sm);
+  font-weight: 600;
+  color: var(--ex-ink-2);
+  line-height: 1.3;
+}
+.ex .p9-sub__value {
+  font-family: var(--ex-font-display);
+  font-size: 2rem;
+  line-height: 1.05;
+  color: var(--ex-ink);
+}
+.ex .p9-sub__range {
+  font-size: var(--ex-t-sm);
+  color: var(--ex-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.ex .p9-sub__note {
+  font-size: 0.8125rem;
+  color: #4a4a68;
+  line-height: 1.45;
+}
+
+/* board summary */
+.ex .p9-summary {
+  border: 1px solid var(--ex-line);
+  border-left: 4px solid var(--ex-gold);
+  border-radius: var(--ex-r-lg);
+  background: var(--ex-gold-tint);
+  padding: var(--ex-s4) var(--ex-s5);
+  display: grid;
+  gap: var(--ex-s3);
+}
+.ex .p9-summary__title {
+  font-weight: 600;
+  font-size: var(--ex-t-sm);
+  color: var(--ex-gold-deep);
+}
+.ex .p9-summary__text {
+  font-family: var(--ex-font-prose);
+  font-size: var(--ex-t-base);
+  line-height: 1.55;
+  color: var(--ex-text);
+}
+.ex .p9-summary__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ex-s2);
+}
+.ex .ex-tool__out > .p9-summary,
+.ex .ex-tool__out > .p9-cta {
+  margin-top: var(--ex-s4);
+}
+.ex .p9-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ex-s3) var(--ex-s5);
+  border: 1px solid var(--ex-line-strong);
+  border-radius: var(--ex-r-lg);
+  padding: var(--ex-s4) var(--ex-s5);
+}
+.ex .p9-cta p {
+  flex: 1 1 18rem;
+  font-size: var(--ex-t-base);
+  line-height: 1.45;
+  color: var(--ex-ink);
+}
+
+/* phone: the answer follows you down the panel */
+.ex .p9-mini {
+  display: none;
+}
+@media (max-width: 959px) {
+  .ex .p9-mini {
+    position: sticky;
+    bottom: 8px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ex-s3);
+    margin-top: var(--ex-s4);
+    padding: 0.6rem 0.9rem;
+    background: var(--ex-ink);
+    color: #fff;
+    border-radius: 999px;
+    box-shadow: var(--ex-shadow);
+    font-size: var(--ex-t-sm);
+    font-weight: 600;
+    transition: opacity 0.15s;
+  }
+  .ex .p9-mini.is-off {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .ex .p9-mini a {
+    color: #e9e3c6;
+    flex: none;
+  }
+}
+
+/* split of the loss */
+.ex .p9-stack {
+  display: flex;
+  min-height: 3.25rem;
+  border-radius: var(--ex-r-md);
+  overflow: hidden;
+  border: 1px solid var(--ex-line-strong);
+  font-weight: 600;
+  font-size: var(--ex-t-sm);
+}
+.ex .p9-stack > div {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.75rem;
+  min-width: 0;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.ex .p9-stack__nc {
+  background: var(--ex-ink);
+  color: #fff;
+}
+.ex .p9-stack__ad {
+  background: var(--ex-c-est);
+  color: var(--ex-ink);
+}
+.ex .p9-split-list {
+  display: grid;
+  gap: var(--ex-s4) var(--ex-s6);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  margin: var(--ex-s4) 0 0;
+}
+.ex .p9-split-list dt {
+  font-weight: 600;
+  color: var(--ex-ink);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ex .p9-split-list dd {
+  margin: 0.2rem 0 0;
+  font-size: var(--ex-t-sm);
+  color: #4a4a68;
+  line-height: 1.5;
+}
+.ex .p9-split-list .p9-sw {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 3px;
+  flex: none;
+}
+
+/* selected-state card above the ranked chart; it stays in view while you scroll the rows */
+.ex .p9-sel {
+  position: sticky;
+  top: calc(var(--ex-nav-h) + var(--ex-subnav-h) + 8px);
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ex-s4);
+  flex-wrap: wrap;
+  background: var(--ex-paper);
+  border: 1.5px solid var(--ex-ink);
+  border-radius: var(--ex-r-lg);
+  box-shadow: var(--ex-shadow);
+  padding: 0.65rem 1rem;
+  margin-bottom: var(--ex-s3);
+}
+.ex .p9-sel__body {
+  flex: 1 1 22rem;
+  min-width: 0;
+}
+.ex .p9-sel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.6rem;
+  font-size: var(--ex-t-base);
+  color: var(--ex-ink);
+  line-height: 1.3;
+}
+.ex .p9-sel__tag {
+  font-size: var(--ex-t-xs);
+  font-weight: 600;
+  background: var(--ex-ink);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+}
+.ex .p9-sel__tag.is-example {
+  background: var(--ex-gold-tint);
+  color: var(--ex-ink);
+  border: 1px solid var(--ex-gold);
+}
+.ex .p9-sel__text {
+  font-size: var(--ex-t-sm);
+  line-height: 1.45;
+  color: var(--ex-ink-2);
+  margin-top: 0.2rem;
+}
+.ex .p9-sel.is-flash {
+  animation: p9flash 0.9s ease-out 1;
+}
+@keyframes p9flash {
+  0% {
+    box-shadow: 0 0 0 5px rgba(179, 163, 105, 0.7);
+  }
+  100% {
+    box-shadow: var(--ex-shadow);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ex .p9-sel.is-flash {
+    animation: none;
+  }
+}
+.ex .p9-hint-line {
+  font-size: var(--ex-t-sm);
+  color: #4a4a68;
+  margin-bottom: var(--ex-s3);
+}
+.ex .p9-check label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: var(--ex-t-sm);
+  font-weight: 500;
+  color: var(--ex-ink);
+  min-height: 2.75rem;
+  cursor: pointer;
+}
+.ex .p9-check input {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--ex-ink);
+  flex: none;
+  margin: 0;
+}
+.ex .ex-toolbar > .ex-field.p9-check {
+  flex: 0 1 auto;
+}
+
+/* one-line readouts */
+.ex .p9-readout {
+  font-size: var(--ex-t-sm);
+  line-height: 1.5;
+  color: var(--ex-sub);
+  min-height: 1.5em;
+}
+.ex .p9-readout strong {
+  color: var(--ex-ink);
+  font-weight: 600;
+}
+.ex #peer-readout {
+  margin: var(--ex-s4) 0 var(--ex-s6);
+  font-size: var(--ex-t-lg);
+  line-height: 1.4;
+  color: var(--ex-ink);
+}
+.ex .p9-peerbar {
+  display: grid;
+  gap: var(--ex-s3);
+}
+.ex .p9-chip {
+  display: inline-block;
+  justify-self: start;
+  font-size: var(--ex-t-base);
+  font-weight: 600;
+  color: #fff;
+  background: var(--ex-ink);
+  border-radius: 999px;
+  padding: 0.35rem 1rem;
+  line-height: 1.3;
+}
+.ex .p9-peerbar .ex-toolbar {
+  margin-bottom: 0;
+}
+
+/* legend keys the kit does not have */
+.ex .p9-key {
+  display: inline-block;
+  vertical-align: middle;
+  flex: none;
+}
+.ex .p9-key--whisker {
+  width: 22px;
+  height: 10px;
+  border-left: 2px solid var(--ex-strong);
+  border-right: 2px solid var(--ex-strong);
+  background: linear-gradient(var(--ex-strong), var(--ex-strong)) center / 100% 2px no-repeat;
+}
+.ex .p9-key--band {
+  width: 22px;
+  height: 10px;
+  background: var(--ex-c-band);
+  border-left: 2px solid var(--ex-c-est);
+  border-right: 2px solid var(--ex-c-est);
+}
+.ex .p9-key--sel {
+  width: 14px;
+  height: 12px;
+  border-radius: 2px;
+  background: var(--ex-ink);
+}
+.ex .p9-key--dot,
+.ex .p9-key--dot-ink,
+.ex .p9-key--dot-hollow {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--ex-strong);
+}
+.ex .p9-key--dot {
+  background: var(--ex-c-est);
+  border-color: var(--ex-paper);
+  box-shadow: 0 0 0 1px var(--ex-c-est);
+}
+.ex .p9-key--dot-ink {
+  background: var(--ex-strong);
+}
+.ex .p9-key--dot-hollow {
+  background: var(--ex-paper);
+}
+.ex .p9-key--you {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 10px solid var(--ex-strong);
+}
+
+/* chart marks */
+.ex-chart text.p9-lab {
+  fill: var(--ex-ink);
+  paint-order: stroke;
+  stroke: var(--ex-paper);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+.ex .ex-chart text.p9-lab--sm {
+  font-size: 12px;
+}
+.ex-chart .p9-you-band {
+  fill: rgba(25, 20, 69, 0.14);
+}
+.ex-chart .p9-you-tri {
+  fill: var(--ex-strong);
+}
+.ex-chart text.p9-you-label {
+  fill: var(--ex-strong);
+  font-weight: 600;
+}
+.ex-chart .p9-dot-hollow {
+  fill: var(--ex-paper);
+  stroke: var(--ex-strong);
+  stroke-width: 2;
+}
+.ex-chart .p9-dot-ink {
+  fill: var(--ex-strong);
+  stroke: var(--ex-paper);
+  stroke-width: 2;
+}
+.ex-chart .p9-dot-obs {
+  fill: var(--ex-c-obs);
+  stroke: var(--ex-paper);
+  stroke-width: 2;
+}
+.ex-chart .p9-dot-est {
+  fill: var(--ex-c-est);
+  stroke: var(--ex-paper);
+  stroke-width: 2;
+}
+.ex-chart .p9-swing {
+  stroke: var(--ex-strong);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.ex-chart .p9-bar {
+  fill: var(--ex-c-est);
+}
+.ex-chart .is-sel .p9-bar {
+  fill: var(--ex-ink);
+}
+.ex-chart .p9-band {
+  fill: var(--ex-c-band);
+}
+.ex-chart .p9-cap {
+  stroke: var(--ex-c-est);
+  stroke-width: 2;
+}
+.ex-chart .p9-rowsel {
+  fill: var(--ex-gold-tint);
+}
+.ex-chart g.ex-mark {
+  cursor: pointer;
+}
+.ex-chart g.ex-mark--static {
+  cursor: default;
+}
+.ex-chart tspan.p9-range {
+  font-weight: 400;
+  fill: var(--ex-sub);
+}
+.ex-chart tspan.p9-youtag {
+  font-weight: 600;
+  fill: var(--ex-ink);
+}
+#chart-peers .ex-svg-value,
+#chart-hist .ex-svg-value,
+#chart-states .ex-svg-value {
+  paint-order: stroke;
+  stroke: var(--ex-paper);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+/* findings: short facts side by side */
+.ex .p9-finds {
+  display: grid;
+  gap: var(--ex-s5);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+.ex .p9-find {
+  border-top: 3px solid var(--ex-gold);
+  padding-top: var(--ex-s4);
+  display: grid;
+  gap: var(--ex-s3);
+  align-content: start;
+}
+.ex .p9-find__v {
+  font-family: var(--ex-font-display);
+  font-size: clamp(1.9rem, 3.4vw, 2.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--ex-ink);
+  overflow-wrap: anywhere;
+}
+.ex .p9-find__t {
+  font-size: var(--ex-t-base);
+  line-height: 1.5;
+  color: var(--ex-muted);
+}
+.ex .p9-find__t strong {
+  color: var(--ex-ink);
+  font-weight: 600;
+}
+
+/* toolbars */
+.ex .ex-toolbar > .ex-field.p9-wide-field {
+  flex: 0 1 auto;
+  max-width: 100%;
+}
+.ex .p9-seg-wrap span {
+  white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .ex .p9-seg-wrap {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: grid;
+  }
+}
+
+/* what to ask */
+.ex .p9-ask ul {
+  display: grid;
+  gap: var(--ex-s2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ex .p9-ask li {
+  font-size: var(--ex-t-base);
+  line-height: 1.5;
+  color: var(--ex-text);
+}
+.ex .p9-ask li strong {
+  color: var(--ex-ink);
+}
+/* charts that hold only a few rows do not need the kit's minimum height */
+.ex #chart-ne {
+  min-height: 0;
+}
+.ex .p9-plede {
+  font-size: var(--ex-t-base);
+  line-height: 1.55;
+  color: var(--ex-text);
+}

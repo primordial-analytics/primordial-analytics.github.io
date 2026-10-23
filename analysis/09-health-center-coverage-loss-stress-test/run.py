@@ -1,6 +1,6 @@
 """Run the whole analysis: python run.py [step ...]
 
-Steps, in order: fetch, pums, uds, unwinding, model, report.
+Steps, in order: fetch, pums, uds, unwinding, model, report, web_data.
 With no arguments every step runs. Raw downloads go to data/raw/ (gitignored)
 and everything else to output/.
 """
@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-STEPS = ["fetch", "pums", "uds", "unwinding", "model", "report"]
+STEPS = ["fetch", "pums", "uds", "unwinding", "model", "report", "web_data"]
 
 if __name__ == "__main__":
     for step in sys.argv[1:] or STEPS:
