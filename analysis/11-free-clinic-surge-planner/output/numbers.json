@@ -1,0 +1,635 @@
+{
+ "data_checks": {
+  "oep2026_counties": 2054,
+  "oep2025_counties": 2156,
+  "matched_counties": 2054,
+  "oep2026_selections_total_row": 15771397,
+  "oep2026_selections_county_sum": 15771373,
+  "oep2025_selections_total_row": 17128890,
+  "sahie_uninsured_le200_national_county_sum": 10206558,
+  "sahie_uninsured_le200_national_state_sum": 10206558,
+  "medicaid_pi_period": "202606",
+  "cms_all_platform_feb2025": 21776626,
+  "cms_all_platform_feb2026": 19169147,
+  "cms_all_platform_pct_change": -12.0,
+  "states_with_2026_data": 30
+ },
+ "observed": {
+  "selections_2025_matched": 16662905,
+  "selections_2026_matched": 15771373,
+  "selections_pct_change": -5.4,
+  "low_income_selections_2025": 11823955,
+  "low_income_selections_2026": 11366830,
+  "low_income_pct_change": -3.9,
+  "median_county_premium_after_credits_2025": 99,
+  "median_county_premium_after_credits_2026": 171,
+  "auto_reenrollees_2025": 6379825,
+  "auto_reenrollees_2026": 4990584,
+  "auto_reenrollees_pct_change": -21.8,
+  "paid_share_feb2025_pct": 87.4,
+  "paid_share_feb2026_pct": 78.7,
+  "paid_feb2025": 14558906,
+  "paid_feb2026": 12406195,
+  "paid_lost_feb2026_vs_feb2025": 2152711,
+  "paid_pct_change": -14.8,
+  "states_paid_share_below_70_pct": [
+   "IN",
+   "LA",
+   "MS",
+   "OK",
+   "SC"
+  ],
+  "lowest_paid_share_state": "MS",
+  "lowest_paid_share_pct": 61.1,
+  "corr_state_paid_share_vs_auto_share": -0.76,
+  "corr_state_paid_share_vs_le10_share": -0.32,
+  "est_paid_adult_coverage_lost_by_feb2026": 1344887,
+  "uninsured_le200_baseline": 6364883,
+  "uninsured_le200_baseline_expansion_states": 2461420,
+  "counties_expansion_states": 1243,
+  "counties_other_states": 811,
+  "counties_small_count_flag": 175,
+  "counties_suppressed_cell": 74,
+  "counties_wide_uninsured_margin": 66,
+  "counties_small_pool_under_500": 785,
+  "counties_negative_marketplace_addition_central": 71,
+  "counties_with_pool_over_5000": 221
+ },
+ "ranking": {
+  "tau": 0.114,
+  "raw_sd_within_state": 0.111,
+  "median_shrink_weight": 0.859,
+  "n": 2054,
+  "top25_overlap_raw_vs_adjusted": 20,
+  "top25_overlap_raw_vs_adjusted_min500": 22
+ },
+ "backtest": {
+  "counties_used": 1529,
+  "rmse_zero_change": 0.175,
+  "rmse_national_mean": 0.135,
+  "rmse_state_mean": 0.111,
+  "rmse_state_plus_other_band": 0.106,
+  "within_state_corr_between_bands": 0.31,
+  "state_share_of_variance_pct_100_150_band": 43,
+  "rmse_gain_other_band_over_state_pct": 4.5,
+  "rmse_gain_ci95_pct": [
+   2.0,
+   7.2
+  ],
+  "min_selections_per_band_year": 100
+ },
+ "scenarios_2054_counties": {
+  "lower": {
+   "total_p10": 337706,
+   "total_p50": 643905,
+   "total_p90": 1081288,
+   "marketplace_p10": 206302,
+   "marketplace_p50": 459814,
+   "marketplace_p90": 825489,
+   "medicaid_p10": 34326,
+   "medicaid_p50": 142805,
+   "medicaid_p90": 410733,
+   "growth_total_p50_pct": 10.1,
+   "growth_marketplace_p50_pct": 7.2,
+   "median_county_growth_p50_expansion_pct": 14.3,
+   "median_county_growth_p50_other_pct": 7.2,
+   "median_county_growth_p50_marketplace_only_pct": 7.2
+  },
+  "central": {
+   "total_p10": 1039504,
+   "total_p50": 1640179,
+   "total_p90": 2454496,
+   "marketplace_p10": 562896,
+   "marketplace_p50": 965227,
+   "marketplace_p90": 1522057,
+   "medicaid_p10": 246872,
+   "medicaid_p50": 609298,
+   "medicaid_p90": 1235077,
+   "growth_total_p50_pct": 25.7,
+   "growth_marketplace_p50_pct": 15.2,
+   "median_county_growth_p50_expansion_pct": 40.9,
+   "median_county_growth_p50_other_pct": 15.0,
+   "median_county_growth_p50_marketplace_only_pct": 14.3
+  },
+  "higher": {
+   "total_p10": 2466873,
+   "total_p50": 3500933,
+   "total_p90": 4797799,
+   "marketplace_p10": 1135442,
+   "marketplace_p50": 1724856,
+   "marketplace_p90": 2535636,
+   "medicaid_p10": 919615,
+   "medicaid_p50": 1704435,
+   "medicaid_p90": 2752104,
+   "growth_total_p50_pct": 55.0,
+   "growth_marketplace_p50_pct": 27.1,
+   "median_county_growth_p50_expansion_pct": 96.2,
+   "median_county_growth_p50_other_pct": 26.2,
+   "median_county_growth_p50_marketplace_only_pct": 24.1
+  }
+ },
+ "tornado_example_county": {
+  "base_sessions_p80": 174.0,
+  "rows": [
+   {
+    "assumption": "Your new-patient rate vs today (0.5x-1.5x)",
+    "sessions_low": 147.0,
+    "sessions_high": 200.0,
+    "swing": 53.0
+   },
+   {
+    "assumption": "Expansion adults losing Medicaid (13.5-50%)",
+    "sessions_low": 154.0,
+    "sessions_high": 204.0,
+    "swing": 50.0
+   },
+   {
+    "assumption": "Share of that loss in place in 2027 (35-65%)",
+    "sessions_low": 162.0,
+    "sessions_high": 186.0,
+    "swing": 24.0
+   },
+   {
+    "assumption": "Uninsured pool, SAHIE 90% interval",
+    "sessions_low": 182.0,
+    "sessions_high": 167.0,
+    "swing": 15.0
+   },
+   {
+    "assumption": "Medicaid losers left uninsured (70-95%)",
+    "sessions_low": 166.0,
+    "sessions_high": 179.0,
+    "swing": 13.0
+   },
+   {
+    "assumption": "Marketplace attrition after Feb 2026 (4-16%)",
+    "sessions_low": 170.0,
+    "sessions_high": 180.0,
+    "swing": 10.0
+   },
+   {
+    "assumption": "Expansion adults' share of enrollment (27-33%)",
+    "sessions_low": 169.0,
+    "sessions_high": 178.0,
+    "swing": 9.0
+   },
+   {
+    "assumption": "Lost marketplace coverage that ends uninsured (30-70%)",
+    "sessions_low": 170.0,
+    "sessions_high": 178.0,
+    "swing": 8.0
+   },
+   {
+    "assumption": "2026 loss already in your visits (60-100%)",
+    "sessions_low": 177.0,
+    "sessions_high": 171.0,
+    "swing": 6.0
+   }
+  ]
+ },
+ "example_clinic": {
+  "county": "Iredell County, NC",
+  "fips": "37097",
+  "uninsured_le200": 5917,
+  "moe90": 800,
+  "inputs": {
+   "fips": "37097",
+   "patients": 480,
+   "visits_per_patient": 3.0,
+   "patients_per_session": 12,
+   "volunteers_per_session": 6,
+   "hours_per_shift": 3,
+   "shifts_per_volunteer": 12,
+   "medication_per_visit": 20.0,
+   "rho": 1.0
+  },
+  "capture_pct": 8.1,
+  "today_visits": 1440,
+  "today_sessions": 120.0,
+  "today_volunteers": 60,
+  "rows": [
+   {
+    "scenario": "lower",
+    "layers": "all",
+    "probability": 0.5,
+    "growth_pct": 8.1,
+    "sessions": 130,
+    "extra_sessions": 10,
+    "volunteers": 65,
+    "volunteer_hours": 2340,
+    "medication_dollars": 31140
+   },
+   {
+    "scenario": "lower",
+    "layers": "all",
+    "probability": 0.8,
+    "growth_pct": 14.1,
+    "sessions": 137,
+    "extra_sessions": 17,
+    "volunteers": 69,
+    "volunteer_hours": 2466,
+    "medication_dollars": 32846
+   },
+   {
+    "scenario": "lower",
+    "layers": "all",
+    "probability": 0.95,
+    "growth_pct": 22.6,
+    "sessions": 148,
+    "extra_sessions": 28,
+    "volunteers": 74,
+    "volunteer_hours": 2664,
+    "medication_dollars": 35299
+   },
+   {
+    "scenario": "lower",
+    "layers": "mkt",
+    "probability": 0.5,
+    "growth_pct": 2.3,
+    "sessions": 123,
+    "extra_sessions": 3,
+    "volunteers": 62,
+    "volunteer_hours": 2214,
+    "medication_dollars": 29455
+   },
+   {
+    "scenario": "lower",
+    "layers": "mkt",
+    "probability": 0.8,
+    "growth_pct": 4.0,
+    "sessions": 125,
+    "extra_sessions": 5,
+    "volunteers": 63,
+    "volunteer_hours": 2250,
+    "medication_dollars": 29962
+   },
+   {
+    "scenario": "lower",
+    "layers": "mkt",
+    "probability": 0.95,
+    "growth_pct": 7.0,
+    "sessions": 129,
+    "extra_sessions": 9,
+    "volunteers": 65,
+    "volunteer_hours": 2322,
+    "medication_dollars": 30803
+   },
+   {
+    "scenario": "central",
+    "layers": "all",
+    "probability": 0.5,
+    "growth_pct": 29.9,
+    "sessions": 156,
+    "extra_sessions": 36,
+    "volunteers": 78,
+    "volunteer_hours": 2808,
+    "medication_dollars": 37424
+   },
+   {
+    "scenario": "central",
+    "layers": "all",
+    "probability": 0.8,
+    "growth_pct": 44.2,
+    "sessions": 174,
+    "extra_sessions": 54,
+    "volunteers": 87,
+    "volunteer_hours": 3132,
+    "medication_dollars": 41541
+   },
+   {
+    "scenario": "central",
+    "layers": "all",
+    "probability": 0.95,
+    "growth_pct": 62.6,
+    "sessions": 196,
+    "extra_sessions": 76,
+    "volunteers": 98,
+    "volunteer_hours": 3528,
+    "medication_dollars": 46837
+   },
+   {
+    "scenario": "central",
+    "layers": "mkt",
+    "probability": 0.5,
+    "growth_pct": 6.6,
+    "sessions": 128,
+    "extra_sessions": 8,
+    "volunteers": 64,
+    "volunteer_hours": 2304,
+    "medication_dollars": 30701
+   },
+   {
+    "scenario": "central",
+    "layers": "mkt",
+    "probability": 0.8,
+    "growth_pct": 10.9,
+    "sessions": 134,
+    "extra_sessions": 14,
+    "volunteers": 67,
+    "volunteer_hours": 2412,
+    "medication_dollars": 31945
+   },
+   {
+    "scenario": "central",
+    "layers": "mkt",
+    "probability": 0.95,
+    "growth_pct": 16.5,
+    "sessions": 140,
+    "extra_sessions": 20,
+    "volunteers": 70,
+    "volunteer_hours": 2520,
+    "medication_dollars": 33560
+   },
+   {
+    "scenario": "higher",
+    "layers": "all",
+    "probability": 0.5,
+    "growth_pct": 78.1,
+    "sessions": 214,
+    "extra_sessions": 94,
+    "volunteers": 107,
+    "volunteer_hours": 3852,
+    "medication_dollars": 51305
+   },
+   {
+    "scenario": "higher",
+    "layers": "all",
+    "probability": 0.8,
+    "growth_pct": 104.4,
+    "sessions": 246,
+    "extra_sessions": 126,
+    "volunteers": 123,
+    "volunteer_hours": 4428,
+    "medication_dollars": 58870
+   },
+   {
+    "scenario": "higher",
+    "layers": "all",
+    "probability": 0.95,
+    "growth_pct": 133.8,
+    "sessions": 281,
+    "extra_sessions": 161,
+    "volunteers": 141,
+    "volunteer_hours": 5058,
+    "medication_dollars": 67328
+   },
+   {
+    "scenario": "higher",
+    "layers": "mkt",
+    "probability": 0.5,
+    "growth_pct": 15.3,
+    "sessions": 139,
+    "extra_sessions": 19,
+    "volunteers": 70,
+    "volunteer_hours": 2502,
+    "medication_dollars": 33201
+   },
+   {
+    "scenario": "higher",
+    "layers": "mkt",
+    "probability": 0.8,
+    "growth_pct": 22.6,
+    "sessions": 148,
+    "extra_sessions": 28,
+    "volunteers": 74,
+    "volunteer_hours": 2664,
+    "medication_dollars": 35314
+   },
+   {
+    "scenario": "higher",
+    "layers": "mkt",
+    "probability": 0.95,
+    "growth_pct": 30.9,
+    "sessions": 158,
+    "extra_sessions": 38,
+    "volunteers": 79,
+    "volunteer_hours": 2844,
+    "medication_dollars": 37708
+   }
+  ],
+  "newsvendor_ratio_80": 4,
+  "newsvendor_ratio_95": 19,
+  "tornado_base_sessions_p80": 174.0,
+  "p80_sessions_phi0": 186,
+  "poisson_check_p80_sessions": 174,
+  "poisson_check_p95_sessions": 196
+ },
+ "assumptions": {
+  "scenario_means": {
+   "lower": {
+    "u": 0.3,
+    "d": 0.04,
+    "w": 0.135,
+    "z": 0.7,
+    "r": 0.35
+   },
+   "central": {
+    "u": 0.5,
+    "d": 0.09,
+    "w": 0.28,
+    "z": 0.85,
+    "r": 0.5
+   },
+   "higher": {
+    "u": 0.7,
+    "d": 0.16,
+    "w": 0.5,
+    "z": 0.95,
+    "r": 0.65
+   }
+  },
+  "beta_concentration": {
+   "u": 10,
+   "d": 20,
+   "w": 12,
+   "z": 15,
+   "e": 60,
+   "r": 12
+  },
+  "expansion_share_of_medicaid_chip": 0.3,
+  "phi_share_of_2026_loss_in_trailing_year": 0.8,
+  "draws": 10000,
+  "seed": 20261022
+ },
+ "derived_example": {
+  "central_sessions_p50": 156,
+  "central_sessions_p80": 174,
+  "central_sessions_p95": 196,
+  "central_p80_extra_sessions": 54,
+  "central_p95_extra_sessions": 76,
+  "p80_to_p95_added_sessions": 22,
+  "p80_to_p95_added_volunteer_hours": 396,
+  "p80_to_p95_added_volunteers": 11,
+  "central_p80_volunteers": 87,
+  "central_p95_volunteers": 98,
+  "marketplace_only_central_sessions_p80": 134,
+  "lower_sessions_p80": 137,
+  "higher_sessions_p80": 246,
+  "central_growth_pct_p50": 29.9,
+  "central_growth_pct_p80": 44.2,
+  "central_growth_pct_p95": 62.6,
+  "median_sahie_moe_pct_of_estimate": 16,
+  "top10_north_carolina_count": 7,
+  "hi_median_county_growth_central_pct": 73,
+  "top10_raw_change_min_pct": -62.7,
+  "top10_raw_change_max_pct": -49.0,
+  "top10_adjusted_change_min_pct": -60.3,
+  "top10_adjusted_change_max_pct": -48.6,
+  "p80_sessions_if_none_of_2026_loss_in_visits": 186,
+  "median_county_growth_all_central_pct": 32.9,
+  "oep2026_county_sum_short_of_total_row": 24,
+  "kff_may_projected_2026_average_vs_cms_feb2026_pct": 8.7
+ },
+ "ranking_top10_min500": [
+  {
+   "county": "Marion County",
+   "state": "OR",
+   "low_income_selections_2025": 1297.0,
+   "low_income_selections_2026": 484.0,
+   "low_income_pct_change": -62.7,
+   "stability_adjusted_pct_change": -60.3
+  },
+  {
+   "county": "Edgecombe County",
+   "state": "NC",
+   "low_income_selections_2025": 4384.0,
+   "low_income_selections_2026": 1689.0,
+   "low_income_pct_change": -61.5,
+   "stability_adjusted_pct_change": -60.1
+  },
+  {
+   "county": "Jackson County",
+   "state": "OR",
+   "low_income_selections_2025": 927.0,
+   "low_income_selections_2026": 346.0,
+   "low_income_pct_change": -62.7,
+   "stability_adjusted_pct_change": -59.6
+  },
+  {
+   "county": "Sherman County",
+   "state": "TX",
+   "low_income_selections_2025": 922.0,
+   "low_income_selections_2026": 356.0,
+   "low_income_pct_change": -61.4,
+   "stability_adjusted_pct_change": -51.8
+  },
+  {
+   "county": "Nash County",
+   "state": "NC",
+   "low_income_selections_2025": 4935.0,
+   "low_income_selections_2026": 2357.0,
+   "low_income_pct_change": -52.2,
+   "stability_adjusted_pct_change": -51.4
+  },
+  {
+   "county": "Wayne County",
+   "state": "NC",
+   "low_income_selections_2025": 7732.0,
+   "low_income_selections_2026": 3851.0,
+   "low_income_pct_change": -50.2,
+   "stability_adjusted_pct_change": -49.7
+  },
+  {
+   "county": "Caswell County",
+   "state": "NC",
+   "low_income_selections_2025": 1303.0,
+   "low_income_selections_2026": 622.0,
+   "low_income_pct_change": -52.3,
+   "stability_adjusted_pct_change": -49.3
+  },
+  {
+   "county": "Greene County",
+   "state": "NC",
+   "low_income_selections_2025": 1433.0,
+   "low_income_selections_2026": 696.0,
+   "low_income_pct_change": -51.4,
+   "stability_adjusted_pct_change": -48.8
+  },
+  {
+   "county": "Pitt County",
+   "state": "NC",
+   "low_income_selections_2025": 10976.0,
+   "low_income_selections_2026": 5595.0,
+   "low_income_pct_change": -49.0,
+   "stability_adjusted_pct_change": -48.7
+  },
+  {
+   "county": "Wilson County",
+   "state": "NC",
+   "low_income_selections_2025": 6248.0,
+   "low_income_selections_2026": 3173.0,
+   "low_income_pct_change": -49.2,
+   "stability_adjusted_pct_change": -48.6
+  }
+ ],
+ "external_figures_quoted": {
+  "kff_2026-07-28_feb_effectuation_rate_national_pct": {
+   "2025": 90,
+   "2026": 83,
+   "mississippi_2026": 61,
+   "url": "https://www.kff.org/affordable-care-act/how-has-aca-marketplace-enrollment-changed-across-states-in-2026/"
+  },
+  "kff_2026-05-19_projected_2026_average_effectuated_millions": {
+   "central": 17.5,
+   "low": 16.5,
+   "wakely_decline_range_pct": [
+    17,
+    26
+   ],
+   "url": "https://www.kff.org/affordable-care-act/what-we-know-so-far-about-2026-aca-marketplace-enrollment-premiums-and-deductibles/"
+  },
+  "kff_expansion_adults_share_of_expansion_state_medicaid_enrollment_pct": {
+   "value": 31,
+   "period": "June 2024",
+   "denominator": "Medicaid enrollment (the model applies it to Medicaid plus CHIP)",
+   "model_value": 30,
+   "url": "https://www.kff.org/medicaid/5-key-facts-about-medicaid-expansion/"
+  },
+  "aspe_2026-06-26_improper_enrollment_millions": {
+   "remaining": 2.6,
+   "removed_or_blocked": 2.9,
+   "url": "https://www.aspe.hhs.gov/sites/default/files/documents/f5f29954221d5b5713070ac2541fda8e/aca-enrollment-report-2026-final-version.pdf"
+  },
+  "site_medicaid_what_if_post_loss_shares_pct": {
+   "low": 13.5,
+   "mid": 28,
+   "high": 50,
+   "url": "/blog/medicaid-what-if-template/"
+  }
+ },
+ "sources": [
+  [
+   "Downloaded 2026-10-22"
+  ],
+  [
+   "oep2026",
+   "https://www.cms.gov/files/zip/2026-oep-county-level-public-use-file.zip",
+   "bytes=4166958",
+   "sha256=2b11bc044b6d"
+  ],
+  [
+   "oep2025",
+   "https://www.cms.gov/files/zip/2025-oep-county-level-public-use-file.zip",
+   "bytes=3821428",
+   "sha256=489b7c77194a"
+  ],
+  [
+   "sahie",
+   "https://www2.census.gov/programs-surveys/sahie/datasets/time-series/estimates-acs/sahie-2024-csv.zip",
+   "bytes=125230975",
+   "sha256=b57289e0796b"
+  ],
+  [
+   "effectuated.csv",
+   "https://data.cms.gov/sites/default/files/2026-06/f4dc299e-e04d-49af-8224-35b47f309735/Health%20Insurance%20Exchanges%20Monthly%20Effectuated%20Enrollment%20Data_asof_20260505.csv",
+   "bytes=260683",
+   "sha256=4611c6aa3184"
+  ],
+  [
+   "medicaid_pi.csv",
+   "https://download.medicaid.gov/data/pi-dataset-september-2026-release.csv",
+   "bytes=4461507",
+   "sha256=6fc730af4f67"
+  ]
+ ]
+}
