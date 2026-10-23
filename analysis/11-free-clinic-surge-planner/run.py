@@ -268,6 +268,7 @@ def main():
     workbook.make(table, ex_block, SITE / "downloads")
     shutil.copy(OUT / "county_table.csv", SITE / "downloads" / f"{SLUG}-county-table.csv")
     shutil.copy(OUT / "county_table_codebook.csv", SITE / "downloads" / f"{SLUG}-county-table-codebook.csv")
+    import web_data; web_data.main()  # assets/examples/11/data.json for the page
 
 
 if __name__ == "__main__":

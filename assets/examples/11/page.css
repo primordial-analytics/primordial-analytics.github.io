@@ -1,0 +1,577 @@
+/* Page-local styles for the free clinic planner (example 11). The shared kit lives in ../shared/example.css. */
+
+.ex .p11-more {
+  border: 1px solid var(--ex-line);
+  border-radius: var(--ex-r-md);
+  background: var(--ex-surface);
+}
+.ex .p11-more > summary {
+  cursor: pointer;
+  padding: 0.7rem 0.9rem;
+  min-height: 2.75rem;
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+  font-weight: 600;
+  color: var(--ex-ink);
+  display: flex;
+  align-items: center;
+}
+.ex .p11-more[open] > summary {
+  border-bottom: 1px solid var(--ex-line);
+}
+.ex .p11-more__body {
+  display: grid;
+  gap: var(--ex-s5);
+  padding: var(--ex-s4);
+}
+.ex .p11-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ex-s4) var(--ex-s3);
+}
+.ex .p11-pair .ex-input {
+  min-width: 0;
+  width: 100%;
+}
+.ex .ex-range__ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--ex-t-xs);
+  color: var(--ex-muted);
+  margin-top: -0.25rem;
+}
+
+.ex .p11-notes:empty {
+  display: none;
+}
+.ex .p11-notes {
+  display: grid;
+  gap: var(--ex-s2);
+}
+.ex .p11-note {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+  line-height: 1.45;
+  color: var(--ex-ink-2);
+  background: var(--ex-gold-tint);
+  border-left: 3px solid var(--ex-gold);
+  padding: 0.55rem 0.8rem;
+  border-radius: 0 var(--ex-r-md) var(--ex-r-md) 0;
+}
+.ex .p11-note--error {
+  background: #fbeceb;
+  border-left-color: var(--ex-bad);
+  color: #6b1f14;
+}
+
+/* the 11-row plan table */
+.ex .p11-tablewrap .ex-table th[scope="row"] {
+  white-space: normal;
+  min-width: 14rem;
+}
+.ex .p11-tablewrap .ex-table td.is-pick,
+.ex .p11-tablewrap .ex-table th.is-pick {
+  background: var(--ex-gold-tint);
+  font-weight: 600;
+}
+
+/* draft paragraphs */
+.ex .p11-need {
+  display: grid;
+  gap: var(--ex-s3);
+}
+.ex .p11-need__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ex-s3);
+  align-items: center;
+  justify-content: space-between;
+}
+.ex .p11-need__head .ex-h3 {
+  margin: 0;
+}
+.ex .p11-need__text {
+  background: var(--ex-surface);
+  border: 1px solid var(--ex-line);
+  border-radius: var(--ex-r-md);
+  padding: var(--ex-s4) var(--ex-s5);
+  font-family: var(--ex-font-prose);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ex-text);
+  user-select: text;
+}
+.ex .p11-need__text p + p {
+  margin-top: 0.8em;
+}
+
+/* legend keys that the kit does not have */
+.ex .p11-key {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  vertical-align: -2px;
+  margin-right: 0.4rem;
+  box-sizing: border-box;
+}
+.ex .p11-key--whisker {
+  height: 12px;
+  background: linear-gradient(var(--ex-strong), var(--ex-strong)) center / 100% 2px no-repeat;
+  border-left: 2px solid var(--ex-strong);
+  border-right: 2px solid var(--ex-strong);
+}
+.ex .p11-key--dot,
+.ex .p11-key--solid {
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  vertical-align: 0;
+}
+.ex .p11-key--dot {
+  background: var(--ex-ink);
+}
+.ex .p11-key--solid {
+  background: var(--ex-c-obs);
+}
+.ex .p11-key--open {
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  vertical-align: 0;
+  background: var(--ex-paper);
+  border: 2px solid var(--ex-c-obs);
+}
+
+.ex .p11-maplegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ex-s3) var(--ex-s6);
+  align-items: flex-end;
+}
+.ex .p11-maplegend .ex-legend {
+  margin-top: 0;
+}
+.ex .p11-maplegend .ex-ramp {
+  min-width: min(15rem, 100%);
+}
+
+/* chart marks */
+.ex-chart .p11-nodata {
+  fill: url(#p11-dots);
+  stroke: var(--ex-paper);
+  stroke-width: 0.25px;
+}
+.ex-chart .p11-shared {
+  fill: url(#ex-hatch-muted);
+  stroke: var(--ex-paper);
+  stroke-width: 0.25px;
+}
+.ex-chart .ex-county.p11-pick {
+  cursor: pointer;
+}
+.ex-chart .p11-bar-obs {
+  fill: var(--ex-c-obs);
+}
+.ex-chart .p11-dot-open {
+  fill: var(--ex-paper);
+  stroke: var(--ex-c-obs);
+  stroke-width: 2;
+}
+.ex-chart .p11-dot-solid {
+  fill: var(--ex-c-obs);
+  stroke: var(--ex-paper);
+  stroke-width: 2;
+}
+.ex-chart .p11-link {
+  stroke: var(--ex-c-obs);
+  stroke-width: 2;
+  opacity: 0.55;
+}
+.ex-chart .p11-exp {
+  fill: var(--ex-ink);
+}
+.ex-chart .p11-step {
+  fill: none;
+  stroke: var(--ex-strong);
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+  stroke-linecap: round;
+}
+.ex-chart text.p11-colhead {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ex-ink);
+}
+
+/* a bottom bar on phones so the answer stays in view while you type */
+.p11-dock {
+  display: none;
+}
+@media (max-width: 959px) {
+  .p11-dock {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.55rem var(--ex-gutter, 16px);
+    background: var(--ex-ink);
+    color: #fff;
+    font-family: var(--ex-font-ui);
+    font-size: var(--ex-t-xs);
+    box-shadow: 0 -2px 12px rgba(25, 20, 69, 0.3);
+    transform: translateY(110%);
+    visibility: hidden;
+  }
+  .p11-dock.is-on {
+    transform: none;
+    visibility: visible;
+  }
+  .p11-dock b {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .p11-dock span {
+    color: #cfcce6;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .p11-dock {
+    transition: transform 0.2s, visibility 0.2s;
+  }
+}
+
+@media (max-width: 420px) {
+  .ex .p11-pair {
+    grid-template-columns: 1fr;
+  }
+  .ex .ex-seg span {
+    padding-inline: 0.5rem;
+  }
+}
+.ex .p11-nodata-key {
+  background: radial-gradient(circle, #6f6c8f 1.1px, transparent 1.4px) 0 0 / 5px 5px, #fff;
+  border: 1px solid var(--ex-line-strong);
+}
+.ex .p11-full {
+  max-height: none;
+}
+.ex .p11-key--vline {
+  width: 2px;
+  height: 14px;
+  margin-inline: 6px 0.55rem;
+  background: var(--ex-strong);
+}
+.ex .ex-range:has(#f-cert) output {
+  min-width: 3.4rem;
+  text-align: right;
+}
+.ex .ex-range:has(#f-cert) + .ex-range__ends {
+  padding-right: calc(3.4rem + var(--ex-s3));
+}
+
+/* ---------- the tool ---------- */
+@media (min-width: 960px) {
+  .ex .ex-tool--split .ex-tool__controls {
+    position: static;
+  }
+}
+.ex .p11-headrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.ex .p11-headrow .ex-tool__title {
+  margin: 0;
+}
+.ex .p11-tool .ex-tool__controls > .ex-hint {
+  margin-top: -0.9rem;
+}
+.ex .p11-try {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: -0.5rem;
+}
+.ex .p11-try:empty {
+  display: none;
+}
+.ex .p11-try .ex-btn {
+  min-height: 2rem;
+  padding: 0.25rem 0.6rem;
+  font-size: var(--ex-t-xs);
+}
+.ex .p11-try__lbl {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-xs);
+  color: var(--ex-muted);
+}
+.ex .p11-tool .ex-tool__controls .ex-hint:has(+ .p11-states),
+.ex #cover-note {
+  margin-top: -0.6rem;
+}
+.ex .p11-states {
+  margin-top: -0.6rem;
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-xs);
+}
+.ex .p11-states > summary {
+  cursor: pointer;
+  color: var(--ex-ink);
+  font-weight: 600;
+  padding: 0.3rem 0;
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+}
+.ex .p11-states__body p {
+  margin: 0.2rem 0 0.6rem;
+  line-height: 1.5;
+  color: var(--ex-ink-2);
+}
+.ex .p11-body,
+.ex .p11-summary,
+.ex .p11-need {
+  grid-template-columns: minmax(0, 1fr);
+}
+.ex .p11-body {
+  display: grid;
+  gap: var(--ex-s6);
+}
+.ex .p11-body[hidden],
+.ex [data-needs-plan][hidden] {
+  display: none;
+}
+.ex .p11-summary {
+  display: grid;
+  gap: var(--ex-s3);
+  background: var(--ex-gold-tint);
+  border-left: 3px solid var(--ex-gold);
+  border-radius: 0 var(--ex-r-md) var(--ex-r-md) 0;
+  padding: var(--ex-s4) var(--ex-s5);
+}
+.ex .p11-summary__line {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-base);
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--ex-ink);
+}
+.ex .p11-summary__btns,
+.ex .p11-plan__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ex .p11-plan__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ex-s3);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--ex-s3);
+}
+.ex .p11-plan__head .ex-h3 {
+  margin: 0;
+}
+.ex .p11-only-narrow {
+  display: none;
+}
+.ex .p11-table .p11-grp th {
+  background: var(--ex-surface-2);
+  text-align: left;
+  font-size: var(--ex-t-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ex-ink-3);
+}
+@media (max-width: 640px) {
+  .ex .p11-only-narrow {
+    display: inline-flex;
+  }
+  .ex .p11-tablewrap .ex-table th[scope="row"],
+  .ex .p11-table th[scope="row"] {
+    min-width: 8rem;
+  }
+  .ex .p11-table[data-view="pick"] [data-q="1"]:not(.is-pick),
+  .ex .p11-table[data-view="pick"] [data-q="2"]:not(.is-pick),
+  .ex .p11-table[data-view="pick"] [data-q="3"]:not(.is-pick) {
+    display: none;
+  }
+  .ex .p11-tool {
+    padding-bottom: 3.5rem;
+  }
+}
+.ex .p11-table th[scope="row"] {
+  white-space: normal;
+  min-width: 14rem;
+}
+.ex .p11-table td.is-pick,
+.ex .p11-table th.is-pick {
+  background: var(--ex-gold-tint);
+  font-weight: 600;
+}
+.ex code {
+  color: var(--ex-ink);
+}
+
+/* modeled values: solid gold, the same as every other estimate on the three example pages */
+.ex-chart .p11-est {
+  fill: var(--ex-c-est);
+}
+.ex .p11-key--est {
+  background: var(--ex-c-est);
+  border-radius: 2px;
+}
+
+/* ---------- map ---------- */
+.ex .p11-maptools {
+  align-items: flex-end;
+}
+.ex .p11-maptools > .ex-field {
+  flex: 0 1 auto;
+  max-width: none;
+}
+.ex .p11-maptools > .ex-field:last-child {
+  flex: 1 1 11rem;
+  max-width: 15rem;
+}
+.ex .p11-maptools .ex-seg span {
+  white-space: nowrap;
+  padding-inline: 0.7rem;
+}
+.ex .p11-maptools fieldset:disabled {
+  opacity: 0.5;
+}
+.ex .p11-map svg {
+  overflow: hidden;
+}
+.ex .p11-map svg.is-zoomed path {
+  vector-effect: non-scaling-stroke;
+}
+.ex .p11-map .ex-county.is-halo {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 6px;
+  pointer-events: none;
+}
+.ex .p11-map .ex-county.is-active {
+  stroke-width: 3px;
+}
+.ex .p11-pin {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 1rem;
+  background: var(--ex-surface);
+  border: 1px solid var(--ex-line-strong);
+  border-left: 4px solid var(--ex-strong);
+  border-radius: var(--ex-r-md);
+  padding: var(--ex-s3) var(--ex-s4);
+}
+.ex .p11-pin[hidden] {
+  display: none;
+}
+.ex .p11-pin__title {
+  font-family: var(--ex-font-ui);
+  font-weight: 700;
+  color: var(--ex-ink);
+  flex: 1 1 100%;
+}
+.ex .p11-pin__text {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+  color: var(--ex-ink-2);
+  flex: 1 1 14rem;
+}
+.ex .p11-figbtn {
+  display: flex;
+  justify-content: center;
+}
+.ex .p11-stateline {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-base);
+  font-weight: 600;
+  color: var(--ex-ink);
+  background: var(--ex-gold-tint);
+  border-left: 3px solid var(--ex-gold);
+  padding: 0.55rem 0.9rem;
+  border-radius: 0 var(--ex-r-md) var(--ex-r-md) 0;
+  margin-bottom: var(--ex-s4);
+}
+.ex .p11-stateline[hidden] {
+  display: none;
+}
+
+/* ---------- print: the planner only ---------- */
+@media print {
+  .ex-hero,
+  .ex-stats-wrap,
+  .ex-subnav,
+  .ex-page nav,
+  .ex-page footer,
+  .skip-link,
+  .p11-dock,
+  main.ex > section:not(#tool),
+  #tool .ex-prose,
+  #tool .p11-try,
+  #tool .p11-states,
+  #tool .p11-more,
+  #tool .ex-btn,
+  #tool .ex-data,
+  #tool .p11-only-narrow {
+    display: none !important;
+  }
+  #tool .ex-tool--split {
+    display: block;
+  }
+  #tool .ex-tool__controls {
+    border: 0;
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+  #tool .ex-result {
+    background: #fff;
+    color: #000;
+    border: 1px solid #000;
+  }
+  #tool .ex-result * {
+    color: #000;
+  }
+  .ex-page {
+    background: #fff;
+  }
+}
+
+/* hidden must win over the kit's display rules */
+.ex .ex-field[hidden],
+.ex fieldset[hidden] {
+  display: none;
+}
+.ex-chart .p11-med {
+  stroke: var(--ex-strong);
+  stroke-width: 1.25;
+  opacity: 0.75;
+}
+.ex-chart .p11-med--dash {
+  stroke-dasharray: 4 3;
+}
+.ex-chart text.p11-medlabel {
+  font-size: 11px;
+  fill: var(--ex-ink);
+  paint-order: stroke;
+  stroke: var(--ex-paper);
+  stroke-width: 3px;
+}
+@media (max-width: 640px) {
+  .ex .p11-table th[scope="row"] {
+    min-width: 7rem;
+  }
+}

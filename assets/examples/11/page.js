@@ -1,0 +1,1379 @@
+/* Free clinic demand planner (example 11).
+   The planner reproduces the formulas of the Excel download (analysis/11-free-clinic-surge-planner/workbook.py, "Planner" and
+   "Need statement" sheets) over the county results in data.json (built by web_data.py). No number is typed in here.
+   Plain ES2019, no modules. Uses d3, topojson and window.Ex. */
+Ex.ready(function () {
+  "use strict";
+  var F = Ex.fmt;
+  var $ = function (id) {
+    return document.getElementById(id);
+  };
+  var CHARTS = ["chart-sessions", "chart-map", "chart-rank", "chart-states", "chart-nat", "chart-hist", "chart-tornado"];
+
+  Ex.loadData().then(init, function (err) {
+    console.error(err);
+    CHARTS.forEach(function (id) {
+      Ex.showError($(id), "The data did not load. The Excel planner in the downloads gives the same answers.");
+    });
+  });
+
+  function init(D) {
+    var SCEN = ["Lower", "Central", "Higher"];
+    var GLOSS = [
+      "Fewer people lose coverage, and fewer of them end up uninsured.",
+      "The middle of our assumptions.",
+      "More people lose coverage, most of them end up uninsured, and Medicaid work requirements are at their strongest.",
+    ];
+    var LAYER = ["with the Medicaid layer", "marketplace losses only"];
+    var CERT = [
+      { p: 50, row: "Even odds (50%)", short: "50%", word: "even odds", fit: "5 of 10" },
+      { p: 80, row: "80% sure", short: "80%", word: "80%", fit: "8 of 10" },
+      { p: 95, row: "95% sure", short: "95%", word: "95%", fit: "19 of 20" },
+    ];
+    var FIELDS = [
+      { k: "patients", min: 0, max: 1e7, name: "patients" },
+      { k: "visits", min: 0, max: 1e7, name: "visits" },
+      { k: "perSession", min: 1, max: 1000, name: "patients a session" },
+      { k: "weeks", min: 1, max: 52, name: "weeks" },
+      { k: "volPerSession", min: 0, max: 1000, name: "volunteers a session" },
+      { k: "hoursPerShift", min: 0, max: 24, name: "hours a shift" },
+      { k: "shiftsPerVol", min: 1, max: 365, name: "shifts a year" },
+      { k: "medPerVisit", min: 0, max: 100000, name: "dollars per visit" },
+    ];
+
+    /* ---------- data access ---------- */
+    var byFips = {};
+    var stFips = {}; // state index -> 2-digit FIPS
+    D.counties.forEach(function (c) {
+      byFips[c[0]] = c;
+      c.exp = D.states[c[2]].exp === 1;
+      stFips[c[2]] = c[0].slice(0, 2);
+    });
+    var OUT = D.outside;
+    var STINFO = {}; // postal code -> {st, name, covered}
+    OUT.states.forEach(function (s) {
+      STINFO[s[0]] = { st: s[0], name: s[1], covered: !!s[2] };
+    });
+    function label(c) {
+      return c[1] + ", " + D.states[c[2]].st;
+    }
+    // G, C and A arrays hold only the marketplace half for counties in states that did not expand Medicaid
+    function gi(c, sc, lay, q) {
+      return c.exp ? (sc * 2 + lay) * 3 + q : sc * 3 + q;
+    }
+    function G(c, sc, lay, q) {
+      return c[10][gi(c, sc, lay, q)] / 10000;
+    }
+    function C(c, sc, lay, q) {
+      return c[11][gi(c, sc, lay, q)] / 10000;
+    }
+    function A(c, sc, lay, q) {
+      return c[12][gi(c, sc, lay, q)];
+    }
+
+    /* Excel rounding: ROUNDUP away from zero (with a little float tolerance), ROUND and TEXT half away from zero */
+    function ru(x) {
+      var r = Math.round(x * 1e9) / 1e9;
+      return r < 0 ? -Math.ceil(-r) : Math.ceil(r);
+    }
+    function hu(x) {
+      return x < 0 ? -Math.round(-x) : Math.round(x);
+    }
+    function xInt(n) {
+      var r = hu(n);
+      return (r < 0 ? "-" : "") + Math.abs(r).toLocaleString("en-US");
+    }
+    function xUsd(n) {
+      var r = hu(n);
+      return (r < 0 ? "-$" : "$") + Math.abs(r).toLocaleString("en-US");
+    }
+    function xPct(x, d) {
+      var m = Math.pow(10, d);
+      var r = hu(x * 100 * m) / m;
+      return (r < 0 ? "-" : "") + Math.abs(r).toFixed(d) + "%";
+    }
+    function minus(s) {
+      return s.replace(/-(?=\d)/g, "−");
+    }
+    function moreThan(n) {
+      return n >= 0 ? xInt(n) + " more than today" : xInt(-n) + " fewer than today";
+    }
+
+    /* ---------- state ---------- */
+    var S = {
+      fips: D.defaults.fips,
+      unc: null, // a place outside the file the director picked: {st, name, county, covered}
+      scen: 1,
+      layers: 0,
+      cert: 1,
+      rho: D.defaults.rho,
+      metric: "growth",
+      sort: "paid",
+      rankAll: false,
+      zoom: "",
+      pinned: false,
+      zoomLocked: false, // the director chose "All states" on purpose, so a county search does not zoom the map
+      vals: {},
+      errors: 0,
+    };
+    var cur = null; // the current plan, or null when the inputs are not usable
+    var combo = null;
+    var chMap = null;
+
+    /* ---------- the planner ---------- */
+    function column(v, visits, g, growth) {
+      var sessions = ru(visits / v.perSession);
+      var shifts = sessions * v.volPerSession;
+      return {
+        g: g,
+        growth: growth,
+        visits: visits,
+        sessions: sessions,
+        weekly: sessions / v.weeks,
+        shifts: shifts,
+        vol: ru(shifts / v.shiftsPerVol),
+        hours: shifts * v.hoursPerShift,
+        med: visits * v.medPerVisit,
+        newPat: growth == null ? null : v.patients * growth,
+      };
+    }
+    // columns: today, 50%, 80%, 95% (Planner sheet, section 4)
+    function plan(c, sc, lay) {
+      var v = S.vals;
+      var cols = [column(v, v.visits, null, null)];
+      for (var q = 0; q < 3; q++) {
+        var growth = S.rho * C(c, sc, lay, q);
+        cols.push(column(v, v.visits * (1 + growth), G(c, sc, lay, q), growth));
+      }
+      cols.forEach(function (k) {
+        k.extra = k.sessions - cols[0].sessions;
+      });
+      return cols;
+    }
+
+    /* ---------- which places the file covers ---------- */
+    function list(a) {
+      return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
+    }
+    var poolBy = d3.rollup(D.counties, function (v) { return d3.sum(v, function (c) { return c[3]; }); }, function (c) { return D.states[c[2]].st; });
+    var bigIn = Array.from(poolBy).sort(function (a, b) { return b[1] - a[1]; }).slice(0, 5).map(function (r) { return r[0]; });
+    var bigOut = ["CA", "NY", "IL", "PA", "GA"].filter(function (st) { return STINFO[st] && !STINFO[st].covered; });
+    var coverText = "Covers the " + D.states.length + " HealthCare.gov states, including " + list(bigIn) + ". Not " + bigOut.map(function (st) { return STINFO[st].name; }).join(", ") + " or the other " + (OUT.states.filter(function (s) { return !s[2]; }).length - bigOut.length) + " places that are not on HealthCare.gov.";
+    /* ---------- controls ---------- */
+    function readFields() {
+      S.errors = 0;
+      FIELDS.forEach(function (f) {
+        var input = $("f-" + f.k);
+        var err = $("e-" + f.k);
+        var raw = input.value.trim();
+        var n = raw === "" ? NaN : Number(raw);
+        var msg = "";
+        if (raw === "" || isNaN(n) || input.validity.badInput) msg = "Enter a number.";
+        else if (n < f.min || n > f.max) msg = "Enter a number from " + F.num(f.min) + " to " + F.num(f.max) + ".";
+        S.vals[f.k] = msg ? null : n;
+        if (msg) S.errors++;
+        input.setAttribute("aria-invalid", msg ? "true" : "false");
+        err.hidden = !msg;
+        err.textContent = msg;
+      });
+    }
+    function setFields() {
+      FIELDS.forEach(function (f) {
+        $("f-" + f.k).value = D.defaults[f.k];
+      });
+    }
+    setFields();
+    FIELDS.forEach(function (f) {
+      $("f-" + f.k).addEventListener("input", updateTool);
+    });
+
+    var refreshRho = Ex.range($("f-rho"), {
+      format: function (v) {
+        return v.toFixed(2) + "x";
+      },
+      onInput: function (v) {
+        S.rho = v;
+        updateTool();
+      },
+    });
+    $("f-rho").value = S.rho;
+    refreshRho();
+    var certInput = $("f-cert");
+    Ex.range(certInput, {
+      format: function (v) {
+        return CERT[v].short;
+      },
+      onInput: function (v) {
+        S.cert = v;
+        updateTool();
+      },
+    });
+
+    function setRadio(name, value) {
+      [].forEach.call(document.querySelectorAll('input[name="' + name + '"]'), function (r) {
+        r.checked = r.value === String(value);
+      });
+    }
+    function onScen(v) {
+      S.scen = +v;
+      setRadio("scen", v);
+      setRadio("scen2", v);
+      refreshModelCharts();
+      updateTool();
+    }
+    [].forEach.call(document.querySelectorAll('input[name="scen"], input[name="scen2"]'), function (r) {
+      r.addEventListener("change", function () {
+        onScen(r.value);
+      });
+    });
+    [].forEach.call(document.querySelectorAll('input[name="layers"]'), function (r) {
+      r.addEventListener("change", function () {
+        S.layers = +r.value;
+        refreshModelCharts();
+        updateTool();
+      });
+    });
+    [].forEach.call(document.querySelectorAll('input[name="metric"]'), function (r) {
+      r.addEventListener("change", function () {
+        S.metric = r.value;
+        $("map-scen-field").disabled = S.metric === "obs";
+        $("map-scen-note").hidden = S.metric !== "obs";
+        refreshModelCharts();
+        updatePin();
+      });
+    });
+    $("sort-states").addEventListener("change", function () {
+      S.sort = this.value;
+      chStates.redraw();
+    });
+    $("toggle-rank").addEventListener("click", function () {
+      S.rankAll = !S.rankAll;
+      this.setAttribute("aria-pressed", String(S.rankAll));
+      this.textContent = S.rankAll ? "Show the top 10 only" : "Show all " + D.states.length + " states";
+      chRank.redraw();
+    });
+    $("toggle-rank").textContent = "Show all " + D.states.length + " states";
+    $("toggle-steps").addEventListener("click", function () {
+      var open = $("plan-steps").hidden;
+      $("plan-steps").hidden = !open;
+      this.setAttribute("aria-expanded", String(open));
+      this.textContent = open ? "Hide how we got there" : "Show how we got there";
+    });
+    $("toggle-cols").addEventListener("click", function () {
+      var all = $("plan-table").getAttribute("data-view") === "pick";
+      $("plan-table").setAttribute("data-view", all ? "all" : "pick");
+      this.setAttribute("aria-pressed", String(all));
+      this.textContent = all ? "Show only my certainty level" : "Show all certainty levels";
+    });
+    $("print-plan").addEventListener("click", function () {
+      window.print();
+    });
+
+    /* county search: the 2,054 counties in the file, then the places the file does not cover, so a search never ends in
+       "check the spelling" for a county that is simply missing */
+    var items = D.counties.map(function (c) {
+      return { value: c[0], label: label(c), hint: D.states[c[2]].name, search: c[0] };
+    });
+    OUT.states.forEach(function (s) {
+      if (!s[2]) items.push({ value: "u:" + s[0], label: s[1] + " (state not covered)", hint: "not in this file", search: s[0], unc: { st: s[0], name: s[1] } });
+    });
+    Object.keys(OUT.counties).forEach(function (st) {
+      OUT.counties[st].forEach(function (n) {
+        var cov = STINFO[st].covered;
+        items.push({ value: "u:" + st + ":" + n, label: n + ", " + st, hint: cov ? "no data in this file" : STINFO[st].name + ": not covered", search: "", unc: { st: st, name: STINFO[st].name, county: n, covered: cov } });
+      });
+    });
+    // shortest name first: "Cook" finds Cook before Cooke
+    items.sort(function (a, b) {
+      var ka = a.label.replace(/ County,/, ",").length, kb = b.label.replace(/ County,/, ",").length;
+      return ka - kb || !!a.unc - !!b.unc || d3.ascending(a.label, b.label);
+    });
+    var itemBy = {};
+    items.forEach(function (it) {
+      itemBy[it.value] = it;
+    });
+
+    function selectCounty(it, from) {
+      if (!it) {
+        S.fips = null;
+        S.unc = null;
+      } else if (it.unc) {
+        S.fips = null;
+        S.unc = it.unc;
+      } else {
+        S.fips = it.value;
+        S.unc = null;
+      }
+      S.pinned = from === "map";
+      if (from !== "main") combo.setValue(it ? it.value : null, { silent: true });
+      if (it && !it.unc && from !== "map" && window.innerWidth < 640 && !S.zoomLocked) setZoom(byFips[it.value][2]);
+      refreshModelCharts();
+      updateTool();
+      updatePin();
+      if (from === "map" && it) announce("Planner set to " + it.label);
+    }
+    function makeCombo(host, id, lbl, from) {
+      return Ex.combobox(host, {
+        id: id,
+        label: lbl,
+        hint: from === "main" ? "Type a county or a state." : "",
+        placeholder: "Search counties",
+        noun: "places",
+        items: items,
+        value: S.fips,
+        maxResults: 50,
+        onSelect: function (it) {
+          selectCounty(it, from);
+        },
+      });
+    }
+    combo = makeCombo($("pick-county"), "county", "County", "main");
+
+    // five of the biggest counties in the file, one tap each
+    (function () {
+      var host = $("try-row");
+      host.setAttribute("role", "group");
+      host.setAttribute("aria-label", "Example counties");
+      host.appendChild(Ex.el("span", { class: "p11-try__lbl", text: "Try:" }));
+      D.counties.slice().sort(function (a, b) { return b[3] - a[3]; }).slice(0, 4).forEach(function (c) {
+        var b = Ex.el("button", { class: "ex-btn ex-btn--ghost ex-btn--sm", type: "button", text: c[1].replace(/ County$/, "") + ", " + D.states[c[2]].st });
+        b.addEventListener("click", function () {
+          combo.setValue(c[0]);
+        });
+        host.appendChild(b);
+      });
+      setText("cover-note", coverText);
+      var sl = $("states-list");
+      sl.appendChild(Ex.el("p", { text: "Covered (" + D.states.length + "): " + D.states.map(function (s) { return s.name; }).join(", ") + "." }));
+      var no = OUT.states.filter(function (s) { return !s[2]; });
+      sl.appendChild(Ex.el("p", { text: "Not covered (" + no.length + "): " + no.map(function (s) { return s[1]; }).join(", ") + "." }));
+    })();
+
+    $("reset").addEventListener("click", function () {
+      setFields();
+      S.rho = D.defaults.rho;
+      $("f-rho").value = S.rho;
+      refreshRho();
+      S.scen = 1;
+      S.layers = 0;
+      S.cert = 1;
+      certInput.value = 1;
+      certInput.dispatchEvent(new Event("input"));
+      setRadio("scen", 1);
+      setRadio("scen2", 1);
+      setRadio("layers", 0);
+      combo.setValue(D.defaults.fips);
+      Ex.live("Reset to the example clinic");
+    });
+
+    /* ---------- results ---------- */
+    function setText(id, t) {
+      $(id).textContent = t;
+    }
+    var liveTimer = 0;
+    function announce(t) {
+      clearTimeout(liveTimer);
+      liveTimer = setTimeout(function () {
+        Ex.live(t);
+      }, 700);
+    }
+    function moreFewer(n, unit) {
+      return n === 0 ? "Same as today" : (n > 0 ? F.int(n) + " more" : F.int(-n) + " fewer") + " than today" + (unit ? " (" + unit + ")" : "");
+    }
+    var dockEls = null;
+    function buildDock() {
+      var d = Ex.el("div", { class: "p11-dock", "aria-hidden": "true" });
+      ["sessions", "volunteers", "medication"].forEach(function (n) {
+        d.appendChild(Ex.el("div", {}, [Ex.el("b", { id: "dock-" + n, text: "–" }), Ex.el("span", { text: n })]));
+      });
+      document.body.appendChild(d);
+      dockEls = d;
+      if ("IntersectionObserver" in window) {
+        var seen = { c: false, r: false };
+        var io = new IntersectionObserver(function (es) {
+          es.forEach(function (e) {
+            seen[e.target.id === "results" ? "r" : "c"] = e.isIntersecting;
+          });
+          d.classList.toggle("is-on", seen.c && !seen.r);
+        });
+        io.observe($("results"));
+        io.observe(document.querySelector(".ex-tool__controls"));
+      }
+    }
+    buildDock();
+
+    function paragraph(text) {
+      return Ex.el("p", { text: text });
+    }
+    function setCopy(sel, text) {
+      [].forEach.call(document.querySelectorAll(sel), function (b) {
+        b.setAttribute("data-ex-copy", text);
+      });
+    }
+    function uncNote(note) {
+      var u = S.unc;
+      var st = STINFO[u.st];
+      var where = u.county ? u.county + ", " + u.st : st.name;
+      var head, body;
+      if (!st.covered) {
+        head = where + " is not in this file.";
+        body = "The planner uses CMS county files for the " + D.states.length + " states whose marketplace runs on HealthCare.gov. " + st.name + " is not one of them, so we have no county numbers for it.";
+      } else {
+        head = where + " has no data in this file.";
+        body = "The state is covered, but the Census and CMS files have no usable row for this county.";
+      }
+      var cta = document.querySelector('.ex-cta a[href*="#contact"]');
+      var p = Ex.el("p", { class: "p11-note" }, [Ex.el("strong", { text: head }), " " + body + " Pick a county in a covered state to see how the planner works, or ", Ex.el("a", { href: cta ? cta.getAttribute("href") : "/#contact", text: "tell us your county" }), "."]);
+      note(p);
+    }
+
+    function updateTool() {
+      readFields();
+      var c = S.fips ? byFips[S.fips] : null;
+      var notes = $("tool-notes");
+      notes.textContent = "";
+      function note(t, cls) {
+        notes.appendChild(typeof t === "string" ? Ex.el("p", { class: "p11-note" + (cls ? " " + cls : ""), text: t }) : t);
+      }
+      setText("gloss-scen", SCEN[S.scen] + ": " + GLOSS[S.scen]);
+      $("layers-field").hidden = !!(c && !c.exp);
+      var ok = !!c && !S.errors;
+      $("tool-body").hidden = !ok;
+      [].forEach.call(document.querySelectorAll("[data-needs-plan]"), function (n) {
+        n.hidden = !ok;
+      });
+      if (S.unc) uncNote(note);
+      else if (!c) note("Pick a county to see results.", "p11-note--error");
+      if (S.errors) note("Fix the highlighted fields to see results. Zero is fine for patients and visits.", "p11-note--error");
+      if (!ok) {
+        cur = null;
+        ["r1", "r2", "r3"].forEach(function (id) {
+          setText(id, "–");
+          setText(id + "-range", "");
+          setText(id + "-note", "");
+        });
+        ["sessions", "volunteers", "medication"].forEach(function (n) {
+          setText("dock-" + n, "–");
+        });
+        $("plan-main").textContent = "";
+        $("plan-steps").textContent = "";
+        setText("choose-text", "");
+        setText("summary-line", "");
+        setText("need-check", "");
+        $("need-text").textContent = "";
+        setCopy("[data-p11-need], #copy-line", "");
+        announce(S.unc ? "No county numbers for this place" : S.errors ? "Fix the highlighted fields" : "Pick a county");
+        return;
+      }
+      var plans = [0, 1, 2].map(function (sc) {
+        return plan(c, sc, S.layers);
+      });
+      var cols = plans[S.scen];
+      cur = { c: c, plans: plans, cols: cols };
+      var k = cols[S.cert + 1];
+      var t = cols[0];
+      var cp = CERT[S.cert].p;
+      var certWord = cp === 50 ? "even odds (50%)" : cp + "% certainty";
+      setText("h-cert", CERT[S.cert].fit + " possible futures fit inside this plan, under our assumptions." + (cp === 50 ? " That is even odds, not a safe number for a request." : ""));
+
+      setText("r1-label", "Sessions a year at " + certWord);
+      setText("r1", F.int(k.sessions));
+      setText("r1-range", moreFewer(k.extra, F.int(t.sessions) + " today"));
+      setText("r1-note", F.num(k.weekly, 1) + " a week over " + F.num(S.vals.weeks) + " weeks. Other levels: " + CERT.filter(function (ce, q) { return q !== S.cert; }).map(function (ce) { return ce.word + " " + F.int(cols[CERT.indexOf(ce) + 1].sessions); }).join(", ") + ".");
+      setText("r2-label", "Volunteers needed");
+      setText("r2", F.int(k.vol));
+      setText("r2-range", moreFewer(k.vol - t.vol, F.int(t.vol) + " today"));
+      setText("r2-note", F.int(k.hours) + " volunteer hours a year, " + F.int(S.vals.volPerSession) + " on each session.");
+      setText("r3-label", "Medication dollars");
+      setText("r3", F.usd(k.med));
+      var md = hu(k.med) - hu(t.med);
+      setText("r3-range", md === 0 ? "Same as today" : F.usd(Math.abs(md)) + (md > 0 ? " more" : " fewer") + " than today (" + F.usd(t.med) + " today)");
+      setText("r3-note", F.int(k.visits) + " visits a year at " + F.usd(S.vals.medPerVisit, { digits: 2 }) + " each.");
+      setText("dock-sessions", F.int(k.sessions));
+      setText("dock-volunteers", F.int(k.vol));
+      setText("dock-medication", F.usd(k.med, { compact: true }));
+      var line = "Plan " + xInt(k.sessions) + " sessions, " + xInt(k.vol) + " volunteers and " + xUsd(k.med) + " in medication for 2027 at " + certWord + " (" + SCEN[S.scen] + " scenario, " + label(c) + ").";
+      setText("summary-line", line);
+      setCopy("#copy-line", line);
+      announce("Sessions " + F.int(k.sessions) + ", volunteers " + F.int(k.vol) + ", medication " + F.usd(k.med));
+
+      // notes about this county
+      var st = D.states[c[2]];
+      if (c[5] & 1) note("Under 500 uninsured low-income adults here in 2024. Growth rates this small are unstable: treat the result as a rough guide.");
+      if (c[5] & 2) note("The Census margin of error here is more than 20% of the estimate.");
+      if (c[3] === 0) note("Census estimates no uninsured low-income adults in this county, so the model has little to work with. Do not put the Need paragraph below in a request without your own count.", "p11-note--error");
+      if (!st.exp) note(st.name + " did not expand Medicaid, so there is no Medicaid layer here.");
+      if (cols[2].g < 0) note("Paid marketplace coverage rose here between 2025 and 2026, so the model shows the pool and your visits growing less, or shrinking.");
+
+      renderPlanTable(cols);
+      var diff = cols[3].sessions - cols[2].sessions;
+      var hoursDiff = cols[3].hours - cols[2].hours;
+      setText("choose-text", "At 80%, " + CERT[1].fit + " possible futures fit inside your plan. At 95%, " + CERT[2].fit + " do. Going from 80% to 95% adds " + diff + " sessions and " + xInt(hoursDiff) + " volunteer hours a year.");
+      renderNeed(c, cols);
+      renderSessionsTable(plans);
+      chSess.redraw();
+    }
+
+    function renderPlanTable(cols) {
+      var pctRow = function (x) { return xPct(x, 1); };
+      var main = [
+        ["Sessions a year", "sessions", xInt],
+        ["Volunteers needed", "vol", xInt],
+        ["Medication dollars", "med", xUsd],
+        ["Extra sessions compared with today", "extra", xInt],
+        ["Sessions a week", "weekly", function (x) { return (Math.round(x * 10) / 10).toFixed(1); }],
+        ["Visits a year", "visits", xInt],
+        ["Volunteer shifts a year", "shifts", xInt],
+        ["Volunteer hours", "hours", xInt],
+      ];
+      var steps = [
+        ["Growth in the county's uninsured pool since 2024", "g", pctRow],
+        ["Growth in your visits (only the part not already in your last 12 months)", "growth", pctRow],
+        ["New patients expected", "newPat", xInt],
+      ];
+      function fill(tb, rows) {
+        rows.forEach(function (r) {
+          var tr = Ex.el("tr");
+          tr.appendChild(Ex.el("th", { scope: "row", text: r[0] }));
+          cols.forEach(function (k, i) {
+            var v = k[r[1]];
+            var td = Ex.el("td", { text: v == null ? "–" : minus(r[2](v)), "data-q": String(i) });
+            if (i === S.cert + 1) td.className = "is-pick";
+            tr.appendChild(td);
+          });
+          tb.appendChild(tr);
+        });
+      }
+      var tm = $("plan-main"), ts = $("plan-steps");
+      tm.textContent = "";
+      ts.textContent = "";
+      fill(tm, main);
+      ts.appendChild(Ex.el("tr", { class: "p11-grp" }, [Ex.el("th", { colspan: "5", scope: "colgroup", text: "How we got there" })]));
+      fill(ts, steps);
+      var heads = $("plan-table").tHead.rows[0].cells;
+      for (var i = 0; i < heads.length; i++) heads[i].className = i === S.cert + 2 ? "is-pick" : "";
+    }
+
+    // The Need statement sheet, with three wording fixes the workbook has not got: the scenario is named, "median" replaces
+    // "central" (the figure is the median of the scenario's draws), and a drop reads "fewer than today". Numbers match the workbook.
+    function renderNeed(c, cols) {
+      var host = $("need-text");
+      host.textContent = "";
+      var qa = function (q) {
+        return A(c, S.scen, S.layers, q);
+      };
+      // A holds the 10th, 50th and 90th percentiles; gi() indexes them the same way as the 50th, 80th and 95th of G
+      var v = S.vals;
+      var scen = SCEN[S.scen].toLowerCase();
+      var p1 =
+        c[3] === 0
+          ? "Need. In " + label(c) + ", the Census Small Area Health Insurance Estimates show no uninsured adults with incomes at or below 200% of the federal poverty level in 2024, so our county estimate is too small to state a rate. Replace this paragraph with our own count of uninsured patients and new arrivals."
+          : "Need. In " + label(c) + ", about " + xInt(c[3]) + " adults with incomes at or below 200% of the federal poverty level were uninsured in 2024 (Census Small Area Health Insurance Estimates). " +
+            "We estimate that between " + xInt(qa(0)) + " and " + xInt(qa(2)) + " more adults (an 80% interval: the 10th to 90th percentile of our " + scen + " scenario draws) " +
+            "will be uninsured in 2027 than in 2024, counting losses of paid marketplace coverage from February 2025 on (median estimate " + xInt(qa(1)) + "), " +
+            "a rise of " + xPct(cols[1].g, 0) + " at the median.";
+      var p2 =
+        "Our capacity. In the last 12 months our clinic provided " + xInt(v.visits) + " visits to " + xInt(v.patients) + " uninsured adults, in " + xInt(cols[0].sessions) + " sessions. " +
+        "To meet 2027 demand with 80% probability we plan " + xInt(cols[2].sessions) + " sessions (" + moreThan(cols[2].extra) + "), " + xInt(cols[2].vol) + " volunteers and about " + xUsd(cols[2].med) + " in medication. " +
+        "With 95% probability, " + xInt(cols[3].sessions) + " sessions, " + xInt(cols[3].vol) + " volunteers and " + xUsd(cols[3].med) + ".";
+      var p3 =
+        "Method and limits. The range comes from public data (CMS Open Enrollment files for 2025 and 2026, CMS effectuated enrollment, Census SAHIE 2024, Medicaid.gov enrollment) " +
+        "and stated assumptions about how many people lose coverage and end up uninsured. It is a planning range, not a forecast, and it has not been checked against 2027 outcomes. " +
+        "The interval and the session counts hold within the " + scen + " scenario; they do not include the spread between scenarios. " +
+        "Plan selections are not paid coverage. We will replace the assumption about new arrivals with our own intake counts.";
+      [p1, p2, p3].forEach(function (t) {
+        host.appendChild(paragraph(t));
+      });
+      setCopy("[data-p11-need]", [p1, p2, p3].join("\n\n"));
+      var share = v.patients / c[3];
+      setText(
+        "need-check",
+        c[3] === 0
+          ? "Check: the county has no estimated uninsured low-income adults, so your patients cannot be compared with it."
+          : "Check: your patients are " + xPct(share, 1) + " of the county's uninsured low-income adults. " + (share > 0.25 ? "That is high; check that the county and patient counts match." : share < 0.01 ? "That is low; the planner assumes you draw new patients in proportion to your current share." : "That is a plausible share.")
+      );
+    }
+
+    /* ---------- chart helpers ---------- */
+    function barPath(w, h) {
+      // square at the baseline, 4px rounded at the data end
+      var r = Math.min(4, w / 2, h / 2);
+      if (w <= 0) return "";
+      return "M0,0H" + (w - r) + "a" + r + "," + r + " 0 0 1 " + r + "," + r + "V" + (h - r) + "a" + r + "," + r + " 0 0 1 " + -r + "," + r + "H0Z";
+    }
+    function whisker(x0, x1, m) {
+      return "M" + x0 + "," + (m - 4) + "V" + (m + 4) + "M" + x0 + "," + m + "H" + x1 + "M" + x1 + "," + (m - 4) + "V" + (m + 4);
+    }
+    function gridX(c, x, ticks, h, fmt) {
+      c.g.append("g").attr("class", "ex-gridlines").attr("transform", "translate(0," + h + ")").call(d3.axisBottom(x).ticks(ticks).tickSize(-h).tickFormat(""));
+      c.g.append("g").attr("class", "ex-axis").attr("transform", "translate(0," + h + ")").call(d3.axisBottom(x).ticks(ticks).tickSize(0).tickPadding(8).tickFormat(fmt)).select(".domain").remove();
+    }
+    function noData(c, msg) {
+      c.svg.attr("aria-label", msg);
+      c.g.append("text").attr("class", "ex-svg-label").attr("x", 0).attr("y", 20).text(msg);
+    }
+    function median(a) {
+      return d3.median(a);
+    }
+    var pct1 = function (v) {
+      return F.pct(v, 1);
+    };
+
+    /* ---------- chart: sessions by certainty ---------- */
+    var chSess = Ex.chart($("chart-sessions"), {
+      label: "Chart of sessions to plan for.",
+      margin: function (w) {
+        return { top: 24, right: w < 520 ? 74 : 150, bottom: 32, left: w < 520 ? 42 : 112 };
+      },
+      height: function () {
+        return 3 * 50 + 24 + 32;
+      },
+      render: function (c) {
+        if (!cur) return noData(c, "Enter your county and numbers to see the chart.");
+        var rows = CERT.map(function (ce, q) {
+          var vals = cur.plans.map(function (p) {
+            return p[q + 1].sessions;
+          });
+          return { q: q, name: c.narrow ? ce.short : ce.row, full: ce.row, bar: cur.cols[q + 1].sessions, lo: d3.min(vals), hi: d3.max(vals), vals: vals };
+        });
+        var today = cur.cols[0].sessions;
+        var max = Math.max(today, d3.max(rows, function (r) { return r.hi; }), 1);
+        var x = d3.scaleLinear().domain([0, max * 1.05]).nice().range([0, c.width]);
+        var ROW = 50, BAR = 22;
+        var y = d3.scaleBand().domain([0, 1, 2]).range([0, 3 * ROW]).paddingInner((ROW - BAR) / ROW).paddingOuter((ROW - BAR) / ROW / 2);
+        var h = 3 * ROW;
+        gridX(c, x, c.narrow ? 4 : 6, h, function (d) { return F.int(d); });
+        c.g.append("line").attr("class", "ex-baseline").attr("x1", 0).attr("x2", 0).attr("y1", 0).attr("y2", h);
+        c.g.append("line").attr("class", "ex-ref-line").attr("x1", x(today)).attr("x2", x(today)).attr("y1", -3).attr("y2", h);
+        c.g.append("text").attr("class", "ex-svg-label").attr("x", x(today)).attr("y", -9).attr("text-anchor", "middle").text("Today " + F.int(today));
+        var g = c.g.selectAll("g.ex-mark").data(rows).join("g").attr("class", "ex-mark").attr("transform", function (d) { return "translate(0," + y(d.q) + ")"; });
+        g.append("rect").attr("class", "ex-hit").attr("x", -c.margin.left).attr("y", -(ROW - BAR) / 2).attr("width", c.w).attr("height", ROW);
+        g.append("path").attr("class", "p11-est").attr("d", function (d) { return barPath(x(d.bar), y.bandwidth()); });
+        g.append("path").attr("class", "ex-ci-whisker").attr("d", function (d) { return whisker(x(d.lo), x(d.hi), y.bandwidth() / 2); });
+        g.append("text").attr("class", "ex-axis-title").attr("x", -8).attr("y", y.bandwidth() / 2).attr("dy", "0.35em").attr("text-anchor", "end")
+          .style("fill", "var(--ex-ink)").style("font-weight", function (d) { return d.q === S.cert ? 700 : 400; }).text(function (d) { return d.name; });
+        g.append("text").attr("class", "ex-svg-value").attr("x", function (d) { return x(d.hi) + 8; }).attr("y", y.bandwidth() / 2).attr("dy", "0.35em")
+          .text(function (d) { return c.narrow ? F.int(d.bar) : F.int(d.bar) + " (" + F.int(d.lo) + " to " + F.int(d.hi) + ")"; });
+        g.filter(function (d) { return d.q === S.cert; }).append("rect").attr("class", "ex-selected-ring").attr("x", -c.margin.left + 1).attr("y", -(ROW - BAR) / 2 + 1).attr("width", c.w - 2).attr("height", ROW - 2).attr("rx", 4);
+        Ex.tooltip.attach(g, function (el) {
+          var d = el.__data__;
+          return {
+            title: d.full,
+            rows: [
+              { name: SCEN[S.scen] + " scenario (selected)", value: F.int(d.bar) + " sessions", color: "est" },
+              { name: "Lower to higher scenario", value: F.int(d.lo) + " to " + F.int(d.hi) },
+              { name: "Sessions today", value: F.int(today), color: "ref" },
+            ],
+          };
+        });
+        Ex.roving(c.g.node(), ".ex-mark");
+        var k = rows[S.cert];
+        c.svg.attr("aria-label", "Bar chart of sessions a year to plan for at 50%, 80% and 95% certainty for " + label(cur.c) + ", " + SCEN[S.scen].toLowerCase() + " scenario " + LAYER[S.layers] + ": " + rows.map(function (r) { return F.int(r.bar) + " at " + CERT[r.q].short; }).join(", ") + ". Today: " + F.int(today) + ".");
+        setText("t-sessions", "At " + (CERT[S.cert].p === 50 ? "even odds" : CERT[S.cert].p + "% certainty") + ", plan for " + F.int(k.bar) + " sessions a year");
+        setText("s-sessions", label(cur.c) + ". " + SCEN[S.scen] + " scenario, " + LAYER[S.layers] + ". " + F.int(today) + " sessions today.");
+      },
+    });
+    function renderSessionsTable(plans) {
+      var host = $("table-sessions");
+      host.textContent = "";
+      var rows = CERT.map(function (ce, q) {
+        return { cert: ce.row, lo: plans[0][q + 1].sessions, ce: plans[1][q + 1].sessions, hi: plans[2][q + 1].sessions, today: plans[0][0].sessions };
+      });
+      Ex.dataTable(host, {
+        caption: "Sessions a year to plan for, by certainty and scenario, " + LAYER[S.layers] + ".",
+        columns: [
+          { key: "cert", label: "Certainty" },
+          { key: "lo", label: "Lower scenario", format: F.int },
+          { key: "ce", label: "Central scenario", format: F.int },
+          { key: "hi", label: "Higher scenario", format: F.int },
+          { key: "today", label: "Today", format: F.int },
+        ],
+        rows: rows,
+      });
+    }
+
+    /* ---------- model-driven charts: map, state ranking, histogram ---------- */
+    function stateMedians() {
+      var by = d3.group(D.counties, function (c) { return c[2]; });
+      return D.states.map(function (s, i) {
+        var cs = by.get(i) || [];
+        return { st: s.st, name: s.name, exp: s.exp, n: cs.length, med: median(cs.map(function (c) { return G(c, S.scen, S.layers, 0); })) };
+      });
+    }
+    function myState() {
+      return S.fips && byFips[S.fips] ? D.states[byFips[S.fips][2]].st : null;
+    }
+
+    var chRank = Ex.chart($("chart-rank"), {
+      label: "Ranked bars of median county growth in the uninsured pool, by state.",
+      margin: function (w) {
+        return { top: 8, right: 60, bottom: 30, left: w < 520 ? 44 : 140 };
+      },
+      height: function () {
+        return rankRows().rows.length * 22 + 40;
+      },
+      render: function (c) {
+        var rr = rankRows();
+        var rows = rr.rows;
+        var ROW = 22, BAR = 14, h = rows.length * ROW;
+        var all = rr.all;
+        var x = d3.scaleLinear().domain([Math.min(0, d3.min(all, function (r) { return r.med; })), d3.max(all, function (r) { return r.med; }) * 1.02]).nice().range([0, c.width]);
+        var y = d3.scaleBand().domain(rows.map(function (r) { return r.st; })).range([0, h]).paddingInner((ROW - BAR) / ROW);
+        gridX(c, x, c.narrow ? 4 : 6, h, function (d) { return F.pct(d, 0); });
+        c.g.append("line").attr("class", "ex-baseline").attr("x1", x(0)).attr("x2", x(0)).attr("y1", 0).attr("y2", h);
+        var mine = myState();
+        var real = rows.filter(function (r) { return !r.gap; });
+        rows.forEach(function (r) {
+          if (r.gap) c.g.append("text").attr("class", "ex-svg-label").attr("x", -18).attr("y", y(r.st) + y.bandwidth() / 2).attr("dy", "0.35em").attr("text-anchor", "end").text("…");
+        });
+        var g = c.g.selectAll("g.ex-mark").data(real).join("g").attr("class", "ex-mark").attr("transform", function (d) { return "translate(0," + y(d.st) + ")"; });
+        g.append("rect").attr("class", "ex-hit").attr("x", -c.margin.left).attr("y", -(ROW - BAR) / 2).attr("width", c.w).attr("height", ROW);
+        g.append("path").attr("class", "p11-est").attr("transform", function (d) { return "translate(" + x(Math.min(0, d.med)) + ",0)"; }).attr("d", function (d) { return barPath(Math.abs(x(d.med) - x(0)), y.bandwidth()); });
+        g.filter(function (d) { return d.exp; }).append("circle").attr("class", "p11-exp").attr("cx", -8).attr("cy", y.bandwidth() / 2).attr("r", 4);
+        g.append("text").attr("class", "ex-axis-title").attr("x", -18).attr("y", y.bandwidth() / 2).attr("dy", "0.35em").attr("text-anchor", "end").style("fill", "var(--ex-ink)")
+          .style("font-weight", function (d) { return d.st === mine ? 700 : 400; }).text(function (d) { return c.narrow ? d.st : d.name; });
+        g.append("text").attr("class", "ex-svg-value").attr("x", function (d) { return Math.max(x(d.med), x(0)) + 8; }).attr("y", y.bandwidth() / 2).attr("dy", "0.35em").text(function (d) { return minus(F.pct(d.med, 1)); });
+        g.filter(function (d) { return d.st === mine; }).append("rect").attr("class", "ex-selected-ring").attr("x", -c.margin.left + 1).attr("y", -(ROW - BAR) / 2).attr("width", c.w - 2).attr("height", ROW).attr("rx", 4);
+        Ex.tooltip.attach(g, function (el) {
+          var d = el.__data__;
+          return {
+            title: d.name,
+            rows: [{ name: "Median county growth", value: minus(F.pct(d.med, 1)), color: "est" }, { name: "Rank among " + all.length + " states", value: String(all.indexOf(d) + 1) }, { name: "Counties in the file", value: F.int(d.n) }],
+            note: d.exp ? "Medicaid expansion state" : "Did not expand Medicaid",
+          };
+        });
+        Ex.roving(c.g.node(), ".ex-mark");
+        var top = all[0], bot = all[all.length - 1];
+        var mrow = mine ? all.filter(function (r) { return r.st === mine; })[0] : null;
+        var t = mrow
+          ? mrow.name + "'s median county grows " + minus(F.pct(mrow.med, 1)) + ", against " + minus(F.pct(median(all.map(function (r) { return r.med; })), 1)) + " for the median state"
+          : "Median county growth runs from " + minus(F.pct(bot.med, 1)) + " in " + bot.name + " to " + minus(F.pct(top.med, 1)) + " in " + top.name;
+        c.svg.attr("aria-label", "Ranked bars of median county growth in the uninsured pool by state, " + SCEN[S.scen].toLowerCase() + " scenario " + LAYER[S.layers] + ". " + t + ". " + (S.rankAll ? "All " + all.length + " states shown." : "The top 10 states" + (mrow && rows.length > 10 ? " and your state" : "") + " shown; the data table has all " + all.length + ".") + "");
+        setText("t-rank", t);
+        setText("s-rank", "Median county growth in the pool of uninsured adults at or below 200% of poverty, 2027 compared with 2024. " + SCEN[S.scen] + " scenario, " + LAYER[S.layers] + ".");
+        var tbl = $("table-rank");
+        tbl.textContent = "";
+        Ex.dataTable(tbl, {
+          caption: "Median county growth in the uninsured pool by state. " + SCEN[S.scen] + " scenario, " + LAYER[S.layers] + ".",
+          columns: [
+            { key: "name", label: "State" },
+            { key: "med", label: "Median county growth", format: pct1 },
+            { key: "n", label: "Counties", format: F.int },
+            { key: "expansion", label: "Medicaid expansion", text: true },
+          ],
+          rows: all.map(function (r) { return { name: r.name, med: r.med, n: r.n, expansion: r.exp ? "Yes" : "No" }; }),
+        });
+      },
+    });
+    // the 30 states sorted high to low; by default the top 10 plus the director's state
+    function rankRows() {
+      var all = stateMedians().sort(function (a, b) { return b.med - a.med; });
+      if (S.rankAll) return { all: all, rows: all };
+      var rows = all.slice(0, 10);
+      var mine = myState();
+      var m = mine && all.filter(function (r) { return r.st === mine; })[0];
+      if (m && rows.indexOf(m) < 0) rows = rows.concat([{ st: "gap", gap: true }, m]);
+      return { all: all, rows: rows };
+    }
+
+    var HB = d3.range(-10, 105, 5); // bin edges, 5 points wide; below -5 and 95 or more fall in the end bins
+    function histCounts(lay) {
+      var counts = HB.slice(0, -1).map(function () { return 0; });
+      D.counties.forEach(function (c) {
+        var v = G(c, S.scen, lay, 0) * 100;
+        var i = Math.floor((v - HB[0]) / 5);
+        counts[Math.max(0, Math.min(counts.length - 1, i))]++;
+      });
+      return counts;
+    }
+    function binLabel(lo, hi) {
+      return lo === HB[0] ? "Below " + hi + "%" : hi === HB[HB.length - 1] ? lo + "% and above" : lo + "% to " + hi + "%";
+    }
+    var chHist = Ex.chart($("chart-hist"), {
+      label: "Histogram of counties by growth in the uninsured pool.",
+      aspect: 0.42,
+      minHeight: 280,
+      maxHeight: 440,
+      margin: function (w) {
+        return { top: 26, right: 26, bottom: 58, left: w < 520 ? 58 : 66 };
+      },
+      render: function (c) {
+        var withM = histCounts(0), mkt = histCounts(1);
+        var bins = withM.map(function (n, i) { return { lo: HB[i], hi: HB[i + 1], all: n, mkt: mkt[i] }; });
+        var x = d3.scaleLinear().domain([HB[0], HB[HB.length - 1]]).range([0, c.width]);
+        var y = d3.scaleLinear().domain([0, d3.max(bins, function (b) { return Math.max(b.all, b.mkt); }) * 1.08]).nice().range([c.height, 0]);
+        c.g.append("g").attr("class", "ex-gridlines").call(d3.axisLeft(y).ticks(4).tickSize(-c.width).tickFormat(""));
+        c.g.append("g").attr("class", "ex-axis ex-axis--y").call(d3.axisLeft(y).ticks(4).tickSize(0).tickPadding(8).tickFormat(F.int));
+        c.g.append("g").attr("class", "ex-axis").attr("transform", "translate(0," + c.height + ")")
+          .call(d3.axisBottom(x).tickValues(d3.range(0, c.narrow ? 76 : 91, c.narrow ? 25 : 10)).tickSize(0).tickPadding(8).tickFormat(function (d) { return d + "%"; })).select(".domain").remove();
+        c.g.append("text").attr("class", "ex-svg-label").attr("x", x(100)).attr("y", c.height + 8 + 11).attr("text-anchor", "end").text("95%+");
+        c.g.append("line").attr("class", "ex-baseline").attr("x1", 0).attr("x2", c.width).attr("y1", c.height).attr("y2", c.height);
+        c.g.append("text").attr("class", "ex-svg-label").attr("x", c.width / 2).attr("y", c.height + 46).attr("text-anchor", "middle").text("Growth in the uninsured pool, 2027 compared with 2024");
+        c.g.append("text").attr("class", "ex-svg-label").attr("transform", "rotate(-90)").attr("x", -c.height / 2).attr("y", c.narrow ? -46 : -52).attr("text-anchor", "middle").text("Number of counties");
+        var bw = x(HB[1]) - x(HB[0]);
+        var mine = S.fips ? byFips[S.fips] : null;
+        var myG = mine ? G(mine, S.scen, S.layers, 0) * 100 : null;
+        var myBin = mine ? Math.max(0, Math.min(bins.length - 1, Math.floor((myG - HB[0]) / 5))) : -1;
+        if (mine) c.g.append("rect").attr("x", x(bins[myBin].lo)).attr("width", bw).attr("y", 0).attr("height", c.height).style("fill", "var(--ex-strong)").style("fill-opacity", 0.09);
+        var g = c.g.selectAll("g.ex-mark").data(bins).join("g").attr("class", "ex-mark").attr("transform", function (d) { return "translate(" + x(d.lo) + ",0)"; });
+        g.append("rect").attr("class", "ex-hit").attr("x", 0).attr("y", 0).attr("width", bw).attr("height", c.height);
+        g.append("rect").attr("class", "p11-est").attr("x", 1).attr("width", Math.max(1, bw - 2)).attr("y", function (d) { return y(d.all); }).attr("height", function (d) { return c.height - y(d.all); });
+        var step = d3.line().curve(d3.curveStepAfter).x(function (d) { return x(d.lo); }).y(function (d) { return y(d.mkt); });
+        var pts = bins.concat([{ lo: HB[HB.length - 1], mkt: bins[bins.length - 1].mkt }]);
+        c.g.append("path").attr("class", "p11-step").attr("d", step(pts));
+        var mAll = median(D.counties.map(function (k) { return G(k, S.scen, 0, 0); })), mMkt = median(D.counties.map(function (k) { return G(k, S.scen, 1, 0); }));
+        var mx = Math.min(HB[HB.length - 1], Math.max(HB[0], mAll * 100)), mm = Math.min(HB[HB.length - 1], Math.max(HB[0], mMkt * 100));
+        [[mx, "With the layer: median " + F.pct(mAll, 0), mx >= mm, "p11-med"], [mm, "Marketplace only: median " + F.pct(mMkt, 0), mm > mx, "p11-med p11-med--dash"]].forEach(function (m) {
+          c.g.append("line").attr("class", m[3]).attr("x1", x(m[0])).attr("x2", x(m[0])).attr("y1", 0).attr("y2", c.height);
+          var tx = c.g.append("text").attr("class", "p11-medlabel").attr("x", x(m[0]) + (m[2] ? 6 : -6)).attr("y", 12).attr("text-anchor", m[2] ? "start" : "end").text(c.narrow ? m[1].replace(/^With the layer: |^Marketplace only: /, "") : m[1]);
+          // keep the label off your county's line: put it on the other side of its own median line
+          var bb = tx.node().getBBox();
+          if (mine && x(myG < HB[0] ? HB[0] : Math.min(myG, HB[HB.length - 1])) > bb.x - 4 && x(Math.min(myG, HB[HB.length - 1])) < bb.x + bb.width + 4) {
+            tx.attr("x", x(m[0]) + (m[2] ? -6 : 6)).attr("text-anchor", m[2] ? "end" : "start");
+          }
+        });
+        if (mine) {
+          var v = Math.max(HB[0], Math.min(HB[HB.length - 1], myG));
+          var below = D.counties.filter(function (k) { return G(k, S.scen, S.layers, 0) * 100 < myG; }).length / D.counties.length;
+          c.g.append("line").attr("class", "ex-crosshair").attr("x1", x(v)).attr("x2", x(v)).attr("y1", -4).attr("y2", c.height).style("stroke-width", 2);
+          var lab = c.narrow ? "Your county " + minus(F.pct(myG / 100, 0)) : label(mine) + ": " + minus(F.pct(myG / 100, 0)) + ", higher than " + Math.round(below * 100) + "% of counties";
+          c.g.append("text").attr("class", "ex-svg-label").attr("x", Math.min(x(v), c.width - 4)).attr("y", -10).attr("text-anchor", x(v) > c.width * 0.6 ? "end" : x(v) < c.width * 0.2 ? "start" : "middle")
+            .style("font-weight", 700).text(lab);
+        }
+        Ex.tooltip.attach(g, function (el) {
+          var d = el.__data__;
+          return {
+            title: "Growth " + binLabel(d.lo, d.hi).toLowerCase().replace(/^./, function (ch) { return ch.toUpperCase(); }),
+            rows: [{ name: "With the Medicaid layer", value: F.int(d.all) + " counties", color: "est" }, { name: "Marketplace losses only", value: F.int(d.mkt) + " counties", color: "#ffffff", dash: true }],
+          };
+        });
+        Ex.roving(c.g.node(), ".ex-mark");
+        var t = "The median county's pool grows " + F.pct(mAll, 0) + " with the Medicaid layer and " + F.pct(mMkt, 0) + " with marketplace losses alone";
+        c.svg.attr("aria-label", "Histogram of 2,054 counties by growth in the uninsured pool, " + SCEN[S.scen].toLowerCase() + " scenario. " + t + ".");
+        setText("t-hist", t);
+        setText("s-hist", "Counties by median growth in the pool of uninsured adults at or below 200% of poverty, 2027 compared with 2024. " + SCEN[S.scen] + " scenario.");
+        var tbl = $("table-hist");
+        tbl.textContent = "";
+        Ex.dataTable(tbl, {
+          caption: "Counties by growth in the uninsured pool, " + SCEN[S.scen].toLowerCase() + " scenario.",
+          columns: [
+            { key: "range", label: "Growth", text: true },
+            { key: "all", label: "With the Medicaid layer", format: F.int },
+            { key: "mkt", label: "Marketplace losses only", format: F.int },
+          ],
+          rows: bins.map(function (b) { return { range: binLabel(b.lo, b.hi), all: b.all, mkt: b.mkt }; }),
+        });
+      },
+    });
+
+    var lastMapKey = "";
+    function mapKey() {
+      return S.metric + S.scen + S.layers + S.zoom;
+    }
+    // the map has 3,142 shapes: redraw it only when its colors or zoom change, and just move the outline when the county does
+    function refreshModelCharts() {
+      chRank.redraw();
+      chHist.redraw();
+      if (!chMap) return;
+      if (mapKey() !== lastMapKey) chMap.redraw();
+      else chMap.ring();
+    }
+    function setZoom(i) {
+      S.zoom = i === "" || i == null ? "" : String(i);
+      $("zoom-state").value = S.zoom;
+    }
+    D.states.forEach(function (s, i) {
+      $("zoom-state").appendChild(Ex.el("option", { value: String(i), text: s.name }));
+    });
+    $("zoom-state").addEventListener("change", function () {
+      S.zoom = this.value;
+      S.zoomLocked = this.value === "";
+      refreshModelCharts();
+    });
+
+    /* ---------- map ---------- */
+    var mapFeats = [];
+    var shapeCounties = {};
+    var stOfFips = {}; // 2-digit FIPS -> postal code, from the map file's state names
+    D.counties.forEach(function (c) {
+      // Alaska: the map file still has Valdez-Cordova; the data has its two successors
+      var sid = c[0] === "02063" || c[0] === "02066" ? "02261" : c[0];
+      (shapeCounties[sid] = shapeCounties[sid] || []).push(c);
+    });
+    function mval(c) {
+      if (S.metric === "growth") return G(c, S.scen, S.layers, 0) * 100;
+      if (S.metric === "added") return A(c, S.scen, S.layers, 1);
+      return Math.max(0, -c[9]);
+    }
+    function mflag(c) {
+      return S.metric === "growth" ? c[5] & 1 : S.metric === "obs" ? c[5] & 12 : 0;
+    }
+    var METRIC = {
+      growth: { fmt: function (v) { return F.pctValue(v, 0); }, unit: "Growth in the uninsured pool, 2027 vs 2024", hatch: "Under 500 adults in the pool: growth rate is unstable" },
+      added: { fmt: function (v) { return F.compact(v, v < 1000 ? 0 : 1); }, unit: "Additional uninsured adults, 2027 vs 2024", hatch: "" },
+      obs: { fmt: function (v) { return F.pctValue(v, 0); }, unit: "Fall in low-income plan selections, 2025 to 2026", hatch: "Fewer than 100 selections or a suppressed cell: change is noisy" },
+    };
+    function mapHeads(vals) {
+      var exp = [], oth = [];
+      D.counties.forEach(function (c) {
+        (c.exp ? exp : oth).push(mval(c));
+      });
+      var t, s;
+      if (S.metric === "growth") {
+        t = "The median county's pool grows " + F.pctValue(median(exp), 1) + " in expansion states and " + F.pctValue(median(oth), 1) + " elsewhere";
+        s = "Growth in the uninsured pool (adults 18 to 64 at or below 200% of poverty), 2027 compared with 2024, median of draws. " + SCEN[S.scen] + " scenario, " + LAYER[S.layers] + ".";
+      } else if (S.metric === "added") {
+        var top = d3.greatest(D.counties, mval);
+        t = "The median county adds " + F.int(median(vals)) + " uninsured adults; " + label(top) + " adds the most, " + F.int(mval(top));
+        s = "Additional uninsured adults at or below 200% of poverty in 2027 compared with 2024, median of draws. " + SCEN[S.scen] + " scenario, " + LAYER[S.layers] + ".";
+      } else {
+        t = "The median county's low-income plan selections fell " + F.pctValue(-median(D.counties.map(function (c) { return c[9]; })), 1) + " after adjusting for noise";
+        s = "Observed fall in plan selections at 100 to 200% of poverty between the 2025 and 2026 enrollment periods, pulled toward each state's average to damp small-county noise. Counties that gained are shown as zero.";
+      }
+      setText("t-map", t);
+      setText("s-map", s);
+      return t;
+    }
+    function outsideTip(d) {
+      var st = STINFO[stOfFips[d.id.slice(0, 2)]];
+      return { title: d.properties.name + (st ? ", " + st.st : ""), rows: [], note: st && st.covered ? "No data in this file for this county" : "Not in this file: " + (st ? st.name : "this state") + " is not one of the " + D.states.length + " HealthCare.gov states" };
+    }
+    function tipFor(d) {
+      var cs = shapeCounties[d.id];
+      if (!cs) return outsideTip(d);
+      if (cs.length > 1) {
+        return {
+          title: "Chugach and Copper River, Alaska",
+          rows: cs.map(function (c) { return { name: c[1], value: S.metric === "obs" ? minus(F.pctValue(c[9], 1)) : S.metric === "added" ? F.int(mval(c)) : F.pctValue(mval(c), 1), color: S.metric === "obs" ? "obs" : "est" }; }),
+          note: "The map shape covers two areas. Search for either one in the planner.",
+        };
+      }
+      var c = cs[0];
+      var rows;
+      if (S.metric === "obs") {
+        rows = [
+          { name: "Selections 2025", value: F.int(c[6]), color: "obs" },
+          { name: "Selections 2026", value: F.int(c[7]), color: "obs" },
+          { name: "Change", value: minus(F.pctValue(c[8], 1)), color: "obs" },
+          { name: "Adjusted change", value: minus(F.pctValue(c[9], 1)), color: "obs" },
+        ];
+      } else {
+        rows = [
+          { name: "Growth in the pool", value: F.pctValue(G(c, S.scen, S.layers, 0) * 100, 1), color: "est" },
+          { name: "Adults added, median", value: F.int(A(c, S.scen, S.layers, 1)), color: "est" },
+          { name: "Uninsured adults, 2024", value: F.int(c[3]) },
+        ];
+      }
+      var note = mflag(c) ? METRIC[S.metric].hatch : "";
+      return { title: label(c), rows: rows, note: note };
+    }
+    // the card under the map: which county the planner is set to, and a way back to the answer
+    function updatePin() {
+      var c = S.fips ? byFips[S.fips] : null;
+      var pin = $("map-pin");
+      if (!c && !S.unc) {
+        pin.hidden = true;
+        return;
+      }
+      pin.hidden = false;
+      var go = $("pin-go");
+      if (S.unc) {
+        var where = S.unc.county ? S.unc.county + ", " + S.unc.st : S.unc.name;
+        setText("pin-title", (S.pinned ? "Planner set to " : "Your place: ") + where);
+        setText("pin-text", STINFO[S.unc.st].covered ? "No data in this file for this county." : S.unc.name + " is not one of the " + D.states.length + " HealthCare.gov states, so the file has no numbers for it.");
+        go.textContent = "See the note in the planner";
+        return;
+      }
+      setText("pin-title", (S.pinned ? "Planner set to " : "Your county: ") + label(c));
+      setText("pin-text", S.metric === "obs" ? "Adjusted change in plan selections " + minus(F.pctValue(c[9], 1)) + "." : "Growth in the pool " + F.pctValue(G(c, S.scen, S.layers, 0) * 100, 1) + ", " + F.int(A(c, S.scen, S.layers, 1)) + " more uninsured adults (median), " + SCEN[S.scen].toLowerCase() + " scenario.");
+      go.textContent = "See the plan for this county";
+    }
+    $("pin-go").addEventListener("click", function (e) {
+      e.preventDefault();
+      $("tool").scrollIntoView({ behavior: Ex.reducedMotion() ? "auto" : "smooth" });
+      setTimeout(function () {
+        $("f-visits").focus({ preventScroll: true });
+      }, Ex.reducedMotion() ? 0 : 450);
+    });
+
+    function drawMap(topo) {
+      mapFeats = topojson.feature(topo, topo.objects.counties).features;
+      var abbrByName = {};
+      OUT.states.forEach(function (s) {
+        abbrByName[s[1]] = s[0];
+      });
+      topo.objects.states.geometries.forEach(function (g) {
+        stOfFips[g.id] = abbrByName[g.properties.name];
+      });
+      var mesh = topojson.mesh(topo, topo.objects.states, function (a, b) { return a !== b; });
+      var path = d3.geoPath();
+      var ring = null, halo = null;
+      var featById = {};
+      mapFeats.forEach(function (f) { featById[f.id] = f; });
+      function setRing() {
+        if (!ring) return;
+        var c = S.fips ? byFips[S.fips] : null;
+        var sid = c ? (c[0] === "02063" || c[0] === "02066" ? "02261" : c[0]) : null;
+        var d = sid && featById[sid] ? path(featById[sid]) : null;
+        ring.attr("d", d).style("display", sid ? null : "none");
+        halo.attr("d", d).style("display", sid ? null : "none");
+        updatePin();
+      }
+      chMap = Ex.chart($("chart-map"), {
+        label: "Map of US counties.",
+        minHeight: 0,
+        maxHeight: 4000,
+        height: function (w) {
+          return Math.round(S.zoom === "" ? (w * 610) / 975 : w < 520 ? w : w * 0.62);
+        },
+        margin: { top: 0, right: 0, bottom: 0, left: 0 },
+        render: function (c) {
+          var vals = D.counties.map(mval);
+          var sorted = vals.slice().sort(d3.ascending);
+          var hi = Math.max(d3.quantile(sorted, 0.95), 1e-6);
+          var sqrt = S.metric === "added";
+          var scale = Ex.scaleSeq(sqrt ? [0, Math.sqrt(hi)] : [0, hi]);
+          var color = function (v) { return scale(sqrt ? Math.sqrt(Math.max(0, v)) : Math.max(0, v)); };
+          var m = METRIC[S.metric];
+          var rampHost = $("ramp-map");
+          rampHost.textContent = "";
+          Ex.ramp(rampHost, { title: m.unit + (S.metric === "obs" ? " (observed)" : " (modeled)"), domain: [0, hi], format: m.fmt });
+          var ends = rampHost.querySelectorAll(".ex-ramp__ends span");
+          if (ends.length) ends[ends.length - 1].textContent += " or more";
+          var leg = $("legend-map");
+          leg.textContent = "";
+          function key(cls, text) {
+            leg.appendChild(Ex.el("li", {}, [Ex.el("span", { class: cls, "aria-hidden": "true" }), text]));
+          }
+          if (m.hatch) key("ex-key ex-key--hatch", m.hatch);
+          key("ex-key ex-key--ring", "Your county");
+          key("p11-key p11-nodata-key", "No data: not in the 30 HealthCare.gov states");
+          var k = c.width / 975, tx = 0, ty = 0;
+          if (S.zoom !== "") {
+            var fp = stFips[+S.zoom];
+            var b = path.bounds({ type: "FeatureCollection", features: mapFeats.filter(function (f) { return f.id.slice(0, 2) === fp; }) });
+            k = Math.min(c.width / (b[1][0] - b[0][0]), c.height / (b[1][1] - b[0][1])) * 0.92;
+            tx = (c.width - k * (b[0][0] + b[1][0])) / 2;
+            ty = (c.height - k * (b[0][1] + b[1][1])) / 2;
+          }
+          var defs = c.g.append("defs");
+          var pat = defs.append("pattern").attr("id", "p11-dots").attr("patternUnits", "userSpaceOnUse");
+          pat.append("rect").attr("fill", "#ffffff");
+          pat.append("circle").attr("fill", "#6f6c8f");
+          // the pattern is drawn inside the scaled map group, so size it in map units to keep the dots 4 screen pixels apart
+          pat.attr("width", 4 / k).attr("height", 4 / k);
+          pat.select("rect").attr("width", 4 / k).attr("height", 4 / k);
+          pat.select("circle").attr("cx", 2 / k).attr("cy", 2 / k).attr("r", 0.9 / k);
+          c.svg.classed("is-zoomed", S.zoom !== "");
+          var root = c.g.append("g").attr("transform", "translate(" + tx + "," + ty + ") scale(" + k + ")");
+          root.append("g").selectAll("path").data(mapFeats).join("path")
+            .attr("class", function (d) { var cs = shapeCounties[d.id]; return !cs ? "p11-nodata p11-pick" : cs.length > 1 ? "p11-shared" : "ex-county p11-pick"; })
+            .attr("d", path)
+            .attr("fill", function (d) { var cs = shapeCounties[d.id]; return cs && cs.length === 1 ? color(mval(cs[0])) : null; });
+          root.append("g").selectAll("path").data(mapFeats.filter(function (d) { var cs = shapeCounties[d.id]; return cs && cs.length === 1 && mflag(cs[0]); })).join("path").attr("class", "ex-county--hidden").attr("d", path);
+          root.append("path").attr("class", "ex-state-line").attr("d", path(mesh));
+          halo = root.append("path").attr("class", "ex-county is-halo");
+          ring = root.append("path").attr("class", "ex-county is-active").attr("fill", "none").style("pointer-events", "none");
+          lastMapKey = mapKey();
+          setRing();
+          var t = mapHeads(vals);
+          c.svg.attr("aria-label", "Map of US counties shaded by " + m.unit.toLowerCase() + ". " + t + ". Use the county search in the planner to read any county.");
+          c.svg.on("pointermove.tip", function (e) {
+            var d = e.target.__data__;
+            if (!d || !d.properties) { Ex.tooltip.hide(); return; }
+            Ex.tooltip.show(tipFor(d), { x: e.clientX, y: e.clientY }, c.svg.node());
+          }).on("pointerleave.tip", function () { Ex.tooltip.hide(); })
+            .on("click.pick", function (e) {
+              var d = e.target.__data__;
+              if (!d || !d.properties) return;
+              Ex.tooltip.show(tipFor(d), { x: e.clientX, y: e.clientY }, c.svg.node());
+              var cs = shapeCounties[d.id];
+              if (!cs) {
+                var it = itemBy["u:" + stOfFips[d.id.slice(0, 2)] + ":" + d.properties.name];
+                if (it) selectCounty(it, "map");
+              } else if (cs.length === 1) selectCounty(itemBy[cs[0][0]], "map");
+              else Ex.live("This shape covers two Alaska areas. Search for Chugach or Copper River in the planner.");
+            });
+          renderMapTable();
+        },
+      });
+      chMap.ring = setRing;
+    }
+    function renderMapTable() {
+      var host = $("table-map");
+      host.textContent = "";
+      Ex.dataTable(host, {
+        caption: "Every county in the file. Growth and adults added are medians for the " + SCEN[S.scen].toLowerCase() + " scenario, " + LAYER[S.layers] + ".",
+        label: "Scrollable table of 2,054 counties",
+        columns: [
+          { key: "name", label: "County", text: true },
+          { key: "pool", label: "Uninsured adults, 2024", format: F.int },
+          { key: "growth", label: "Growth in the pool", format: function (v) { return minus(F.pct(v, 1)); } },
+          { key: "added", label: "Adults added", format: function (v) { return minus(F.int(v)); } },
+          { key: "s25", label: "Selections 2025", format: F.int },
+          { key: "s26", label: "Selections 2026", format: F.int },
+          { key: "chg", label: "Adjusted change", format: function (v) { return minus(F.pctValue(v, 1)); } },
+        ],
+        rows: D.counties.map(function (c) {
+          return { name: label(c), pool: c[3], growth: G(c, S.scen, S.layers, 0), added: A(c, S.scen, S.layers, 1), s25: c[6], s26: c[7], chg: c[9] };
+        }),
+      });
+    }
+    function loadMap() {
+      Ex.loadData(Ex.assetUrl("us-counties-albers-10m.json")).then(drawMap, function () {
+        Ex.showError($("chart-map"), "The map did not load. The county table below has the same numbers.");
+      });
+    }
+    // the 800 KB map file loads when the map is about to scroll into view
+    if ("IntersectionObserver" in window) {
+      var mapIo = new IntersectionObserver(function (es) {
+        if (es.some(function (e) { return e.isIntersecting; })) {
+          mapIo.disconnect();
+          loadMap();
+        }
+      }, { rootMargin: "900px 0px" });
+      mapIo.observe($("fig-map"));
+    } else loadMap();
+
+    /* ---------- observed: states ---------- */
+    var chStates = Ex.chart($("chart-states"), {
+      label: "Two panels of 30 states.",
+      margin: function (w) {
+        return { top: 40, right: 12, bottom: 30, left: w < 520 ? 32 : 112 };
+      },
+      height: function () {
+        return D.states.length * 22 + 74;
+      },
+      render: function (c) {
+        var rows = D.states.map(function (s) {
+          return { st: s.st, name: s.name, s25: s.s25, s26: s.s26, chg: (s.s26 / s.s25 - 1) * 100, r25: s.r25, r26: s.r26 };
+        });
+        if (S.sort === "paid") rows.sort(function (a, b) { return b.r26 - a.r26; });
+        else if (S.sort === "change") rows.sort(function (a, b) { return a.chg - b.chg; });
+        else rows.sort(function (a, b) { return d3.ascending(a.name, b.name); });
+        var ROW = 22, BAR = 14, h = rows.length * ROW;
+        var gap = c.narrow ? 18 : 40;
+        var pw1 = Math.round((c.width - gap) * (c.narrow ? 0.46 : 0.42));
+        var pw2 = c.width - gap - pw1;
+        var cmin = d3.min(rows, function (r) { return r.chg; }), cmax = d3.max(rows, function (r) { return r.chg; });
+        var x1 = d3.scaleLinear().domain([Math.floor(cmin / 10) * 10, Math.ceil(cmax / 10) * 10 + 10]).range([0, pw1]);
+        var rmin = d3.min(rows, function (r) { return Math.min(r.r25, r.r26); });
+        var x2 = d3.scaleLinear().domain([Math.floor(rmin / 10) * 10, 100]).range([0, pw2]);
+        var y = d3.scaleBand().domain(rows.map(function (r) { return r.st; })).range([0, h]).paddingInner((ROW - BAR) / ROW);
+        var mine = S.fips && byFips[S.fips] ? D.states[byFips[S.fips][2]].st : null;
+        // panel 1: change in selections
+        var p1 = c.g.append("g");
+        var t1 = c.narrow ? [Math.ceil(x1.domain()[0] / 20) * 20, 0] : x1.ticks(4);
+        p1.append("g").attr("class", "ex-gridlines").attr("transform", "translate(0," + h + ")").call(d3.axisBottom(x1).tickValues(t1).tickSize(-h).tickFormat(""));
+        p1.append("g").attr("class", "ex-axis").attr("transform", "translate(0," + h + ")").call(d3.axisBottom(x1).tickValues(t1).tickSize(0).tickPadding(8).tickFormat(function (d) { return minus(d + "%"); })).select(".domain").remove();
+        p1.append("line").attr("class", "ex-baseline").attr("x1", x1(0)).attr("x2", x1(0)).attr("y1", 0).attr("y2", h);
+        p1.append("text").attr("class", "p11-colhead").attr("x", 0).attr("y", -22).text(c.narrow ? "Selections" : "Change in selections");
+        p1.append("text").attr("class", "ex-svg-label").attr("x", 0).attr("y", -8).text("2025 to 2026");
+        // panel 2: paid share
+        var p2 = c.g.append("g").attr("transform", "translate(" + (pw1 + gap) + ",0)");
+        p2.append("g").attr("class", "ex-gridlines").attr("transform", "translate(0," + h + ")").call(d3.axisBottom(x2).ticks(c.narrow ? 3 : 4).tickSize(-h).tickFormat(""));
+        p2.append("g").attr("class", "ex-axis").attr("transform", "translate(0," + h + ")").call(d3.axisBottom(x2).ticks(c.narrow ? 3 : 4).tickSize(0).tickPadding(8).tickFormat(function (d) { return d + "%"; })).select(".domain").remove();
+        p2.append("text").attr("class", "p11-colhead").attr("x", 0).attr("y", -22).text("Paid share");
+        p2.append("text").attr("class", "ex-svg-label").attr("x", 0).attr("y", -8).text("of selections, by February");
+        var g = c.g.selectAll("g.ex-mark").data(rows).join("g").attr("class", "ex-mark").attr("transform", function (d) { return "translate(0," + y(d.st) + ")"; });
+        g.append("rect").attr("class", "ex-hit").attr("x", -c.margin.left).attr("y", -(ROW - BAR) / 2).attr("width", c.w).attr("height", ROW);
+        g.append("text").attr("class", "ex-axis-title").attr("x", -8).attr("y", y.bandwidth() / 2).attr("dy", "0.35em").attr("text-anchor", "end").style("fill", "var(--ex-ink)")
+          .style("font-weight", function (d) { return d.st === mine ? 700 : 400; }).text(function (d) { return c.narrow ? d.st : d.name; });
+        g.append("path").attr("class", "p11-bar-obs").attr("d", function (d) {
+          var a = x1(0), b = x1(d.chg), w = Math.abs(b - a), r = Math.min(3, w / 2), hh = y.bandwidth();
+          return d.chg < 0
+            ? "M" + a + ",0H" + (b + r) + "a" + r + "," + r + " 0 0 0 " + -r + "," + r + "V" + (hh - r) + "a" + r + "," + r + " 0 0 0 " + r + "," + r + "H" + a + "Z"
+            : "M" + a + ",0H" + (b - r) + "a" + r + "," + r + " 0 0 1 " + r + "," + r + "V" + (hh - r) + "a" + r + "," + r + " 0 0 1 " + -r + "," + r + "H" + a + "Z";
+        });
+        g.append("text").attr("class", "ex-svg-value").attr("x", function (d) { return d.chg < 0 ? x1(0) + 6 : x1(d.chg) + 6; }).attr("y", y.bandwidth() / 2).attr("dy", "0.35em")
+          .text(function (d) { return minus((d.chg > 0 ? "+" : "") + d.chg.toFixed(0) + "%"); });
+        var m = y.bandwidth() / 2;
+        g.append("line").attr("class", "p11-link").attr("x1", function (d) { return pw1 + gap + x2(d.r25); }).attr("x2", function (d) { return pw1 + gap + x2(d.r26); }).attr("y1", m).attr("y2", m);
+        g.append("circle").attr("class", "p11-dot-open").attr("cx", function (d) { return pw1 + gap + x2(d.r25); }).attr("cy", m).attr("r", 4.5);
+        g.append("circle").attr("class", "p11-dot-solid").attr("cx", function (d) { return pw1 + gap + x2(d.r26); }).attr("cy", m).attr("r", 4.5);
+        g.filter(function (d) { return d.st === mine; }).append("rect").attr("class", "ex-selected-ring").attr("x", -c.margin.left + 1).attr("y", -(ROW - BAR) / 2).attr("width", c.w - 2).attr("height", ROW).attr("rx", 4);
+        Ex.tooltip.attach(g, function (el) {
+          var d = el.__data__;
+          return {
+            title: d.name,
+            rows: [
+              { name: "Selections, 2025", value: F.int(d.s25), color: "obs" },
+              { name: "Selections, 2026", value: F.int(d.s26), color: "obs" },
+              { name: "Change", value: minus((d.chg > 0 ? "+" : "") + d.chg.toFixed(1) + "%"), color: "obs" },
+              { name: "Paid share, Feb 2025", value: d.r25.toFixed(1) + "%" },
+              { name: "Paid share, Feb 2026", value: d.r26.toFixed(1) + "%" },
+            ],
+            note: "Low-income selections (100 to 200% of poverty)",
+          };
+        });
+        Ex.roving(c.g.node(), ".ex-mark");
+        var fell = rows.filter(function (r) { return r.r26 < r.r25; }).length;
+        var down = rows.filter(function (r) { return r.chg < 0; }).length;
+        var low = d3.least(rows, function (r) { return r.r26; });
+        var t = "Paid share fell in " + fell + " of " + rows.length + " states, and low-income selections fell in " + down;
+        var mrow = mine ? rows.filter(function (r) { return r.st === mine; })[0] : null;
+        var sl = $("state-line");
+        sl.hidden = !mrow;
+        if (mrow) sl.textContent = mrow.name + ": low-income plan selections " + minus((mrow.chg > 0 ? "+" : "") + mrow.chg.toFixed(1) + "%") + " from 2025 to 2026, and " + mrow.r26.toFixed(1) + "% of selections paid up by February 2026 (" + mrow.r25.toFixed(1) + "% in 2025).";
+        c.svg.attr("aria-label", "Two panels for " + rows.length + " HealthCare.gov states. " + t + ". " + low.name + " has the lowest paid share in February 2026, " + low.r26.toFixed(1) + "%. Full numbers are in the data table.");
+        setText("t-states", t);
+        var tbl = $("table-states");
+        tbl.textContent = "";
+        Ex.dataTable(tbl, {
+          caption: "Low-income plan selections and share paid up, by state, 2025 and 2026.",
+          columns: [
+            { key: "name", label: "State" },
+            { key: "s25", label: "Selections 2025", format: F.int },
+            { key: "s26", label: "Selections 2026", format: F.int },
+            { key: "chg", label: "Change", format: function (v) { return minus((v > 0 ? "+" : "") + v.toFixed(1) + "%"); } },
+            { key: "r25", label: "Paid share Feb 2025", format: function (v) { return v.toFixed(1) + "%"; } },
+            { key: "r26", label: "Paid share Feb 2026", format: function (v) { return v.toFixed(1) + "%"; } },
+          ],
+          rows: rows,
+        });
+      },
+    });
+
+    /* top ten counties (static table from data) */
+    (function () {
+      var tb = $("top10-table").tBodies[0];
+      D.top10.forEach(function (r) {
+        var tr = Ex.el("tr");
+        tr.appendChild(Ex.el("th", { scope: "row", text: r[0] + ", " + r[1] }));
+        [F.int(r[2]), F.int(r[3]), minus(F.pctValue(r[4], 1)), minus(F.pctValue(r[5], 1))].forEach(function (t) {
+          tr.appendChild(Ex.el("td", { text: t }));
+        });
+        tb.appendChild(tr);
+      });
+    })();
+
+    /* ---------- scenarios: national ---------- */
+    var chNat = Ex.chart($("chart-nat"), {
+      label: "Bars of additional uninsured adults in 2027 by scenario.",
+      margin: function (w) {
+        return { top: 8, right: w < 520 ? 52 : 70, bottom: 32, left: w < 520 ? 96 : 176 };
+      },
+      height: function () {
+        return 3 * (2 * 26 + 30) + 40;
+      },
+      render: function (c) {
+        var ROW = 26, BAR = 16, GROUP = 2 * ROW + 30;
+        var keys = ["lower", "central", "higher"];
+        var rows = [];
+        keys.forEach(function (k, gi_) {
+          var n = D.nat[k];
+          [["marketplace", c.narrow ? "Marketplace only" : "Marketplace losses only"], ["total", c.narrow ? "With Medicaid" : "With the Medicaid layer"]].forEach(function (p, j) {
+            rows.push({ scen: SCEN[gi_], name: p[1], y: gi_ * GROUP + 24 + j * ROW, lo: n[p[0] + "_p10"], mid: n[p[0] + "_p50"], hi: n[p[0] + "_p90"] });
+          });
+        });
+        var h = 3 * GROUP;
+        var x = d3.scaleLinear().domain([0, d3.max(rows, function (r) { return r.hi; })]).nice().range([0, c.width]);
+        gridX(c, x, c.narrow ? 3 : 5, h, function (d) { return F.compact(d, d >= 1e6 ? 1 : 0).replace(".0", ""); });
+        c.g.append("line").attr("class", "ex-baseline").attr("x1", 0).attr("x2", 0).attr("y1", 0).attr("y2", h);
+        keys.forEach(function (k, i) {
+          c.g.append("text").attr("class", "p11-colhead").attr("x", -c.margin.left).attr("y", i * GROUP + 14).text(SCEN[i] + " scenario");
+        });
+        var g = c.g.selectAll("g.ex-mark").data(rows).join("g").attr("class", "ex-mark").attr("transform", function (d) { return "translate(0," + d.y + ")"; });
+        g.append("rect").attr("class", "ex-hit").attr("x", -c.margin.left).attr("y", -(ROW - BAR) / 2).attr("width", c.w).attr("height", ROW);
+        g.append("path").attr("class", "p11-est").attr("d", function (d) { return barPath(x(d.mid), BAR); });
+        g.append("path").attr("class", "ex-ci-whisker").attr("d", function (d) { return whisker(x(d.lo), x(d.hi), BAR / 2); });
+        g.append("text").attr("class", "ex-axis-title").attr("x", -8).attr("y", BAR / 2).attr("dy", "0.35em").attr("text-anchor", "end").style("fill", "var(--ex-ink)").text(function (d) { return d.name; });
+        g.append("text").attr("class", "ex-svg-value").attr("x", function (d) { return x(d.hi) + 8; }).attr("y", BAR / 2).attr("dy", "0.35em").text(function (d) { return d.mid >= 1e6 ? F.compact(d.mid, 2) : F.compact(d.mid, 0); });
+        Ex.tooltip.attach(g, function (el) {
+          var d = el.__data__;
+          return {
+            title: d.scen + " scenario, " + d.name.toLowerCase(),
+            rows: [{ name: "Median", value: F.int(d.mid), color: "est" }, { name: "10th to 90th percentile", value: F.int(d.lo) + " to " + F.int(d.hi) }],
+          };
+        });
+        Ex.roving(c.g.node(), ".ex-mark");
+        var cen = D.nat.central, hi = D.nat.higher;
+        var t = "The central scenario adds " + F.compact(cen.total_p50, 2) + " uninsured adults; the higher scenario adds " + F.compact(hi.total_p50, 2);
+        c.svg.attr("aria-label", "Bars of additional uninsured adults in 2027 by scenario, with and without the Medicaid layer. " + t + ". The data table has every value.");
+        setText("t-nat", t);
+        var tbl = $("table-nat");
+        tbl.textContent = "";
+        Ex.dataTable(tbl, {
+          caption: "Additional uninsured adults at or below 200% of poverty in 2027 compared with 2024, 2,054 counties (10th, 50th and 90th percentiles).",
+          columns: [
+            { key: "name", label: "Scenario" },
+            { key: "mkt", label: "Marketplace only", text: true },
+            { key: "mcd", label: "Medicaid layer only", text: true },
+            { key: "tot", label: "Both layers", text: true },
+          ],
+          rows: keys.map(function (k, i) {
+            var n = D.nat[k];
+            var tri = function (p) { return F.int(n[p + "_p10"]) + " / " + F.int(n[p + "_p50"]) + " / " + F.int(n[p + "_p90"]); };
+            return { name: SCEN[i], mkt: tri("marketplace"), mcd: tri("medicaid"), tot: tri("total") };
+          }),
+        });
+      },
+    });
+
+    /* ---------- drivers: tornado ---------- */
+    var chTor = Ex.chart($("chart-tornado"), {
+      label: "Bars of how far each assumption moves the sessions needed.",
+      margin: function (w) {
+        return { top: 24, right: 16, bottom: 32, left: w < 560 ? 0 : 270 };
+      },
+      height: function (w) {
+        return D.tornado.rows.length * (w < 560 ? 48 : 34) + 24 + 32;
+      },
+      render: function (c) {
+        var base = D.tornado.base;
+        var rows = D.tornado.rows.map(function (r) {
+          return { name: r[0].replace(/\s*\(.*$/, ""), range: (r[0].match(/\((.*)\)/) || ["", ""])[1].replace(/(\d)-(?=\d)/g, "$1 to ").replace(/x-(?=\d)/, "x to "), lo: r[1], hi: r[2] };
+        });
+        var all = [base];
+        rows.forEach(function (r) { all.push(r.lo, r.hi); });
+        var x = d3.scaleLinear().domain([Math.floor((d3.min(all) - 12) / 10) * 10, Math.ceil((d3.max(all) + 12) / 10) * 10]).range([0, c.width]);
+        var ROW = c.w < 560 ? 48 : 34, BAR = 16, above = c.w < 560;
+        var h = rows.length * ROW;
+        gridX(c, x, c.narrow ? 4 : 7, h, function (d) { return F.int(d); });
+        c.g.append("line").attr("class", "ex-ref-line").attr("x1", x(base)).attr("x2", x(base)).attr("y1", -3).attr("y2", h);
+        c.g.append("text").attr("class", "ex-svg-label").attr("x", x(base)).attr("y", -9).attr("text-anchor", "middle").text("Central " + F.int(base));
+        var g = c.g.selectAll("g.ex-mark").data(rows).join("g").attr("class", "ex-mark").attr("transform", function (d, i) { return "translate(0," + (i * ROW + (above ? 20 : (ROW - BAR) / 2)) + ")"; });
+        g.append("rect").attr("class", "ex-hit").attr("x", -c.margin.left).attr("y", above ? -20 : -(ROW - BAR) / 2).attr("width", c.w).attr("height", ROW);
+        ["lo", "hi"].forEach(function (k) {
+          g.append("rect").attr("class", "p11-est").attr("x", function (d) { return Math.min(x(base), x(d[k])); }).attr("width", function (d) { return Math.abs(x(d[k]) - x(base)); }).attr("y", 0).attr("height", above ? 14 : BAR)
+            .attr("rx", 2);
+          g.append("text").attr("class", "ex-svg-value").attr("y", (above ? 14 : BAR) / 2).attr("dy", "0.35em")
+            .attr("x", function (d) { return d[k] >= base ? x(d[k]) + 6 : x(d[k]) - 6; }).attr("text-anchor", function (d) { return d[k] >= base ? "start" : "end"; }).text(function (d) { return F.int(d[k]); });
+        });
+        if (above) g.append("text").attr("class", "ex-svg-label").attr("x", 0).attr("y", -6).style("fill", "var(--ex-ink)").style("paint-order", "stroke").style("stroke", "var(--ex-paper)").style("stroke-width", "4px").text(function (d) { return d.range ? d.name + " (" + d.range + ")" : d.name; });
+        else {
+          g.append("text").attr("class", "ex-axis-title").attr("x", -12).attr("y", BAR / 2).attr("dy", "-0.1em").attr("text-anchor", "end").style("fill", "var(--ex-ink)").text(function (d) { return d.name; });
+          g.append("text").attr("class", "ex-svg-label").attr("x", -12).attr("y", BAR / 2).attr("dy", "1.1em").attr("text-anchor", "end").text(function (d) { return d.range; });
+        }
+        Ex.tooltip.attach(g, function (el) {
+          var d = el.__data__;
+          return {
+            title: d.name,
+            rows: [{ name: "At the low end (" + d.range.split(" to ")[0] + ")", value: F.int(d.lo) + " sessions", color: "est" }, { name: "At the high end", value: F.int(d.hi) + " sessions", color: "est" }],
+            note: "Central case: " + F.int(base) + " sessions",
+          };
+        });
+        Ex.roving(c.g.node(), ".ex-mark");
+        var a = rows[0], b = rows[1];
+        var lc = function (n) { return n.charAt(0).toLowerCase() + n.slice(1); };
+        var t = a.name + " moves the 80% answer from " + F.int(a.lo) + " to " + F.int(a.hi) + " sessions; " + lc(b.name) + " from " + F.int(b.lo) + " to " + F.int(b.hi);
+        c.svg.attr("aria-label", "Bars of sessions at 80% certainty for the example clinic when one assumption moves. Central case " + F.int(base) + ". " + t + ".");
+        setText("t-tornado", t);
+        var tbl = $("table-tornado");
+        tbl.textContent = "";
+        Ex.dataTable(tbl, {
+          caption: "Sessions a year at 80% certainty when one assumption moves from its low to its high end (central case: " + F.int(base) + ").",
+          columns: [
+            { key: "name", label: "Assumption", text: true },
+            { key: "range", label: "Low to high", text: true },
+            { key: "lo", label: "Sessions at the low end", format: F.int },
+            { key: "hi", label: "Sessions at the high end", format: F.int },
+          ],
+          rows: rows,
+        });
+      },
+    });
+
+    updateTool();
+  }
+});
