@@ -59,10 +59,12 @@ The collections are defined in `_config.yml`. Their front matter feeds the inclu
 | Collection       | Key front matter                                     | Image path                       |
 | ---------------- | ---------------------------------------------------- | -------------------------------- |
 | `_team/`         | `name`, `position`, `pic`, `social`                   | `img/team/{{pic}}`               |
-| `_casestudies/`  | `title`, `subtitle`, `date`, `thumbnail`, `kind` (`example`; untagged entries do not appear on `/projects.html`, titled "Examples") | `img/case_studies/{{thumbnail}}` |
+| `_casestudies/`  | `title`, `subtitle`, `date`, `thumbnail`, `kind` (`example`; untagged entries do not appear on `/projects.html`, titled "Examples", newest first), optional `persona` (shown on the card) and `need` | `img/case_studies/{{thumbnail}}` |
 | `_posts/`        | `layout: post`, `title`, `description`            | anywhere under `img/`            |
 
 Posts get the permalink `/blog/:title/`. Post images use a custom `<blog-figure>` element, styled in `scss/_figures.scss` / `_blog.scss`.
+
+Examples 09 and later have reproducible code in `analysis/<slug>/` (excluded from the site; `run.py` re-downloads raw data into the gitignored `data/raw/` and writes `output/numbers.json`, the source of every number on the page). Their downloadable files live in `downloads/`.
 
 Only `casestudies` and `posts` output their own pages. `team` sets `output: false` and renders only through the includes. Every layout puts a skip link first and wraps page content in `<main id="main">`. The blog index lives at `/blog/` (with `redirect_from: /blog.html`).
 
