@@ -1,0 +1,2215 @@
+/*
+  Example pages kit: tokens, layout, components, chart styles, form controls.
+  Loaded only by _layouts/example.html. Everything is scoped under .ex (the <main>)
+  so it wins over Bootstrap and the site stylesheet without !important.
+  Used by _layouts/example.html (examples 09 to 11). See CLAUDE.md, content model.
+*/
+
+/* ---------- fonts (vendored, OFL) ---------- */
+@font-face {
+  font-family: "Source Serif 4";
+  src: url("fonts/source-serif-4-var.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Source Serif 4";
+  src: url("fonts/source-serif-4-italic-var.woff2") format("woff2");
+  font-weight: 400 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("fonts/plex-sans-var.woff2") format("woff2");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- tokens ---------- */
+:root {
+  /* site palette */
+  --ex-ink: #191445;
+  --ex-ink-2: #35305e;
+  --ex-ink-3: #55507c;
+  --ex-gold: #b3a369;
+  --ex-gold-deep: #645211;
+  --ex-gold-tint: #f4f0df;
+
+  /* text and surfaces */
+  --ex-text: #1f1b4a;
+  --ex-muted: #58547d;
+  --ex-paper: #ffffff;
+  --ex-surface: #f6f5fa;
+  --ex-surface-2: #edecf5;
+  --ex-line: #dfdcec;
+  --ex-line-strong: #c3c0d6;
+  --ex-focus: #645211;
+
+  /* chart colors: fixed order, never cycled. observed = indigo, estimate = gold, reference = teal.
+     Checked with the dataviz validator (--pairs all): lightness band, chroma, CVD and contrast pass. */
+  --ex-c-obs: #4b44b8;
+  --ex-c-est: #a38b30;
+  --ex-c-ref: #009a92;
+  --ex-c-band: rgba(163, 139, 48, 0.2); /* interval around an estimate */
+  --ex-c-band-obs: rgba(75, 68, 184, 0.14);
+  --ex-strong: var(--ex-ink); /* strong chart ink: values, whiskers, crosshair */
+  --ex-sub: var(--ex-ink-2); /* chart labels, legend text */
+  --ex-c-grid: #e6e4ef;
+  --ex-c-axis: #aaa7c2;
+  --ex-c-dim: #cfcde0;
+  /* sequential, one hue light to dark (7 steps) */
+  --ex-seq-1: #f3f2fb;
+  --ex-seq-2: #dcdaf3;
+  --ex-seq-3: #bdb9e8;
+  --ex-seq-4: #958fd8;
+  --ex-seq-5: #6d66c6;
+  --ex-seq-6: #4b44b8;
+  --ex-seq-7: #1f1b66;
+  /* status: reserved, always paired with an icon or word */
+  --ex-good: #1a7f4b;
+  --ex-warn: #946200;
+  --ex-bad: #b3321f;
+
+  /* type */
+  --ex-font-display: "Sansation Regular", "IBM Plex Sans", system-ui, sans-serif;
+  --ex-font-ui: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ex-font-prose: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --ex-t-xs: 0.75rem;
+  --ex-t-sm: 0.875rem;
+  --ex-t-base: 1rem;
+  --ex-t-prose: 1.1875rem;
+  --ex-t-lg: 1.375rem;
+  --ex-t-xl: 1.875rem;
+  --ex-t-2xl: 2.5rem;
+
+  /* space (4px base) */
+  --ex-s1: 0.25rem;
+  --ex-s2: 0.5rem;
+  --ex-s3: 0.75rem;
+  --ex-s4: 1rem;
+  --ex-s5: 1.5rem;
+  --ex-s6: 2rem;
+  --ex-s7: 3rem;
+  --ex-s8: 4.5rem;
+
+  /* layout */
+  --ex-gutter: clamp(1rem, 4vw, 2rem);
+  --ex-wide: 72.5rem; /* 1160px */
+  --ex-text-w: 41rem; /* about 68 characters at the prose size */
+  --ex-nav-h: 56px; /* set by example.js from #mainNav */
+  --ex-subnav-h: 52px;
+  --ex-r-lg: 14px;
+  --ex-r-md: 8px;
+
+  --ex-shadow: 0 1px 0 rgba(25, 20, 69, 0.04), 0 14px 32px -14px rgba(25, 20, 69, 0.22);
+}
+
+html {
+  /* the site sets 80px; here the sticky site nav and the section nav both cover the top of the viewport (WCAG 2.4.11) */
+  scroll-padding-top: calc(var(--ex-nav-h) + var(--ex-subnav-h) + 16px);
+}
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ---------- reset inside .ex (Bootstrap reboot and site rules) ---------- */
+:where(.ex) {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-base);
+  color: var(--ex-text);
+  background: var(--ex-paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+:where(.ex) *,
+:where(.ex) *::before,
+:where(.ex) *::after {
+  box-sizing: border-box;
+}
+:where(.ex) p {
+  line-height: 1.6;
+  margin: 0;
+}
+:where(.ex) h1,
+:where(.ex) h2,
+:where(.ex) h3,
+:where(.ex) h4 {
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--ex-ink);
+}
+:where(.ex) figure {
+  margin: 0;
+}
+:where(.ex) ul,
+:where(.ex) ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+:where(.ex) fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+:where(.ex) legend {
+  float: none;
+  width: auto;
+  padding: 0;
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+:where(.ex) label {
+  display: block;
+  margin: 0;
+}
+:where(.ex) summary {
+  display: block;
+  cursor: pointer;
+}
+:where(.ex) summary::-webkit-details-marker {
+  display: none;
+}
+:where(.ex) table {
+  border-collapse: collapse;
+  caption-side: top;
+  margin: 0;
+}
+:where(.ex) a {
+  color: var(--ex-gold-deep);
+}
+:where(.ex) a:hover {
+  color: var(--ex-ink);
+}
+.ex :focus-visible {
+  outline: 3px solid var(--ex-focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+main#main.ex:focus {
+  outline: none;
+}
+.ex-vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.ex-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ---------- hero: short, so the tool is on the first screen ---------- */
+.ex-hero {
+  position: relative;
+  isolation: isolate;
+  color: #fff;
+  background-color: var(--ex-ink);
+  background-image: linear-gradient(105deg, rgba(25, 20, 69, 0.96) 0%, rgba(25, 20, 69, 0.82) 55%, rgba(25, 20, 69, 0.6) 100%),
+    url("../../../img/galaxy-darkened.webp");
+  background-size: cover;
+  background-position: center;
+  padding: 6.25rem var(--ex-gutter) 5rem;
+}
+.ex-hero__inner {
+  max-width: var(--ex-wide);
+  margin: 0 auto;
+}
+.ex-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem var(--ex-s4);
+  margin-bottom: 0.9rem;
+}
+.ex-hero__persona {
+  display: inline-block;
+  font-size: var(--ex-t-sm);
+  font-weight: 500;
+  color: #e9e3c6;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid rgba(179, 163, 105, 0.7);
+  border-radius: 999px;
+}
+.ex-hero__title {
+  font-family: var(--ex-font-display);
+  font-size: clamp(1.75rem, 3.6vw, 2.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+  color: #fff;
+  text-wrap: balance;
+}
+.ex-hero__question {
+  font-family: var(--ex-font-prose);
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  line-height: 1.4;
+  color: #dcd9ee;
+  max-width: 44em;
+  margin-top: 0.75rem;
+  text-wrap: pretty;
+}
+.ex-hero__note {
+  font-size: var(--ex-t-sm);
+  color: #c9c6e0;
+}
+@media (max-width: 639px) {
+  .ex-hero {
+    padding-top: 5.25rem;
+    padding-bottom: 4.25rem;
+  }
+  .ex-hero__meta {
+    margin-bottom: 0.6rem;
+  }
+  .ex-hero__persona {
+    font-size: var(--ex-t-xs);
+  }
+  .ex-hero__title {
+    font-size: 1.6rem;
+  }
+  .ex-hero__question {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+  .ex-hero__note {
+    font-size: var(--ex-t-xs);
+  }
+}
+.ex-hero :focus-visible,
+.ex-band--ink :focus-visible {
+  outline-color: var(--ex-gold);
+}
+
+/* ---------- stat tiles: one slim row that overlaps the hero edge ---------- */
+.ex-stats-wrap {
+  position: relative;
+  z-index: 2;
+  max-width: calc(var(--ex-wide) + 2 * var(--ex-gutter));
+  margin: -3.5rem auto 0;
+  padding: 0 var(--ex-gutter);
+}
+.ex-stats {
+  display: grid;
+  gap: var(--ex-s3);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+}
+@media (min-width: 900px) {
+  .ex-stats--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .ex-stats--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.ex-stat {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto 1fr;
+  align-items: start;
+  background: var(--ex-paper);
+  border: 1px solid var(--ex-line);
+  border-top: 3px solid var(--ex-gold);
+  border-radius: var(--ex-r-lg);
+  padding: var(--ex-s3) var(--ex-s4);
+  box-shadow: var(--ex-shadow);
+  min-width: 0;
+}
+.ex-stat dt,
+.ex-stat dd {
+  margin: 0;
+}
+.ex-stat__value {
+  grid-column: 1;
+  grid-row: 1;
+  font-family: var(--ex-font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  line-height: 1.1;
+  color: var(--ex-ink);
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+}
+.ex-stat__label {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  font-size: var(--ex-t-sm);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ex-ink-2);
+  margin-top: 0.2rem;
+}
+.ex-stat__note {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  font-size: var(--ex-t-xs);
+  line-height: 1.4;
+  color: var(--ex-muted);
+  margin-top: 0.25rem;
+}
+/* observed or estimate: the same swatches as the charts, top right of the tile */
+.ex-stat__kind {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--ex-t-xs);
+  font-weight: 500;
+  color: var(--ex-muted);
+  margin-top: 0.3rem;
+}
+@media (max-width: 899px) {
+  .ex-stats--3 .ex-stat:last-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 639px) {
+  .ex-stats-wrap {
+    margin-top: -3rem;
+  }
+  .ex-stat {
+    padding: var(--ex-s2) var(--ex-s3);
+  }
+  .ex-stat__value {
+    font-size: 1.375rem;
+  }
+  .ex-stat__label {
+    font-size: var(--ex-t-xs);
+  }
+  .ex-stat__note {
+    display: none;
+  }
+}
+
+/* key swatches: indigo means observed, gold means estimate, hatch means blank in the source file */
+.ex-key {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 2px;
+  flex: none;
+  vertical-align: -0.1em;
+}
+.ex-key--obs {
+  background: var(--ex-c-obs);
+}
+.ex-key--est {
+  background: var(--ex-c-est);
+}
+.ex-key--dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+}
+.ex-key--whisker {
+  width: 1.1rem;
+  height: 0.7rem;
+  border-radius: 0;
+  background: linear-gradient(var(--ex-strong), var(--ex-strong)) center / 100% 2px no-repeat,
+    linear-gradient(var(--ex-strong), var(--ex-strong)) left / 2px 100% no-repeat, linear-gradient(var(--ex-strong), var(--ex-strong)) right / 2px 100% no-repeat;
+}
+.ex-key--vline {
+  width: 0;
+  height: 0.9rem;
+  border-left: 2px dashed var(--ex-c-ref);
+  border-radius: 0;
+  margin: 0 0.3rem;
+}
+.ex-key--ref {
+  height: 0;
+  width: 1.1rem;
+  border-top: 2px dashed var(--ex-c-ref);
+  border-radius: 0;
+  vertical-align: 0.25em;
+}
+.ex-key--ci {
+  background: var(--ex-c-band);
+  box-shadow: inset 0 0 0 1px rgba(163, 139, 48, 0.5);
+}
+.ex-key--hatch {
+  background: repeating-linear-gradient(135deg, #191445 0 1px, #fff 1px 4px);
+  box-shadow: inset 0 0 0 1px var(--ex-c-axis);
+}
+.ex-key--ring {
+  background: none;
+  box-shadow: inset 0 0 0 2px var(--ex-strong);
+}
+.ex-key--line-obs,
+.ex-key--line-est {
+  height: 0;
+  width: 1.2rem;
+  border-radius: 0;
+  border-top: 3px solid var(--ex-c-obs);
+  vertical-align: 0.2em;
+}
+.ex-key--line-est {
+  border-top: 3px dashed var(--ex-c-est);
+}
+.ex-key--line-strong {
+  border-top: 3px dashed var(--ex-strong);
+}
+
+/* ---------- sticky in-page nav ---------- */
+.ex-subnav {
+  position: sticky;
+  top: var(--ex-nav-h);
+  z-index: 900;
+  margin-top: var(--ex-s5);
+  background: rgba(255, 255, 255, 0.97);
+  -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--ex-line);
+}
+.ex-subnav__inner {
+  max-width: calc(var(--ex-wide) + 2 * var(--ex-gutter));
+  margin: 0 auto;
+  padding: 0 var(--ex-gutter);
+}
+.ex-subnav__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--ex-s5);
+}
+.ex-subnav__nav {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+/* a live readout (Ex.navReadout) rides in the section nav on wide screens */
+.ex-navread {
+  display: none;
+  flex: none;
+  margin: 0;
+  font-size: var(--ex-t-sm);
+  color: var(--ex-ink);
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: var(--ex-gold-tint);
+  border: 1px solid var(--ex-line);
+}
+@media (min-width: 900px) {
+  .ex-navread.is-on {
+    display: block;
+  }
+}
+.ex-subnav__nav ol {
+  display: flex;
+  gap: var(--ex-s5);
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+  margin: 0 calc(var(--ex-gutter) * -1);
+  padding: 0 var(--ex-gutter);
+}
+.ex-subnav__nav ol::-webkit-scrollbar {
+  display: none;
+}
+.ex-subnav__nav a {
+  display: block;
+  white-space: nowrap;
+  padding: 0.95rem 0 0.8rem;
+  font-size: var(--ex-t-sm);
+  font-weight: 500;
+  color: var(--ex-muted);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  scroll-snap-align: center;
+}
+.ex-subnav__nav a:hover {
+  color: var(--ex-ink);
+}
+.ex-subnav__nav a[aria-current="location"] {
+  color: var(--ex-ink);
+  font-weight: 600;
+  border-bottom-color: var(--ex-gold);
+}
+.ex-subnav__progress {
+  height: 2px;
+  background: transparent;
+}
+.ex-subnav__progress span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--ex-ink);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--ex-progress, 0));
+}
+@media (max-width: 639px) {
+  .ex-subnav {
+    margin-top: var(--ex-s4);
+  }
+  .ex-subnav__nav ol {
+    gap: var(--ex-s4);
+  }
+  /* a fade on the right edge says the row scrolls */
+  .ex-subnav__nav {
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 2.25rem), transparent);
+    mask-image: linear-gradient(90deg, #000 calc(100% - 2.25rem), transparent);
+  }
+}
+
+/* ---------- content grid ----------
+   Every .ex-section (and band) is a grid: text column in the middle, a wide track around it,
+   gutters outside. Children default to the text column; add .ex-wide or .ex-full to break out. */
+.ex-section {
+  display: grid;
+  grid-template-columns:
+    [full-start] minmax(var(--ex-gutter), 1fr)
+    [text-start] min(var(--ex-text-w), calc(100% - 2 * var(--ex-gutter)))
+    [text-end] minmax(var(--ex-gutter), 1fr)
+    [full-end];
+  padding-block: clamp(2.25rem, 5vw, 3.75rem);
+}
+.ex-section > * {
+  grid-column: text;
+  min-width: 0;
+}
+/* the text column lines up with the left edge of the wide content instead of floating in the middle */
+.ex-section > :not(.ex-wide):not(.ex-full) {
+  grid-column: full;
+  justify-self: start;
+  width: min(var(--ex-text-w), calc(100% - 2 * var(--ex-gutter)));
+  margin-left: max(var(--ex-gutter), calc((100% - var(--ex-wide)) / 2));
+}
+.ex-section > .ex-wide {
+  grid-column: full;
+  justify-self: center;
+  width: min(var(--ex-wide), calc(100% - 2 * var(--ex-gutter)));
+}
+.ex-section > .ex-full {
+  grid-column: full;
+}
+.ex-section:not(.ex-band) + .ex-section:not(.ex-band) {
+  padding-top: 0;
+}
+.ex-section > * + * {
+  margin-top: var(--ex-s6);
+}
+.ex-section > .ex-h2 + * {
+  margin-top: var(--ex-s4);
+}
+.ex-band {
+  padding-block: clamp(2.25rem, 5vw, 3.75rem);
+}
+.ex-band--tint {
+  background: var(--ex-surface);
+  border-block: 1px solid var(--ex-line);
+}
+.ex-band--ink {
+  --ex-text: #ecebf7;
+  --ex-muted: #b9b6d3;
+  --ex-focus: #b3a369;
+  color: var(--ex-text);
+  background: var(--ex-ink);
+}
+.ex-band--ink .ex-h2,
+.ex-band--ink h3 {
+  color: #fff;
+}
+.ex-band--ink a {
+  color: #e9e3c6;
+}
+.ex-band--ink a:hover {
+  color: #fff;
+}
+/* tokens for charts drawn on an ink band */
+.ex-band--ink {
+  --ex-c-obs: #9a8ff0;
+  --ex-c-est: #d2b84f;
+  --ex-c-ref: #35cdbf;
+  --ex-c-band: rgba(210, 184, 79, 0.25);
+  --ex-c-band-obs: rgba(154, 143, 240, 0.25);
+  --ex-c-grid: rgba(255, 255, 255, 0.12);
+  --ex-c-axis: rgba(255, 255, 255, 0.4);
+  --ex-c-dim: rgba(255, 255, 255, 0.22);
+  --ex-strong: #ffffff;
+  --ex-sub: #dcd9ee;
+  --ex-line-strong: rgba(255, 255, 255, 0.3);
+  --ex-surface-2: rgba(255, 255, 255, 0.08);
+  --ex-line: rgba(255, 255, 255, 0.16);
+  --ex-paper: #191445;
+}
+/* page background behind a chart band that follows prose */
+.ex-section > .ex-h2,
+.ex-h2 {
+  font-family: var(--ex-font-display);
+  font-size: clamp(1.75rem, 3.2vw, 2.375rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--ex-ink);
+  text-wrap: balance;
+}
+.ex-h3 {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-lg);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+  color: var(--ex-ink);
+}
+.ex-dek {
+  font-size: var(--ex-t-base);
+  color: var(--ex-muted);
+  max-width: 46rem;
+  margin-top: var(--ex-s2);
+}
+
+/* a short heading and one line above a tool, so the tool is on the first screen */
+.ex-prose.ex-toolhead {
+  max-width: 44rem;
+}
+.ex-prose.ex-toolhead h2 {
+  font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+  margin-top: 0;
+}
+.ex-prose.ex-toolhead .ex-lede {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-base);
+  line-height: 1.5;
+  color: var(--ex-muted);
+  margin-top: 0.35rem;
+}
+
+/* ---------- prose ---------- */
+.ex-prose {
+  font-family: var(--ex-font-prose);
+  font-size: var(--ex-t-prose);
+  line-height: 1.62;
+  color: var(--ex-text);
+  font-optical-sizing: auto;
+  hanging-punctuation: first;
+}
+.ex-prose > * + * {
+  margin-top: 1.1em;
+}
+.ex-prose p {
+  line-height: inherit;
+  text-wrap: pretty;
+}
+.ex-prose h2 {
+  font-family: var(--ex-font-display);
+  font-size: clamp(1.75rem, 3.2vw, 2.375rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  margin-top: 2.2em;
+  text-wrap: balance;
+}
+.ex-prose h3 {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-lg);
+  font-weight: 600;
+  line-height: 1.25;
+  margin-top: 1.9em;
+}
+.ex-prose h2 + *,
+.ex-prose h3 + * {
+  margin-top: 0.7em;
+}
+.ex-prose > :first-child {
+  margin-top: 0;
+}
+.ex-prose strong {
+  font-weight: 600;
+  color: var(--ex-ink);
+}
+.ex-prose a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--ex-gold);
+}
+.ex-prose a:hover {
+  text-decoration-thickness: 2px;
+}
+.ex-prose ul,
+.ex-prose ol {
+  padding-left: 1.4em;
+}
+.ex-prose ul {
+  list-style: disc;
+}
+.ex-prose ol {
+  list-style: decimal;
+}
+.ex-prose li {
+  line-height: inherit;
+  padding-left: 0.2em;
+}
+.ex-prose li + li {
+  margin-top: 0.45em;
+}
+.ex-prose li::marker {
+  color: var(--ex-gold-deep);
+}
+.ex-prose .ex-lede,
+.ex-lede {
+  font-size: 1.375rem;
+  line-height: 1.5;
+  color: var(--ex-ink);
+}
+.ex-prose code,
+.ex-code {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.86em;
+  background: var(--ex-surface-2);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+.ex-prose hr {
+  border: 0;
+  border-top: 1px solid var(--ex-line);
+  margin: 2.2em 0;
+}
+/* markdown tables: for wide ones use a raw .ex-table-wrap so keyboard users can scroll */
+.ex-prose table {
+  width: 100%;
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+  font-variant-numeric: tabular-nums;
+}
+.ex-prose th,
+.ex-prose td {
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--ex-line);
+  text-align: left;
+  line-height: 1.35;
+  vertical-align: top;
+}
+.ex-prose th {
+  color: var(--ex-ink);
+  font-weight: 600;
+  border-bottom-color: var(--ex-line-strong);
+}
+.ex-prose .ex-num {
+  font-family: var(--ex-font-ui);
+  font-size: 0.9em;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- callouts, margin notes, key figure ---------- */
+.ex-callout {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-base);
+  line-height: 1.55;
+  background: var(--ex-gold-tint);
+  border-left: 4px solid var(--ex-gold);
+  border-radius: 0 var(--ex-r-md) var(--ex-r-md) 0;
+  padding: var(--ex-s4) var(--ex-s5);
+}
+.ex-callout > * + * {
+  margin-top: var(--ex-s2);
+}
+.ex-callout__title {
+  font-weight: 600;
+  color: var(--ex-ink);
+  font-size: var(--ex-t-base);
+}
+.ex-callout p {
+  line-height: 1.55;
+}
+.ex-callout--caution {
+  background: var(--ex-paper);
+  border: 1px solid var(--ex-line-strong);
+  border-left: 4px solid var(--ex-ink);
+}
+.ex-callout ul {
+  display: grid;
+  gap: var(--ex-s3);
+  list-style: disc;
+  padding-left: 1.2rem;
+}
+.ex-callout li {
+  line-height: 1.55;
+}
+.ex-aside {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+  line-height: 1.5;
+  color: var(--ex-muted);
+  border-top: 2px solid var(--ex-gold);
+  padding-top: var(--ex-s2);
+}
+.ex-aside p {
+  line-height: 1.5;
+}
+.ex-aside strong {
+  color: var(--ex-ink);
+  font-weight: 600;
+}
+/* On wide screens a margin note floats out beside the text. Place it just before the paragraph it explains. */
+@media (min-width: 1280px) {
+  .ex-aside--margin {
+    float: right;
+    clear: right;
+    width: 14.5rem;
+    margin: 0.35rem -17.25rem 1rem 0;
+  }
+}
+@media (max-width: 1279px) {
+  .ex-aside--margin {
+    margin-block: var(--ex-s5);
+  }
+}
+.ex-keyfig {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--ex-s4) var(--ex-s5);
+  align-items: baseline;
+  padding-block: var(--ex-s5);
+  border-block: 1px solid var(--ex-line);
+  font-family: var(--ex-font-ui);
+}
+.ex-keyfig__value {
+  font-family: var(--ex-font-display);
+  font-size: clamp(2.5rem, 7vw, 3.75rem);
+  line-height: 1;
+  color: var(--ex-ink);
+  letter-spacing: -0.01em;
+}
+.ex-keyfig__text {
+  font-size: var(--ex-t-base);
+  line-height: 1.45;
+  color: var(--ex-muted);
+}
+.ex-keyfig__text strong {
+  color: var(--ex-ink);
+  font-weight: 600;
+}
+@media (max-width: 479px) {
+  .ex-keyfig {
+    grid-template-columns: 1fr;
+    gap: var(--ex-s2);
+  }
+}
+
+/* ---------- figure + caption ---------- */
+.ex-figure {
+  font-family: var(--ex-font-ui);
+}
+.ex-figure__head {
+  margin-bottom: var(--ex-s4);
+}
+.ex-figure__title {
+  font-size: var(--ex-t-lg);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ex-ink);
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+.ex-figure__sub {
+  font-size: var(--ex-t-base);
+  color: var(--ex-muted);
+  margin-top: var(--ex-s1);
+  max-width: 44rem;
+}
+.ex-figure figcaption,
+.ex-caption {
+  font-size: var(--ex-t-sm);
+  line-height: 1.5;
+  color: var(--ex-muted);
+  margin-top: var(--ex-s3);
+  max-width: 48rem;
+}
+.ex-source {
+  font-size: var(--ex-t-xs);
+  line-height: 1.5;
+  color: var(--ex-muted);
+  margin-top: var(--ex-s2);
+}
+.ex-figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--ex-r-md);
+}
+/* a figure inside the text column that needs more room */
+.ex-figure--bleed {
+  margin-inline: calc(var(--ex-gutter) * -1);
+}
+
+/* ---------- panels and the interactive tool ---------- */
+.ex-panel {
+  background: var(--ex-paper);
+  border: 1px solid var(--ex-line);
+  border-radius: var(--ex-r-lg);
+  box-shadow: var(--ex-shadow);
+  padding: clamp(1rem, 3vw, 2rem);
+}
+.ex-band--ink .ex-panel {
+  background: #221c58;
+  box-shadow: none;
+}
+.ex-tool {
+  display: grid;
+  gap: var(--ex-s5);
+}
+.ex-tool__controls {
+  display: grid;
+  gap: var(--ex-s5);
+  align-content: start;
+}
+.ex-tool__out {
+  min-width: 0;
+}
+.ex-tool__out > * + * {
+  margin-top: var(--ex-s6);
+}
+@media (min-width: 960px) {
+  .ex-tool--split {
+    grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr);
+    gap: var(--ex-s6);
+    align-items: start;
+  }
+  .ex-tool--split .ex-tool__controls {
+    position: sticky;
+    top: calc(var(--ex-nav-h) + var(--ex-subnav-h) + var(--ex-s4));
+    padding-right: var(--ex-s6);
+    border-right: 1px solid var(--ex-line);
+  }
+}
+.ex-tool__title {
+  font-size: var(--ex-t-lg);
+  font-weight: 600;
+  color: var(--ex-ink);
+  line-height: 1.25;
+  margin-bottom: var(--ex-s1);
+}
+/* the answer: a result that updates as controls change (give it aria-live="polite") */
+.ex-result {
+  background: var(--ex-ink);
+  color: #fff;
+  border-radius: var(--ex-r-lg);
+  padding: var(--ex-s5);
+  display: grid;
+  gap: var(--ex-s2);
+}
+.ex-result__label {
+  font-size: var(--ex-t-sm);
+  color: #cfcce6;
+  font-weight: 500;
+}
+.ex-result__value {
+  font-family: var(--ex-font-display);
+  font-size: clamp(2.5rem, 6vw, 3.75rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: #fff;
+  overflow-wrap: anywhere;
+}
+.ex-result__range {
+  font-size: var(--ex-t-base);
+  color: #e9e3c6;
+  font-variant-numeric: tabular-nums;
+}
+.ex-result__note {
+  font-size: var(--ex-t-sm);
+  color: #b9b6d3;
+  line-height: 1.45;
+}
+.ex-results {
+  display: grid;
+  gap: var(--ex-s3);
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+}
+.ex-results .ex-result {
+  padding: var(--ex-s4) var(--ex-s5);
+}
+.ex-results .ex-result__value {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+}
+
+/* ---------- side-by-side figures and filter rows ---------- */
+.ex-cols {
+  display: grid;
+  gap: var(--ex-s6) var(--ex-s6);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ex-col-min, 22rem)), 1fr));
+  align-items: start;
+}
+/* one row of filters above the content they scope */
+.ex-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ex-s4) var(--ex-s5);
+  align-items: flex-end;
+  margin-bottom: var(--ex-s5);
+}
+.ex-toolbar > .ex-field {
+  flex: 1 1 14rem;
+  max-width: 24rem;
+}
+
+/* ---------- form controls ---------- */
+.ex-field {
+  display: grid;
+  gap: var(--ex-s2);
+  min-width: 0;
+}
+.ex-label {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ex-ink);
+}
+.ex-hint {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-xs);
+  line-height: 1.45;
+  color: var(--ex-muted);
+}
+.ex-select,
+.ex-input,
+.ex-combo__input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  font: inherit;
+  font-family: var(--ex-font-ui);
+  font-size: 1rem; /* 16px stops iOS zooming on focus */
+  color: var(--ex-ink);
+  background: var(--ex-paper);
+  border: 1.5px solid var(--ex-line-strong);
+  border-radius: var(--ex-r-md);
+  padding: 0.62rem 0.85rem;
+  min-height: 2.75rem;
+  line-height: 1.3;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.ex-select:hover,
+.ex-input:hover,
+.ex-combo__input:hover {
+  border-color: var(--ex-ink-3);
+}
+.ex-select:focus-visible,
+.ex-input:focus-visible,
+.ex-combo__input:focus-visible {
+  outline: 3px solid var(--ex-focus);
+  outline-offset: 1px;
+  border-color: var(--ex-ink);
+  border-radius: var(--ex-r-md);
+}
+.ex-select {
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9' fill='none'%3E%3Cpath d='M1.5 1.75 7 7.25l5.5-5.5' stroke='%2335305E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.95rem center;
+  cursor: pointer;
+}
+.ex-input[type="number"] {
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.ex-input[type="number"]::-webkit-inner-spin-button,
+.ex-input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+.ex-input-group {
+  display: flex;
+  align-items: stretch;
+}
+.ex-input-group .ex-input {
+  border-radius: 0;
+  min-width: 0;
+  flex: 1;
+}
+.ex-input-group .ex-input:first-child {
+  border-top-left-radius: var(--ex-r-md);
+  border-bottom-left-radius: var(--ex-r-md);
+}
+.ex-input-group .ex-input:last-child {
+  border-top-right-radius: var(--ex-r-md);
+  border-bottom-right-radius: var(--ex-r-md);
+}
+.ex-affix {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.8rem;
+  background: var(--ex-surface-2);
+  border: 1.5px solid var(--ex-line-strong);
+  font-size: var(--ex-t-sm);
+  color: var(--ex-ink-3);
+  white-space: nowrap;
+}
+.ex-affix:first-child {
+  border-right: 0;
+  border-radius: var(--ex-r-md) 0 0 var(--ex-r-md);
+}
+.ex-affix:last-child {
+  border-left: 0;
+  border-radius: 0 var(--ex-r-md) var(--ex-r-md) 0;
+}
+.ex-input[aria-invalid="true"] {
+  border-color: var(--ex-bad);
+}
+.ex-error {
+  font-size: var(--ex-t-sm);
+  color: var(--ex-bad);
+  font-weight: 500;
+}
+
+/* range slider: <div class="ex-range"><input type="range"><output></output></div>; Ex.range() sets --fill */
+.ex-range {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--ex-s3);
+}
+.ex-range output {
+  min-width: 3.6rem;
+  text-align: right;
+  font-family: var(--ex-font-ui);
+  font-weight: 600;
+  font-size: var(--ex-t-base);
+  color: var(--ex-ink);
+  font-variant-numeric: tabular-nums;
+}
+.ex-range input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2.75rem;
+  background: transparent;
+  margin: 0;
+  cursor: pointer;
+  --fill: 50%;
+}
+.ex-range input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--ex-ink) 0 var(--fill), var(--ex-surface-2) var(--fill) 100%);
+  box-shadow: inset 0 0 0 1px var(--ex-line-strong);
+}
+.ex-range input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--ex-ink) 0 var(--fill), var(--ex-surface-2) var(--fill) 100%);
+  box-shadow: inset 0 0 0 1px var(--ex-line-strong);
+}
+.ex-range input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: calc((6px - 1.5rem) / 2);
+  border-radius: 50%;
+  background: var(--ex-gold);
+  border: 3px solid var(--ex-ink);
+  box-shadow: 0 2px 6px rgba(25, 20, 69, 0.3);
+  transition: transform 0.12s;
+}
+.ex-range input[type="range"]::-moz-range-thumb {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: var(--ex-gold);
+  border: 3px solid var(--ex-ink);
+  box-shadow: 0 2px 6px rgba(25, 20, 69, 0.3);
+}
+.ex-range input[type="range"]:hover::-webkit-slider-thumb {
+  transform: scale(1.08);
+}
+.ex-range input[type="range"]:focus-visible {
+  outline: none;
+}
+.ex-range input[type="range"]:focus-visible::-webkit-slider-thumb {
+  outline: 3px solid var(--ex-focus);
+  outline-offset: 3px;
+}
+.ex-range input[type="range"]:focus-visible::-moz-range-thumb {
+  outline: 3px solid var(--ex-focus);
+  outline-offset: 3px;
+}
+.ex-range__ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--ex-t-xs);
+  color: var(--ex-muted);
+  margin-top: -0.4rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* segmented toggle: real radios, so arrow keys and labels work natively */
+.ex-seg {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  background: var(--ex-surface-2);
+  border: 1.5px solid var(--ex-line-strong);
+  border-radius: var(--ex-r-md);
+  padding: 3px;
+  gap: 2px;
+  max-width: 100%;
+}
+.ex-seg label {
+  position: relative;
+  min-width: 0;
+}
+.ex-seg input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.ex-seg span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 2.25rem;
+  padding: 0.3rem 0.9rem;
+  border-radius: 5px;
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+  font-weight: 500;
+  color: var(--ex-ink-3);
+  transition: background-color 0.15s, color 0.15s;
+}
+.ex-seg input:hover + span {
+  color: var(--ex-ink);
+}
+.ex-seg input:checked + span {
+  background: var(--ex-ink);
+  color: #fff;
+  font-weight: 600;
+}
+.ex-seg input:focus-visible + span {
+  outline: 3px solid var(--ex-focus);
+  outline-offset: 2px;
+}
+
+/* combobox (built by Ex.combobox) */
+.ex-combo {
+  position: relative;
+}
+.ex-combo__wrap {
+  position: relative;
+}
+.ex-combo__input {
+  padding-right: 4.4rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2355507C' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='m20 20-4.8-4.8'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+}
+.ex-combo__clear {
+  position: absolute;
+  right: 2.55rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.9rem;
+  height: 1.9rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ex-ink-3);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.ex-combo__clear:hover {
+  background: var(--ex-surface-2);
+  color: var(--ex-ink);
+}
+.ex-combo.has-value .ex-combo__clear {
+  display: inline-flex;
+}
+.ex-combo__list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 50;
+  max-height: 17rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--ex-paper);
+  border: 1.5px solid var(--ex-ink);
+  border-radius: var(--ex-r-md);
+  box-shadow: 0 18px 40px -12px rgba(25, 20, 69, 0.35);
+  padding: 4px;
+}
+.ex-combo__list[hidden] {
+  display: none;
+}
+.ex-combo__opt {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ex-s3);
+  align-items: baseline;
+  padding: 0.55rem 0.7rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: var(--ex-t-base);
+  line-height: 1.3;
+  color: var(--ex-text);
+}
+.ex-combo__opt small {
+  font-size: var(--ex-t-xs);
+  color: var(--ex-muted);
+  white-space: nowrap;
+}
+.ex-combo__opt mark {
+  background: var(--ex-gold-tint);
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--ex-gold);
+  text-underline-offset: 2px;
+  padding: 0;
+}
+.ex-combo__opt[aria-selected="true"] {
+  font-weight: 600;
+}
+.ex-combo__opt.is-active {
+  background: var(--ex-surface-2);
+  box-shadow: inset 3px 0 0 var(--ex-gold);
+}
+.ex-combo__opt[aria-selected="true"]::after {
+  content: "";
+  width: 0.5rem;
+  height: 0.85rem;
+  margin-left: auto;
+  border: solid var(--ex-ink);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) translateY(-2px);
+  flex: none;
+}
+.ex-combo__empty,
+.ex-combo__more {
+  padding: 0.6rem 0.7rem;
+  font-size: var(--ex-t-sm);
+  color: var(--ex-muted);
+}
+
+/* buttons */
+.ex-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.6rem 1.35rem;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-base);
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+.ex-btn--gold {
+  background: var(--ex-gold);
+  color: var(--ex-ink);
+}
+.ex a.ex-btn--gold {
+  color: var(--ex-ink);
+}
+.ex-btn--gold:hover,
+.ex a.ex-btn--gold:hover {
+  background: #c7b97f;
+  color: var(--ex-ink);
+}
+.ex-btn--ink {
+  background: var(--ex-ink);
+  color: #fff;
+}
+.ex a.ex-btn--ink {
+  color: #fff;
+}
+.ex-btn--ink:hover,
+.ex a.ex-btn--ink:hover {
+  background: var(--ex-ink-2);
+  color: #fff;
+}
+.ex-btn--ghost {
+  background: transparent;
+  border-color: var(--ex-ink-3);
+  color: var(--ex-ink);
+}
+.ex-btn--ghost:hover {
+  border-color: var(--ex-ink);
+  background: var(--ex-surface-2);
+}
+.ex a.ex-btn--ghost-light,
+.ex-btn--ghost-light {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #fff;
+}
+.ex a.ex-btn--ghost-light:hover,
+.ex-btn--ghost-light:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+.ex-btn--sm {
+  min-height: 2.25rem;
+  padding: 0.3rem 0.95rem;
+  font-size: var(--ex-t-sm);
+}
+.ex-btn--lg {
+  min-height: 3.25rem;
+  padding: 0.75rem 1.9rem;
+  font-size: 1.0625rem;
+}
+.ex-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.ex-btn svg {
+  width: 1em;
+  height: 1em;
+  flex: none;
+}
+.ex-btn.is-done {
+  background: var(--ex-good);
+  border-color: var(--ex-good);
+  color: #fff;
+}
+
+/* ---------- charts ---------- */
+.ex-chart {
+  position: relative;
+  width: 100%;
+}
+.ex-chart > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.ex-chart > svg:focus-visible {
+  outline: 3px solid var(--ex-focus);
+  outline-offset: 4px;
+  border-radius: var(--ex-r-md);
+}
+.ex-chart text {
+  font-family: var(--ex-font-ui);
+  font-size: 12px;
+  fill: var(--ex-muted);
+}
+.ex-chart--loading {
+  opacity: 0.55;
+}
+/* axes (d3.axisBottom etc. inside <g class="ex-axis">) */
+.ex-axis .domain {
+  stroke: var(--ex-c-axis);
+  stroke-width: 1;
+}
+.ex-axis .tick line {
+  stroke: var(--ex-c-axis);
+  stroke-width: 1;
+}
+.ex-axis .tick text {
+  font-size: 12px;
+  fill: var(--ex-muted);
+  font-variant-numeric: tabular-nums;
+}
+.ex-axis--y .domain,
+.ex-axis--quiet .domain {
+  display: none;
+}
+.ex-axis--y .tick line {
+  display: none;
+}
+.ex-chart .ex-chart .ex-axis-title {
+  font-size: 12px;
+  font-weight: 500;
+  fill: var(--ex-sub);
+}
+/* hairline, solid, recessive */
+.ex-gridlines line {
+  stroke: var(--ex-c-grid);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.ex-gridlines .domain {
+  display: none;
+}
+.ex-baseline {
+  stroke: var(--ex-c-axis);
+  stroke-width: 1;
+}
+/* marks: 2px lines, thin bars, 8px+ dots */
+.ex-line {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ex-line--obs {
+  stroke: var(--ex-c-obs);
+}
+.ex-line--est {
+  stroke: var(--ex-c-est);
+  stroke-dasharray: 6 4;
+}
+.ex-line--ref {
+  stroke: var(--ex-c-ref);
+  stroke-dasharray: 2 4;
+}
+.ex-fill--obs {
+  fill: var(--ex-c-obs);
+}
+.ex-fill--est {
+  fill: var(--ex-c-est);
+}
+.ex-fill--muted-hatch {
+  fill: url(#ex-hatch-muted);
+}
+.ex-fill--ref {
+  fill: var(--ex-c-ref);
+}
+.ex-ci-band {
+  fill: var(--ex-c-band);
+  stroke: none;
+}
+.ex-ci-band--obs {
+  fill: var(--ex-c-band-obs);
+}
+.ex-ci-whisker {
+  stroke: var(--ex-strong);
+  stroke-width: 1.5;
+  fill: none;
+  stroke-linecap: round;
+}
+.ex-ci-whisker--est {
+  stroke: var(--ex-c-est);
+}
+.ex-dot {
+  stroke: var(--ex-paper);
+  stroke-width: 2; /* surface ring so overlapping dots stay legible */
+}
+.ex-ref-line {
+  stroke: var(--ex-c-ref);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+  fill: none;
+}
+.ex-crosshair {
+  stroke: var(--ex-strong);
+  stroke-width: 1;
+  pointer-events: none;
+}
+.ex-chart .ex-svg-label {
+  font-size: 12px;
+  font-weight: 500;
+  fill: var(--ex-sub);
+  paint-order: stroke;
+  stroke: var(--ex-paper);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+.ex-chart .ex-svg-value {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ex-strong);
+  font-variant-numeric: tabular-nums;
+}
+/* interactive marks */
+.ex-hit {
+  fill: transparent;
+  cursor: pointer;
+}
+.ex-mark {
+  transition: opacity 0.15s;
+  outline: none;
+}
+.ex-chart.has-active .ex-mark:not(.is-active) {
+  opacity: 0.45;
+}
+.ex-mark:hover,
+.ex-mark.is-active {
+  opacity: 1;
+}
+.ex-mark:focus-visible .ex-hit,
+.ex-hit:focus-visible {
+  stroke: var(--ex-focus);
+  stroke-width: 2.5;
+  rx: 3;
+}
+.ex-mark:focus-visible {
+  outline: none;
+}
+.ex-mark:focus-visible .ex-focus-ring {
+  stroke: var(--ex-focus);
+  stroke-width: 3;
+  fill: none;
+}
+.ex-focus-ring {
+  fill: none;
+  stroke: none;
+  pointer-events: none;
+}
+.ex-selected-ring {
+  fill: none;
+  stroke: var(--ex-strong);
+  stroke-width: 2;
+}
+
+/* maps: county and state shapes (draw with d3.geoPath on the vendored us-atlas file) */
+.ex-chart .ex-county {
+  stroke: var(--ex-paper);
+  stroke-width: 0.25px;
+  stroke-linejoin: round;
+}
+/* overlay for counties whose value is hidden or modeled: draw a second path over the colored one */
+.ex-chart .ex-county--hidden {
+  fill: url(#ex-hatch-lines);
+  stroke: none;
+  pointer-events: none;
+}
+.ex-chart .ex-state-line {
+  fill: none;
+  stroke: var(--ex-ink-3);
+  stroke-width: 0.6px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.ex-chart .ex-county.is-active {
+  stroke: var(--ex-strong);
+  stroke-width: 1.6px;
+}
+/* continuous color legend (built by Ex.ramp) */
+.ex-ramp {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-xs);
+  color: var(--ex-sub);
+  max-width: 22rem;
+}
+.ex-ramp__title {
+  margin-bottom: var(--ex-s1);
+}
+.ex-ramp__bar {
+  height: 0.6rem;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(25, 20, 69, 0.15);
+}
+.ex-ramp__ends {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--ex-s1);
+  font-variant-numeric: tabular-nums;
+}
+
+/* legend. Two or more series always get one; the swatch matches the mark. */
+.ex-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ex-s2) var(--ex-s5);
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+  color: var(--ex-sub);
+  margin-bottom: var(--ex-s3);
+}
+.ex-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+/* tooltip (one per page, built by Ex.tooltip) */
+.ex-tip {
+  position: fixed;
+  z-index: 3000;
+  pointer-events: none; /* only while shown: then the pointer can move onto it (WCAG 1.4.13) */
+  max-width: min(18rem, calc(100vw - 16px));
+  padding: 0.6rem 0.8rem;
+  background: var(--ex-ink);
+  color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 10px 28px -6px rgba(25, 20, 69, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+  line-height: 1.35;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.1s, transform 0.1s;
+}
+.ex-tip.is-on {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.ex-tip__title {
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.35rem;
+}
+.ex-tip__row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.55rem;
+  align-items: baseline;
+}
+.ex-tip__row + .ex-tip__row {
+  margin-top: 0.2rem;
+}
+.ex-tip__key {
+  width: 0.9rem;
+  height: 0;
+  border-top: 3px solid var(--k, #fff);
+  align-self: center;
+}
+.ex-tip__key--dash {
+  border-top-style: dashed;
+}
+.ex-tip__key--obs {
+  --k: #9a8ff0;
+}
+.ex-tip__key--est {
+  --k: #d2b84f;
+}
+.ex-tip__key--ref {
+  --k: #35cdbf;
+}
+.ex-tip__name {
+  color: #cfcce6;
+}
+.ex-tip__val {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.ex-tip__note {
+  margin-top: 0.4rem;
+  font-size: var(--ex-t-xs);
+  color: #cfcce6;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ex-tip,
+  .ex-mark,
+  .ex-btn,
+  .ex-seg span,
+  .ex-select,
+  .ex-input,
+  .ex-combo__input {
+    transition: none;
+  }
+  .ex-tip {
+    transform: none;
+  }
+}
+
+/* data table fallback (inside <details class="ex-data">) */
+.ex-data {
+  font-family: var(--ex-font-ui);
+  margin-top: var(--ex-s4);
+  border-top: 1px solid var(--ex-line);
+}
+.ex-data > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: var(--ex-s3) 0;
+  font-size: var(--ex-t-sm);
+  font-weight: 600;
+  color: var(--ex-ink);
+}
+.ex-data > summary::before,
+.ex-methods > summary::after {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border: solid currentColor;
+  border-width: 0 2px 2px 0;
+  transform: rotate(-45deg);
+  transition: transform 0.15s;
+  flex: none;
+}
+.ex-data[open] > summary::before {
+  transform: rotate(45deg);
+}
+.ex-table-wrap {
+  overflow: auto;
+  max-height: 24rem;
+  border: 1px solid var(--ex-line);
+  border-radius: var(--ex-r-md);
+  background: var(--ex-paper);
+}
+.ex-table-wrap.is-short {
+  max-height: none;
+}
+.ex-table-wrap:focus-visible {
+  outline: 3px solid var(--ex-focus);
+  outline-offset: 2px;
+}
+.ex-table {
+  width: 100%;
+  font-size: var(--ex-t-sm);
+  font-variant-numeric: tabular-nums;
+}
+.ex-table caption {
+  text-align: left;
+  padding: var(--ex-s3) var(--ex-s4);
+  font-size: var(--ex-t-sm);
+  color: var(--ex-muted);
+}
+.ex-table th,
+.ex-table td {
+  padding: 0.5rem var(--ex-s4);
+  text-align: right;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--ex-line);
+  line-height: 1.35;
+}
+.ex-table th:first-child,
+.ex-table td:first-child,
+.ex-table .is-text {
+  text-align: left;
+}
+.ex-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--ex-surface);
+  color: var(--ex-ink);
+  font-weight: 600;
+  border-bottom: 1px solid var(--ex-line-strong);
+}
+.ex-table tbody th {
+  font-weight: 500;
+  color: var(--ex-ink);
+}
+.ex-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+/* ---------- methods (collapsible) ---------- */
+.ex-methods {
+  font-family: var(--ex-font-ui);
+  border: 1px solid var(--ex-line-strong);
+  border-radius: var(--ex-r-lg);
+  background: var(--ex-paper);
+}
+.ex-methods > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ex-s4);
+  padding: var(--ex-s4) var(--ex-s5);
+  font-size: var(--ex-t-lg);
+  font-weight: 600;
+  color: var(--ex-ink);
+  line-height: 1.25;
+}
+.ex-methods > summary small {
+  display: block;
+  font-size: var(--ex-t-sm);
+  font-weight: 400;
+  color: var(--ex-muted);
+  margin-top: 0.2rem;
+}
+.ex-methods > summary::after {
+  width: 0.65rem;
+  height: 0.65rem;
+  transform: rotate(45deg);
+  margin-right: 0.2rem;
+}
+.ex-methods[open] > summary::after {
+  transform: rotate(-135deg);
+}
+.ex-methods[open] > summary {
+  border-bottom: 1px solid var(--ex-line);
+}
+.ex-methods__body {
+  padding: var(--ex-s5);
+}
+.ex-methods__body > * {
+  max-width: 48rem;
+}
+.ex-steps {
+  counter-reset: ex-step;
+  display: grid;
+  gap: var(--ex-s4);
+  font-family: var(--ex-font-prose);
+  font-size: var(--ex-t-prose);
+  line-height: 1.55;
+}
+.ex-steps > li {
+  counter-increment: ex-step;
+  position: relative;
+  padding-left: 3rem;
+}
+.ex-steps > li::before {
+  content: counter(ex-step);
+  position: absolute;
+  left: 0;
+  top: -0.05rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 2px solid var(--ex-gold);
+  color: var(--ex-ink);
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ex-steps strong {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-base);
+  color: var(--ex-ink);
+  font-weight: 600;
+}
+/* source list inside methods: a plain two-column definition list */
+.ex-sources {
+  display: grid;
+  gap: var(--ex-s3);
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+}
+.ex-sources dt {
+  font-weight: 600;
+  color: var(--ex-ink);
+}
+.ex-sources dd {
+  margin: 0;
+  color: var(--ex-muted);
+  line-height: 1.5;
+}
+@media (min-width: 720px) {
+  .ex-sources {
+    grid-template-columns: minmax(12rem, 16rem) 1fr;
+    gap: var(--ex-s3) var(--ex-s5);
+  }
+}
+
+/* ---------- downloads ---------- */
+.ex-downloads__list {
+  display: grid;
+  gap: var(--ex-s4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  margin-top: var(--ex-s5);
+}
+.ex-file {
+  position: relative;
+  display: flex;
+  gap: var(--ex-s4);
+  align-items: flex-start;
+  background: var(--ex-paper);
+  border: 1px solid var(--ex-line);
+  border-radius: var(--ex-r-lg);
+  padding: var(--ex-s5);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.ex-file:hover,
+.ex-file:focus-within {
+  border-color: var(--ex-ink);
+  box-shadow: var(--ex-shadow);
+}
+.ex-file__type {
+  flex: none;
+  display: grid;
+  place-items: end center;
+  width: 3rem;
+  height: 3.75rem;
+  padding-bottom: 0.4rem;
+  font-family: var(--ex-font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ex-ink);
+  background: var(--ex-gold-tint);
+  border: 1.5px solid var(--ex-gold);
+  /* folded corner */
+  clip-path: polygon(0 0, 70% 0, 100% 24%, 100% 100%, 0 100%);
+}
+.ex-file__body {
+  min-width: 0;
+}
+.ex-file__title {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-base);
+  font-weight: 600;
+  line-height: 1.3;
+}
+.ex-file__title a {
+  color: var(--ex-ink);
+  text-decoration: none;
+}
+/* the whole card is the link target */
+.ex-file__title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--ex-r-lg);
+}
+.ex-file__title a:focus-visible {
+  outline: none;
+}
+.ex-file__title a:focus-visible::after {
+  outline: 3px solid var(--ex-focus);
+  outline-offset: 2px;
+}
+.ex-file__desc {
+  font-size: var(--ex-t-sm);
+  line-height: 1.5;
+  color: var(--ex-muted);
+  margin-top: var(--ex-s1);
+}
+.ex-file__meta {
+  font-size: var(--ex-t-xs);
+  font-weight: 500;
+  color: var(--ex-ink-3);
+  margin-top: var(--ex-s2);
+}
+
+/* ---------- closing CTA ---------- */
+.ex-cta__grid {
+  display: grid;
+  gap: var(--ex-s7);
+  align-items: start;
+}
+@media (min-width: 900px) {
+  .ex-cta__grid {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: var(--ex-s8);
+  }
+}
+.ex-cta__main > * + * {
+  margin-top: var(--ex-s4);
+}
+.ex-cta .ex-h2 {
+  font-size: clamp(2rem, 4.2vw, 3rem);
+  color: #fff;
+  max-width: 16em;
+}
+.ex-cta__text {
+  font-family: var(--ex-font-prose);
+  font-size: var(--ex-t-lg);
+  line-height: 1.5;
+  color: #dcd9ee;
+  max-width: 32em;
+}
+.ex-cta__fine {
+  font-size: var(--ex-t-sm);
+  color: #b9b6d3;
+}
+.ex-cta__more {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: var(--ex-s4);
+}
+.ex-cta__more-h {
+  font-size: var(--ex-t-sm);
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: var(--ex-s2);
+}
+.ex-cta__more li + li {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+.ex-cta__more li a {
+  display: block;
+  padding: var(--ex-s3) 0;
+  text-decoration: none;
+}
+.ex-cta__more-who {
+  display: block;
+  font-size: var(--ex-t-xs);
+  color: #b9b6d3;
+}
+.ex-cta__more-t {
+  display: block;
+  font-size: var(--ex-t-lg);
+  line-height: 1.25;
+  color: #fff;
+  font-family: var(--ex-font-display);
+}
+.ex-cta__more li a:hover .ex-cta__more-t {
+  text-decoration: underline;
+  text-decoration-color: var(--ex-gold);
+  text-underline-offset: 4px;
+}
+.ex-cta__all {
+  font-size: var(--ex-t-sm);
+  font-weight: 600;
+}
+
+.ex-noscript {
+  max-width: var(--ex-wide);
+  margin: var(--ex-s5) auto 0;
+  padding: 0 var(--ex-gutter);
+}
+
+/* ---------- small screens ---------- */
+@media (max-width: 639px) {
+  .ex-prose {
+    font-size: 1.125rem;
+  }
+  .ex-methods > summary {
+    padding: var(--ex-s4);
+    font-size: 1.125rem;
+  }
+  .ex-methods__body {
+    padding: var(--ex-s4);
+  }
+  .ex-seg {
+    display: grid;
+  }
+  .ex-chart text,
+  .ex-axis .tick text {
+    font-size: 11px;
+  }
+}
+
+/* ---------- print ---------- */
+@media print {
+  .ex-subnav,
+  .ex-cta {
+    display: none;
+  }
+  .ex-hero {
+    background: none;
+    color: #000;
+    padding: 1rem 0;
+  }
+  .ex-hero__title,
+  .ex-hero__question,
+  .ex-hero__note {
+    color: #000;
+  }
+}
+
+@media (forced-colors: active) {
+  .ex-stat,
+  .ex-panel,
+  .ex-file,
+  .ex-methods {
+    border: 1px solid CanvasText;
+  }
+  .ex-seg input:checked + span {
+    outline: 2px solid Highlight;
+  }
+}
+
+/* the site's menu button is white on gold (2.5:1); on these pages it gets dark text */
+.ex-page #mainNav .navbar-toggler {
+  color: var(--ex-ink);
+}

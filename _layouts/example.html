@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+{%- comment -%}
+  Layout for the example pages (09, 10, 11): short hero, headline tiles, sticky section nav, content, downloads, CTA.
+  Page code lives in assets/examples/<nn>/ and the shared kit in assets/examples/shared/ (CLAUDE.md, content model).
+  Front matter read here:
+    persona, title, question, hero_note, stats[], sections[], downloads[],
+    cta {heading, text, button}, data, extra_css[], extra_scripts[]
+{%- endcomment -%}
+
+{% include head.html %}
+
+<body id="page-top" class="index ex-page">
+<link rel="stylesheet" href="{{ site.baseurl }}/assets/examples/shared/example.css">
+{%- for css in page.extra_css %}
+<link rel="stylesheet" href="{% if css contains '://' %}{{ css }}{% else %}{{ css | relative_url }}{% endif %}">
+{%- endfor %}
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+{% include navigation.html %}
+
+<main id="main" class="ex" tabindex="-1"{% if page.data %} data-ex-data="{{ page.data | relative_url }}"{% endif %}>
+
+{%- comment -%} Shared SVG patterns. Sized 0x0 rather than display:none, which breaks url(#id) fills. {%- endcomment -%}
+<svg class="ex-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="ex-hatch-lines" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="5" stroke="#191445" stroke-opacity=".6" stroke-width="1.1"/>
+    </pattern>
+    <pattern id="ex-hatch-muted" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="6" height="6" fill="#FFFFFF"/><line x1="0" y1="0" x2="0" y2="6" stroke="#8A87A6" stroke-width="1.6"/>
+    </pattern>
+  </defs>
+</svg>
+
+<noscript><div class="ex-noscript"><div class="ex-callout ex-callout--caution"><p class="ex-callout__title">The charts and tools on this page need JavaScript.</p><p>The text and the downloads work without it.</p></div></div></noscript>
+
+{%- assign stats = page.stats -%}
+
+{%- comment -%} A div, not <header>: the site stylesheet gives every <header> a 75vh height and a hero background. {%- endcomment -%}
+<div class="ex-hero">
+  <div class="ex-hero__inner">
+    <div class="ex-hero__meta">
+      {% if page.persona %}<p class="ex-hero__persona">{{ page.persona }}</p>{% endif %}
+      <p class="ex-hero__note">{{ page.hero_note | default: "An example on public data, not client work. No patient information." }}</p>
+    </div>
+    <h1 class="ex-hero__title">{{ page.title }}</h1>
+    {% if page.question %}<p class="ex-hero__question">{{ page.question }}</p>{% endif %}
+  </div>
+</div>
+
+{% include example/stat-tiles.html stats=stats %}
+
+<div class="ex-subnav" id="ex-subnav">
+  <div class="ex-subnav__inner">
+    <nav class="ex-subnav__nav" aria-label="On this page">
+      <ol>
+        {%- for s in page.sections %}
+        <li><a href="#{{ s.id }}">{{ s.label }}</a></li>
+        {%- endfor %}
+        {%- if page.downloads %}
+        <li><a href="#downloads">Downloads</a></li>
+        {%- endif %}
+      </ol>
+    </nav>
+  </div>
+  <div class="ex-subnav__progress" aria-hidden="true"><span></span></div>
+</div>
+
+{{ content }}
+
+{% if page.downloads %}{% include example/downloads.html downloads=page.downloads %}{% endif %}
+
+{% include example/cta.html %}
+
+</main>
+
+{% include footer.html %}
+{% include js.html %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{{ site.baseurl }}/assets/examples/shared/example.js"></script>
+{%- comment -%} extra_scripts items: a site path, or {src, integrity} for a CDN file (cdnjs or jsDelivr, exact version). {%- endcomment -%}
+{%- for item in page.extra_scripts %}
+{%- if item.src %}
+<script src="{{ item.src }}"{% if item.integrity %} integrity="{{ item.integrity }}" crossorigin="anonymous"{% endif %} referrerpolicy="no-referrer"></script>
+{%- else %}
+<script src="{{ item | relative_url }}"></script>
+{%- endif %}
+{%- endfor %}
+
+</body>
+</html>

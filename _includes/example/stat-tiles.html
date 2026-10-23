@@ -1,0 +1,19 @@
+{%- comment -%}
+  Headline stat tiles. Input: include.stats = page.stats
+  Each: value, label, note, kind (optional: "estimate" or "observed")
+{%- endcomment -%}
+{%- if include.stats and include.stats.size > 0 -%}
+<div class="ex-stats-wrap">
+  <dl class="ex-stats ex-stats--{{ include.stats.size }}" aria-label="Headline numbers">
+    {%- for s in include.stats %}
+    <div class="ex-stat">
+      <dt class="ex-stat__label">{{ s.label }}</dt>
+      <dd class="ex-stat__value">{{ s.value }}</dd>
+      {%- if s.note %}<dd class="ex-stat__note">{{ s.note }}</dd>{% endif %}
+      {%- if s.kind == "estimate" %}<dd class="ex-stat__kind ex-stat__kind--est"><span class="ex-key ex-key--est" aria-hidden="true"></span>Estimate</dd>
+      {%- elsif s.kind == "observed" %}<dd class="ex-stat__kind ex-stat__kind--obs"><span class="ex-key ex-key--obs" aria-hidden="true"></span>Observed</dd>{% endif %}
+    </div>
+    {%- endfor %}
+  </dl>
+</div>
+{%- endif -%}
