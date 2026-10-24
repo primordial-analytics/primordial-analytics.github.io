@@ -753,8 +753,10 @@ main#main.ex:focus {
   line-height: 1.5;
   color: var(--ex-ink);
 }
+.ex code,
 .ex-prose code,
 .ex-code {
+  color: var(--ex-ink);
   font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   font-size: 0.86em;
   background: var(--ex-surface-2);
@@ -1438,6 +1440,28 @@ main#main.ex:focus {
 
 /* segmented toggle: real radios, so arrow keys and labels work natively. Looks like a row of words;
    the chosen one is dark with an underline. */
+/* checkbox row: label, then a right-aligned count. <label class="ex-check"><input type="checkbox"><span>Label</span><span class="ex-check__n">12</span></label> */
+.ex-check {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--ex-s3);
+  min-height: 2.25rem;
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+  color: var(--ex-ink);
+  cursor: pointer;
+}
+.ex-check input {
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: 0;
+  accent-color: var(--ex-ink);
+}
+.ex-check__n {
+  font-variant-numeric: tabular-nums;
+  color: var(--ex-muted);
+}
 .ex-seg {
   display: inline-flex;
   flex-wrap: wrap;

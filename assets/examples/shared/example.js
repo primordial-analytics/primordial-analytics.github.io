@@ -575,6 +575,7 @@
    *   maxResults: 50,         // rendered at once; typing narrows the rest
    *   onSelect: function (item) {}   // item, or null when cleared
    * })
+   * Ids it creates: <id>-input (the text field), <id>-list (the listbox), <id>-hint (when hint is set).
    * WAI-ARIA 1.2 combobox with a listbox popup. Up/Down move, Enter selects, Escape closes (then clears),
    * Tab leaves. Returns { getValue(), setValue(v, {silent}), setItems(items), focus(), destroy() }.
    */
@@ -927,6 +928,7 @@
    *   rows: [{state: "Utah", ...}]
    * })
    * If host sits in a closed <details>, the table is built the first time it opens (big tables stay cheap).
+   * update(rows, {caption, label}) swaps the rows and, if given, the caption and region label.
    */
   Ex.dataTable = function (host, o) {
     var built = false;
@@ -963,8 +965,12 @@
     return {
       build: build,
       /** replace the rows (the table rebuilds now if it is visible, else when it is next opened) */
-      update: function (rows) {
+      update: function (rows, text) {
         if (rows) o.rows = rows;
+        if (text) {
+          if (text.caption) o.caption = text.caption;
+          if (text.label) o.label = text.label;
+        }
         built = false;
         if (!d || d.open) build();
       },
@@ -1084,7 +1090,8 @@
       ticking = false;
       measure();
       var navH = nav ? nav.getBoundingClientRect().height : 0;
-      var line = navH + sub.getBoundingClientRect().height + 24;
+      /* a section counts as current once its top passes 40% of the window (but never above the sticky bars) */
+      var line = Math.max(navH + sub.getBoundingClientRect().height + 24, global.innerHeight * 0.4);
       var idx = -1;
       targets.forEach(function (t, i) {
         if (!t) return;

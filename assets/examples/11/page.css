@@ -385,9 +385,6 @@
     padding-inline: 0.5rem;
   }
 }
-.ex code {
-  color: var(--ex-ink);
-}
 
 /* hidden must win over the kit's display rules */
 .ex .ex-field[hidden],
