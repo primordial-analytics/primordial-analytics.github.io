@@ -12,8 +12,13 @@
 
 <body id="page-top" class="index ex-page">
 <link rel="stylesheet" href="{{ site.baseurl }}/assets/examples/shared/example.css">
+{%- comment -%} extra_css items: a site path, or {href, integrity} for a CDN file (cdnjs, exact version). {%- endcomment -%}
 {%- for css in page.extra_css %}
+{%- if css.href %}
+<link rel="stylesheet" href="{{ css.href }}"{% if css.integrity %} integrity="{{ css.integrity }}" crossorigin="anonymous"{% endif %} referrerpolicy="no-referrer">
+{%- else %}
 <link rel="stylesheet" href="{% if css contains '://' %}{{ css }}{% else %}{{ css | relative_url }}{% endif %}">
+{%- endif %}
 {%- endfor %}
 
 <a class="skip-link" href="#main">Skip to content</a>

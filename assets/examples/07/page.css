@@ -111,53 +111,36 @@
 }
 
 /* ---------- the map ---------- */
-.ex .p7-map svg {
-  overflow: hidden;
-}
-.ex .p7-site {
-  fill: var(--ex-muted);
-  fill-opacity: 0.6;
-}
-.ex .p7-site.is-own {
-  fill: var(--ex-ink);
-  fill-opacity: 0.9;
-}
-.ex .p7-dot {
-  stroke: var(--ex-seq-6);
-  stroke-width: 0.75;
-  stroke-opacity: 0.55;
-}
-.ex .p7-dot.is-small {
-  stroke: var(--ex-ink-3);
-  stroke-opacity: 0.6;
-}
-.ex .p7-src {
-  fill: none;
-  stroke: var(--ex-c-est);
-  stroke-width: 1.75;
-}
+/* the map is always navy, in light and dark mode, so these colors are fixed */
 .ex .p7-cand {
-  fill: var(--ex-c-est);
-  stroke: var(--ex-ink);
-  stroke-width: 1.5;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border: 2px solid #0c0a2a;
+  transform: rotate(45deg);
+  box-shadow: 0 0 0 1px #fff, 0 0 14px 3px rgba(255, 255, 255, 0.55);
+}
+.ex .p7-map .maplibregl-marker {
+  pointer-events: none;
 }
 .ex .p7-zip-label {
+  width: 0;
+  height: 0;
+}
+.ex .p7-zip-label span {
+  position: absolute;
+  left: 12px;
+  top: 0;
+  transform: translateY(-50%);
+  white-space: nowrap;
   font-size: 11px;
   font-weight: 600;
-  fill: var(--ex-ink);
-  paint-order: stroke;
-  stroke: var(--ex-paper);
-  stroke-width: 3px;
-  stroke-linejoin: round;
+  color: #fff;
+  text-shadow: 0 0 3px #0c0a2a, 0 0 3px #0c0a2a, 0 0 6px #0c0a2a;
 }
-.ex .p7-scale path {
-  fill: none;
-  stroke: var(--ex-ink-3);
-  stroke-width: 1.5;
-}
-.ex .p7-scale text {
-  font-size: 11px;
-  fill: var(--ex-ink-3);
+.ex .p7-zip-label.is-flip span {
+  left: auto;
+  right: 12px;
 }
 
 /* ---------- the ZIP table ---------- */

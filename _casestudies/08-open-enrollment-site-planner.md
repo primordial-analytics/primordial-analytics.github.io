@@ -78,11 +78,17 @@ cta:
   button: Tell us about your program
 data: /assets/examples/08/data.json
 extra_css:
+  - href: "https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/5.6.0/maplibre-gl.min.css"
+    integrity: >-
+      sha512-ThCFU5nYVz8ubpOnjGHNGrTjZimTQ63X6t4een1DAWfKP8t39iSw2x3WlUr8EkePjBj48HeNkrAg9t9GRu+s2w==
   - /assets/examples/08/page.css
 extra_scripts:
   - src: "https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"
     integrity: >-
       sha512-4UKI/XKm3xrvJ6pZS5oTRvIQGIzZFoXR71rRBb1y2N+PbwAsKa5tPl2J6WvbEvwN3TxQCm8hMzsl/pO+82iRlg==
+  - src: "https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/5.6.0/maplibre-gl.min.js"
+    integrity: >-
+      sha512-UYgyVPlwHX0hwNIQk1W9mgdRepPxiOBEYqCcrIk85RKL6lh3YHujSSG2hf4RnCbRpPXfmJN5TtyauQWTV/wFEA==
   - /assets/examples/08/page.js
 ---
 
@@ -205,7 +211,7 @@ extra_scripts:
 <li><span class="p8-key p8-key--ring" aria-hidden="true"></span>Reach limit</li>
 </ul>
 <p class="ex-hint">Rings overlap where tracts are dense; each person counts once.</p>
-<div class="ex-chart p8-map" id="chart-map"></div>
+<div class="ex-map" id="chart-map"></div>
 <details class="ex-notes">
 <summary>Source and data<span class="ex-vh"> for the map</span></summary>
 <p id="map-def"></p>

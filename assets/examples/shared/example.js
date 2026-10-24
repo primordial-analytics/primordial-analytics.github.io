@@ -837,26 +837,58 @@
     host.appendChild(Ex.el("div", { class: "ex-ramp__ends" }, [Ex.el("span", { text: f(o.domain[0]) }), Ex.el("span", { text: f(o.domain[1]) })]));
   };
 
-  /* ---------- street map tiles ---------- */
+  /* ---------- interactive maps (MapLibre GL; the page loads it from cdnjs) ---------- */
 
-  /** Web Mercator onto the unit square: Ex.merc([lon, lat]) -> [x, y], 0 to 1. Scale by k and shift by (tx, ty) to place it. */
-  Ex.merc = d3.geoMercator().scale(1 / (2 * Math.PI)).translate([0.5, 0.5]);
+  // OpenFreeMap's dark basemap (free, no key), re-tinted along the site's navy so gold data glows on top of it
+  var BASEMAP = "https://tiles.openfreemap.org/styles/dark";
+  var navyRamp = d3.interpolateRgb("#0c0a2a", "#b3aee6");
+  function navy(c) {
+    if (Array.isArray(c)) return c.map(navy); // colors inside zoom expressions
+    var k = typeof c === "string" && d3.color(c);
+    if (!k) return c;
+    var out = d3.color(navyRamp(Math.min(1, d3.hsl(k).l * 1.7)));
+    out.opacity = k.opacity;
+    return out.formatRgb();
+  }
   /**
-   * Ex.tiles(g, {k, tx, ty, width, height}) draws OpenStreetMap's street tiles, greyed in CSS, for a map where
-   * screen = Ex.merc(p) * k + t, plus the credit line the tile policy requires. Draw it first so the data sits on top.
+   * Ex.map(host, {bounds: [[w, s], [e, n]], label}) -> a maplibregl.Map on the navy basemap. Zoom and pan by drag, pinch,
+   * the +/- buttons, the keyboard, or ctrl/cmd + scroll (plain scroll keeps scrolling the page). No rotation or tilt.
    */
-  Ex.tiles = function (g, o) {
-    var z = Math.max(0, Math.min(19, Math.ceil(Math.log2(o.k / 256)))), n = 1 << z, ts = o.k / n;
-    var layer = g.append("g").attr("class", "ex-tiles").attr("aria-hidden", "true");
-    var y1 = Math.min(n - 1, Math.floor((o.height - o.ty) / ts)), x1 = Math.floor((o.width - o.tx) / ts);
-    for (var y = Math.max(0, Math.floor(-o.ty / ts)); y <= y1; y++) {
-      for (var x = Math.floor(-o.tx / ts); x <= x1; x++) {
-        layer.append("image").attr("href", "https://tile.openstreetmap.org/" + z + "/" + (((x % n) + n) % n) + "/" + y + ".png")
-          .attr("x", o.tx + x * ts).attr("y", o.ty + y * ts).attr("width", ts + 0.5).attr("height", ts + 0.5);
-      }
+  Ex.map = function (host, o) {
+    var map = new maplibregl.Map({
+      container: host, style: BASEMAP, bounds: o.bounds, fitBoundsOptions: { padding: 28 }, maxZoom: 15,
+      cooperativeGestures: true, dragRotate: false, pitchWithRotate: false, touchPitch: false, attributionControl: { compact: true },
+    });
+    map.touchZoomRotate.disableRotation();
+    map.keyboard.disableRotation();
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+    map.on("style.load", function () {
+      map.getStyle().layers.forEach(function (l) {
+        Object.keys(l.paint || {}).forEach(function (p) {
+          if (/color$/.test(p)) map.setPaintProperty(l.id, p, navy(l.paint[p]));
+        });
+      });
+    });
+    if (o.label) map.getCanvas().setAttribute("aria-label", o.label);
+    return map;
+  };
+  /**
+   * Ex.glow(map, id, source, {color, radius, opacity}) adds a firefly point layer: a wide blurred halo under a sharp core.
+   * radius and opacity may be MapLibre expressions. Layers are named id + "-halo" and id.
+   */
+  Ex.glow = function (map, id, source, o) {
+    var r = o.radius, op = o.opacity == null ? 1 : o.opacity;
+    map.addLayer({ id: id + "-halo", type: "circle", source: source, paint: { "circle-color": o.color, "circle-radius": ["*", 2.6, r], "circle-blur": 1, "circle-opacity": ["*", 0.45, op] } });
+    map.addLayer({ id: id, type: "circle", source: source, paint: { "circle-color": o.color, "circle-radius": r, "circle-opacity": op, "circle-stroke-width": 0.6, "circle-stroke-color": "rgba(255,255,255,0.55)", "circle-stroke-opacity": op } });
+  };
+  /** Ex.ring([lon, lat], miles) -> a GeoJSON Polygon approximating a circle of that radius on the ground. */
+  Ex.ring = function (c, miles) {
+    var la = (c[1] * Math.PI) / 180, dy = miles / 69.047, dx = dy / Math.cos(la), pts = [];
+    for (var i = 0; i <= 72; i++) {
+      var t = (i / 72) * 2 * Math.PI;
+      pts.push([c[0] + dx * Math.cos(t), c[1] + dy * Math.sin(t)]);
     }
-    var credit = g.append("text").attr("class", "ex-tiles__credit").attr("x", o.width - 4).attr("y", o.height - 4).attr("text-anchor", "end");
-    credit.append("a").attr("href", "https://www.openstreetmap.org/copyright").text("© OpenStreetMap contributors");
+    return { type: "Polygon", coordinates: [pts] };
   };
 
   /* ---------- range slider ---------- */

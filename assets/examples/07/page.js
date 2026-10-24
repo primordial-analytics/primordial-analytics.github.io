@@ -21,7 +21,6 @@ Ex.ready(function () {
   var CLASS_ADJ = { rural: "rural", suburban: "suburban", urban: "urban" };
   var DEFAULT_CENTER = "rural_median";
   var CAP_MIN = 100, CAP_MAX = 15000;
-  var MI_DEG = (Math.PI / 180) * EARTH;
   var TYPES = [{ key: "chc" }, { key: "special" }];
 
   var TYPED = { "<i4": Int32Array, "<u4": Uint32Array, "|u1": Uint8Array, "<u2": Uint16Array, "<i2": Int16Array, "|i1": Int8Array };
@@ -441,8 +440,7 @@ Ex.ready(function () {
     var A = null; // the service area: {z, d, rows (sorted), stats}
     var P = null; // the projection for the placed site
     var RK = null; // rank result
-    var hits = [];
-    var chartMap, chartSrc;
+    var chartSrc;
 
     /* ---------- the service area ---------- */
     function areaFromCenter(ci) {
@@ -524,7 +522,7 @@ Ex.ready(function () {
         ") of " + a3(A.cLow) + " (90% margin plus or minus " + a3(A.moe) + "). Patients of all centers: " + a3(A.cPat) + "."
       ));
       $("map-hint").textContent =
-        F.int(A.z.length) + " ZIP areas within " + AREA_R + " miles. Gray squares are sites. The gold diamond is your site; rings mark where it draws most. Select a ZIP to move it.";
+        F.int(A.z.length) + " ZIP areas within " + AREA_R + " miles. Size shows residents, hollow a small ZIP, violet a site. The white diamond is your site; rings mark where it draws most. Select a ZIP to move it.";
       $("t-zips").textContent = "ZIP areas, " + (S.rank === "people" ? "most residents who are not patients first" : "largest share who are not patients first");
     }
     function rowText(z) {
@@ -577,124 +575,146 @@ Ex.ready(function () {
     }
 
     /* ---------- the map ---------- */
-    function mapGeom(w) {
-      // equirectangular miles around the area's middle
-      var xs = A.z.map(function (z) { return z; });
-      var la0 = d3.mean(xs, function (z) { return lat[z]; }), lo0 = d3.mean(xs, function (z) { return lon[z]; });
-      var cs = Math.cos((la0 * Math.PI) / 180);
-      var px = function (z) { return (lon[z] - lo0) * cs * MI_DEG; };
-      var py = function (z) { return -(lat[z] - la0) * MI_DEG; };
-      var ex = d3.extent(xs, px), ey = d3.extent(xs, py);
-      var spanX = Math.max(ex[1] - ex[0], 8), spanY = Math.max(ey[1] - ey[0], 8);
-      return { la0: la0, lo0: lo0, cs: cs, ex: ex, ey: ey, spanX: spanX, spanY: spanY };
-    }
-    var geom = null;
-    function mapHeight(w) {
-      if (!A) return 300;
-      geom = mapGeom(w);
-      var aspect = geom.spanY / geom.spanX;
-      return Math.max(240, Math.min(w < 520 ? 360 : 440, w * aspect + 60));
-    }
-    function drawMap(c) {
-      if (!A) return;
-      var g = c.g, G = geom || mapGeom(c.w);
-      var PAD = 12, W = c.width, H = c.height - 22;
-      // Web Mercator, to sit on the street tiles; s is pixels per mile at the area's middle
-      var m = A.z.map(function (z) { return Ex.merc([lon[z], lat[z]]); });
-      var mx = d3.extent(m, function (q) { return q[0]; }), my = d3.extent(m, function (q) { return q[1]; });
-      var SX = Math.max(mx[1] - mx[0], 1e-4), SY = Math.max(my[1] - my[0], 1e-4);
-      var k = Math.min((W - 2 * PAD) / SX, (H - 2 * PAD) / SY);
-      var ox = (W - SX * k) / 2 - mx[0] * k, oy = (H - SY * k) / 2 - my[0] * k;
-      var s = k / (2 * Math.PI * EARTH * G.cs);
-      var sx = function (la, lo) { return Ex.merc([lo, la])[0] * k + ox; };
-      var sy = function (la, lo) { return Ex.merc([lo, la])[1] * k + oy; };
-      var X = function (z) { return sx(lat[z], lon[z]); };
-      var Y = function (z) { return sy(lat[z], lon[z]); };
-      var vals = A.z.filter(function (z) { return !isSmall(z); }).map(metric).sort(d3.ascending);
-      var hi = vals.length ? d3.quantile(vals, 0.95) : 1;
-      if (!(hi > 0)) hi = 1;
-      var color = Ex.scaleSeq([0, hi]);
-      var maxLow = d3.max(A.z, function (z) { return C.low[z]; }) || 1;
-      var rad = function (z) { return (c.narrow ? 1.6 : 2) + (c.narrow ? 3.4 : 4.6) * Math.sqrt(C.low[z] / maxLow); };
-      renderRamp(hi);
-      // everything on the map is clipped to the plot, so nothing lands on the scale bar, the caption or the next heading
-      g.append("clipPath").attr("id", "p7-clip").append("rect").attr("width", W).attr("height", H);
-      var plot = g.append("g").attr("clip-path", "url(#p7-clip)");
-      Ex.tiles(plot, { k: k, tx: ox, ty: oy, width: W, height: H });
-      // sites in view
-      var mine = {};
-      if (S.start === "center") (ownSites[S.ci] || []).forEach(function (q) { mine[q] = 1; });
-      var others = [], own = [];
-      for (var q = 0; q < C.site_lat.length; q++) {
-        var a = slat(q), o = slon(q), x0 = sx(a, o), y0 = sy(a, o);
-        if (x0 < -6 || x0 > W + 6 || y0 < -6 || y0 > H + 6) continue;
-        (mine[q] ? own : others).push({ x: x0, y: y0 });
+    var ZIP_STOPS = ["#6b5a22", "#c9a53a", "#ffe08a"]; // dim brownish gold to pale gold: brighter is more
+    var GOLD = "#e3c45a", LAV = "#9d97e6";
+    var fc = function (features) {
+      return { type: "FeatureCollection", features: features };
+    };
+    var pt = function (lo, la, props) {
+      return { type: "Feature", properties: props || {}, geometry: { type: "Point", coordinates: [lo, la] } };
+    };
+    // dot radius in pixels: s is sqrt(low-income residents / the largest in the area)
+    var dotR = function (extra) {
+      return ["+", extra, 2.5, ["*", 6, ["get", "s"]]];
+    };
+    var map = null, mapReady = false, refit = false, marks = [];
+    function startMap() {
+      if (typeof maplibregl === "undefined") {
+        Ex.showError($("chart-map"), "The map did not load. The ZIP table below has the same numbers.");
+        return;
       }
-      plot.append("g").selectAll("rect.p7-site").data(others).join("rect").attr("class", "p7-site").attr("x", function (d) { return d.x - 2.5; }).attr("y", function (d) { return d.y - 2.5; }).attr("width", 5).attr("height", 5);
-      plot.append("g").selectAll("rect.p7-site").data(own).join("rect").attr("class", "p7-site is-own").attr("x", function (d) { return d.x - 3.5; }).attr("y", function (d) { return d.y - 3.5; }).attr("width", 7).attr("height", 7);
-      // dots, large first so small ones stay visible
-      var zs = A.z.slice().sort(function (x, y) { return C.low[y] - C.low[x]; });
-      var layer = plot.append("g");
-      hits = [];
-      zs.forEach(function (z) {
-        var small = isSmall(z), x = X(z), y = Y(z), r = rad(z);
-        layer.append("circle").attr("class", "p7-dot" + (small ? " is-small" : "")).attr("cx", x).attr("cy", y).attr("r", r)
-          .attr("fill", small ? "none" : color(metric(z)));
-        hits.push({ z: z, x: x, y: y, r: r });
-      });
-      // the top three ZIPs by the ranking, named, with their county
-      var label = function (z, text, extra) {
-        var x = X(z), flip = x + rad(z) + 8 + text.length * 6.6 > W;
-        plot.append("text").attr("class", "p7-zip-label" + (extra || "")).attr("x", flip ? x - rad(z) - 4 : x + rad(z) + 4).attr("y", Y(z)).attr("dy", "0.32em").attr("text-anchor", flip ? "end" : "start").text(text);
-      };
-      A.rows.slice(0, 3).forEach(function (z) {
-        label(z, c.narrow ? zipStr(z) : zipStr(z) + " " + countyOf(z).replace(/ (County|Parish|Borough|Municipality|Census Area)$/, ""));
-      });
-      // the placed site and the ZIPs it would draw most from
-      if (S.cand && P) {
-        P.sources.slice(0, 6).forEach(function (srcRow) {
-          if (A.z.indexOf(srcRow.z) < 0) return;
-          plot.append("circle").attr("class", "p7-src").attr("cx", X(srcRow.z)).attr("cy", Y(srcRow.z)).attr("r", rad(srcRow.z) + 3);
+      var host = $("chart-map");
+      try {
+        map = Ex.map(host, { bounds: areaBounds(), label: "Map of ZIP areas." });
+      } catch (e) {
+        map = null;
+        Ex.showError(host, "The map needs WebGL, which this browser does not have. The ZIP table below has the same numbers.");
+        return;
+      }
+      map.addControl(new maplibregl.ScaleControl({ unit: "imperial" }), "bottom-left");
+      map.on("load", function () {
+        var sites = [];
+        for (var q = 0; q < C.site_lat.length; q++) sites.push(pt(slon(q), slat(q), { c: C.site_center[q] }));
+        ["zips", "zsmall", "srcs"].forEach(function (id) {
+          map.addSource(id, { type: "geojson", data: fc([]) });
         });
-        var cx = sx(S.cand.lat, S.cand.lon), cy = sy(S.cand.lat, S.cand.lon);
-        plot.append("path").attr("class", "p7-cand").attr("d", "M" + cx + "," + (cy - 8) + "L" + (cx + 8) + "," + cy + "L" + cx + "," + (cy + 8) + "L" + (cx - 8) + "," + cy + "Z");
-      }
-      // scale bar
-      var miles = [2, 5, 10, 20, 25, 50].filter(function (m) { return m * s < W * 0.3; }).pop() || 2;
-      var bx = 4, by = c.height - 8;
-      var bar = g.append("g").attr("class", "p7-scale");
-      bar.append("path").attr("d", "M" + bx + "," + (by - 4) + "V" + by + "H" + (bx + miles * s) + "V" + (by - 4));
-      bar.append("text").attr("x", bx + miles * s + 6).attr("y", by).text(miles + " miles");
-      // hover and tap: one handler for all dots
-      var svgNode = c.svg.node();
-      function nearest(e) {
-        var r = svgNode.getBoundingClientRect(), px = e.clientX - r.left - c.margin.left, py = e.clientY - r.top - c.margin.top, best = null, bd = 1e9;
-        for (var k = 0; k < hits.length; k++) {
-          var h = hits[k], dd = (h.x - px) * (h.x - px) + (h.y - py) * (h.y - py), lim = Math.max(h.r + 3, 9);
-          if (dd < bd && dd <= lim * lim) {
-            bd = dd;
-            best = h;
-          }
-        }
-        return best;
-      }
-      c.svg.on("pointermove.p7", function (e) {
-        var h = nearest(e);
-        svgNode.style.cursor = h ? "pointer" : "";
-        if (h && e.pointerType === "mouse") Ex.tooltip.show(zipTip(h.z), { x: e.clientX, y: e.clientY }, svgNode);
-        else if (!h) Ex.tooltip.hide();
+        map.addSource("sites", { type: "geojson", data: fc(sites) });
+        Ex.glow(map, "zips", "zips", {
+          color: ["interpolate", ["linear"], ["get", "t"], 0, ZIP_STOPS[0], 0.5, ZIP_STOPS[1], 1, ZIP_STOPS[2]],
+          radius: dotR(0),
+          opacity: 0.95,
+        });
+        map.addLayer({ id: "zsmall", type: "circle", source: "zsmall", paint: { "circle-radius": 3.5, "circle-opacity": 0, "circle-stroke-width": 1, "circle-stroke-color": GOLD, "circle-stroke-opacity": 0.5 } });
+        map.addLayer({ id: "sites", type: "circle", source: "sites", paint: { "circle-color": LAV, "circle-radius": 2.8, "circle-opacity": 0.75 } });
+        map.addLayer({ id: "sites-own", type: "circle", source: "sites", filter: ["==", ["get", "c"], -1], paint: { "circle-color": "#cfcaff", "circle-radius": 4.2, "circle-opacity": 1, "circle-stroke-width": 1, "circle-stroke-color": "#0c0a2a" } });
+        map.addLayer({ id: "srcs", type: "circle", source: "srcs", paint: { "circle-radius": dotR(4), "circle-opacity": 0, "circle-stroke-width": 1.75, "circle-stroke-color": "#ffffff" } });
+        map.on("moveend", flipLabels);
+        wireMap();
+        mapReady = true;
+        renderMap();
       });
-      c.svg.on("pointerleave.p7", function () {
+    }
+    function areaBounds() {
+      var xs = d3.extent(A.z, function (z) { return lon[z]; }), ys = d3.extent(A.z, function (z) { return lat[z]; });
+      return [[xs[0], ys[0]], [xs[1], ys[1]]];
+    }
+    function renderMap() {
+      if (!A) return;
+      if (!map) startMap();
+      if (!mapReady) return;
+      var ranked = A.z.filter(function (z) { return !isSmall(z); }).map(metric).sort(d3.ascending);
+      var hi = ranked.length ? d3.quantile(ranked, 0.95) : 1;
+      if (!(hi > 0)) hi = 1;
+      var maxLow = d3.max(A.z, function (z) { return C.low[z]; }) || 1;
+      var props = function (z) {
+        return { z: z, s: Math.sqrt(C.low[z] / maxLow), t: isSmall(z) ? 0 : Math.min(1, Math.max(0, metric(z) / hi)) };
+      };
+      // large dots first, so small ones stay on top
+      var zs = A.z.slice().sort(function (x, y) { return C.low[y] - C.low[x]; });
+      var pts = function (list) {
+        return fc(list.map(function (z) { return pt(lon[z], lat[z], props(z)); }));
+      };
+      map.getSource("zips").setData(pts(zs.filter(function (z) { return !isSmall(z); })));
+      map.getSource("zsmall").setData(pts(zs.filter(isSmall)));
+      map.getSource("srcs").setData(pts(S.cand && P ? P.sources.slice(0, 6).map(function (r) { return r.z; }).filter(function (z) { return A.z.indexOf(z) >= 0; }) : []));
+      map.setFilter("sites-own", ["==", ["get", "c"], S.start === "center" ? S.ci : -1]);
+      renderRamp(hi);
+      marks.splice(0).forEach(function (m) { m.remove(); });
+      var narrow = $("chart-map").clientWidth < 520;
+      A.rows.slice(0, 3).forEach(function (z) {
+        var text = narrow ? zipStr(z) : zipStr(z) + " " + countyOf(z).replace(/ (County|Parish|Borough|Municipality|Census Area)$/, "");
+        var el = Ex.el("div", { class: "p7-zip-label", "aria-hidden": "true" }, [Ex.el("span", { text: text })]);
+        marks.push(new maplibregl.Marker({ element: el }).setLngLat([lon[z], lat[z]]).addTo(map));
+      });
+      if (S.cand && P) {
+        var dm = Ex.el("div", { "aria-hidden": "true" }, [Ex.el("div", { class: "p7-cand" })]);
+        marks.push(new maplibregl.Marker({ element: dm }).setLngLat([S.cand.lon, S.cand.lat]).addTo(map));
+      }
+      flipLabels();
+      if (refit) {
+        refit = false;
+        map.fitBounds(areaBounds(), { padding: 28, maxZoom: 11, duration: Ex.reducedMotion() ? 0 : 700 });
+      }
+      map.getCanvas().setAttribute("aria-label", "Map of " + F.int(A.z.length) + " ZIP areas within " + AREA_R + " miles. " + (S.rank === "people" ? "Brighter, larger dots have more low-income residents who are not patients." : "Brighter dots have a larger share of low-income residents who are not patients.") + " The table below the map has the same numbers.");
+    }
+    // a label near the right edge opens to the left of its dot; one that would overlap a higher-ranked label is hidden
+    function flipLabels() {
+      var w = map.getContainer().clientWidth, shown = [];
+      marks.forEach(function (m) {
+        var el = m.getElement();
+        if (!el.classList.contains("p7-zip-label")) return;
+        el.classList.toggle("is-flip", map.project(m.getLngLat()).x > w - 150);
+        el.style.visibility = "";
+        var r = el.firstChild.getBoundingClientRect();
+        var hit = shown.some(function (q) { return r.left < q.right + 4 && r.right > q.left - 4 && r.top < q.bottom + 2 && r.bottom > q.top - 2; });
+        if (hit) el.style.visibility = "hidden";
+        else shown.push(r);
+      });
+    }
+    function wireMap() {
+      var canvas = map.getCanvas();
+      var nearest = function (e) {
+        var p = e.point, best = null, bd = 1e9;
+        map.queryRenderedFeatures([[p.x - 9, p.y - 9], [p.x + 9, p.y + 9]], { layers: ["zips", "zsmall"] }).forEach(function (f) {
+          var q = map.project(f.geometry.coordinates), dd = (q.x - p.x) * (q.x - p.x) + (q.y - p.y) * (q.y - p.y);
+          if (dd < bd) {
+            bd = dd;
+            best = f.properties.z;
+          }
+        });
+        return best;
+      };
+      map.on("mousemove", function (e) {
+        var z = nearest(e);
+        canvas.style.cursor = z != null ? "pointer" : "";
+        if (z == null) return Ex.tooltip.hide();
+        // above the dot rather than beside the pointer, so on a narrow screen it never covers the pointer
+        var q = map.project([lon[z], lat[z]]), r = canvas.getBoundingClientRect(), x = r.left + q.x, y = r.top + q.y;
+        Ex.tooltip.show(zipTip(z), { rect: { left: x - 1, right: x + 1, top: y - 8, bottom: y + 8, width: 2, height: 16 } }, canvas);
+      });
+      map.on("mouseout", function () {
         Ex.tooltip.hide();
       });
-      c.svg.on("click.p7", function (e) {
-        var h = nearest(e);
-        if (h) place({ z: h.z, lat: lat[h.z], lon: lon[h.z] }, "map");
+      map.on("dragstart", function () {
+        Ex.tooltip.hide(true);
       });
-      c.svg.attr("aria-label", "Map of " + F.int(A.z.length) + " ZIP areas within " + AREA_R + " miles. " + (S.rank === "people" ? "Darker dots have more low-income residents who are not patients." : "Darker dots have a larger share of low-income residents who are not patients.") + " The table below the map has the same numbers.");
+      map.on("click", function (e) {
+        var z = nearest(e);
+        if (z != null) place({ z: z, lat: lat[z], lon: lon[z] }, "map");
+      });
     }
     function renderRamp(hi) {
-      Ex.ramp($("ramp"), { title: S.rank === "people" ? "Low-income residents who are not patients, per ZIP" : "Share of low-income residents who are not patients", domain: [0, hi], format: S.rank === "people" ? F.int : function (v) { return F.pct(v, 0); } });
+      Ex.ramp($("ramp"), { title: S.rank === "people" ? "Low-income residents who are not patients, per ZIP" : "Share of low-income residents who are not patients", stops: ZIP_STOPS, domain: [0, hi], format: S.rank === "people" ? F.int : function (v) { return F.pct(v, 0); } });
     }
     function zipTip(z) {
       var r = reachOf(z);
@@ -726,7 +746,7 @@ Ex.ready(function () {
       renderSite();
       if (!capOnly) {
         renderTable();
-        chartMap.redraw();
+        renderMap();
       }
       rankNearby(P, cand.lat, cand.lon, S.cap, S.type, cand, function (r) {
         RK = r;
@@ -859,13 +879,6 @@ Ex.ready(function () {
     function axisX(c, x, ticks, h, fmt) {
       c.g.append("g").attr("class", "ex-axis").attr("transform", "translate(0," + h + ")").call(d3.axisBottom(x).ticks(ticks).tickSize(0).tickPadding(8).tickFormat(fmt));
     }
-    chartMap = Ex.chart($("chart-map"), {
-      label: "Map of ZIP areas.",
-      margin: { top: 6, right: 6, bottom: 4, left: 6 },
-      height: mapHeight,
-      maxHeight: 640,
-      render: drawMap,
-    });
     chartSrc = Ex.chart($("chart-src"), {
       label: "Dot plot of the ZIP areas a new site would draw most patients from.",
       margin: function (w) {
@@ -1156,6 +1169,7 @@ Ex.ready(function () {
     }
     function setAnchor() {
       S.shown = 6;
+      refit = true;
       A = S.start === "center" ? areaFromCenter(S.ci) : (function () { var w0 = S.start === "zip" ? within(lat[S.az], lon[S.az], AREA_R) : within(S.pt.lat, S.pt.lon, AREA_R); return { z: w0.z, d: w0.d }; })();
       sortArea();
       areaStats();
@@ -1230,7 +1244,7 @@ Ex.ready(function () {
         sortArea();
         renderArea();
         renderTable();
-        chartMap.redraw();
+        renderMap();
         Ex.live("Ranked by " + (S.rank === "people" ? "people" : "share") + ".");
       });
     });

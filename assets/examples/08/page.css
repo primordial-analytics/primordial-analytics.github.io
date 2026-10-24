@@ -55,77 +55,54 @@
   max-width: 42rem;
 }
 
-/* ---------- map key ---------- */
+/* ---------- map key (swatches drawn on the navy of the map) ---------- */
 .ex .p8-key {
   display: inline-block;
-  width: 0.8rem;
-  height: 0.8rem;
+  width: 1rem;
+  height: 1rem;
   margin-right: 0.45rem;
-  vertical-align: -0.08em;
+  vertical-align: -0.2em;
+  box-sizing: border-box;
+  background: #0c0a2a;
 }
 .ex .p8-key--bubble {
   border-radius: 50%;
-  background: var(--ex-c-est);
-  opacity: 0.8;
+  background: radial-gradient(circle, #e3c45a 0 32%, rgba(227, 196, 90, 0.35) 48%, #0c0a2a 72%);
 }
 .ex .p8-key--site {
-  background: var(--ex-strong);
+  border-radius: 2px;
+  background: #fff;
+  border: 2px solid #e3c45a;
+  outline: 1.5px solid #0c0a2a;
 }
 .ex .p8-key--ring {
-  border: 1.5px dashed var(--ex-strong);
+  border: 2px dashed #fff;
   border-radius: 50%;
+  box-shadow: 0 0 0 1.5px #0c0a2a;
 }
 
 /* ---------- map ---------- */
-.ex .p8-map svg {
-  display: block;
-  width: 100%;
-  touch-action: manipulation;
-  overflow: hidden;
+.ex-map .p8-pin {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  box-sizing: border-box;
+  border: 2px solid #e3c45a;
+  border-radius: 3px;
+  background: #fff;
+  color: #0c0a2a;
+  font: 700 12px/1 var(--ex-font-ui);
+  box-shadow: 0 0 0 2px rgba(12, 10, 42, 0.75), 0 1px 8px rgba(0, 0, 0, 0.6);
 }
-.ex-chart .p8-county {
-  fill: none;
-  stroke: var(--ex-ink);
-  stroke-width: 1.5;
-  vector-effect: non-scaling-stroke;
+.ex-map .p8-pin.is-existing {
+  border-color: #fff;
+  background: #0c0a2a;
+  color: #fff;
 }
-.ex-chart .p8-cand {
-  fill: var(--ex-c-axis);
-}
-.ex-chart .p8-tract {
-  fill: var(--ex-c-est);
-  stroke: var(--ex-c-est);
-  stroke-width: 0.75;
-  cursor: default;
-}
-.ex-chart .p8-ring {
-  fill: none;
-  stroke: var(--ex-strong);
-  stroke-width: 1.25;
-  stroke-dasharray: 4 4;
-  pointer-events: none;
-}
-.ex-chart .p8-site {
-  cursor: default;
-}
-.ex-chart .p8-site__box {
-  fill: var(--ex-strong);
-  stroke: var(--ex-paper);
-  stroke-width: 2;
-}
-.ex-chart .p8-site__box.is-existing {
-  fill: var(--ex-paper);
-  stroke: var(--ex-strong);
-  stroke-width: 2;
-}
-.ex-chart text.p8-site__n {
-  font-size: 11px;
-  font-weight: 700;
-  fill: var(--ex-paper);
-  pointer-events: none;
-}
-.ex-chart text.p8-site__n.is-existing {
-  fill: var(--ex-strong);
+.ex-map .p8-pin:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
 }
 
 /* ---------- tract and sites charts ---------- */
@@ -217,22 +194,6 @@
 }
 .ex .p8-sites__t span {
   color: var(--ex-muted);
-}
-
-/* map anchors: place names and the scale bar */
-.ex-chart text.p8-place,
-.ex-chart .p8-scale text {
-  font-size: 11px;
-  fill: var(--ex-ink);
-  stroke: var(--ex-paper);
-  stroke-width: 3px;
-  paint-order: stroke;
-  pointer-events: none;
-}
-.ex-chart .p8-scale path {
-  fill: none;
-  stroke: var(--ex-ink);
-  stroke-width: 1.5;
 }
 
 /* a wide table's caption wraps at the width of the scrolling region instead of running off its right edge */

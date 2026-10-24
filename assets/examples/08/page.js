@@ -136,14 +136,11 @@ Ex.ready(function () {
 
     /* ---------- county outlines (shared us-atlas file, already projected in Albers) ---------- */
     var OUT = { county: {} };
-    var proj = Ex.merc; // Web Mercator, to sit on the street tiles
     var albers = d3.geoAlbersUsa().scale(1300).translate([487.5, 305]);
-    function toMerc(k, tx, ty) {
-      return d3.geoTransform({ point: function (x, y) { var q = proj(albers.invert([x, y])); this.stream.point(q[0] * k + tx, q[1] * k + ty); } });
-    }
     Ex.loadData(Ex.assetUrl("us-counties-albers-10m.json")).then(function (topo) {
       topojson.feature(topo, topo.objects.counties).features.forEach(function (f) { OUT.county[f.id] = f; });
-      if (mapChart) mapChart.redraw();
+      mapFor = null; // refit to the outline now that it is here
+      if (cur.plan) drawMap(cur.plan);
     }, function () {});
 
     /* ---------- pickers ---------- */
@@ -437,7 +434,7 @@ Ex.ready(function () {
       renderExisting(p);
       stateHint();
       mapLabelAndDefs(p);
-      if (mapChart) mapChart.redraw();
+      drawMap(p);
       renderTractsSection();
       renderFullPlan(p);
       renderTractsTable(p);
@@ -540,34 +537,33 @@ Ex.ready(function () {
     if (mq.addEventListener) mq.addEventListener("change", placeMoves);
 
     /* ---------- the map ---------- */
-    var mapChart = null, mapLayout = null;
+    var GOLD = "#e3c45a", EMPTY = { type: "FeatureCollection", features: [] };
+    var map = null, mapReady = false, mapFor = null, pins = [], unpin = null;
     function mapLabelAndDefs(p) {
       var V = p.V;
       $("t-map").textContent = "Uninsured people who could enroll, by tract, " + V.co.n + ", " + cur.abbr;
-      $("map-def").textContent = "Each bubble is a census tract at its internal point; its area is the expected number of people counted under Who counts (" + whoText() + "). Darker bubbles are within reach of a site. The dashed ring is the reach limit: " +
+      $("map-def").textContent = "Each dot is a census tract at its internal point; its area is the expected number of people counted under Who counts (" + whoText() + "). Brighter dots are within reach of a site. The dashed ring is the reach limit: " +
         F.num(p.R, 1).replace(/\.0$/, "") + " miles of travel, which is " + F.num(p.R / CIRC, 1) + " miles in a straight line. A site reaches a tract at full weight when it is next door and at " + F.pct(Math.exp(-2), 0) + " at the limit.";
     }
-    function fit(p, W, H) {
-      var V = p.V, pts = [], xs = [], ys = [], i;
-      for (i = 0; i < V.n; i++) {
-        var q = proj([V.lon[i], V.lat[i]]);
-        pts.push(q);
-        if (q) { xs.push(q[0]); ys.push(q[1]); }
-      }
-      if (!xs.length) return null;
+    function unproject(a) {
+      return typeof a[0] === "number" ? albers.invert(a) : a.map(unproject).filter(Boolean);
+    }
+    function countyLine(V) {
       var f = OUT.county[V.co.f];
-      if (f) {
-        var bb = d3.geoPath(toMerc(1, 0, 0)).bounds(f);
-        xs.push(bb[0][0], bb[1][0]);
-        ys.push(bb[0][1], bb[1][1]);
+      return f ? { type: "Feature", geometry: { type: f.geometry.type, coordinates: unproject(f.geometry.coordinates) } } : null;
+    }
+    function boundsOf(V, line) {
+      var b = [180, 90, -180, -90];
+      function grow(a) {
+        if (typeof a[0] !== "number") return a.forEach(grow);
+        b = [Math.min(b[0], a[0]), Math.min(b[1], a[1]), Math.max(b[2], a[0]), Math.max(b[3], a[1])];
       }
-      var x0 = d3.min(xs), x1 = d3.max(xs), y0 = d3.min(ys), y1 = d3.max(ys);
-      var bw = Math.max(x1 - x0, 1e-4), bh = Math.max(y1 - y0, 1e-4); // 1e-4 of the world is about 2.5 miles
-      var pad = 0.05, k = Math.min(W / (bw * (1 + 2 * pad)), H / (bh * (1 + 2 * pad)));
-      var tx = (W - bw * k) / 2 - x0 * k, ty = (H - bh * k) / 2 - y0 * k;
-      var j = pts.findIndex(Boolean), a = pts[j], b2 = proj([V.lon[j], V.lat[j] + 0.05]);
-      var pxMile = a && b2 ? Math.hypot(b2[0] - a[0], b2[1] - a[1]) / (0.05 * 69.047) : 1;
-      return { k: k, tx: tx, ty: ty, pts: pts, pxMile: pxMile * k, feat: f };
+      if (line) { // the mainland: a county's islands would shrink the map to a speck
+        var g = line.geometry, polys = g.type === "Polygon" ? [g.coordinates] : g.coordinates;
+        grow(polys.reduce(function (a, c) { return c[0].length > a[0].length ? c : a; }));
+      } else for (var i = 0; i < V.n; i++) grow([V.lon[i], V.lat[i]]);
+      var gx = Math.max(0, 0.04 - (b[2] - b[0])) / 2, gy = Math.max(0, 0.04 - (b[3] - b[1])) / 2; // a county of one tract still shows about 3 miles
+      return [[b[0] - gx, b[1] - gy], [b[2] + gx, b[3] + gy]];
     }
     function tractTip(p, i) {
       var V = p.V, rows = [{ name: "Counted", value: F.int(p.w[i]) + " (" + F.int(Math.max(0, p.w[i] - Z90 * p.sd[i])) + " to " + F.int(p.w[i] + Z90 * p.sd[i]) + ")", color: "est" }];
@@ -575,108 +571,85 @@ Ex.ready(function () {
       rows.push({ name: "Within reach", value: F.pct(p.cov[i], 0) });
       return { title: "Tract " + tractName(V.g[i]) + (V.zip[i] ? ", " + area(V.zip[i]) : ""), rows: rows, note: V.rk[i] ? "Can be ranked against the county." : "Cannot be told apart from the county median." };
     }
-    function drawMap(c) {
-      var p = cur.plan;
+    function tractAt(pt) {
+      var best = null, bd = Infinity;
+      map.queryRenderedFeatures([[pt.x - 6, pt.y - 6], [pt.x + 6, pt.y + 6]], { layers: ["tracts"] }).forEach(function (f) {
+        var q = map.project(f.geometry.coordinates), d = Math.hypot(q.x - pt.x, q.y - pt.y);
+        if (d < bd) { bd = d; best = f; }
+      });
+      return best;
+    }
+    function startMap(p) {
+      var host = $("chart-map");
+      try {
+        map = Ex.map(host, { bounds: boundsOf(p.V, countyLine(p.V)), label: "Map of the selected county" });
+      } catch (e) {
+        map = false;
+        Ex.showError(host, "The map did not load. The tract table below has the same numbers.");
+        return;
+      }
+      mapFor = p.V;
+      map.addControl(new maplibregl.ScaleControl({ unit: "imperial" }), "bottom-left");
+      map.on("load", function () {
+        ["county", "rings", "cands", "tracts"].forEach(function (id) { map.addSource(id, { type: "geojson", data: EMPTY }); });
+        map.addLayer({ id: "county", type: "line", source: "county", paint: { "line-color": "#e6e3ff", "line-width": 1.75, "line-opacity": 0.9 } });
+        Ex.glow(map, "tracts", "tracts", { color: GOLD, radius: ["max", 1.5, ["get", "r"]], opacity: ["get", "o"] });
+        map.addLayer({ id: "cands", type: "circle", source: "cands", paint: { "circle-radius": 2.25, "circle-color": "#b3aee6", "circle-opacity": 0.55 } });
+        map.addLayer({ id: "rings", type: "line", source: "rings", paint: { "line-color": "#ffffff", "line-width": 1.25, "line-dasharray": [3, 3], "line-opacity": 0.85 } });
+        ["tracts-halo", "tracts"].forEach(function (id) { map.setLayoutProperty(id, "circle-sort-key", ["get", "k"]); }); // small tracts on top of big ones
+        mapReady = true;
+        drawMap(cur.plan);
+      });
+      // hover on a mouse, tap on a touch screen
+      map.on("mousemove", function (e) {
+        var f = tractAt(e.point);
+        map.getCanvas().style.cursor = f ? "pointer" : "";
+        if (f) Ex.tooltip.show(tractTip(cur.plan, f.properties.i), { x: e.originalEvent.clientX, y: e.originalEvent.clientY }, map.getCanvas());
+        else Ex.tooltip.hide();
+      });
+      map.on("click", function (e) {
+        var f = tractAt(e.point);
+        if (f) Ex.tooltip.show(tractTip(cur.plan, f.properties.i), { x: e.originalEvent.clientX, y: e.originalEvent.clientY }, map.getCanvas());
+        else Ex.tooltip.hide(true);
+      });
+      map.getCanvas().addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") Ex.tooltip.hide(); });
+      map.on("movestart", function () { Ex.tooltip.hide(true); });
+    }
+    function drawMap(p) {
       if (!p) return;
-      var V = p.V, W = c.width, H = c.height, svg = c.svg, g = c.g;
-      var L = mapLayout = fit(p, W, H);
-      svg.attr("aria-label", "Map of " + V.co.n + ", " + cur.abbr + ". " + F.plural(p.sel.length, "site") + " reach about " + a3(p.reach) + " of " + a3(p.total) + " people counted.");
-      if (!L) return;
-      var X = function (q) { return q[0] * L.k + L.tx; }, Y = function (q) { return q[1] * L.k + L.ty; };
-      Ex.tiles(g, { k: L.k, tx: L.tx, ty: L.ty, width: W, height: H });
-      if (L.feat) {
-        g.append("path").attr("class", "p8-county").attr("d", d3.geoPath(toMerc(L.k, L.tx, L.ty))(L.feat));
+      if (map === null) startMap(p);
+      if (!mapReady) return;
+      var V = p.V, line = countyLine(V), i;
+      if (V !== mapFor) {
+        mapFor = V;
+        map.fitBounds(boundsOf(V, line), { padding: 28, maxZoom: 15, duration: Ex.reducedMotion() ? 0 : 700 });
       }
-      // candidate venues as quiet ticks
-      if (p.mode === "venue") {
-        g.append("g").selectAll("circle").data(V.ven).enter().append("circle").attr("class", "p8-cand").attr("r", 2)
-          .each(function (v) { var q = proj([v.lon, v.lat]); if (q) { this.setAttribute("cx", X(q)); this.setAttribute("cy", Y(q)); } else this.remove(); });
+      map.getCanvas().setAttribute("aria-label", "Map of " + V.co.n + ", " + cur.abbr + ". " + F.plural(p.sel.length, "site") + " reach about " + a3(p.reach) + " of " + a3(p.total) + " people counted.");
+      var wmax = d3.max(Array.prototype.slice.call(p.w)) || 1, box = map.getContainer();
+      var rmax = Math.max(4, Math.min(20, 0.5 * Math.sqrt(box.clientWidth * box.clientHeight / Math.max(V.n, 1))));
+      var tracts = [];
+      for (i = 0; i < V.n; i++) {
+        if (p.w[i] > 0) tracts.push({ type: "Feature", properties: { i: i, k: -p.w[i], r: rmax * Math.sqrt(p.w[i] / wmax), o: 0.3 + 0.7 * p.cov[i] }, geometry: { type: "Point", coordinates: [V.lon[i], V.lat[i]] } });
       }
-      // tract bubbles, big first so small ones stay hoverable
-      var wmax = d3.max(Array.prototype.slice.call(p.w)) || 1;
-      var rows = [];
-      for (var i = 0; i < V.n; i++) if (L.pts[i] && p.w[i] > 0) rows.push(i);
-      var rmax = Math.max(5, Math.min(26, 0.55 * Math.sqrt(W * H / Math.max(rows.length, 1))));
-      rows.sort(function (a, b) { return p.w[b] - p.w[a]; });
-      var bubbles = g.append("g").attr("class", "p8-bubbles");
-      bubbles.selectAll("circle").data(rows).enter().append("circle").attr("class", "p8-tract")
-        .attr("cx", function (i) { return X(L.pts[i]); }).attr("cy", function (i) { return Y(L.pts[i]); })
-        .attr("r", function (i) { return Math.max(1.4, rmax * Math.sqrt(p.w[i] / wmax)); })
-        .attr("fill-opacity", function (i) { return (0.14 + 0.78 * p.cov[i]).toFixed(3); });
-      // rings and sites
-      var sitePts = p.sel.map(function (j) { return p.mode === "venue" ? proj([p.V.ven[j].lon, p.V.ven[j].lat]) : L.pts[p.set.ids[j]]; });
-      // place names: the ZIP areas of the largest tracts, where the label fits beside a bubble and clear of other labels and sites
-      var taken = sitePts.filter(Boolean).map(function (q) { return [X(q) - 14, Y(q) - 14, X(q) + 14, Y(q) + 14]; }), seen = {}, named = 0;
-      var places = g.append("g").attr("class", "p8-places").attr("aria-hidden", "true");
-      function free(b) {
-        if (b[0] < 2 || b[2] > W - 2 || b[1] < 2 || b[3] > H - 22) return false;
-        return !taken.some(function (t) { return b[0] < t[2] && b[2] > t[0] && b[1] < t[3] && b[3] > t[1]; });
-      }
-      rows.some(function (i) {
-        var z = V.zip[i], nm = z && ((cur.st.zip_city || {})[z] || "ZIP " + z);
-        if (!nm || seen[nm] || !L.pts[i]) return false;
-        var cx = X(L.pts[i]), cy = Y(L.pts[i]), r = Math.max(1.4, rmax * Math.sqrt(p.w[i] / wmax)), w = nm.length * 6 + 4;
-        var opts = [[cx + r + 3, "start", cx + r + 3, cx + r + 3 + w], [cx - r - 3, "end", cx - r - 3 - w, cx - r - 3]];
-        for (var o = 0; o < opts.length; o++) {
-          var b = [Math.min(opts[o][2], opts[o][3]), cy - 8, Math.max(opts[o][2], opts[o][3]), cy + 8];
-          if (free(b)) {
-            places.append("text").attr("class", "p8-place").attr("x", opts[o][0]).attr("y", cy).attr("dy", "0.32em").attr("text-anchor", opts[o][1]).text(nm);
-            taken.push(b); seen[nm] = 1; named++;
-            break;
-          }
-        }
-        return named >= 4;
+      map.getSource("tracts").setData({ type: "FeatureCollection", features: tracts });
+      map.getSource("county").setData(line || EMPTY);
+      map.getSource("cands").setData({ type: "FeatureCollection", features: p.mode === "venue" ? V.ven.map(function (v) { return { type: "Feature", properties: {}, geometry: { type: "Point", coordinates: [v.lon, v.lat] } }; }) : [] });
+      var at = p.sel.map(function (s) { return p.mode === "venue" ? [V.ven[s].lon, V.ven[s].lat] : [V.lon[p.set.ids[s]], V.lat[p.set.ids[s]]]; });
+      map.getSource("rings").setData({ type: "FeatureCollection", features: at.map(function (c) { return { type: "Feature", properties: {}, geometry: Ex.ring(c, p.R / CIRC) }; }) });
+      // numbered site markers
+      if (unpin) unpin();
+      pins.forEach(function (m) { m.remove(); });
+      pins = p.sel.map(function (s, q) {
+        var el = Ex.el("div", { class: "p8-pin" + (p.fixed.indexOf(s) >= 0 ? " is-existing" : ""), text: String(q + 1) });
+        el.dataset.q = q;
+        return new maplibregl.Marker({ element: el }).setLngLat(at[q]).addTo(map);
       });
-      // scale bar
-      var miles = [0.5, 1, 2, 5, 10, 20, 50].filter(function (m) { return m * L.pxMile <= W * 0.3; }).pop();
-      if (miles) {
-        var bw = miles * L.pxMile, sb = g.append("g").attr("class", "p8-scale").attr("transform", "translate(8," + (H - 12) + ")").attr("aria-hidden", "true");
-        sb.append("path").attr("d", "M0,-4V0H" + bw + "V-4");
-        sb.append("text").attr("x", bw + 6).attr("dy", "0.32em").text(miles + (miles === 1 ? " mile" : " miles"));
-      }
-      var siteG = g.append("g");
-      p.sel.forEach(function (j, q) {
-        var pt = sitePts[q];
-        if (!pt) return;
-        siteG.append("circle").attr("class", "p8-ring").attr("cx", X(pt)).attr("cy", Y(pt)).attr("r", p.R / CIRC * L.pxMile);
-      });
-      var marks = siteG.selectAll("g.p8-site").data(p.sel.map(function (j, q) { return { j: j, q: q }; })).enter().append("g").attr("class", "p8-site ex-mark")
-        .each(function (d) {
-          var pt = sitePts[d.q];
-          if (!pt) { this.remove(); return; }
-          var existing = p.fixed.indexOf(d.j) >= 0;
-          var s = d3.select(this).attr("transform", "translate(" + X(pt) + "," + Y(pt) + ")");
-          s.append("rect").attr("class", "p8-site__box" + (existing ? " is-existing" : "")).attr("x", -9).attr("y", -9).attr("width", 18).attr("height", 18);
-          s.append("rect").attr("class", "ex-focus-ring").attr("x", -13).attr("y", -13).attr("width", 26).attr("height", 26).attr("rx", 3);
-          s.append("text").attr("class", "p8-site__n" + (existing ? " is-existing" : "")).attr("text-anchor", "middle").attr("dy", "0.35em").text(d.q + 1);
-        });
-      c.cleanup(Ex.tooltip.attach(marks, function (el) {
-        var d = el.__data__, sr = p.siteReach[d.q], v = p.mode === "venue" ? p.V.ven[d.j] : null;
-        return { title: "Site " + (d.q + 1) + ": " + siteLabel(p, d.q), rows: [{ name: "Expected reach", value: F.int(sr.people) + " people" }, { name: "Tracts within reach", value: F.int(sr.tracts) }],
-                 note: v ? [v.addr, v.city, v.zip].filter(Boolean).join(", ") + (p.fixed.indexOf(d.j) >= 0 ? ". You use it." : "") : "A pop-up at the tract's center." };
-      }));
-      Ex.roving(g.node(), ".p8-site");
-      // hover on bubbles
-      var node = svg.node();
-      function over(e) {
-        var t = e.target;
-        if (t.classList && t.classList.contains("p8-tract")) Ex.tooltip.show(tractTip(p, t.__data__), { x: e.clientX, y: e.clientY }, node);
-        else if (!(t.closest && t.closest(".p8-site"))) Ex.tooltip.hide();
-      }
-      function out() { Ex.tooltip.hide(); }
-      node.addEventListener("pointermove", over);
-      node.addEventListener("pointerdown", over);
-      node.addEventListener("pointerleave", out);
-      c.cleanup(function () {
-        node.removeEventListener("pointermove", over);
-        node.removeEventListener("pointerdown", over);
-        node.removeEventListener("pointerleave", out);
+      unpin = Ex.tooltip.attach(pins.map(function (m) { return m.getElement(); }), function (el) {
+        var q = +el.dataset.q, j = p.sel[q], sr = p.siteReach[q], v = p.mode === "venue" ? V.ven[j] : null;
+        return { title: "Site " + (q + 1) + ": " + siteLabel(p, q), rows: [{ name: "Expected reach", value: F.int(sr.people) + " people" }, { name: "Tracts within reach", value: F.int(sr.tracts) }],
+                 note: v ? [v.addr, v.city, v.zip].filter(Boolean).join(", ") + (p.fixed.indexOf(j) >= 0 ? ". You use it." : "") : "A pop-up at the tract's center." };
       });
     }
-    mapChart = Ex.chart($("chart-map"), {
-      label: "Map of the selected county", margin: { top: 4, right: 4, bottom: 4, left: 4 },
-      height: function (w) { return Math.max(300, Math.min(560, w * 0.72)); }, render: drawMap,
-    });
 
     /* ---------- tables: tracts, full plan, call sheet ---------- */
     function makeTable(slot, host, spec) {

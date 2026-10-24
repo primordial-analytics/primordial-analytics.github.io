@@ -74,8 +74,12 @@ cta:
   button: Tell us about your center
 data: /assets/examples/07/data.json
 extra_css:
+  - href: https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/5.6.0/maplibre-gl.min.css
+    integrity: sha512-ThCFU5nYVz8ubpOnjGHNGrTjZimTQ63X6t4een1DAWfKP8t39iSw2x3WlUr8EkePjBj48HeNkrAg9t9GRu+s2w==
   - /assets/examples/07/page.css
 extra_scripts:
+  - src: https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/5.6.0/maplibre-gl.min.js
+    integrity: sha512-UYgyVPlwHX0hwNIQk1W9mgdRepPxiOBEYqCcrIk85RKL6lh3YHujSSG2hf4RnCbRpPXfmJN5TtyauQWTV/wFEA==
   - /assets/examples/07/page.js
 ---
 
@@ -175,7 +179,7 @@ extra_scripts:
 <h3 class="ex-figure__title" id="t-map">Low-income residents who are not patients, by ZIP</h3>
 </div>
 <div id="ramp"></div>
-<div class="ex-chart p7-map" id="chart-map"></div>
+<div class="ex-map p7-map" id="chart-map"></div>
 <p class="ex-hint" id="map-hint"></p>
 </figure>
 

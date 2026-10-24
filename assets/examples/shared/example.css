@@ -1070,21 +1070,31 @@ main#main.ex:focus {
   color: var(--ex-muted);
   margin-top: var(--ex-s2);
 }
-/* street tiles under a map (Ex.tiles): quiet enough that the data reads first */
-.ex-tiles {
-  filter: grayscale(1) contrast(0.75) brightness(1.08);
-  opacity: 0.7;
+/* interactive maps (Ex.map): a navy firefly basemap in a rounded frame */
+.ex-map {
+  position: relative;
+  height: 460px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #0c0a2a;
 }
-.ex-tiles__credit {
+@media (max-width: 520px) {
+  .ex-map {
+    height: 380px;
+  }
+}
+.ex-map .maplibregl-ctrl-attrib {
   font-size: 10px;
-  fill: var(--ex-muted);
-  paint-order: stroke;
-  stroke: #fff;
-  stroke-width: 3px;
-  stroke-linejoin: round;
 }
-.ex-tiles__credit a {
-  fill: inherit;
+.ex-map .maplibregl-ctrl-scale {
+  border-color: #e6e3ff;
+  background: rgba(12, 10, 42, 0.7);
+  color: #e6e3ff;
+  font-family: var(--ex-font-ui);
+}
+.ex-map .maplibregl-cooperative-gesture-screen {
+  font-family: inherit;
+  font-size: var(--ex-t-note);
 }
 .ex-figure img {
   display: block;
