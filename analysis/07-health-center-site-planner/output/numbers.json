@@ -1,0 +1,2613 @@
+{
+ "built": "2026-10-24",
+ "data_downloaded": "2026-10-23",
+ "data_checks": {
+  "uds_rows": 99299,
+  "zip_rows": 96587,
+  "other_zip_rows": 1356,
+  "unknown_rows": 1356,
+  "zip_rows_hidden_total": 17990,
+  "distinct_zips": 29990,
+  "zips_not_zcta_mapped_by_crosswalk": 2003,
+  "zip_rows_unmapped": 179,
+  "visible_patients_unmapped": 1479,
+  "zip_rows_mapped_without_acs": 42,
+  "visible_patients_mapped_without_acs": 103003,
+  "visible_patients_via_crosswalk": 104852,
+  "visible_patients_other_zip": 668157,
+  "visible_patients_unknown": 17524,
+  "visible_patients_zip_rows": 31883809,
+  "visible_patients_in_model_zctas": 31779327,
+  "centers": 1356,
+  "centers_without_usable_site": 18,
+  "centers_without_usable_site_patients": 152539,
+  "hidden_patients_total": 176902,
+  "hidden_cells_total": 18354,
+  "hidden_patients_pct_of_total": 0.54,
+  "national_patients_table4": 32746392,
+  "zctas_with_acs": 33772,
+  "sites": {
+   "rows": 19476,
+   "geocoded": 19404,
+   "rows_seasonal": 2475,
+   "rows_mobile_van": 1419,
+   "rows_school_setting": 4831,
+   "permanent_nonschool_delivery": 11917,
+   "added_after_cutoff": 737,
+   "lookalike_sites": 713
+  },
+  "model_pairs": 522358,
+  "model_centers": 1338,
+  "lookalike_competitors": 170,
+  "cells_outside_60_miles": 3227,
+  "patients_outside_60_miles": 57825,
+  "censored_pairs": 14387,
+  "late_sites_excluded_from_main": 737
+ },
+ "model": {
+  "main": {
+   "mu": [
+    0.5411161168653947,
+    -1.2023031894592902
+   ],
+   "sigma": [
+    1.5799999490777428,
+    1.3722718500723643
+   ],
+   "beta": -0.4120080698332795,
+   "rho": [
+    4.948836575499029,
+    1.716514084411989,
+    0.5254398114534986
+   ],
+   "gamma": [
+    0.923754111561641,
+    0.6975176935735099,
+    0.5479162466410613
+   ]
+  },
+  "fit": {
+   "nit": 935,
+   "fun": -190.00069257435064,
+   "ok": true,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "gmax": 9.656670553188492e-07
+  },
+  "bootstrap_sets": 100,
+  "bootstrap_mean_iterations": 1948.0,
+  "bootstrap_spread_p10_p50_p90": {
+   "rho": {
+    "rural": [
+     4.65,
+     4.9197,
+     5.3571
+    ],
+    "suburban": [
+     1.5567,
+     1.74,
+     1.8928
+    ],
+    "urban": [
+     0.4828,
+     0.5561,
+     0.6325
+    ]
+   },
+   "gamma": {
+    "rural": [
+     0.8979,
+     0.9226,
+     0.9617
+    ],
+    "suburban": [
+     0.673,
+     0.6988,
+     0.7192
+    ],
+    "urban": [
+     0.5355,
+     0.5533,
+     0.5756
+    ]
+   }
+  },
+  "density_cuts_per_sq_mile": [
+   200.0,
+   2000.0
+  ],
+  "typical_theta_new_site": {
+   "chc": 2.491,
+   "special": 0.323
+  },
+  "typical_theta_if_center_effect_zero": {
+   "chc": 3.625,
+   "special": 0.78
+  },
+  "center_effect_median_by_type_and_sites": {
+   "chc": {
+    "1": {
+     "centers": 91,
+     "median_center_effect": -0.295
+    },
+    "2-3": {
+     "centers": 276,
+     "median_center_effect": -0.291
+    },
+    "4-10": {
+     "centers": 620,
+     "median_center_effect": 0.023
+    },
+    ">10": {
+     "centers": 289,
+     "median_center_effect": 0.531
+    }
+   },
+   "special": {
+    "1": {
+     "centers": 8,
+     "median_center_effect": -0.626
+    },
+    "2-3": {
+     "centers": 17,
+     "median_center_effect": -0.455
+    },
+    "4-10": {
+     "centers": 26,
+     "median_center_effect": 0.393
+    },
+    ">10": {
+     "centers": 11,
+     "median_center_effect": 1.162
+    }
+   }
+  },
+  "bootstrap_convergence": {
+   "refits": 100,
+   "converged": 35,
+   "iteration_cap": 2500,
+   "stopped_at_cap": 61,
+   "iterations_p10_p50_p90": [
+    313,
+    2500,
+    2500
+   ],
+   "max_abs_gradient_p50_max": [
+    0.0003727192214697234,
+    0.22827615365546786
+   ],
+   "messages": {
+    "ABNORMAL: ": 4,
+    "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH": 35,
+    "STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT": 61
+   },
+   "continued_refits": {
+    "extra_iterations": 2500,
+    "refits": 8,
+    "max_relative_change_rho": 0.0021,
+    "max_relative_change_gamma": 0.0007,
+    "max_relative_change_new_site_level_chc": 0.0018,
+    "max_relative_change_level_with_center_effect_zero_chc": 1.6806,
+    "note": "The new-site level is what the projection uses and is pinned down; the level at a zero center effect moves along a ridge between the type level, the size trend and the spread of center effects, which the projection does not use.",
+    "max_objective_change_loglik_units": 1599.2
+   }
+  },
+  "main_fit_max_abs_gradient": 9.656670553188492e-07,
+  "low_income_share_of_patients_used_for_missing": 0.892
+ },
+ "hidden_cells": {
+  "hidden_patients": 176902,
+  "hidden_cells": 18354,
+  "hidden_patients_pct_of_center_totals": 0.54,
+  "centers_with_hidden_cells": 1288,
+  "centers_where_hidden_sum_is_impossible": 0,
+  "draws_per_center": 200,
+  "mean_placed_per_hidden_cell": 9.64,
+  "zctas_with_hidden_cells": 11078,
+  "median_zcta_total_change_pct_where_hidden": 2.7,
+  "zctas_with_hidden_cells_and_under_100_visible": 3104,
+  "median_change_pct_zctas_under_100_visible": 87.2,
+  "note": "Each center's hidden sum is fixed by Table 4, so placing the censored cells cannot change the national total. They hold hidden_patients_pct_of_center_totals of patients; where they go changes ZIP counts.",
+  "payer_dirichlet_kappa_patients": 19.1
+ },
+ "in_sample_calibration": {
+  "rural": {
+   "observed": 8480434,
+   "fitted": 8419919
+  },
+  "suburban": {
+   "observed": 9105741,
+   "fitted": 9340699
+  },
+  "urban": {
+   "observed": 14021597,
+   "fitted": 14287485
+  },
+  "by_center_type": {
+   "chc": {
+    "observed": 31186386,
+    "fitted": 31614486
+   },
+   "special": {
+    "observed": 421386,
+    "fitted": 433618
+   }
+  }
+ },
+ "payer_fill_check": {
+  "table4_national_shares": {
+   "uninsured": 0.1721,
+   "medicaid": 0.4814,
+   "medicare": 0.1162,
+   "private": 0.2303
+  },
+  "placed_zip_rows_shares": {
+   "uninsured": 0.1695,
+   "medicaid": 0.4858,
+   "medicare": 0.1158,
+   "private": 0.2289
+  },
+  "max_abs_difference": 0.0044
+ },
+ "reach": {
+  "low_income_residents": {
+   "point": 94601046,
+   "p10_p50_p90": [
+    93209240,
+    94595582,
+    95884157
+   ]
+  },
+  "uninsured_adults_below_200": {
+   "point": 10765149,
+   "p10_p50_p90": [
+    10469069,
+    10812083,
+    11148563
+   ]
+  },
+  "low_income_patients": {
+   "p10_p50_p90": [
+    28517043,
+    28517118,
+    28517198
+   ]
+  },
+  "penetration": {
+   "p10_p50_p90": [
+    0.2974,
+    0.3015,
+    0.3059
+   ]
+  },
+  "not_patients": {
+   "p10_p50_p90": [
+    65454271,
+    66782357,
+    68039705
+   ],
+   "note": "sum over ZIPs of low-income residents minus low-income patients, floored at 0 in each ZIP"
+  },
+  "low_income_residents_minus_patients": {
+   "p10_p50_p90": [
+    64692154,
+    66078499,
+    67367072
+   ],
+   "note": "national difference with no flooring; the floored sum is larger by the patients who live in ZIPs where they exceed residents"
+  },
+  "low_income_patients_in_zips_exceeding_residents": {
+   "p10_p50_p90": [
+    651575,
+    709065,
+    780245
+   ]
+  },
+  "small_zctas": {
+   "count": 19037,
+   "low_income_residents": 5632961,
+   "share_of_residents_pct": 5.95
+  },
+  "campus_zctas": {
+   "count": 323,
+   "low_income_residents": 2843246,
+   "share_of_residents_pct": 3.01
+  },
+  "under_10pct": {
+   "zctas": [
+    12217,
+    12372,
+    12526
+   ],
+   "low_income_residents": [
+    21796956,
+    22530123,
+    23261202
+   ],
+   "uninsured_adults_below_200": [
+    2504525,
+    2664553,
+    2816558
+   ],
+   "share_of_residents_pct": [
+    23.3,
+    23.8,
+    24.3
+   ],
+   "not_patients": [
+    20678246,
+    21375307,
+    22069376
+   ]
+  },
+  "under_10pct_excluding_small": {
+   "low_income_residents": [
+    19730990,
+    20396258,
+    21041173
+   ],
+   "zctas": [
+    3943,
+    4013,
+    4079
+   ]
+  },
+  "under_25pct": {
+   "zctas": [
+    19734,
+    19983,
+    20215
+   ],
+   "low_income_residents": [
+    49820633,
+    51124611,
+    52372163
+   ],
+   "uninsured_adults_below_200": [
+    5791137,
+    6090696,
+    6379114
+   ],
+   "share_of_residents_pct": [
+    53.3,
+    54.0,
+    54.7
+   ],
+   "not_patients": [
+    43960047,
+    45120726,
+    46229127
+   ]
+  },
+  "under_25pct_excluding_small": {
+   "low_income_residents": [
+    46451864,
+    47611948,
+    48760315
+   ],
+   "zctas": [
+    8388,
+    8485,
+    8578
+   ]
+  },
+  "by_density_class": {
+   "rural": {
+    "zctas": 21572,
+    "low_income_residents": 22488979,
+    "penetration_p10_p50_p90": [
+     0.3153,
+     0.3207,
+     0.3265
+    ],
+    "not_patients": [
+     15355871,
+     15728749,
+     16091078
+    ],
+    "residents_in_zctas_under_25pct": [
+     11955272,
+     12318734,
+     12674278
+    ],
+    "share_in_zctas_under_25pct_pct": [
+     54.0,
+     54.8,
+     55.4
+    ],
+    "share_in_zctas_under_10pct_pct": [
+     27.2,
+     27.8,
+     28.3
+    ]
+   },
+   "suburban": {
+    "zctas": 7329,
+    "low_income_residents": 30895093,
+    "penetration_p10_p50_p90": [
+     0.2621,
+     0.2657,
+     0.2694
+    ],
+    "not_patients": [
+     22399380,
+     22819968,
+     23226523
+    ],
+    "residents_in_zctas_under_25pct": [
+     18415423,
+     18876020,
+     19320903
+    ],
+    "share_in_zctas_under_25pct_pct": [
+     60.4,
+     61.1,
+     61.8
+    ],
+    "share_in_zctas_under_10pct_pct": [
+     26.8,
+     27.4,
+     28.0
+    ]
+   },
+   "urban": {
+    "zctas": 4871,
+    "low_income_residents": 41216974,
+    "penetration_p10_p50_p90": [
+     0.3131,
+     0.3178,
+     0.3227
+    ],
+    "not_patients": [
+     27619505,
+     28237365,
+     28846918
+    ],
+    "residents_in_zctas_under_25pct": [
+     19325434,
+     19912852,
+     20480816
+    ],
+    "share_in_zctas_under_25pct_pct": [
+     47.5,
+     48.3,
+     49.1
+    ],
+    "share_in_zctas_under_10pct_pct": [
+     18.4,
+     19.0,
+     19.6
+    ]
+   }
+  }
+ },
+ "reach_acs_correlation_sensitivity": {
+  "0.0": {
+   "under_25pct_residents": [
+    50940316,
+    51147751,
+    51353965
+   ],
+   "not_patients": [
+    66707389,
+    66825448,
+    66943768
+   ]
+  },
+  "1.0": {
+   "under_25pct_residents": [
+    48446912,
+    51105272,
+    53680738
+   ],
+   "not_patients": [
+    64044527,
+    66832633,
+    69441347
+   ]
+  }
+ },
+ "reach_sensitivity": {
+  "patients_scaled_to_income_share": {
+   "under_10pct": {
+    "low_income_residents": [
+     21796956,
+     22530123,
+     23261202
+    ],
+    "zctas": [
+     12217,
+     12372,
+     12526
+    ]
+   },
+   "under_20pct": {
+    "low_income_residents": [
+     41813749,
+     42975492,
+     44125065
+    ],
+    "zctas": [
+     17661,
+     17888,
+     18112
+    ]
+   },
+   "under_25pct": {
+    "low_income_residents": [
+     49820633,
+     51124611,
+     52372163
+    ],
+    "zctas": [
+     19734,
+     19983,
+     20215
+    ]
+   },
+   "under_30pct": {
+    "low_income_residents": [
+     56609695,
+     57979807,
+     59288875
+    ],
+    "zctas": [
+     21457,
+     21715,
+     21959
+    ]
+   }
+  },
+  "patients_not_scaled": {
+   "under_10pct": {
+    "low_income_residents": [
+     19475762,
+     20155624,
+     20847140
+    ],
+    "zctas": [
+     11368,
+     11509,
+     11652
+    ]
+   },
+   "under_20pct": {
+    "low_income_residents": [
+     38391833,
+     39528661,
+     40628133
+    ],
+    "zctas": [
+     16449,
+     16661,
+     16869
+    ]
+   },
+   "under_25pct": {
+    "low_income_residents": [
+     46135711,
+     47404774,
+     48609334
+    ],
+    "zctas": [
+     18449,
+     18683,
+     18902
+    ]
+   },
+   "under_30pct": {
+    "low_income_residents": [
+     52986636,
+     54337334,
+     55561361
+    ],
+    "zctas": [
+     20147,
+     20397,
+     20624
+    ]
+   }
+  }
+ },
+ "projection": {
+  "capacity_for_screening": 5000,
+  "site_size_patients_per_site_p25_p50_p75": [
+   1729,
+   2734,
+   4318
+  ],
+  "capacity_is_an_input": "The model gives who a site's patients would be, not how many. Patients = the capacity chosen.",
+  "neighbour_lists_cover_share_of_expected_patients": 0.92,
+  "fixtures": {
+   "rules": {
+    "served_by_three_centers": "urban ZIP, 5,000 to 15,000 low-income residents, exactly three centers with 100+ patients; closest to the median size",
+    "no_site_within_20_miles": "rural ZIP, 1,500+ low-income residents, no permanent site within 20 miles, penetration under 10%; the largest"
+   },
+   "qualifying_zctas": {
+    "served_by_three_centers": 427,
+    "no_site_within_20_miles": 354
+   },
+   "served_by_three_centers": {
+    "capacity_2734": {
+     "zcta": "15206",
+     "state": "PA",
+     "county": "Allegheny",
+     "density_class": "urban",
+     "low_income_residents": 8459,
+     "centers_with_patients": 5,
+     "nearest_site_miles": 0.7,
+     "capacity": 2734,
+     "patients_p10_p50_p90": [
+      2734.0,
+      2734.0,
+      2734.0
+     ],
+     "capacity_binds_in_sets_pct": 100.0,
+     "share_new_p10_p50_p90": [
+      0.501,
+      0.69,
+      0.725
+     ],
+     "new_patients_p50": 1885.0,
+     "from_neighbours_p50": 849.0,
+     "payer_share_p50": {
+      "uninsured": 0.101,
+      "medicaid": 0.435,
+      "medicare": 0.188,
+      "private": 0.275
+     },
+     "payer_share_p10": {
+      "uninsured": 0.097,
+      "medicaid": 0.422,
+      "medicare": 0.183,
+      "private": 0.269
+     },
+     "payer_share_p90": {
+      "uninsured": 0.124,
+      "medicaid": 0.439,
+      "medicare": 0.19,
+      "private": 0.277
+     },
+     "rank_within_15_miles_p10_p50_p90": [
+      46,
+      57,
+      59
+     ],
+     "zctas_within_15_miles": 68,
+     "top_neighbours": [
+      {
+       "name": "Metro Community Health Center (look-alike)",
+       "patients_lost_p50": 279.0
+      },
+      {
+       "name": "East Liberty Family Health Care Center, Inc.",
+       "patients_lost_p50": 141.0
+      },
+      {
+       "name": "PRIMARY CARE HEALTH SERVICES, INC",
+       "patients_lost_p50": 102.0
+      },
+      {
+       "name": "CORNERSTONE CARE INC",
+       "patients_lost_p50": 75.0
+      },
+      {
+       "name": "SQUIRREL HILL HEALTH CENTER",
+       "patients_lost_p50": 68.0
+      }
+     ],
+     "top_source_zips": [
+      {
+       "zcta": "15206",
+       "patients_p50": 519.0
+      },
+      {
+       "zcta": "15147",
+       "patients_p50": 108.0
+      },
+      {
+       "zcta": "15213",
+       "patients_p50": 105.0
+      },
+      {
+       "zcta": "15221",
+       "patients_p50": 103.0
+      },
+      {
+       "zcta": "15208",
+       "patients_p50": 93.0
+      }
+     ]
+    },
+    "capacity_5000": {
+     "zcta": "15206",
+     "state": "PA",
+     "county": "Allegheny",
+     "density_class": "urban",
+     "low_income_residents": 8459,
+     "centers_with_patients": 5,
+     "nearest_site_miles": 0.7,
+     "capacity": 5000,
+     "patients_p10_p50_p90": [
+      5000.0,
+      5000.0,
+      5000.0
+     ],
+     "capacity_binds_in_sets_pct": 99.0,
+     "share_new_p10_p50_p90": [
+      0.501,
+      0.69,
+      0.725
+     ],
+     "new_patients_p50": 3448.0,
+     "from_neighbours_p50": 1552.0,
+     "payer_share_p50": {
+      "uninsured": 0.101,
+      "medicaid": 0.435,
+      "medicare": 0.188,
+      "private": 0.275
+     },
+     "payer_share_p10": {
+      "uninsured": 0.097,
+      "medicaid": 0.422,
+      "medicare": 0.183,
+      "private": 0.269
+     },
+     "payer_share_p90": {
+      "uninsured": 0.124,
+      "medicaid": 0.439,
+      "medicare": 0.19,
+      "private": 0.277
+     },
+     "rank_within_15_miles_p10_p50_p90": [
+      46,
+      57,
+      59
+     ],
+     "zctas_within_15_miles": 68,
+     "top_neighbours": [
+      {
+       "name": "Metro Community Health Center (look-alike)",
+       "patients_lost_p50": 511.0
+      },
+      {
+       "name": "East Liberty Family Health Care Center, Inc.",
+       "patients_lost_p50": 259.0
+      },
+      {
+       "name": "PRIMARY CARE HEALTH SERVICES, INC",
+       "patients_lost_p50": 187.0
+      },
+      {
+       "name": "CORNERSTONE CARE INC",
+       "patients_lost_p50": 138.0
+      },
+      {
+       "name": "SQUIRREL HILL HEALTH CENTER",
+       "patients_lost_p50": 123.0
+      }
+     ],
+     "top_source_zips": [
+      {
+       "zcta": "15206",
+       "patients_p50": 949.0
+      },
+      {
+       "zcta": "15147",
+       "patients_p50": 197.0
+      },
+      {
+       "zcta": "15213",
+       "patients_p50": 192.0
+      },
+      {
+       "zcta": "15221",
+       "patients_p50": 188.0
+      },
+      {
+       "zcta": "15208",
+       "patients_p50": 169.0
+      }
+     ]
+    }
+   },
+   "no_site_within_20_miles": {
+    "capacity_2734": {
+     "zcta": "78028",
+     "state": "TX",
+     "county": "Kerr",
+     "density_class": "rural",
+     "low_income_residents": 11287,
+     "centers_with_patients": 3,
+     "nearest_site_miles": 23.2,
+     "capacity": 2734,
+     "patients_p10_p50_p90": [
+      2734.0,
+      2734.0,
+      2734.0
+     ],
+     "capacity_binds_in_sets_pct": 100.0,
+     "share_new_p10_p50_p90": [
+      0.863,
+      0.907,
+      0.918
+     ],
+     "new_patients_p50": 2480.0,
+     "from_neighbours_p50": 254.0,
+     "payer_share_p50": {
+      "uninsured": 0.242,
+      "medicaid": 0.266,
+      "medicare": 0.051,
+      "private": 0.442
+     },
+     "payer_share_p10": {
+      "uninsured": 0.235,
+      "medicaid": 0.265,
+      "medicare": 0.05,
+      "private": 0.438
+     },
+     "payer_share_p90": {
+      "uninsured": 0.246,
+      "medicaid": 0.268,
+      "medicare": 0.051,
+      "private": 0.446
+     },
+     "rank_within_15_miles_p10_p50_p90": [
+      1,
+      2,
+      2
+     ],
+     "zctas_within_15_miles": 3,
+     "top_neighbours": [
+      {
+       "name": "Frontera Healthcare Network",
+       "patients_lost_p50": 144.0
+      },
+      {
+       "name": "COMMUNITY HEALTH DEVELOPMENT, INC.",
+       "patients_lost_p50": 70.0
+      },
+      {
+       "name": "Barrio Comprehensive Family Health Care Center, Inc.",
+       "patients_lost_p50": 30.0
+      },
+      {
+       "name": "EL CENTRO DEL BARRIO, INC.",
+       "patients_lost_p50": 3.0
+      },
+      {
+       "name": "SOUTH TEXAS RURAL HEALTH SERVICES, INC.",
+       "patients_lost_p50": 1.0
+      }
+     ],
+     "top_source_zips": [
+      {
+       "zcta": "78028",
+       "patients_p50": 2362.0
+      },
+      {
+       "zcta": "78025",
+       "patients_p50": 167.0
+      },
+      {
+       "zcta": "78010",
+       "patients_p50": 64.0
+      },
+      {
+       "zcta": "78003",
+       "patients_p50": 38.0
+      },
+      {
+       "zcta": "78013",
+       "patients_p50": 23.0
+      }
+     ]
+    },
+    "capacity_5000": {
+     "zcta": "78028",
+     "state": "TX",
+     "county": "Kerr",
+     "density_class": "rural",
+     "low_income_residents": 11287,
+     "centers_with_patients": 3,
+     "nearest_site_miles": 23.2,
+     "capacity": 5000,
+     "patients_p10_p50_p90": [
+      5000.0,
+      5000.0,
+      5000.0
+     ],
+     "capacity_binds_in_sets_pct": 100.0,
+     "share_new_p10_p50_p90": [
+      0.863,
+      0.907,
+      0.918
+     ],
+     "new_patients_p50": 4536.0,
+     "from_neighbours_p50": 464.0,
+     "payer_share_p50": {
+      "uninsured": 0.242,
+      "medicaid": 0.266,
+      "medicare": 0.051,
+      "private": 0.442
+     },
+     "payer_share_p10": {
+      "uninsured": 0.235,
+      "medicaid": 0.265,
+      "medicare": 0.05,
+      "private": 0.438
+     },
+     "payer_share_p90": {
+      "uninsured": 0.246,
+      "medicaid": 0.268,
+      "medicare": 0.051,
+      "private": 0.446
+     },
+     "rank_within_15_miles_p10_p50_p90": [
+      1,
+      1,
+      2
+     ],
+     "zctas_within_15_miles": 3,
+     "top_neighbours": [
+      {
+       "name": "Frontera Healthcare Network",
+       "patients_lost_p50": 263.0
+      },
+      {
+       "name": "COMMUNITY HEALTH DEVELOPMENT, INC.",
+       "patients_lost_p50": 128.0
+      },
+      {
+       "name": "Barrio Comprehensive Family Health Care Center, Inc.",
+       "patients_lost_p50": 55.0
+      },
+      {
+       "name": "EL CENTRO DEL BARRIO, INC.",
+       "patients_lost_p50": 5.0
+      },
+      {
+       "name": "SOUTH TEXAS RURAL HEALTH SERVICES, INC.",
+       "patients_lost_p50": 2.0
+      }
+     ],
+     "top_source_zips": [
+      {
+       "zcta": "78028",
+       "patients_p50": 4319.0
+      },
+      {
+       "zcta": "78025",
+       "patients_p50": 305.0
+      },
+      {
+       "zcta": "78010",
+       "patients_p50": 117.0
+      },
+      {
+       "zcta": "78003",
+       "patients_p50": 70.0
+      },
+      {
+       "zcta": "78013",
+       "patients_p50": 42.0
+      }
+     ]
+    }
+   },
+   "centers": {
+    "large_urban": {
+     "grant": "H80CS00142",
+     "name": "ALTA MED HEALTH SERVICES CORPORATION",
+     "state": "CA",
+     "type": "chc",
+     "urban_flag": "Urban",
+     "patients": 312739,
+     "sites": 75.0,
+     "lat": 33.97793184146666,
+     "lon": -118.104346916,
+     "area_zctas": 482,
+     "area_low_income": 4689493,
+     "area_patients_all_centers": 1949997,
+     "area_not_p10": 2587104,
+     "area_not_p50": 2833232,
+     "area_not_p90": 3069735
+    },
+    "rural_median": {
+     "grant": "H80CS00617",
+     "name": "PRESTON-TAYLOR COMMUNITY HEALTH CENTERS, INC.",
+     "state": "WV",
+     "type": "chc",
+     "urban_flag": "Rural",
+     "patients": 11292,
+     "sites": 10.0,
+     "lat": 39.296144291999994,
+     "lon": -79.738835393,
+     "area_zctas": 219,
+     "area_low_income": 205904,
+     "area_patients_all_centers": 136732,
+     "area_not_p10": 104425,
+     "area_not_p50": 115692,
+     "area_not_p90": 127973
+    }
+   }
+  },
+  "share_new_p50_median_zip": 0.647,
+  "share_from_neighbours_median_case": 0.353,
+  "zips_where_site_would_be_full_pct": 69.2,
+  "zips_where_capacity_binds_pct": 57.9
+ },
+ "checks": {
+  "A": {
+   "cells_up_to_39": {
+    "centers": 241,
+    "negative_binomial_size": 0.0010000047406139225,
+    "negative_binomial_size_at_search_bound": true,
+    "by_size": {
+     "all": {
+      "cells": 3930,
+      "mae_equal_split": 5.626861756712997,
+      "mae_poisson": 11.495674300254453,
+      "coverage_80_poisson": 0.23002544529262087,
+      "mean_width_poisson": 6.354834605597963,
+      "mae_flat": 6.009669211195929,
+      "coverage_80_flat": 0.9590330788804071,
+      "mean_width_flat": 27.479567430025444
+     },
+     "16-24": {
+      "cells": 2037,
+      "mae_equal_split": 5.319736987427974,
+      "mae_poisson": 12.448944526264114,
+      "coverage_80_poisson": 0.20029455081001474,
+      "mean_width_poisson": 6.6313205694649,
+      "mae_flat": 7.12518409425626,
+      "coverage_80_flat": 0.997545409916544,
+      "mean_width_flat": 27.954344624447717
+     },
+     "25-39": {
+      "cells": 1893,
+      "mae_equal_split": 5.957349424453935,
+      "mae_poisson": 10.469889064976229,
+      "coverage_80_poisson": 0.2620179609086107,
+      "mean_width_poisson": 6.0573164289487575,
+      "mae_flat": 4.809297411516112,
+      "coverage_80_flat": 0.9175911251980983,
+      "mean_width_flat": 26.968674062334916
+     }
+    }
+   },
+   "cells_up_to_24": {
+    "centers": 227,
+    "negative_binomial_size": 0.0010000036283175783,
+    "negative_binomial_size_at_search_bound": true,
+    "by_size": {
+     "all": {
+      "cells": 2349,
+      "mae_equal_split": 2.063476105093859,
+      "mae_poisson": 5.086632609621115,
+      "coverage_80_poisson": 0.3128991060025543,
+      "mean_width_poisson": 3.518561089825457,
+      "mae_flat": 2.323541932737335,
+      "coverage_80_flat": 0.9948914431673053,
+      "mean_width_flat": 10.342060451255854
+     },
+     "16-24": {
+      "cells": 2349,
+      "mae_equal_split": 2.063476105093859,
+      "mae_poisson": 5.086632609621115,
+      "coverage_80_poisson": 0.3128991060025543,
+      "mean_width_poisson": 3.518561089825457,
+      "mae_flat": 2.323541932737335,
+      "coverage_80_flat": 0.9948914431673053,
+      "mean_width_flat": 10.342060451255854
+     }
+    }
+   },
+   "placement_used": "flat",
+   "note": "Censored cells hold hidden_patients_pct_of_center_totals of patients. Where they are placed changes ZIP counts, not the national total. The fitted expectation places small cells worse than an equal split, so a flat prior with the exact center sums is used; the interval for one placed cell is nearly the whole 1 to 15 range."
+  },
+  "B": {
+   "held_out_pairs": 44231,
+   "held_out_pairs_with_patients": 7480,
+   "share_of_pairs": 0.0962721765987502,
+   "gravity": {
+    "spearman_cells_with_patients": 0.736007781570707,
+    "mae_all_held_out": 43.54212062103383,
+    "mae_cells_with_patients": 236.20367125758182,
+    "total_ratio": 1.0234148700901695
+   },
+   "two_step_floating_catchment": {
+    "spearman_cells_with_patients": 0.6190223239698114,
+    "mae_all_held_out": 50.93391929723644,
+    "mae_cells_with_patients": 277.64326397461286,
+    "total_ratio": 0.8297124439114655,
+    "best_radius_miles": 15
+   },
+   "population_only": {
+    "spearman_cells_with_patients": 0.31418705861350166,
+    "mae_all_held_out": 101.49420305326872,
+    "mae_cells_with_patients": 373.0566655183334,
+    "total_ratio": 0.9911688129065501
+   },
+   "negative_binomial_size": 0.15820058202918352,
+   "interval_80_coverage": 0.9661775677692116,
+   "interval_80_coverage_by_expected_size": {
+    "<0.5": 0.9971330018366708,
+    "0.5-5": 0.9552679845119217,
+    "5-50": 0.8971042187270322,
+    ">50": 0.9446229446229446
+   },
+   "interval_80_coverage_poisson_only": 0.6710678031245054,
+   "note": "The negative-binomial 80% intervals cover well above 80% of held-out cells, so they are wider than needed, not calibrated. Poisson-only intervals cover far less. The fit uses a Poisson likelihood, so intervals on new-site numbers reflect parameter uncertainty only; interval_80_coverage_poisson_only shows how much the Poisson noise model understates spread."
+  },
+  "C": {
+   "centers": 226,
+   "folds": 17,
+   "single_site_centers_held_out": 78,
+   "top20_model_mean": 0.8468893859600838,
+   "top20_model_patient_weighted": 0.7636805591195174,
+   "top20_population_only_mean": 0.3962966239974005,
+   "top20_population_only_patient_weighted": 0.3414518347497721,
+   "top20_nearest_zips_mean": 0.7805303620304559,
+   "top20_nearest_zips_patient_weighted": 0.6616865252471797,
+   "top20_population_within_radius_mean": 0.711192662887916,
+   "sfca_radius_miles": 15,
+   "median_spearman_cell_counts": 0.6160455159460888,
+   "median_log_pearson_cell_counts": 0.810027911602065,
+   "share_centers_model_beats_population_only": 0.9292035398230089,
+   "share_centers_model_beats_nearest": 0.7876106194690266,
+   "model_minus_nearest_points_median": 4.185690204769127,
+   "total_ratio_median": 1.1454662279903052,
+   "total_ratio_p10": 0.2655342123799772,
+   "total_ratio_p90": 4.541208590855593,
+   "total_ratio_within_factor_2": 0.5176991150442478,
+   "total_ratio_median_eps0": 1.2374130076618748,
+   "total_ratio_within_factor_2_eps0": 0.47345132743362833,
+   "by_sites_bin": {
+    "1": {
+     "centers": 78,
+     "patients_median": 3146.0,
+     "top20_model_mean": 0.9141840982910148,
+     "top20_model_patient_weighted": 0.8618632984966188,
+     "top20_nearest_mean": 0.8735662527773874,
+     "top20_population_mean": 0.45445679886206464,
+     "share_centers_model_beats_nearest": 0.6153846153846154,
+     "total_ratio_median": 1.0805196324495412,
+     "total_ratio_p10": 0.23483431882190536,
+     "total_ratio_p90": 7.17635140835941,
+     "total_ratio_within_factor_2": 0.4230769230769231,
+     "total_ratio_median_eps0": 1.713841907142449
+    },
+    "2-3": {
+     "centers": 49,
+     "patients_median": 6509.0,
+     "top20_model_mean": 0.8651914484584078,
+     "top20_model_patient_weighted": 0.8546207667723041,
+     "top20_nearest_mean": 0.8138763797271775,
+     "top20_population_mean": 0.4293026639243216,
+     "share_centers_model_beats_nearest": 0.7959183673469388,
+     "total_ratio_median": 1.2090814870344149,
+     "total_ratio_p10": 0.26004928788806875,
+     "total_ratio_p90": 4.532111323464226,
+     "total_ratio_within_factor_2": 0.5306122448979592,
+     "total_ratio_median_eps0": 1.701670913886839
+    },
+    "4-10": {
+     "centers": 49,
+     "patients_median": 16096.0,
+     "top20_model_mean": 0.8497088784277986,
+     "top20_model_patient_weighted": 0.8498923306277952,
+     "top20_nearest_mean": 0.7835504599703768,
+     "top20_population_mean": 0.38390210394001495,
+     "share_centers_model_beats_nearest": 0.8775510204081632,
+     "total_ratio_median": 1.1029065991366547,
+     "total_ratio_p10": 0.19145781463648728,
+     "total_ratio_p90": 3.3219309473581506,
+     "total_ratio_within_factor_2": 0.5510204081632653,
+     "total_ratio_median_eps0": 1.183924068436957
+    },
+    ">10": {
+     "centers": 50,
+     "patients_median": 38611.0,
+     "top20_model_mean": 0.7212105108571132,
+     "top20_model_patient_weighted": 0.6976187494340219,
+     "top20_nearest_mean": 0.5997555791413328,
+     "top20_population_mean": 0.2853674617363799,
+     "share_centers_model_beats_nearest": 0.96,
+     "total_ratio_median": 1.2189324846063743,
+     "total_ratio_p10": 0.4839341320588705,
+     "total_ratio_p90": 3.3823646429132963,
+     "total_ratio_within_factor_2": 0.62,
+     "total_ratio_median_eps0": 0.7523288041047966
+    }
+   },
+   "by_urban_rural": {
+    "Rural": {
+     "centers": 111,
+     "patients_median": 6509.0,
+     "top20_model_mean": 0.8835823471964802,
+     "top20_model_patient_weighted": 0.7786775650593899,
+     "top20_nearest_mean": 0.8370243294910232,
+     "top20_population_mean": 0.4227337997245158,
+     "share_centers_model_beats_nearest": 0.6846846846846847
+    },
+    "Urban": {
+     "centers": 115,
+     "patients_median": 12764.0,
+     "top20_model_mean": 0.8114727016362577,
+     "top20_model_patient_weighted": 0.7566276229406987,
+     "top20_nearest_mean": 0.7260014021337342,
+     "top20_population_mean": 0.3707790022086198,
+     "share_centers_model_beats_nearest": 0.8869565217391304
+    }
+   },
+   "by_stratum": {
+    "Rural_1": {
+     "centers": 38,
+     "patients_median": 2147.0,
+     "top20_model_mean": 0.9662676884038074,
+     "top20_model_patient_weighted": 0.959342902556903,
+     "top20_nearest_mean": 0.9577391776101264,
+     "top20_population_mean": 0.5410557052030613,
+     "share_centers_model_beats_nearest": 0.42105263157894735
+    },
+    "Rural_2-3": {
+     "centers": 24,
+     "patients_median": 5649.0,
+     "top20_model_mean": 0.9224377235123781,
+     "top20_model_patient_weighted": 0.9161233080224497,
+     "top20_nearest_mean": 0.8948610655580205,
+     "top20_population_mean": 0.45694882831274225,
+     "share_centers_model_beats_nearest": 0.7083333333333334
+    },
+    "Rural_4-10": {
+     "centers": 24,
+     "patients_median": 10426.5,
+     "top20_model_mean": 0.8658760664294304,
+     "top20_model_patient_weighted": 0.838230305676083,
+     "top20_nearest_mean": 0.8027824951587913,
+     "top20_population_mean": 0.37111130018524835,
+     "share_centers_model_beats_nearest": 0.8333333333333334
+    },
+    "Rural_>10": {
+     "centers": 25,
+     "patients_median": 28758.0,
+     "top20_model_mean": 0.7375974968344486,
+     "top20_model_patient_weighted": 0.7034231325770743,
+     "top20_nearest_mean": 0.6308866546846115,
+     "top20_population_mean": 0.25959567551012586,
+     "share_centers_model_beats_nearest": 0.92
+    },
+    "Urban_1": {
+     "centers": 40,
+     "patients_median": 6072.5,
+     "top20_model_mean": 0.8647046876838619,
+     "top20_model_patient_weighted": 0.824503843703809,
+     "top20_nearest_mean": 0.7936019741862853,
+     "top20_population_mean": 0.3721878378381177,
+     "share_centers_model_beats_nearest": 0.8
+    },
+    "Urban_2-3": {
+     "centers": 25,
+     "patients_median": 8512.0,
+     "top20_model_mean": 0.8102350244065962,
+     "top20_model_patient_weighted": 0.815165353983277,
+     "top20_nearest_mean": 0.7361310813295687,
+     "top20_population_mean": 0.4027623461114378,
+     "share_centers_model_beats_nearest": 0.88
+    },
+    "Urban_4-10": {
+     "centers": 25,
+     "patients_median": 20741.0,
+     "top20_model_mean": 0.8341883779462322,
+     "top20_model_patient_weighted": 0.8551804943816618,
+     "top20_nearest_mean": 0.7650877061894988,
+     "top20_population_mean": 0.396181275544591,
+     "share_centers_model_beats_nearest": 0.92
+    },
+    "Urban_>10": {
+     "centers": 25,
+     "patients_median": 61567.0,
+     "top20_model_mean": 0.7048235248797775,
+     "top20_model_patient_weighted": 0.6948826665880438,
+     "top20_nearest_mean": 0.5686245035980542,
+     "top20_population_mean": 0.3111392479626338,
+     "share_centers_model_beats_nearest": 1.0
+    }
+   }
+  },
+  "D": {
+   "new_sites_in_window": 362,
+   "new_sites_of_2024_grantees": 299,
+   "sites_evaluated": 272,
+   "median_observed_raw_change": 316.0,
+   "sites": 272,
+   "median_predicted_change": 384.1014307806802,
+   "median_observed_excess": 191.44665236197199,
+   "spearman_predicted_vs_observed": 0.09706917162881085,
+   "spearman_per_baseline_patient": 0.2521958028445618,
+   "share_observed_excess_positive": 0.6323529411764706,
+   "share_predicted_positive": 0.7977941176470589,
+   "observed_inside_80_interval_params_only": 0.1213235294117647,
+   "observed_inside_80_interval_with_count_noise": 0.16544117647058823,
+   "median_ratio_observed_to_predicted_where_both_positive": 1.3667729877187778,
+   "predicted_over_observed_median": 2.0063105102222,
+   "exposure_median": 0.7616438356164383,
+   "exposure_min": 0.5041095890410959,
+   "exposure_max": 0.9945205479452055,
+   "exposure_scaled": {
+    "sites": 272,
+    "median_predicted_change": 294.16531797673053,
+    "median_observed_excess": 191.44665236197199,
+    "spearman_predicted_vs_observed": 0.08451666395836617,
+    "spearman_per_baseline_patient": 0.24838395484732276,
+    "share_observed_excess_positive": 0.6323529411764706,
+    "share_predicted_positive": 0.7977941176470589,
+    "observed_inside_80_interval_params_only": 0.10661764705882353,
+    "observed_inside_80_interval_with_count_noise": 0.14705882352941177,
+    "median_ratio_observed_to_predicted_where_both_positive": 1.7877708238124763,
+    "predicted_over_observed_median": 1.536539366698073
+   },
+   "added_by_march_31": {
+    "sites": 141,
+    "median_predicted_change": 338.06684328545487,
+    "median_observed_excess": 187.5399246223128,
+    "spearman_predicted_vs_observed": 0.058019440419032856,
+    "spearman_per_baseline_patient": 0.2529073936524313,
+    "share_observed_excess_positive": 0.6170212765957447,
+    "share_predicted_positive": 0.7446808510638298,
+    "observed_inside_80_interval_params_only": 0.1276595744680851,
+    "observed_inside_80_interval_with_count_noise": 0.18439716312056736,
+    "median_ratio_observed_to_predicted_where_both_positive": 0.8460161071919615,
+    "predicted_over_observed_median": 1.8026393258197615
+   },
+   "added_by_march_31_exposure_scaled": {
+    "sites": 141,
+    "median_predicted_change": 307.6097040987389,
+    "median_observed_excess": 187.5399246223128,
+    "spearman_predicted_vs_observed": 0.051306365509412345,
+    "spearman_per_baseline_patient": 0.2521330382307847,
+    "share_observed_excess_positive": 0.6170212765957447,
+    "share_predicted_positive": 0.7446808510638298,
+    "observed_inside_80_interval_params_only": 0.09929078014184398,
+    "observed_inside_80_interval_with_count_noise": 0.15602836879432624,
+    "median_ratio_observed_to_predicted_where_both_positive": 0.9711477942347528,
+    "predicted_over_observed_median": 1.6402358309476501
+   },
+   "bootstrap_sets_2024": 40,
+   "note": "Sites added in the first half of 2025 serve part of the 2025 reporting year only; the exposure-scaled rows multiply each prediction by the share of the year in scope, and the model still runs high. Sites that closed are missing from HRSA's October 2026 list, which also shifts the competition around the 2025 additions."
+  },
+  "E": {
+   "zctas_compared_low_income_penetration": 18436,
+   "pearson_low_income_penetration": 0.889912221195001,
+   "zctas_compared_without_small_zips": 14462,
+   "pearson_low_income_penetration_without_small_zips": 0.9143471838065289,
+   "spearman_low_income_penetration": 0.9510407442660649,
+   "median_ratio_ours_to_hrsa": 0.8911233369870011,
+   "ratio_p10": 0.6238169824670463,
+   "ratio_p90": 1.153707550909615,
+   "zctas_compared_total_population_penetration": 23017,
+   "pearson_total_population_penetration": 0.9637662688327455,
+   "median_ratio_total_population": 0.9871307399824509,
+   "spearman_not_patients_count_vs_hrsa_uns": 0.28267433633235445,
+   "spearman_not_patients_share_vs_hrsa_uns": 0.2675558159940332,
+   "largest_disagreements": [
+    {
+     "zcta": "47591",
+     "state": "IN",
+     "low_income": 7234,
+     "ours": 0.011,
+     "hrsa": 0.55,
+     "ratio": 0.02,
+     "our_patients": 99,
+     "hrsa_implied_patients": 4229
+    },
+    {
+     "zcta": "47441",
+     "state": "IN",
+     "low_income": 3617,
+     "ours": 0.014,
+     "hrsa": 0.56,
+     "ratio": 0.02,
+     "our_patients": 74,
+     "hrsa_implied_patients": 1906
+    },
+    {
+     "zcta": "18702",
+     "state": "PA",
+     "low_income": 16315,
+     "ours": 0.019,
+     "hrsa": 0.67,
+     "ratio": 0.03,
+     "our_patients": 460,
+     "hrsa_implied_patients": 10423
+    },
+    {
+     "zcta": "47460",
+     "state": "IN",
+     "low_income": 3001,
+     "ours": 0.011,
+     "hrsa": 0.38,
+     "ratio": 0.03,
+     "our_patients": 35,
+     "hrsa_implied_patients": 1228
+    },
+    {
+     "zcta": "53190",
+     "state": "WI",
+     "low_income": 5851,
+     "ours": 0.003,
+     "hrsa": 0.1,
+     "ratio": 0.03,
+     "our_patients": 20,
+     "hrsa_implied_patients": 664
+    },
+    {
+     "zcta": "47501",
+     "state": "IN",
+     "low_income": 6705,
+     "ours": 0.007,
+     "hrsa": 0.18,
+     "ratio": 0.04,
+     "our_patients": 51,
+     "hrsa_implied_patients": 1247
+    },
+    {
+     "zcta": "18705",
+     "state": "PA",
+     "low_income": 6771,
+     "ours": 0.016,
+     "hrsa": 0.37,
+     "ratio": 0.04,
+     "our_patients": 168,
+     "hrsa_implied_patients": 2335
+    },
+    {
+     "zcta": "18049",
+     "state": "PA",
+     "low_income": 3920,
+     "ours": 0.009,
+     "hrsa": 0.19,
+     "ratio": 0.05,
+     "our_patients": 34,
+     "hrsa_implied_patients": 748
+    },
+    {
+     "zcta": "79764",
+     "state": "TX",
+     "low_income": 11407,
+     "ours": 0.01,
+     "hrsa": 0.21,
+     "ratio": 0.05,
+     "our_patients": 132,
+     "hrsa_implied_patients": 2137
+    },
+    {
+     "zcta": "54235",
+     "state": "WI",
+     "low_income": 3647,
+     "ours": 0.189,
+     "hrsa": 0.01,
+     "ratio": 18.93,
+     "our_patients": 751,
+     "hrsa_implied_patients": 0
+    }
+   ],
+   "largest_disagreements_by_state": {
+    "IN": 4,
+    "PA": 3,
+    "WI": 2,
+    "TX": 1
+   },
+   "largest_disagreements_ours_higher": 1,
+   "note": "HRSA's published penetration is computed from the same UDS patients-by-ZIP table, so agreement checks our ZIP-to-ZCTA joins, the crosswalk and the denominators. It does not check the model. Our low-income penetration sits below HRSA's by about the income share we apply to patients (median_ratio_ours_to_hrsa); HRSA does not scale its numerator."
+  },
+  "F": {
+   "top50_not_patients": {
+    "main": 50,
+    "without_income_scaling_of_patients": 50,
+    "total_population_base": 15
+   },
+   "top50_new_patients_at_capacity": {
+    "capacity": 1729,
+    "main": 50,
+    "zips_within_1pct_of_the_50th_value": 127,
+    "pairs_within_40_miles": 47,
+    "pairs_within_100_miles": 48,
+    "total_population_base": 44,
+    "sites_added_in_2026_included": 50
+   },
+   "share_new_by_zip_p10_p50_p90": {
+    "main_1_set": [
+     0.354,
+     0.67,
+     0.884
+    ],
+    "main_page_sets": [
+     0.301,
+     0.647,
+     0.876
+    ],
+    "pairs_within_40_miles": [
+     0.353,
+     0.672,
+     0.888
+    ],
+    "pairs_within_100_miles": [
+     0.355,
+     0.669,
+     0.882
+    ],
+    "total_population_base": [
+     0.763,
+     0.9,
+     0.971
+    ],
+    "sites_added_in_2026_included": [
+     0.352,
+     0.668,
+     0.883
+    ]
+   },
+   "params": {
+    "r40": {
+     "mu": [
+      0.4252791860915408,
+      -1.3523746682668012
+     ],
+     "sigma": [
+      1.6211743142759665,
+      1.3756583205648627
+     ],
+     "beta": -0.39787418804790164,
+     "rho": [
+      5.699825493311307,
+      1.9906836405868058,
+      0.6074359618756249
+     ],
+     "gamma": [
+      1.0136239259307265,
+      0.740871802040858,
+      0.5702159480766928
+     ]
+    },
+    "r100": {
+     "mu": [
+      0.6570347575535457,
+      -1.1407535585514497
+     ],
+     "sigma": [
+      1.5790224650197455,
+      1.3861152913687695
+     ],
+     "beta": -0.417742009615065,
+     "rho": [
+      4.3079561026683635,
+      1.4435097795181169,
+      0.4362696909222468
+     ],
+     "gamma": [
+      0.8607009337733719,
+      0.6550941050140126,
+      0.5213471277456515
+     ]
+    },
+    "popbase": {
+     "mu": [
+      -0.8349591673509995,
+      -3.234764178874367
+     ],
+     "sigma": [
+      1.3842215349070115,
+      1.1690140104182427
+     ],
+     "beta": -0.1486743323867051,
+     "rho": [
+      5.050755689743784,
+      1.8029229896528145,
+      0.8975825519673715
+     ],
+     "gamma": [
+      0.8943287411052111,
+      0.7019505084748819,
+      0.6379437211688074
+     ]
+    },
+    "late": {
+     "mu": [
+      0.5746206523072077,
+      -1.2144024872074726
+     ],
+     "sigma": [
+      1.5579229347168626,
+      1.3033098177261175
+     ],
+     "beta": -0.316904664762174,
+     "rho": [
+      4.971052732844172,
+      1.7138609636810582,
+      0.5163526928984042
+     ],
+     "gamma": [
+      0.9290754098313356,
+      0.698859273710446,
+      0.5454239295055402
+     ]
+    },
+    "nocens": {
+     "mu": [
+      0.5320806453074683,
+      -1.2452674565727733
+     ],
+     "sigma": [
+      1.587329247806118,
+      1.3404288897939334
+     ],
+     "beta": -0.3935370481837236,
+     "rho": [
+      5.151189070923808,
+      1.7814709271545819,
+      0.5477007916945892
+     ],
+     "gamma": [
+      0.9374207480341794,
+      0.7032433415670157,
+      0.5518274584043864
+     ]
+    }
+   },
+   "new_patients_top50_main_vs_bootstrap_median_set": 48
+  },
+  "sfca_vs_gravity": {
+   "radius_miles": 15,
+   "spearman_access_vs_penetration": 0.66,
+   "spearman_access_vs_not_patients_rank": 0.34,
+   "lowest_tenth_by_access_also_lowest_tenth_by_penetration_pct": 45.1,
+   "cannot_answer": [
+    "capacity of a new site",
+    "competition among sites",
+    "where a new site's patients come from",
+    "payer mix of the draw"
+   ]
+  }
+ },
+ "tool_checks": {
+  "browser_formula_vs_python": {
+   "candidates": 200,
+   "patients_rel": 0.01719,
+   "share_new_abs": 0.00111,
+   "payer_abs": 0.00093,
+   "patients_abs": 91.03864,
+   "neighbour_loss_rel": 0.0099
+  },
+  "workbook_vs_python": {
+   "rows": 60,
+   "rows_with_counts": 19,
+   "counts_blank_where_capacity_may_not_bind": true,
+   "workbook_vs_python_on_zip_table": {
+    "max_abs_diff_share_new": 0.0,
+    "max_abs_diff_new_patients": 0.0
+   },
+   "workbook_vs_page_formula": {
+    "max_relative_diff_new_patients": 0.0017,
+    "median_relative_diff_new_patients": 0.0004
+   },
+   "note": "Workbook formulas recalculated in LibreOffice. Patient counts are shown only where the capacity is 5,000 or less and a typical site there draws more than 5,000 (site_capacity_binds = 1), where they equal the page's min(draw, capacity) times the new share; elsewhere only the shares show. The workbook, the ZIP table and the page use the same 24 of the 100 parameter sets; the remaining difference is the page data's rounding."
+  },
+  "page_data_bytes_gz": 3725061,
+  "page_data_json_bytes": 527896
+ },
+ "top50_zips_by_people_not_patients": [
+  {
+   "zcta": "78542",
+   "state": "TX",
+   "county": "Hidalgo",
+   "low_income_residents": 46244,
+   "patients_all_centers": 2108,
+   "penetration_p50": 0.044,
+   "not_patients_p10": 39824,
+   "not_patients_p50": 44032,
+   "not_patients_p90": 48112,
+   "hrsa_published_penetration": 0.04,
+   "ratio_to_hrsa": 1.11,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "00926",
+   "state": "PR",
+   "county": "San Juan Municipio",
+   "low_income_residents": 47739,
+   "patients_all_centers": 3725,
+   "penetration_p50": 0.077,
+   "not_patients_p10": 41416,
+   "not_patients_p50": 43958,
+   "not_patients_p90": 46653,
+   "hrsa_published_penetration": 0.08,
+   "ratio_to_hrsa": 0.97,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "75217",
+   "state": "TX",
+   "county": "Dallas",
+   "low_income_residents": 44607,
+   "patients_all_centers": 1592,
+   "penetration_p50": 0.033,
+   "not_patients_p10": 39468,
+   "not_patients_p50": 43016,
+   "not_patients_p90": 46662,
+   "hrsa_published_penetration": 0.04,
+   "ratio_to_hrsa": 0.82,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "78577",
+   "state": "TX",
+   "county": "Hidalgo",
+   "low_income_residents": 43016,
+   "patients_all_centers": 1637,
+   "penetration_p50": 0.037,
+   "not_patients_p10": 38344,
+   "not_patients_p50": 41423,
+   "not_patients_p90": 44476,
+   "hrsa_published_penetration": 0.04,
+   "ratio_to_hrsa": 0.92,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "00949",
+   "state": "PR",
+   "county": "Toa Baja Municipio",
+   "low_income_residents": 40084,
+   "patients_all_centers": 2423,
+   "penetration_p50": 0.059,
+   "not_patients_p10": 35807,
+   "not_patients_p50": 37736,
+   "not_patients_p90": 39415,
+   "hrsa_published_penetration": 0.05,
+   "ratio_to_hrsa": 1.19,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "78521",
+   "state": "TX",
+   "county": "Cameron",
+   "low_income_residents": 50203,
+   "patients_all_centers": 12802,
+   "penetration_p50": 0.25,
+   "not_patients_p10": 34496,
+   "not_patients_p50": 37574,
+   "not_patients_p90": 40701,
+   "hrsa_published_penetration": 0.19,
+   "ratio_to_hrsa": 1.32,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "00612",
+   "state": "PR",
+   "county": "Arecibo Municipio",
+   "low_income_residents": 43630,
+   "patients_all_centers": 6380,
+   "penetration_p50": 0.141,
+   "not_patients_p10": 35458,
+   "not_patients_p50": 37454,
+   "not_patients_p90": 39451,
+   "hrsa_published_penetration": 0.12,
+   "ratio_to_hrsa": 1.18,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "00956",
+   "state": "PR",
+   "county": "Bayam\u00f3n Municipio",
+   "low_income_residents": 43364,
+   "patients_all_centers": 6265,
+   "penetration_p50": 0.143,
+   "not_patients_p10": 35056,
+   "not_patients_p50": 37171,
+   "not_patients_p90": 39256,
+   "hrsa_published_penetration": 0.13,
+   "ratio_to_hrsa": 1.1,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "78572",
+   "state": "TX",
+   "county": "Hidalgo",
+   "low_income_residents": 38243,
+   "patients_all_centers": 1578,
+   "penetration_p50": 0.04,
+   "not_patients_p10": 33875,
+   "not_patients_p50": 36688,
+   "not_patients_p90": 39564,
+   "hrsa_published_penetration": 0.04,
+   "ratio_to_hrsa": 1.0,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "78537",
+   "state": "TX",
+   "county": "Hidalgo",
+   "low_income_residents": 35606,
+   "patients_all_centers": 1932,
+   "penetration_p50": 0.053,
+   "not_patients_p10": 30844,
+   "not_patients_p50": 33690,
+   "not_patients_p90": 36369,
+   "hrsa_published_penetration": 0.05,
+   "ratio_to_hrsa": 1.05,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "48126",
+   "state": "MI",
+   "county": "Wayne",
+   "low_income_residents": 33821,
+   "patients_all_centers": 396,
+   "penetration_p50": 0.01,
+   "not_patients_p10": 30846,
+   "not_patients_p50": 33471,
+   "not_patients_p90": 36036,
+   "hrsa_published_penetration": 0.01,
+   "ratio_to_hrsa": 1.03,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "00693",
+   "state": "PR",
+   "county": "Vega Baja Municipio",
+   "low_income_residents": 38700,
+   "patients_all_centers": 5552,
+   "penetration_p50": 0.139,
+   "not_patients_p10": 31325,
+   "not_patients_p50": 33284,
+   "not_patients_p90": 35187,
+   "hrsa_published_penetration": 0.13,
+   "ratio_to_hrsa": 1.07,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "79936",
+   "state": "TX",
+   "county": "El Paso",
+   "low_income_residents": 35550,
+   "patients_all_centers": 2610,
+   "penetration_p50": 0.07,
+   "not_patients_p10": 30544,
+   "not_patients_p50": 32987,
+   "not_patients_p90": 35583,
+   "hrsa_published_penetration": 0.07,
+   "ratio_to_hrsa": 1.0,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "00924",
+   "state": "PR",
+   "county": "San Juan Municipio",
+   "low_income_residents": 35172,
+   "patients_all_centers": 2273,
+   "penetration_p50": 0.064,
+   "not_patients_p10": 30658,
+   "not_patients_p50": 32821,
+   "not_patients_p90": 35051,
+   "hrsa_published_penetration": 0.06,
+   "ratio_to_hrsa": 1.06,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "11208",
+   "state": "NY",
+   "county": "Kings",
+   "low_income_residents": 45142,
+   "patients_all_centers": 13219,
+   "penetration_p50": 0.278,
+   "not_patients_p10": 29115,
+   "not_patients_p50": 32585,
+   "not_patients_p90": 35843,
+   "hrsa_published_penetration": 0.29,
+   "ratio_to_hrsa": 0.96,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "78574",
+   "state": "TX",
+   "county": "Hidalgo",
+   "low_income_residents": 34855,
+   "patients_all_centers": 2258,
+   "penetration_p50": 0.063,
+   "not_patients_p10": 29718,
+   "not_patients_p50": 32557,
+   "not_patients_p90": 35462,
+   "hrsa_published_penetration": 0.06,
+   "ratio_to_hrsa": 1.05,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "77449",
+   "state": "TX",
+   "county": "Harris",
+   "low_income_residents": 38928,
+   "patients_all_centers": 7112,
+   "penetration_p50": 0.173,
+   "not_patients_p10": 28579,
+   "not_patients_p50": 32096,
+   "not_patients_p90": 35769,
+   "hrsa_published_penetration": 0.2,
+   "ratio_to_hrsa": 0.86,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "75211",
+   "state": "TX",
+   "county": "Dallas",
+   "low_income_residents": 35018,
+   "patients_all_centers": 3394,
+   "penetration_p50": 0.088,
+   "not_patients_p10": 29025,
+   "not_patients_p50": 32001,
+   "not_patients_p90": 34948,
+   "hrsa_published_penetration": 0.11,
+   "ratio_to_hrsa": 0.8,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "78046",
+   "state": "TX",
+   "county": "Webb",
+   "low_income_residents": 41089,
+   "patients_all_centers": 9137,
+   "penetration_p50": 0.219,
+   "not_patients_p10": 28748,
+   "not_patients_p50": 31948,
+   "not_patients_p90": 35277,
+   "hrsa_published_penetration": 0.23,
+   "ratio_to_hrsa": 0.95,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "33311",
+   "state": "FL",
+   "county": "Broward",
+   "low_income_residents": 38467,
+   "patients_all_centers": 7681,
+   "penetration_p50": 0.181,
+   "not_patients_p10": 28495,
+   "not_patients_p50": 31463,
+   "not_patients_p90": 34483,
+   "hrsa_published_penetration": 0.19,
+   "ratio_to_hrsa": 0.95,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "30044",
+   "state": "GA",
+   "county": "Gwinnett",
+   "low_income_residents": 34033,
+   "patients_all_centers": 2806,
+   "penetration_p50": 0.079,
+   "not_patients_p10": 28697,
+   "not_patients_p50": 31323,
+   "not_patients_p90": 34052,
+   "hrsa_published_penetration": 0.1,
+   "ratio_to_hrsa": 0.79,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "89115",
+   "state": "NV",
+   "county": "Clark",
+   "low_income_residents": 35905,
+   "patients_all_centers": 5275,
+   "penetration_p50": 0.131,
+   "not_patients_p10": 28811,
+   "not_patients_p50": 31289,
+   "not_patients_p90": 33842,
+   "hrsa_published_penetration": 0.14,
+   "ratio_to_hrsa": 0.93,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "00727",
+   "state": "PR",
+   "county": "Caguas Municipio",
+   "low_income_residents": 33079,
+   "patients_all_centers": 1836,
+   "penetration_p50": 0.054,
+   "not_patients_p10": 29067,
+   "not_patients_p50": 31244,
+   "not_patients_p90": 33506,
+   "hrsa_published_penetration": 0.05,
+   "ratio_to_hrsa": 1.08,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "37013",
+   "state": "TN",
+   "county": "Davidson",
+   "low_income_residents": 38338,
+   "patients_all_centers": 7265,
+   "penetration_p50": 0.185,
+   "not_patients_p10": 28046,
+   "not_patients_p50": 31160,
+   "not_patients_p90": 34317,
+   "hrsa_published_penetration": 0.2,
+   "ratio_to_hrsa": 0.93,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "75216",
+   "state": "TX",
+   "county": "Dallas",
+   "low_income_residents": 33497,
+   "patients_all_centers": 2550,
+   "penetration_p50": 0.07,
+   "not_patients_p10": 28321,
+   "not_patients_p50": 31067,
+   "not_patients_p90": 33919,
+   "hrsa_published_penetration": 0.08,
+   "ratio_to_hrsa": 0.87,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "11373",
+   "state": "NY",
+   "county": "Queens",
+   "low_income_residents": 38273,
+   "patients_all_centers": 7794,
+   "penetration_p50": 0.188,
+   "not_patients_p10": 28754,
+   "not_patients_p50": 31053,
+   "not_patients_p90": 33369,
+   "hrsa_published_penetration": 0.22,
+   "ratio_to_hrsa": 0.86,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "92345",
+   "state": "CA",
+   "county": "San Bernardino",
+   "low_income_residents": 35552,
+   "patients_all_centers": 4609,
+   "penetration_p50": 0.126,
+   "not_patients_p10": 28362,
+   "not_patients_p50": 30921,
+   "not_patients_p90": 33630,
+   "hrsa_published_penetration": 0.12,
+   "ratio_to_hrsa": 1.05,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "00603",
+   "state": "PR",
+   "county": "Aguadilla Municipio",
+   "low_income_residents": 33573,
+   "patients_all_centers": 2826,
+   "penetration_p50": 0.081,
+   "not_patients_p10": 29184,
+   "not_patients_p50": 30844,
+   "not_patients_p90": 32486,
+   "hrsa_published_penetration": 0.07,
+   "ratio_to_hrsa": 1.16,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "11355",
+   "state": "NY",
+   "county": "Queens",
+   "low_income_residents": 38862,
+   "patients_all_centers": 9633,
+   "penetration_p50": 0.209,
+   "not_patients_p10": 28145,
+   "not_patients_p50": 30757,
+   "not_patients_p90": 33336,
+   "hrsa_published_penetration": 0.24,
+   "ratio_to_hrsa": 0.87,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "77036",
+   "state": "TX",
+   "county": "Harris",
+   "low_income_residents": 44364,
+   "patients_all_centers": 14514,
+   "penetration_p50": 0.314,
+   "not_patients_p10": 28016,
+   "not_patients_p50": 30461,
+   "not_patients_p90": 32784,
+   "hrsa_published_penetration": 0.3,
+   "ratio_to_hrsa": 1.05,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "77084",
+   "state": "TX",
+   "county": "Harris",
+   "low_income_residents": 35335,
+   "patients_all_centers": 5130,
+   "penetration_p50": 0.137,
+   "not_patients_p10": 27340,
+   "not_patients_p50": 30427,
+   "not_patients_p90": 33633,
+   "hrsa_published_penetration": 0.14,
+   "ratio_to_hrsa": 0.98,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "78520",
+   "state": "TX",
+   "county": "Cameron",
+   "low_income_residents": 34374,
+   "patients_all_centers": 4080,
+   "penetration_p50": 0.115,
+   "not_patients_p10": 27767,
+   "not_patients_p50": 30397,
+   "not_patients_p90": 33065,
+   "hrsa_published_penetration": 0.18,
+   "ratio_to_hrsa": 0.64,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "79938",
+   "state": "TX",
+   "county": "El Paso",
+   "low_income_residents": 33497,
+   "patients_all_centers": 3357,
+   "penetration_p50": 0.096,
+   "not_patients_p10": 26922,
+   "not_patients_p50": 30321,
+   "not_patients_p90": 33702,
+   "hrsa_published_penetration": 0.11,
+   "ratio_to_hrsa": 0.87,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "92335",
+   "state": "CA",
+   "county": "San Bernardino",
+   "low_income_residents": 37584,
+   "patients_all_centers": 7654,
+   "penetration_p50": 0.197,
+   "not_patients_p10": 27802,
+   "not_patients_p50": 30149,
+   "not_patients_p90": 32606,
+   "hrsa_published_penetration": 0.2,
+   "ratio_to_hrsa": 0.99,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "78501",
+   "state": "TX",
+   "county": "Hidalgo",
+   "low_income_residents": 30974,
+   "patients_all_centers": 896,
+   "penetration_p50": 0.028,
+   "not_patients_p10": 27734,
+   "not_patients_p50": 30024,
+   "not_patients_p90": 32236,
+   "hrsa_published_penetration": 0.03,
+   "ratio_to_hrsa": 0.94,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "48228",
+   "state": "MI",
+   "county": "Wayne",
+   "low_income_residents": 33524,
+   "patients_all_centers": 4174,
+   "penetration_p50": 0.115,
+   "not_patients_p10": 27429,
+   "not_patients_p50": 29690,
+   "not_patients_p90": 31968,
+   "hrsa_published_penetration": 0.13,
+   "ratio_to_hrsa": 0.89,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "75228",
+   "state": "TX",
+   "county": "Dallas",
+   "low_income_residents": 30897,
+   "patients_all_centers": 1543,
+   "penetration_p50": 0.047,
+   "not_patients_p10": 26424,
+   "not_patients_p50": 29409,
+   "not_patients_p90": 32241,
+   "hrsa_published_penetration": 0.06,
+   "ratio_to_hrsa": 0.78,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "11212",
+   "state": "NY",
+   "county": "Kings",
+   "low_income_residents": 49162,
+   "patients_all_centers": 20750,
+   "penetration_p50": 0.403,
+   "not_patients_p10": 25921,
+   "not_patients_p50": 29320,
+   "not_patients_p90": 32871,
+   "hrsa_published_penetration": 0.43,
+   "ratio_to_hrsa": 0.94,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "00729",
+   "state": "PR",
+   "county": "Can\u00f3vanas Municipio",
+   "low_income_residents": 31181,
+   "patients_all_centers": 2072,
+   "penetration_p50": 0.066,
+   "not_patients_p10": 27266,
+   "not_patients_p50": 29068,
+   "not_patients_p90": 30924,
+   "hrsa_published_penetration": 0.06,
+   "ratio_to_hrsa": 1.1,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "00745",
+   "state": "PR",
+   "county": "R\u00edo Grande Municipio",
+   "low_income_residents": 31776,
+   "patients_all_centers": 2808,
+   "penetration_p50": 0.087,
+   "not_patients_p10": 27344,
+   "not_patients_p50": 29012,
+   "not_patients_p90": 30706,
+   "hrsa_published_penetration": 0.08,
+   "ratio_to_hrsa": 1.09,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "48212",
+   "state": "MI",
+   "county": "Wayne",
+   "low_income_residents": 30671,
+   "patients_all_centers": 1775,
+   "penetration_p50": 0.055,
+   "not_patients_p10": 26849,
+   "not_patients_p50": 28983,
+   "not_patients_p90": 31263,
+   "hrsa_published_penetration": 0.06,
+   "ratio_to_hrsa": 0.92,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "79928",
+   "state": "TX",
+   "county": "El Paso",
+   "low_income_residents": 32675,
+   "patients_all_centers": 4136,
+   "penetration_p50": 0.121,
+   "not_patients_p10": 25288,
+   "not_patients_p50": 28725,
+   "not_patients_p90": 32128,
+   "hrsa_published_penetration": 0.12,
+   "ratio_to_hrsa": 1.01,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "89121",
+   "state": "NV",
+   "county": "Clark",
+   "low_income_residents": 31346,
+   "patients_all_centers": 3102,
+   "penetration_p50": 0.086,
+   "not_patients_p10": 26515,
+   "not_patients_p50": 28650,
+   "not_patients_p90": 30822,
+   "hrsa_published_penetration": 0.1,
+   "ratio_to_hrsa": 0.86,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "00662",
+   "state": "PR",
+   "county": "Isabela Municipio",
+   "low_income_residents": 31210,
+   "patients_all_centers": 2658,
+   "penetration_p50": 0.083,
+   "not_patients_p10": 26523,
+   "not_patients_p50": 28647,
+   "not_patients_p90": 30759,
+   "hrsa_published_penetration": 0.04,
+   "ratio_to_hrsa": 2.07,
+   "hrsa_disagrees": 1,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "00953",
+   "state": "PR",
+   "county": "Toa Alta Municipio",
+   "low_income_residents": 40516,
+   "patients_all_centers": 12180,
+   "penetration_p50": 0.293,
+   "not_patients_p10": 26387,
+   "not_patients_p50": 28607,
+   "not_patients_p90": 30763,
+   "hrsa_published_penetration": 0.26,
+   "ratio_to_hrsa": 1.13,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "07055",
+   "state": "NJ",
+   "county": "Passaic",
+   "low_income_residents": 34142,
+   "patients_all_centers": 5776,
+   "penetration_p50": 0.162,
+   "not_patients_p10": 26548,
+   "not_patients_p50": 28601,
+   "not_patients_p90": 30757,
+   "hrsa_published_penetration": 0.17,
+   "ratio_to_hrsa": 0.96,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "00736",
+   "state": "PR",
+   "county": "Cayey Municipio",
+   "low_income_residents": 30226,
+   "patients_all_centers": 1750,
+   "penetration_p50": 0.056,
+   "not_patients_p10": 26799,
+   "not_patients_p50": 28494,
+   "not_patients_p90": 30310,
+   "hrsa_published_penetration": 0.05,
+   "ratio_to_hrsa": 1.11,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "18102",
+   "state": "PA",
+   "county": "Lehigh",
+   "low_income_residents": 30865,
+   "patients_all_centers": 2491,
+   "penetration_p50": 0.079,
+   "not_patients_p10": 26080,
+   "not_patients_p50": 28470,
+   "not_patients_p90": 30856,
+   "hrsa_published_penetration": 0.89,
+   "ratio_to_hrsa": 0.09,
+   "hrsa_disagrees": 1,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "76010",
+   "state": "TX",
+   "county": "Tarrant",
+   "low_income_residents": 29090,
+   "patients_all_centers": 603,
+   "penetration_p50": 0.019,
+   "not_patients_p10": 26198,
+   "not_patients_p50": 28455,
+   "not_patients_p90": 30844,
+   "hrsa_published_penetration": 0.02,
+   "ratio_to_hrsa": 0.97,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  },
+  {
+   "zcta": "11214",
+   "state": "NY",
+   "county": "Kings",
+   "low_income_residents": 35494,
+   "patients_all_centers": 7619,
+   "penetration_p50": 0.201,
+   "not_patients_p10": 26188,
+   "not_patients_p50": 28358,
+   "not_patients_p90": 30520,
+   "hrsa_published_penetration": 0.23,
+   "ratio_to_hrsa": 0.87,
+   "hrsa_disagrees": 0,
+   "no_patients_reported": 0
+  }
+ ],
+ "facts_file": "output/facts.json",
+ "definitions": {
+  "low_income": "under 200% of the federal poverty level (ACS table C17002, estimates 002 to 007)",
+  "patients_low_income": "a center's patients in a ZIP times that center's share at or below 200% of poverty (Table 4 lines 1 to 3 over lines 1 to 4, unknown excluded); assumes a center's ZIP mix equals its overall mix",
+  "penetration": "low-income patients of all centers over low-income residents; ours, not HRSA's (HRSA's published value is a comparator)",
+  "not_patients": "low-income residents minus low-income patients, floored at 0; one measure, they may use other care",
+  "under_10_and_25_pct": "our own thresholds on penetration, named as ours on the page; not an HRSA rule",
+  "small_zip": "under 1,000 low-income residents: ACS margins are wide; left out of ranks and ranked tables, counted in totals",
+  "campus_zip": "college and graduate students (ACS B14001) are 20% or more of residents aged 3 and over. The poverty count includes students living off campus, so these ZIPs look poorer and less reached than their non-student residents; left out of ranks and ranked tables, counted in totals",
+  "typical_site": "a single new site with the median attractiveness of its type (center type effect at one site)",
+  "draw": "model quantity behind patients = min(capacity, draw). Not published: most single sites would exceed any plausible capacity, so capacity is an input and the projection gives shares (new, from neighbours, payer mix)",
+  "interval": "reach figures: 10th to 90th percentile over Monte Carlo draws of the ACS margins and of the censored cells (2,000 draws). New-site shares: over 24 of the 100 bootstrap refits of the model. Survey and parameter uncertainty only: yearly patient-count noise and the assumptions in 'limits' are not in it",
+  "tile_3": "mean over 226 held-out centers of the share of a center's patients living in the 20 ZIPs the model ranked highest for it; patient_weighted weights centers by size. Baselines: the 20 nearest ZIPs and the 20 ZIPs with most low-income residents",
+  "geography": "50 states, DC and Puerto Rico. Virgin Islands, Guam, American Samoa and Northern Mariana patients are in Table 4 totals but in no ZIP table",
+  "new_patients": "patients who, in the model, use no health center today (the outside option); the rest of a site's patients are taken from neighbouring centers"
+ },
+ "limits": [
+  "'Other ZIP Codes' lines hold 668,157 patients (2.0% of all patients, 3.5% of the average center and up to 51% of one). They cannot be placed on a ZIP, so they are in no ZIP's count.",
+  "Look-alike centers (170 modeled as competitors) have no patients in the UDS awardee file. Their patients are not counted, so they show as people not reached.",
+  "A person served by two centers is counted twice: UDS patients are unduplicated within a center only.",
+  "Supply is permanent, non-school sites. The site list has 2,475 seasonal rows, 1,419 mobile van rows and 4,831 rows in a school setting that are left out. A mobile unit or outreach team is not in the supply.",
+  "ACS counts college students as low-income, which lifts the counts of some ZIPs near campuses.",
+  "Distance is straight-line miles to the center's nearest permanent site. Drive time, transit and borders are not in it.",
+  "Patients' income is each center's overall low-income share applied to every ZIP of that center. Without that scaling the residents in ZIPs under 25% reached fall by 3.7 million.",
+  "The thresholds of 10% and 25% penetration are ours, not an HRSA rule.",
+  "Sites that closed are missing from the October 2026 site list, which shifts the competition around the 2025 openings.",
+  "Intervals are parameter and survey uncertainty. Yearly patient-count noise, the capacity and who could use a center are not in them: the median share of a site's patients with no center today is 0.65 with low-income residents as the market and 0.90 with all residents."
+ ],
+ "headline": {
+  "tile_1_residents_where_under_25pct_reached": {
+   "p10_p50_p90": [
+    49820633,
+    51124611,
+    52372163
+   ],
+   "interval_covers": "survey margin of error only",
+   "interval_if_acs_errors_shared_within_state": [
+    48446912,
+    51105272,
+    53680738
+   ],
+   "if_patients_not_scaled_to_income_share_p10_p50_p90": [
+    46135711,
+    47404774,
+    48609334
+   ],
+   "at_20pct_p50": 42975492,
+   "at_30pct_p50": 57979807,
+   "uninsured_adults_same_zips_p10_p50_p90": [
+    5791137,
+    6090696,
+    6379114
+   ],
+   "zctas": [
+    19734,
+    19983,
+    20215
+   ]
+  },
+  "tile_2_residents_where_under_10pct_reached": {
+   "p10_p50_p90": [
+    21796956,
+    22530123,
+    23261202
+   ],
+   "zctas": [
+    12217,
+    12372,
+    12526
+   ],
+   "interval_covers": "survey margin of error only"
+  },
+  "tile_3_of_100_patients_in_model_top20": 76.4,
+  "tile_3_mean_over_centers": 84.7,
+  "tile_3_nearest_20_zips_patient_weighted": 66.2,
+  "tile_3_nearest_20_zips_mean": 78.1,
+  "tile_3_population_only": 39.6,
+  "tile_3_share_of_centers_model_beats_nearest": 79.0,
+  "tile_3_median_points_over_nearest": 4.2,
+  "tile_3_single_site_centers": {
+   "centers": 78,
+   "patients_median": 3146.0,
+   "top20_model_mean": 0.914,
+   "top20_model_patient_weighted": 0.862,
+   "top20_nearest_mean": 0.874,
+   "top20_population_mean": 0.454,
+   "share_centers_model_beats_nearest": 0.615,
+   "total_ratio_median": 1.081,
+   "total_ratio_p10": 0.235,
+   "total_ratio_p90": 7.176,
+   "total_ratio_within_factor_2": 0.423,
+   "total_ratio_median_eps0": 1.714
+  }
+ },
+ "sources": [
+  [
+   "H80-2025.xlsx",
+   "https://data.hrsa.gov/DataDownload/StaticDocuments/H80-2025.xlsx",
+   "bytes=29059572",
+   "sha256=1f8a7503f548"
+  ],
+  [
+   "H80-2024.xlsx",
+   "https://data.hrsa.gov/DataDownload/StaticDocuments/H80-2024.xlsx",
+   "bytes=28763487",
+   "sha256=b33988f1b336"
+  ],
+  [
+   "sites.csv",
+   "https://data.hrsa.gov/DataDownload/DD_Files/Health_Center_Service_Delivery_and_LookAlike_Sites.csv",
+   "bytes=14183208",
+   "sha256=7ce515919960"
+  ],
+  [
+   "acs_c17002.dat",
+   "https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-c17002.dat",
+   "bytes=42027042",
+   "sha256=dc3dc6751136"
+  ],
+  [
+   "acs_c27016.dat",
+   "https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-c27016.dat",
+   "bytes=108011605",
+   "sha256=b862da1716ba"
+  ],
+  [
+   "acs_b14001.dat",
+   "https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b14001.dat",
+   "bytes=27312329",
+   "sha256=e175af4a3361"
+  ],
+  [
+   "gazetteer",
+   "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2024_Gazetteer/2024_Gaz_zcta_national.zip",
+   "bytes=6792182",
+   "sha256=9c2630c5b241"
+  ],
+  [
+   "zcta_county.txt",
+   "https://www2.census.gov/geo/docs/maps-data/data/rel2020/zcta520/tab20_zcta520_county20_natl.txt",
+   "bytes=6821287",
+   "sha256=3ed41278d637"
+  ],
+  [
+   "nap_bulletin.html",
+   "https://content.govdelivery.com/accounts/USHHSHRSA/bulletins/426df8a",
+   "bytes=70094",
+   "sha256=eb4be155731d"
+  ],
+  [
+   "fr_2026-11094.txt",
+   "https://www.federalregister.gov/documents/full_text/text/2026/06/03/2026-11094.txt",
+   "bytes=870982",
+   "sha256=46789def4447"
+  ],
+  [
+   "uns.xlsx",
+   "https://data.hrsa.gov/Content/Documents/topics/Full_Unmet_Need_Score_File.xlsx",
+   "bytes=17561072",
+   "sha256=54e127732872"
+  ]
+ ]
+}

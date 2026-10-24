@@ -1,0 +1,240 @@
+/* Page-local styles for the health center site planner (example 07). The shared kit lives in ../shared/example.css.
+   No page rule adds a background, a four-sided border, a radius or a shadow to a container: hairlines and type carry the structure. */
+
+/* ---------- the tool ---------- */
+@media (min-width: 960px) {
+  .ex .ex-tool--split .ex-tool__controls {
+    position: static;
+  }
+}
+.ex .p7-more__body {
+  display: grid;
+  gap: var(--ex-s5);
+  padding-top: var(--ex-s3);
+}
+.ex .p7-ll {
+  display: flex;
+  align-items: center;
+  gap: var(--ex-s3);
+}
+.ex .p7-ll .ex-input {
+  min-width: 0;
+  flex: 1;
+}
+.ex .p7-tool .ex-tool__controls .ex-hint {
+  margin-top: 0;
+}
+.ex .p7-bad {
+  color: var(--ex-bad);
+}
+.ex .p7-site > * + * {
+  margin-top: var(--ex-s3);
+}
+.ex .p7-site .ex-figure__title {
+  margin-bottom: 0;
+}
+.ex .p7-site[hidden],
+.ex .p7-srcfig[hidden],
+.ex .p7-ziplist[hidden] {
+  display: none;
+}
+@media (min-width: 720px) {
+  .ex .p7-site .ex-results {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    align-items: end;
+  }
+  .ex .p7-site .ex-results .ex-result--lead {
+    grid-column: auto;
+  }
+  .ex .p7-site .ex-results .ex-result--lead .ex-result__value {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+  }
+}
+.ex .p7-line {
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+  line-height: 1.5;
+  color: var(--ex-ink-2);
+  max-width: 62ch;
+}
+.ex .p7-line strong {
+  color: var(--ex-ink);
+}
+.ex .p7-line:empty {
+  display: none;
+}
+
+/* the payer mix: four numbers on one hairline, a short gold bar under each for its share */
+.ex .p7-pay {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--ex-s4);
+  margin-top: var(--ex-s4);
+}
+.ex .p7-pay > div {
+  position: relative;
+  display: grid;
+  gap: 0.1rem;
+  align-content: start;
+  padding-bottom: var(--ex-s3);
+  border-bottom: 1px solid var(--ex-line-strong);
+  font-family: var(--ex-font-ui);
+}
+.ex .p7-pay dt {
+  font-size: var(--ex-t-xs);
+  color: var(--ex-muted);
+}
+.ex .p7-pay dd {
+  margin: 0;
+  font-size: var(--ex-t-lg);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--ex-ink);
+  font-variant-numeric: tabular-nums;
+}
+.ex .p7-pay dd.p7-pay__r {
+  font-size: var(--ex-t-xs);
+  font-weight: 400;
+  color: var(--ex-muted);
+}
+.ex .p7-pay__bar {
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 3px;
+  background: var(--ex-c-est);
+}
+@media (max-width: 520px) {
+  .ex .p7-pay {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ---------- the map ---------- */
+.ex .p7-map svg {
+  overflow: hidden;
+}
+.ex .p7-border {
+  fill: none;
+  stroke: var(--ex-line-strong);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+.ex .p7-site {
+  fill: var(--ex-muted);
+  fill-opacity: 0.6;
+}
+.ex .p7-site.is-own {
+  fill: var(--ex-ink);
+  fill-opacity: 0.9;
+}
+.ex .p7-dot {
+  stroke: var(--ex-seq-6);
+  stroke-width: 0.75;
+  stroke-opacity: 0.55;
+}
+.ex .p7-dot.is-small {
+  stroke: var(--ex-ink-3);
+  stroke-opacity: 0.6;
+}
+.ex .p7-src {
+  fill: none;
+  stroke: var(--ex-c-est);
+  stroke-width: 1.75;
+}
+.ex .p7-cand {
+  fill: var(--ex-c-est);
+  stroke: var(--ex-ink);
+  stroke-width: 1.5;
+}
+.ex .p7-zip-label {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--ex-ink);
+  paint-order: stroke;
+  stroke: var(--ex-paper);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.ex .p7-scale path {
+  fill: none;
+  stroke: var(--ex-ink-3);
+  stroke-width: 1.5;
+}
+.ex .p7-scale text {
+  font-size: 11px;
+  fill: var(--ex-ink-3);
+}
+
+/* ---------- the ZIP table ---------- */
+.ex .p7-zips th[scope="row"] {
+  white-space: nowrap;
+}
+.ex .p7-zips td.is-text {
+  white-space: nowrap;
+}
+.ex .p7-zips tr.is-sel th,
+.ex .p7-zips tr.is-sel td {
+  font-weight: 700;
+}
+.ex .p7-zips tr.is-sel th:first-child {
+  box-shadow: inset 3px 0 0 var(--ex-c-est);
+}
+/* a faint edge shows there is more to scroll to */
+.ex .p7-scroll {
+  background:
+    linear-gradient(to right, var(--ex-paper) 30%, transparent) left center / 2rem 100% no-repeat local,
+    linear-gradient(to left, var(--ex-paper) 30%, transparent) right center / 2rem 100% no-repeat local,
+    linear-gradient(to right, rgba(25, 20, 69, 0.16), transparent) left center / 0.6rem 100% no-repeat scroll,
+    linear-gradient(to left, rgba(25, 20, 69, 0.16), transparent) right center / 0.6rem 100% no-repeat scroll,
+    var(--ex-paper);
+}
+
+/* ---------- charts ---------- */
+/* an estimate stays a gold ring; the chosen row only gets a heavier ring and a bold label */
+.ex .ex-chart circle.ex-dot--est.ex-sel {
+  fill: var(--ex-paper);
+  stroke: var(--ex-c-est);
+  stroke-width: 3.5;
+}
+.ex .ex-chart line.ex-stem--est.ex-sel {
+  stroke: var(--ex-c-est);
+  stroke-width: 2.5;
+}
+/* check C: the model is observed (solid indigo); the two rules it beats are reference (teal), told apart by fill */
+.ex .p7-stem-grey {
+  stroke: var(--ex-c-axis);
+  stroke-width: 1.5;
+}
+.ex .p7-dot-near {
+  fill: var(--ex-c-ref);
+}
+.ex .p7-dot-pop {
+  fill: var(--ex-paper);
+  stroke: var(--ex-c-ref);
+  stroke-width: 2.25;
+}
+
+/* ---------- print: the brief only ---------- */
+.ex .p7-brief {
+  display: none;
+}
+@media print {
+  body.p7-print .ex-hero,
+  body.p7-print .ex-subnav,
+  body.p7-print .skip-link,
+  body.p7-print nav,
+  body.p7-print footer,
+  body.p7-print main.ex > :not(#p7-brief) {
+    display: none !important;
+  }
+  body.p7-print .ex .p7-brief {
+    display: block;
+  }
+  body.p7-print .p7-brief h2 {
+    margin-bottom: 0.5rem;
+  }
+  body.p7-print .p7-brief h3 {
+    margin: 1.25rem 0 0.25rem;
+  }
+}

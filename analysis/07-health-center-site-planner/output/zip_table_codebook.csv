@@ -1,0 +1,41 @@
+column,meaning,source
+zcta,"ZIP code tabulation area, 5 digits as text (Excel drops leading zeros unless the column is read as text)",Census 2024 Gazetteer; ACS 2020-2024 geography
+state,State of the ZCTA's main county,Census 2020 ZCTA-to-county file
+county,"Main county (largest land overlap). 'city', Borough, Census Area and Municipality names are kept, so a Virginia independent city or an Alaska borough is not merged with a neighbouring county. Connecticut has its eight legacy counties, not the planning regions",Census 2020 ZCTA-to-county file
+density_class,"rural under 200, suburban 200 to 2,000, urban 2,000 or more residents per square mile of land",ACS population over Gazetteer land area
+residents,Population for whom poverty status is determined,ACS 2020-2024 table C17002
+low_income_residents,Residents under 200% of the federal poverty level,"ACS C17002, estimates 002 to 007"
+low_income_moe90,90% margin of error on low_income_residents,ACS C17002 (margins summed in quadrature)
+uninsured_adults_below_200,Uninsured adults 19 to 64 under 200% of poverty,"ACS C27016, estimates 008 + 018 + 028"
+centers_with_patients,Health centers reporting at least one patient living here,"HRSA UDS 2025, ZIP table"
+nearest_site_miles,"Straight-line miles from the ZCTA centroid to the nearest permanent, non-school site","HRSA site list, October 2026"
+patients_all_centers,"Patients of all health centers living here, censored cells placed (mean)",HRSA UDS 2025; placement in analysis/hidden.py
+low_income_patients,"Patients of all health centers living here, scaled by each center's share of patients under 200% of poverty (mean)",HRSA UDS 2025 Table 4 lines 1 to 4
+patients_per_100_residents,"patients_all_centers per 100 residents, no income scaling. Blank where small_zip is 1 or no_patients_reported is 1",derived
+penetration_p10,"Low-income patients over low-income residents, 10th percentile. Blank where small_zip is 1 or no_patients_reported is 1; over_100pct marks ZIPs whose patients exceed residents",Monte Carlo on ACS margins and censored cells
+penetration_p50,"Low-income patients over low-income residents, median. Blank where small_zip is 1 or no_patients_reported is 1",Monte Carlo
+penetration_p90,"Low-income patients over low-income residents, 90th percentile. Blank where small_zip is 1 or no_patients_reported is 1",Monte Carlo
+not_patients_p10,"Low-income residents who are not health center patients, 10th percentile","residents minus low-income patients, floored at 0"
+not_patients_p50,"Low-income residents who are not health center patients, median (residents minus low-income patients, floored at 0)",Monte Carlo
+not_patients_p90,"Low-income residents who are not health center patients, 90th percentile (residents minus low-income patients, floored at 0)",Monte Carlo
+hrsa_published_penetration,"HRSA's published penetration of low-income residents (comparator; year not stated in the file). It uses the same UDS ZIP table, so it checks our joins, not the model. The correlation on the page includes small ZIPs, whose reach is blank here",HRSA Unmet Need Score file
+ratio_to_hrsa,"penetration_p50 over hrsa_published_penetration, ZIPs that are not small. Ours runs lower by about the income share applied to patients",derived
+hrsa_disagrees,1 if ratio_to_hrsa is below 0.5 or above 2; read these rows with care (often a different reporting year),derived
+over_100pct,"1 if the median penetration is above 1: patients living in the ZIP exceed its low-income residents (ACS error, college or seasonal residents, or an HRSA ZIP merged into the ZCTA)",derived
+no_patients_reported,"1 if no center reports a patient living here. Their patients, if any, sit in the centers' 'Other ZIP Codes' lines. Penetration is left blank; not_patients is then the low-income residents","HRSA UDS 2025, ZIP table"
+small_zip,"1 if under 1,000 low-income residents: ACS margins are wide; left out of ranks",derived
+college_students_pct,College and graduate students per 100 residents aged 3 and over,"ACS 2020-2024 table B14001, estimates 008 + 009 over 001"
+campus_zip,1 if college_students_pct is 20 or more: students inflate the low-income count; left out of ranks,derived
+rank_people,"Rank by not_patients_p50, 1 = most, ZIPs that are neither small nor campus",derived
+rank_share,"Rank by penetration_p50, 1 = lowest, ZIPs that are neither small nor campus",derived
+site_share_new_p10,"Share of a typical single site's patients at the ZIP centroid who have no health center today, 10th percentile. Does not depend on capacity",model; the 24 bootstrap parameter sets the page uses
+site_share_new_p50,"Share of a typical single site's patients at the ZIP centroid who have no health center today, median. Does not depend on capacity",model
+site_share_new_p90,"Share of a typical single site's patients at the ZIP centroid who have no health center today, 90th percentile. Does not depend on capacity",model
+site_new_patients_at_5000_p10,"New patients (no center today) if the site sees 5,000 patients a year: capacity times site_share_new, 10th percentile. Valid where site_capacity_binds is 1, because only there does capacity, not the model, set the number of patients. Capacity is an input; the model does not forecast volume",model
+site_new_patients_at_5000_p50,"New patients (no center today) if the site sees 5,000 patients a year, median. Valid where site_capacity_binds is 1",model
+site_new_patients_at_5000_p90,"New patients (no center today) if the site sees 5,000 patients a year, 90th percentile. Valid where site_capacity_binds is 1",model
+site_capacity_binds,"1 if the model's draw for a typical single site here exceeds 5,000 patients a year in 90% of parameter sets, so capacity (not the model) sets the volume. The draw itself is not published",model
+site_payer_uninsured,Share of the site's patients uninsured (median),"model; ACS C27016 for new patients, observed mix for neighbours' patients"
+site_payer_medicaid,"Share on Medicaid, CHIP or other public insurance (median)",model
+site_payer_medicare,Share on Medicare (median),model
+site_payer_private,Share with private insurance (median),model

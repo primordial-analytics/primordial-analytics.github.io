@@ -1,0 +1,27 @@
+{
+ "checked": "2026-10-23",
+ "new_access_points_2026": {
+  "millions_usd": 102,
+  "health_centers": 158,
+  "new_sites": 415,
+  "announced": "2026-08-13",
+  "source": "HRSA bulletin of 2026-08-27",
+  "url": "https://content.govdelivery.com/accounts/USHHSHRSA/bulletins/426df8a",
+  "checked": "2026-10-23"
+ },
+ "medicaid_community_engagement": {
+  "states_start_no_later_than": "2027-01-01",
+  "renewals_for_expansion_adults": "every 6 months",
+  "source": "CMS interim final rule, Federal Register 91 FR 33348, 2026-06-03",
+  "url": "https://www.federalregister.gov/documents/full_text/text/2026/06/03/2026-11094.txt",
+  "example_for_revenue_side": "/casestudies/09-health-center-coverage-loss-stress-test/",
+  "checked": "2026-10-23"
+ },
+ "link_only": [
+  {
+   "topic": "HRSA service area competition, Add a Site to Scope form, New Access Point rules",
+   "url": "https://www.hrsa.gov/grants/find-funding/HRSA-27-005",
+   "status": "HRSA's pages return 403 Access Denied to scripts, including one try with headless Chromium and a normal user agent on 2026-10-23, so the wording could not be read and no date, point value or threshold from them is stated on the page."
+  }
+ ]
+}
