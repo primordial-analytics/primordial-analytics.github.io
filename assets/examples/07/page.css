@@ -114,12 +114,6 @@
 .ex .p7-map svg {
   overflow: hidden;
 }
-.ex .p7-border {
-  fill: none;
-  stroke: var(--ex-line-strong);
-  stroke-width: 1;
-  stroke-linejoin: round;
-}
 .ex .p7-site {
   fill: var(--ex-muted);
   fill-opacity: 0.6;

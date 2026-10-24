@@ -595,19 +595,21 @@ Ex.ready(function () {
       var aspect = geom.spanY / geom.spanX;
       return Math.max(240, Math.min(w < 520 ? 360 : 440, w * aspect + 60));
     }
-    var borders = null; // state lines and coasts as [lon, lat] segments, once the shared outline file has loaded
     function drawMap(c) {
       if (!A) return;
       var g = c.g, G = geom || mapGeom(c.w);
       var PAD = 12, W = c.width, H = c.height - 22;
-      var SX = G.ex[1] - G.ex[0], SY = G.ey[1] - G.ey[0];
-      var s = Math.min((W - 2 * PAD) / Math.max(SX, 1), (H - 2 * PAD) / Math.max(SY, 1));
-      var ox = (W - SX * s) / 2 - G.ex[0] * s;
-      var oy = (H - SY * s) / 2 - G.ey[0] * s;
-      var X = function (z) { return ox + (lon[z] - G.lo0) * G.cs * MI_DEG * s; };
-      var Y = function (z) { return oy - (lat[z] - G.la0) * MI_DEG * s; };
-      var sx = function (la, lo) { return ox + (lo - G.lo0) * G.cs * MI_DEG * s; };
-      var sy = function (la, lo) { return oy - (la - G.la0) * MI_DEG * s; };
+      // Web Mercator, to sit on the street tiles; s is pixels per mile at the area's middle
+      var m = A.z.map(function (z) { return Ex.merc([lon[z], lat[z]]); });
+      var mx = d3.extent(m, function (q) { return q[0]; }), my = d3.extent(m, function (q) { return q[1]; });
+      var SX = Math.max(mx[1] - mx[0], 1e-4), SY = Math.max(my[1] - my[0], 1e-4);
+      var k = Math.min((W - 2 * PAD) / SX, (H - 2 * PAD) / SY);
+      var ox = (W - SX * k) / 2 - mx[0] * k, oy = (H - SY * k) / 2 - my[0] * k;
+      var s = k / (2 * Math.PI * EARTH * G.cs);
+      var sx = function (la, lo) { return Ex.merc([lo, la])[0] * k + ox; };
+      var sy = function (la, lo) { return Ex.merc([lo, la])[1] * k + oy; };
+      var X = function (z) { return sx(lat[z], lon[z]); };
+      var Y = function (z) { return sy(lat[z], lon[z]); };
       var vals = A.z.filter(function (z) { return !isSmall(z); }).map(metric).sort(d3.ascending);
       var hi = vals.length ? d3.quantile(vals, 0.95) : 1;
       if (!(hi > 0)) hi = 1;
@@ -618,22 +620,7 @@ Ex.ready(function () {
       // everything on the map is clipped to the plot, so nothing lands on the scale bar, the caption or the next heading
       g.append("clipPath").attr("id", "p7-clip").append("rect").attr("width", W).attr("height", H);
       var plot = g.append("g").attr("clip-path", "url(#p7-clip)");
-      if (borders) {
-        var dpath = "";
-        borders.forEach(function (seg) {
-          var pen = false;
-          seg.forEach(function (q) {
-            var x = sx(q[1], q[0]), y = sy(q[1], q[0]);
-            if (x < -60 || x > W + 60 || y < -60 || y > H + 60) {
-              pen = false;
-              return;
-            }
-            dpath += (pen ? "L" : "M") + x.toFixed(1) + "," + y.toFixed(1);
-            pen = true;
-          });
-        });
-        plot.append("path").attr("class", "p7-border").attr("d", dpath);
-      }
+      Ex.tiles(plot, { k: k, tx: ox, ty: oy, width: W, height: H });
       // sites in view
       var mine = {};
       if (S.start === "center") (ownSites[S.ci] || []).forEach(function (q) { mine[q] = 1; });
@@ -1362,25 +1349,5 @@ Ex.ready(function () {
     /* ---------- start ---------- */
     buildPicker();
     setAnchor();
-    // state lines and coasts from the shared us-atlas file (already projected); the map works without them
-    if (typeof topojson !== "undefined") {
-      var proj = d3.geoAlbersUsa().scale(1300).translate([487.5, 305]);
-      Ex.loadData(Ex.assetUrl("us-counties-albers-10m.json")).then(function (topo) {
-        borders = [];
-        topojson.mesh(topo, topo.objects.states, function (a, b2) { return a !== b2; }).coordinates.forEach(function (line) {
-          var seg = [];
-          line.forEach(function (pt) {
-            var q = proj.invert(pt);
-            if (q) seg.push(q);
-            else {
-              if (seg.length > 1) borders.push(seg);
-              seg = [];
-            }
-          });
-          if (seg.length > 1) borders.push(seg);
-        });
-        chartMap.redraw();
-      }, function () {});
-    }
   }
 });

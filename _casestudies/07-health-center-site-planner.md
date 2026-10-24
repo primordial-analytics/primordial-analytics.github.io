@@ -76,9 +76,6 @@ data: /assets/examples/07/data.json
 extra_css:
   - /assets/examples/07/page.css
 extra_scripts:
-  - src: "https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"
-    integrity: >-
-      sha512-4UKI/XKm3xrvJ6pZS5oTRvIQGIzZFoXR71rRBb1y2N+PbwAsKa5tPl2J6WvbEvwN3TxQCm8hMzsl/pO+82iRlg==
   - /assets/examples/07/page.js
 ---
 

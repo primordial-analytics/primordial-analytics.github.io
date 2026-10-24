@@ -1070,6 +1070,22 @@ main#main.ex:focus {
   color: var(--ex-muted);
   margin-top: var(--ex-s2);
 }
+/* street tiles under a map (Ex.tiles): quiet enough that the data reads first */
+.ex-tiles {
+  filter: grayscale(1) contrast(0.75) brightness(1.08);
+  opacity: 0.7;
+}
+.ex-tiles__credit {
+  font-size: 10px;
+  fill: var(--ex-muted);
+  paint-order: stroke;
+  stroke: #fff;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.ex-tiles__credit a {
+  fill: inherit;
+}
 .ex-figure img {
   display: block;
   max-width: 100%;

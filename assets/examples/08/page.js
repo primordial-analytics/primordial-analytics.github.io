@@ -134,9 +134,13 @@ Ex.ready(function () {
       return { weeks: now > end ? 0 : Math.max(1, Math.round((to - from) / 6048e5)), date: now > end ? "" : dateText(iso) };
     }
 
-    /* ---------- county outlines (shared us-atlas file, already projected) ---------- */
+    /* ---------- county outlines (shared us-atlas file, already projected in Albers) ---------- */
     var OUT = { county: {} };
-    var proj = d3.geoAlbersUsa().scale(1300).translate([487.5, 305]);
+    var proj = Ex.merc; // Web Mercator, to sit on the street tiles
+    var albers = d3.geoAlbersUsa().scale(1300).translate([487.5, 305]);
+    function toMerc(k, tx, ty) {
+      return d3.geoTransform({ point: function (x, y) { var q = proj(albers.invert([x, y])); this.stream.point(q[0] * k + tx, q[1] * k + ty); } });
+    }
     Ex.loadData(Ex.assetUrl("us-counties-albers-10m.json")).then(function (topo) {
       topojson.feature(topo, topo.objects.counties).features.forEach(function (f) { OUT.county[f.id] = f; });
       if (mapChart) mapChart.redraw();
@@ -553,12 +557,12 @@ Ex.ready(function () {
       if (!xs.length) return null;
       var f = OUT.county[V.co.f];
       if (f) {
-        var bb = d3.geoPath().bounds(f);
+        var bb = d3.geoPath(toMerc(1, 0, 0)).bounds(f);
         xs.push(bb[0][0], bb[1][0]);
         ys.push(bb[0][1], bb[1][1]);
       }
       var x0 = d3.min(xs), x1 = d3.max(xs), y0 = d3.min(ys), y1 = d3.max(ys);
-      var bw = Math.max(x1 - x0, 0.5), bh = Math.max(y1 - y0, 0.5);
+      var bw = Math.max(x1 - x0, 1e-4), bh = Math.max(y1 - y0, 1e-4); // 1e-4 of the world is about 2.5 miles
       var pad = 0.05, k = Math.min(W / (bw * (1 + 2 * pad)), H / (bh * (1 + 2 * pad)));
       var tx = (W - bw * k) / 2 - x0 * k, ty = (H - bh * k) / 2 - y0 * k;
       var j = pts.findIndex(Boolean), a = pts[j], b2 = proj([V.lon[j], V.lat[j] + 0.05]);
@@ -579,9 +583,9 @@ Ex.ready(function () {
       svg.attr("aria-label", "Map of " + V.co.n + ", " + cur.abbr + ". " + F.plural(p.sel.length, "site") + " reach about " + a3(p.reach) + " of " + a3(p.total) + " people counted.");
       if (!L) return;
       var X = function (q) { return q[0] * L.k + L.tx; }, Y = function (q) { return q[1] * L.k + L.ty; };
+      Ex.tiles(g, { k: L.k, tx: L.tx, ty: L.ty, width: W, height: H });
       if (L.feat) {
-        g.append("g").attr("transform", "translate(" + L.tx + "," + L.ty + ") scale(" + L.k + ")")
-          .append("path").attr("class", "p8-county").attr("d", d3.geoPath()(L.feat));
+        g.append("path").attr("class", "p8-county").attr("d", d3.geoPath(toMerc(L.k, L.tx, L.ty))(L.feat));
       }
       // candidate venues as quiet ticks
       if (p.mode === "venue") {

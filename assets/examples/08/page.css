@@ -84,9 +84,9 @@
   overflow: hidden;
 }
 .ex-chart .p8-county {
-  fill: var(--ex-surface);
-  stroke: var(--ex-muted);
-  stroke-width: 1;
+  fill: none;
+  stroke: var(--ex-ink);
+  stroke-width: 1.5;
   vector-effect: non-scaling-stroke;
 }
 .ex-chart .p8-cand {

@@ -837,6 +837,28 @@
     host.appendChild(Ex.el("div", { class: "ex-ramp__ends" }, [Ex.el("span", { text: f(o.domain[0]) }), Ex.el("span", { text: f(o.domain[1]) })]));
   };
 
+  /* ---------- street map tiles ---------- */
+
+  /** Web Mercator onto the unit square: Ex.merc([lon, lat]) -> [x, y], 0 to 1. Scale by k and shift by (tx, ty) to place it. */
+  Ex.merc = d3.geoMercator().scale(1 / (2 * Math.PI)).translate([0.5, 0.5]);
+  /**
+   * Ex.tiles(g, {k, tx, ty, width, height}) draws OpenStreetMap's street tiles, greyed in CSS, for a map where
+   * screen = Ex.merc(p) * k + t, plus the credit line the tile policy requires. Draw it first so the data sits on top.
+   */
+  Ex.tiles = function (g, o) {
+    var z = Math.max(0, Math.min(19, Math.ceil(Math.log2(o.k / 256)))), n = 1 << z, ts = o.k / n;
+    var layer = g.append("g").attr("class", "ex-tiles").attr("aria-hidden", "true");
+    var y1 = Math.min(n - 1, Math.floor((o.height - o.ty) / ts)), x1 = Math.floor((o.width - o.tx) / ts);
+    for (var y = Math.max(0, Math.floor(-o.ty / ts)); y <= y1; y++) {
+      for (var x = Math.floor(-o.tx / ts); x <= x1; x++) {
+        layer.append("image").attr("href", "https://tile.openstreetmap.org/" + z + "/" + (((x % n) + n) % n) + "/" + y + ".png")
+          .attr("x", o.tx + x * ts).attr("y", o.ty + y * ts).attr("width", ts + 0.5).attr("height", ts + 0.5);
+      }
+    }
+    var credit = g.append("text").attr("class", "ex-tiles__credit").attr("x", o.width - 4).attr("y", o.height - 4).attr("text-anchor", "end");
+    credit.append("a").attr("href", "https://www.openstreetmap.org/copyright").text("© OpenStreetMap contributors");
+  };
+
   /* ---------- range slider ---------- */
 
   /**
