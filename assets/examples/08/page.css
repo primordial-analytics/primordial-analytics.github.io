@@ -1,0 +1,245 @@
+/* Page-local styles for example 08 (open enrollment site planner). Loaded after the kit CSS.
+   Layout and chart marks only: no tinted fills, boxes, radius or shadow. */
+
+/* ---------- controls ---------- */
+.ex .p8-pick {
+  display: grid;
+  gap: var(--ex-s4);
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 560px) and (max-width: 959px) {
+  .ex .p8-pick {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--ex-s5);
+  }
+}
+.ex .p8-who {
+  gap: 0;
+}
+.ex .p8-who .ex-label {
+  margin-bottom: var(--ex-s1);
+}
+.ex .p8-more__body {
+  display: grid;
+  gap: var(--ex-s5);
+  margin-top: var(--ex-s3);
+}
+.ex .p8-defs dt {
+  font-weight: 600;
+  color: var(--ex-ink);
+  margin-top: var(--ex-s2);
+}
+.ex .p8-defs dd {
+  margin: 0;
+}
+.ex .p8-existing {
+  list-style: none;
+  padding: 0;
+  margin: var(--ex-s2) 0 0;
+  font-size: var(--ex-t-note);
+}
+.ex .p8-existing li {
+  padding: 0.1rem 0;
+}
+.ex .p8-existing .ex-link {
+  min-height: 1.5rem;
+  font-size: var(--ex-t-note);
+}
+.ex .p8-existing:empty {
+  display: none;
+}
+.ex .p8-staff {
+  display: grid;
+  gap: var(--ex-s4) var(--ex-s5);
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  max-width: 42rem;
+}
+
+/* ---------- map key ---------- */
+.ex .p8-key {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-right: 0.45rem;
+  vertical-align: -0.08em;
+}
+.ex .p8-key--bubble {
+  border-radius: 50%;
+  background: var(--ex-c-est);
+  opacity: 0.8;
+}
+.ex .p8-key--site {
+  background: var(--ex-strong);
+}
+.ex .p8-key--ring {
+  border: 1.5px dashed var(--ex-strong);
+  border-radius: 50%;
+}
+
+/* ---------- map ---------- */
+.ex .p8-map svg {
+  display: block;
+  width: 100%;
+  touch-action: manipulation;
+  overflow: hidden;
+}
+.ex-chart .p8-county {
+  fill: var(--ex-surface);
+  stroke: var(--ex-muted);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.ex-chart .p8-cand {
+  fill: var(--ex-c-axis);
+}
+.ex-chart .p8-tract {
+  fill: var(--ex-c-est);
+  stroke: var(--ex-c-est);
+  stroke-width: 0.75;
+  cursor: default;
+}
+.ex-chart .p8-ring {
+  fill: none;
+  stroke: var(--ex-strong);
+  stroke-width: 1.25;
+  stroke-dasharray: 4 4;
+  pointer-events: none;
+}
+.ex-chart .p8-site {
+  cursor: default;
+}
+.ex-chart .p8-site__box {
+  fill: var(--ex-strong);
+  stroke: var(--ex-paper);
+  stroke-width: 2;
+}
+.ex-chart .p8-site__box.is-existing {
+  fill: var(--ex-paper);
+  stroke: var(--ex-strong);
+  stroke-width: 2;
+}
+.ex-chart text.p8-site__n {
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--ex-paper);
+  pointer-events: none;
+}
+.ex-chart text.p8-site__n.is-existing {
+  fill: var(--ex-strong);
+}
+
+/* ---------- tract and sites charts ---------- */
+.ex-chart .p8-whisk {
+  fill: none;
+  stroke-width: 1.5;
+}
+.ex-chart .p8-whisk--obs {
+  stroke: var(--ex-c-obs);
+}
+.ex-chart .p8-whisk--est {
+  stroke: var(--ex-c-est);
+}
+.ex-chart .p8-whisk--iqr {
+  stroke: var(--ex-ink-3);
+  stroke-width: 2;
+}
+.ex-chart .p8-whisk--iqr.ex-sel {
+  stroke: var(--ex-strong);
+}
+.ex-chart .p8-dot {
+  fill: var(--ex-c-est);
+  opacity: 0.45;
+}
+.ex-chart text.p8-zip {
+  font-size: 11px;
+  fill: var(--ex-muted);
+}
+.ex-chart text.p8-anno {
+  font-size: 12px;
+  fill: var(--ex-muted);
+}
+.ex .p8-need {
+  white-space: pre-line;
+}
+.ex .p8-detail .ex-prose ul {
+  list-style: disc;
+}
+
+/* the answer's site list: the plan's deliverable, always visible */
+.ex .p8-moves {
+  display: grid;
+  gap: var(--ex-s5);
+}
+.ex .ex-tool__out > .p8-sites {
+  margin-top: var(--ex-s4);
+}
+.ex .p8-sites {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--ex-s3);
+}
+.ex .p8-sites:empty {
+  display: none;
+}
+.ex .p8-sites {
+  counter-reset: site;
+}
+.ex .p8-sites li {
+  display: grid;
+  grid-template-columns: 1.375rem minmax(0, 1fr);
+  column-gap: var(--ex-s3);
+  align-items: start;
+  font-size: var(--ex-t-sm);
+  line-height: 1.35;
+}
+.ex .p8-sites li::before {
+  counter-increment: site;
+  content: counter(site);
+  display: grid;
+  place-items: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  background: var(--ex-strong);
+  color: var(--ex-paper);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.ex .p8-sites__t {
+  display: grid;
+  min-width: 0;
+}
+.ex .p8-sites__t strong {
+  color: var(--ex-ink);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.ex .p8-sites__t span {
+  color: var(--ex-muted);
+}
+
+/* map anchors: place names and the scale bar */
+.ex-chart text.p8-place,
+.ex-chart .p8-scale text {
+  font-size: 11px;
+  fill: var(--ex-ink);
+  stroke: var(--ex-paper);
+  stroke-width: 3px;
+  paint-order: stroke;
+  pointer-events: none;
+}
+.ex-chart .p8-scale path {
+  fill: none;
+  stroke: var(--ex-ink);
+  stroke-width: 1.5;
+}
+
+/* a wide table's caption wraps at the width of the scrolling region instead of running off its right edge */
+.ex .ex-table-wrap {
+  container-type: inline-size;
+}
+.ex .ex-table-wrap caption {
+  max-width: 100cqw;
+  white-space: normal;
+}

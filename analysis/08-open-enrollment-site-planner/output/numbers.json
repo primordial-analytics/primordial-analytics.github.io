@@ -1,0 +1,1346 @@
+{
+ "run": {
+  "date": "2026-10-23",
+  "seed": 20261023,
+  "draws": 1000,
+  "python_note": "run with python -I",
+  "elapsed_seconds": 82
+ },
+ "data_checks": {
+  "tracts": 84401,
+  "states": 51,
+  "counties": 3144,
+  "population_total": 326007378,
+  "sahie_county_rows": 3144,
+  "tract_counties_missing_in_sahie": 0,
+  "places_tracts_present": 78801,
+  "places_tracts_missing": 5600,
+  "places_missing_states": [
+   "KY",
+   "PA"
+  ],
+  "venues_libraries": 16678,
+  "venues_health_centers": 10637,
+  "venues_county_taken_from_nearest_tract": 0,
+  "venue_vintage": {
+   "libraries": "IMLS Public Libraries Survey FY2023; some have closed",
+   "health_centers": "HRSA site file, downloaded 2026-10-23",
+   "health_center_rule": "permanent, service delivery (not administrative-only), open 20+ hours a week, not a hospital, school, nursing home, shelter or correctional setting"
+  },
+  "oep_county_rows": 2054,
+  "oep_total_row": 15771397,
+  "oep_county_sum": 15771373,
+  "tracts_without_zcta": 1218,
+  "pums_state_band_ratios": 204,
+  "pums_ratios_pooled_by_division": 70
+ },
+ "observed": {
+  "tracts": 84401,
+  "adults_le138_uninsured_direct_total": 6974831,
+  "tracts_with_no_adults_in_band": 1240,
+  "tracts_with_no_adults_in_band_pct": 1.5,
+  "tracts_with_50_or_more": 39088,
+  "median_moe_pct_of_estimate_50_plus": 85.0,
+  "median_moe_label": "90% margin of error as a share of the estimate, tracts reporting 50 or more",
+  "adults_in_tracts_with_cv_over_30_pct": 91.0,
+  "median_cv_pct_50_plus": 52.0,
+  "median_cv_label": "standard error as a share of the estimate (the margin of error is 1.645 times this), tracts reporting 50 or more",
+  "tracts_zero_cell_in_either_band_pct": 56.9,
+  "tracts_with_100_or_more_adults_in_band": 73237,
+  "tracts_reporting_zero_among_100_or_more_pct": 11.6,
+  "tracts_with_300_or_more_adults_in_band": 42488,
+  "tracts_reporting_zero_among_300_or_more_pct": 5.9
+ },
+ "national": {
+  "tiers": {
+   "kids": {
+    "mean": 3472436,
+    "lo90": 3423263,
+    "hi90": 3523408
+   },
+   "medicaid": {
+    "mean": 2530829,
+    "lo90": 2499981,
+    "hi90": 2563920
+   },
+   "subsidy": {
+    "mean": 8834499,
+    "lo90": 8756738,
+    "hi90": 8908402
+   },
+   "gap": {
+    "mean": 1465902,
+    "lo90": 1447259,
+    "hi90": 1482807
+   },
+   "d400": {
+    "mean": 4468626,
+    "lo90": 4401409,
+    "hi90": 4536772
+   },
+   "noncit": {
+    "mean": 6025557,
+    "lo90": 5964029,
+    "hi90": 6087419
+   },
+   "elig": {
+    "mean": 14837765,
+    "lo90": 14690360,
+    "hi90": 14987006
+   }
+  },
+  "tiers_label": "mean and 5th-95th percentile of the draws: sampling and model noise given the model choices, not the range of the claim",
+  "tiers_expansion_states": {
+   "kids": {
+    "mean": 1882999,
+    "lo90": 1844268,
+    "hi90": 1922377
+   },
+   "medicaid": {
+    "mean": 2494569,
+    "lo90": 2463509,
+    "hi90": 2527381
+   },
+   "subsidy": {
+    "mean": 4767520,
+    "lo90": 4716635,
+    "hi90": 4818548
+   },
+   "gap": {
+    "mean": 0,
+    "lo90": 0,
+    "hi90": 0
+   },
+   "d400": {
+    "mean": 2785040,
+    "lo90": 2727531,
+    "hi90": 2844592
+   },
+   "noncit": {
+    "mean": 3660904,
+    "lo90": 3610411,
+    "hi90": 3712828
+   },
+   "elig": {
+    "mean": 9145088,
+    "lo90": 9024991,
+    "hi90": 9269656
+   }
+  },
+  "tiers_other_states": {
+   "kids": {
+    "mean": 1589437,
+    "lo90": 1558328,
+    "hi90": 1618945
+   },
+   "medicaid": {
+    "mean": 36260,
+    "lo90": 34191,
+    "hi90": 38361
+   },
+   "subsidy": {
+    "mean": 4066979,
+    "lo90": 4014745,
+    "hi90": 4117724
+   },
+   "gap": {
+    "mean": 1465902,
+    "lo90": 1447259,
+    "hi90": 1482807
+   },
+   "d400": {
+    "mean": 1683587,
+    "lo90": 1649168,
+    "hi90": 1718953
+   },
+   "noncit": {
+    "mean": 2364653,
+    "lo90": 2331000,
+    "hi90": 2397587
+   },
+   "elig": {
+    "mean": 5692677,
+    "lo90": 5608670,
+    "hi90": 5773040
+   }
+  },
+  "scenarios": {
+   "grid": [
+    {
+     "sahie_benchmark": true,
+     "noncitizen_odds": "odds_low",
+     "odds_scale": 0.769,
+     "kids": 3472436,
+     "medicaid": 2665713,
+     "subsidy": 9272772,
+     "gap": 1543253,
+     "d400": 4580025,
+     "noncit": 5263650,
+     "elig": 15410922
+    },
+    {
+     "sahie_benchmark": true,
+     "noncitizen_odds": "odds_base",
+     "odds_scale": 1.0,
+     "kids": 3472436,
+     "medicaid": 2530829,
+     "subsidy": 8834499,
+     "gap": 1465902,
+     "d400": 4468626,
+     "noncit": 6025557,
+     "elig": 14837765
+    },
+    {
+     "sahie_benchmark": true,
+     "noncitizen_odds": "odds_high",
+     "odds_scale": 1.3,
+     "kids": 3472436,
+     "medicaid": 2393153,
+     "subsidy": 8376086,
+     "gap": 1384912,
+     "d400": 4344753,
+     "noncit": 6826510,
+     "elig": 14241675
+    },
+    {
+     "sahie_benchmark": false,
+     "noncitizen_odds": "odds_low",
+     "odds_scale": 0.769,
+     "kids": 3418533,
+     "medicaid": 2717173,
+     "subsidy": 9376086,
+     "gap": 1637080,
+     "d400": 4575630,
+     "noncit": 5349519,
+     "elig": 15511793
+    },
+    {
+     "sahie_benchmark": false,
+     "noncitizen_odds": "odds_base",
+     "odds_scale": 1.0,
+     "kids": 3418533,
+     "medicaid": 2579449,
+     "subsidy": 8933643,
+     "gap": 1556570,
+     "d400": 4463626,
+     "noncit": 6122199,
+     "elig": 14931626
+    },
+    {
+     "sahie_benchmark": false,
+     "noncitizen_odds": "odds_high",
+     "odds_scale": 1.3,
+     "kids": 3418533,
+     "medicaid": 2438952,
+     "subsidy": 8471034,
+     "gap": 1472210,
+     "d400": 4339131,
+     "noncit": 6934161,
+     "elig": 14328520
+    }
+   ],
+   "envelope": {
+    "kids": {
+     "min": 3418533,
+     "max": 3472436
+    },
+    "medicaid": {
+     "min": 2393153,
+     "max": 2717173
+    },
+    "subsidy": {
+     "min": 8376086,
+     "max": 9376086
+    },
+    "gap": {
+     "min": 1384912,
+     "max": 1637080
+    },
+    "d400": {
+     "min": 4339131,
+     "max": 4580025
+    },
+    "noncit": {
+     "min": 5263650,
+     "max": 6934161
+    },
+    "elig": {
+     "min": 14241675,
+     "max": 15511793
+    }
+   },
+   "central": {
+    "sahie_benchmark": true,
+    "noncitizen_odds": "odds_base",
+    "odds_scale": 1.0,
+    "kids": 3472436,
+    "medicaid": 2530829,
+    "subsidy": 8834499,
+    "gap": 1465902,
+    "d400": 4468626,
+    "noncit": 6025557,
+    "elig": 14837765
+   }
+  },
+  "scenario_check_central_vs_draws_pct": 0.0,
+  "acs_vs_sahie": {
+   "L": {
+    "survey_tract_sum": 6974831,
+    "sahie": 6624762,
+    "survey_over_sahie_pct": 5.3
+   },
+   "C": {
+    "survey_tract_sum": 11501104,
+    "sahie": 11386175,
+    "survey_over_sahie_pct": 1.0
+   },
+   "kids": {
+    "survey_tract_sum": 4120159,
+    "sahie": 4484247,
+    "survey_over_sahie_pct": -8.1
+   }
+  },
+  "noncitizen_share_of_uninsured_adults_pct": 25.8,
+  "noncitizen_slider_max_share": 0.7,
+  "noncitizen_slider_adds_up_to": 4217890,
+  "children_at_400_plus": {
+   "uninsured_children_total": 4120159,
+   "at_400_plus": 695955,
+   "share_pct": 16.9
+  },
+  "not_modelled": [
+   "employer coverage offers",
+   "household income as Medicaid and premium credits define it (the tiers use the survey's income-to-poverty ratio)",
+   "immigration status beyond the noncitizen carve-out",
+   "work requirements and other 2027 federal rules"
+  ],
+  "states": 51,
+  "counties": 3144,
+  "tracts": 84401
+ },
+ "tracts": {
+  "can_be_ranked_eligible_per_resident_pct": 48.2,
+  "can_be_ranked_label": "eligible people per resident, a different quantity from the adults-at-or-below-138% shares below",
+  "share_of_eligible_in_top_10pct_of_tracts_pct": 29.0,
+  "rankable_adults_le138": {
+   "published_intervals": {
+    "direct": 0.1936484650256731,
+    "model": 0.1220524043722418
+   },
+   "equal_90pct_simulated_coverage": {
+    "direct": 0.03748151176633278,
+    "model": 0.11248060990127584
+   },
+   "direct_coverage90_simulated": 0.8287342567031196,
+   "model_coverage90_simulated": 0.8855057301249444,
+   "interval_scale_to_90_direct": 2.729990553762914,
+   "interval_scale_to_90_model": 1.0442026984119135,
+   "note": "the model ranks fewer tracts on purpose: it will not rank noise"
+  },
+  "rankable_adults_le138_simulated_model": {
+   "direct_published": 0.18739553396423805,
+   "model_published": 0.11155469510948642,
+   "direct_equal_coverage": 0.04541792426738495,
+   "model_equal_coverage": 0.10240377099842474
+  },
+  "zero_tracts_100_plus_adults": 8502,
+  "zero_tracts_100_plus_adults_model_median_hi90": 41,
+  "median_interval_width_adults_le138_model": 43,
+  "median_interval_width_adults_le138_direct": 97,
+  "interval_width_reduction_pct": 56.0
+ },
+ "county_pools": {
+  "counties_with_plan_selection_data": 2052,
+  "states_in_file": 30,
+  "subsidy_per_plan_selection_overall": 0.37,
+  "counties_over_2x_state_average": 79,
+  "median_county_vs_state_average": 1.08,
+  "scope": "HealthCare.gov states only; state-run exchanges, Connecticut included, are not in the file"
+ },
+ "sites": {
+  "counties": 300,
+  "min_tracts": 57,
+  "k_sites": 5,
+  "covers": {
+   "states": 45,
+   "expansion_state_counties": 225,
+   "median_tracts": 116,
+   "median_venues": 29,
+   "median_population": 476959,
+   "by_travel_distance": {
+    "3_miles": 98,
+    "5_miles": 198,
+    "15_miles": 4
+   },
+   "rule": "the 300 counties with the most tracts among those with 8 or more candidate venues"
+  },
+  "venues": {
+   "greedy_over_direct": {
+    "median_pct": 22.0,
+    "q25_pct": 11.0,
+    "q75_pct": 39.0
+   },
+   "greedy_over_rate": {
+    "median_pct": 29.0,
+    "q25_pct": 15.0,
+    "q75_pct": 54.0
+   },
+   "greedy_over_model": {
+    "median_pct": 20.0,
+    "q25_pct": 12.0,
+    "q75_pct": 38.0
+   },
+   "model_over_direct": {
+    "median_pct": 0.0,
+    "q25_pct": -8.0,
+    "q75_pct": 10.0
+   },
+   "greedy_over_greedy_direct": {
+    "median_pct": 0.0,
+    "q25_pct": 0.0,
+    "q75_pct": 2.0
+   },
+   "greedy_over_direct_spaced": {
+    "median_pct": 23.0,
+    "q25_pct": 13.0,
+    "q75_pct": 39.0
+   },
+   "greedy_over_direct_no_overlap_discount": {
+    "median_pct": 11.0,
+    "q25_pct": -1.0,
+    "q75_pct": 34.0
+   },
+   "share_of_county_eligible_reached_by_greedy_median_pct": 50.0,
+   "share_of_county_eligible_reached_by_greedy_q25_pct": 38.0,
+   "share_of_county_eligible_reached_by_greedy_q75_pct": 62.0,
+   "share_of_county_eligible_reached_by_rate_median_pct": 39.0
+  },
+  "popup": {
+   "greedy_over_direct": {
+    "median_pct": 31.0,
+    "q25_pct": 19.0,
+    "q75_pct": 49.0
+   },
+   "greedy_over_rate": {
+    "median_pct": 42.0,
+    "q25_pct": 24.0,
+    "q75_pct": 70.0
+   },
+   "greedy_over_model": {
+    "median_pct": 29.0,
+    "q25_pct": 19.0,
+    "q75_pct": 46.0
+   },
+   "model_over_direct": {
+    "median_pct": 0.0,
+    "q25_pct": -9.0,
+    "q75_pct": 12.0
+   },
+   "greedy_over_greedy_direct": {
+    "median_pct": 1.0,
+    "q25_pct": 0.0,
+    "q75_pct": 3.0
+   },
+   "share_of_county_eligible_reached_by_greedy_median_pct": 52.0,
+   "share_of_county_eligible_reached_by_greedy_q25_pct": 41.0,
+   "share_of_county_eligible_reached_by_greedy_q75_pct": 64.0,
+   "share_of_county_eligible_reached_by_rate_median_pct": 36.0
+  },
+  "lead": {
+   "text": "expected reach of the optimiser's five sites against the five highest direct counts, same reach rule",
+   "median_gain_pct": 22.0,
+   "q25_pct": 11.0,
+   "q75_pct": 39.0,
+   "gain_over_count_plan_with_sites_one_travel_distance_apart_median_pct": 23.0
+  },
+  "greedy_vs_exact": {
+   "counties": 50,
+   "median_gap_pct": 1.52,
+   "max_gap_pct": 5.4,
+   "share_solved_to_optimality_pct": 100.0
+  }
+ },
+ "calibration": {
+  "kids": {
+   "mean_scale_factor": 1.268,
+   "median_scale_factor": 1.2,
+   "sahie_benchmark_moved_counties_pct": 53.6,
+   "mean_direct_rate_pct_by_sampling_variance_quintile": [
+    1.74,
+    2.32,
+    3.51,
+    5.96,
+    12.55
+   ],
+   "mean_model_rate_pct_by_sampling_variance_quintile": [
+    2.02,
+    2.71,
+    3.6,
+    5.03,
+    7.38
+   ]
+  },
+  "L": {
+   "mean_scale_factor": 1.125,
+   "median_scale_factor": 1.108,
+   "sahie_benchmark_moved_counties_pct": 54.0,
+   "mean_direct_rate_pct_by_sampling_variance_quintile": [
+    10.24,
+    15.32,
+    19.96,
+    24.75,
+    30.1
+   ],
+   "mean_model_rate_pct_by_sampling_variance_quintile": [
+    11.31,
+    15.44,
+    18.69,
+    21.79,
+    23.43
+   ]
+  },
+  "C": {
+   "mean_scale_factor": 1.105,
+   "median_scale_factor": 1.089,
+   "sahie_benchmark_moved_counties_pct": 59.2,
+   "mean_direct_rate_pct_by_sampling_variance_quintile": [
+    7.35,
+    10.54,
+    13.35,
+    17.04,
+    22.64
+   ],
+   "mean_model_rate_pct_by_sampling_variance_quintile": [
+    8.33,
+    10.94,
+    12.84,
+    14.85,
+    17.26
+   ]
+  },
+  "D": {
+   "mean_scale_factor": 1.278,
+   "median_scale_factor": 1.222,
+   "sahie_benchmark_moved_counties_pct": 29.6,
+   "mean_direct_rate_pct_by_sampling_variance_quintile": [
+    1.8,
+    2.85,
+    4.36,
+    7.15,
+    16.18
+   ],
+   "mean_model_rate_pct_by_sampling_variance_quintile": [
+    2.05,
+    3.19,
+    4.45,
+    6.07,
+    9.05
+   ]
+  }
+ },
+ "model_fit": {
+  "kids": {
+   "weight_function_log_coefficients": {
+    "const": -0.015,
+    "log_n": 0.466,
+    "log_one_minus_rate": -2.617
+   },
+   "weight_function_cells": 53919,
+   "share_of_cells_without_usable_se_pct": 36.1,
+   "regions": {
+    "Midwest": {
+     "county_variance": 0.032,
+     "tract_variance_used": 3.039,
+     "tract_variance_reml": 2.6625
+    },
+    "Northeast": {
+     "county_variance": 0.143,
+     "tract_variance_used": 1.719,
+     "tract_variance_reml": 1.3938
+    },
+    "South": {
+     "county_variance": 1.339,
+     "tract_variance_used": 4.074,
+     "tract_variance_reml": 3.403
+    },
+    "West": {
+     "county_variance": 2.847,
+     "tract_variance_used": 2.232,
+     "tract_variance_reml": 1.7697
+    }
+   }
+  },
+  "L": {
+   "weight_function_log_coefficients": {
+    "const": 0.91,
+    "log_n": 0.357,
+    "log_one_minus_rate": -0.848
+   },
+   "weight_function_cells": 69798,
+   "share_of_cells_without_usable_se_pct": 17.2,
+   "regions": {
+    "Midwest": {
+     "county_variance": 5.768,
+     "tract_variance_used": 12.048,
+     "tract_variance_reml": 9.6323
+    },
+    "Northeast": {
+     "county_variance": 1.298,
+     "tract_variance_used": 16.44,
+     "tract_variance_reml": 13.938
+    },
+    "South": {
+     "county_variance": 9.077,
+     "tract_variance_used": 18.81,
+     "tract_variance_reml": 9.023
+    },
+    "West": {
+     "county_variance": 7.225,
+     "tract_variance_used": 13.477,
+     "tract_variance_reml": 9.9038
+    }
+   }
+  },
+  "C": {
+   "weight_function_log_coefficients": {
+    "const": -0.121,
+    "log_n": 0.466,
+    "log_one_minus_rate": -1.732
+   },
+   "weight_function_cells": 76837,
+   "share_of_cells_without_usable_se_pct": 8.9,
+   "regions": {
+    "Midwest": {
+     "county_variance": 0.871,
+     "tract_variance_used": 7.125,
+     "tract_variance_reml": 6.1706
+    },
+    "Northeast": {
+     "county_variance": 0.725,
+     "tract_variance_used": 8.736,
+     "tract_variance_reml": 7.6304
+    },
+    "South": {
+     "county_variance": 5.405,
+     "tract_variance_used": 13.069,
+     "tract_variance_reml": 11.2852
+    },
+    "West": {
+     "county_variance": 4.378,
+     "tract_variance_used": 9.856,
+     "tract_variance_reml": 8.1266
+    }
+   }
+  },
+  "D": {
+   "weight_function_log_coefficients": {
+    "const": -0.712,
+    "log_n": 0.499,
+    "log_one_minus_rate": -3.484
+   },
+   "weight_function_cells": 67330,
+   "share_of_cells_without_usable_se_pct": 20.2,
+   "regions": {
+    "Midwest": {
+     "county_variance": 0.129,
+     "tract_variance_used": 2.138,
+     "tract_variance_reml": 1.8519
+    },
+    "Northeast": {
+     "county_variance": 0.167,
+     "tract_variance_used": 2.478,
+     "tract_variance_reml": 2.1676
+    },
+    "South": {
+     "county_variance": 1.017,
+     "tract_variance_used": 6.623,
+     "tract_variance_reml": 5.9022
+    },
+    "West": {
+     "county_variance": 1.828,
+     "tract_variance_used": 3.434,
+     "tract_variance_reml": 2.9179
+    }
+   }
+  }
+ },
+ "validation": {
+  "A_holdout": {
+   "masked_tracts": 11260,
+   "rule": "20% of tracts with 3,000+ people withheld at random and refit",
+   "what_it_tests": "the prediction against the survey's own count, which is noisy; the noise is simulated from the model's own weight function",
+   "L": {
+    "n_masked": 11252,
+    "coverage90": 0.9117490223960185,
+    "coverage_by_region": {
+     "Midwest": 0.9184303350970018,
+     "Northeast": 0.9198588709677419,
+     "South": 0.9027283511269276,
+     "West": 0.9141831238779174
+    },
+    "coverage_by_density": {
+     "rural": 0.9199406968124537,
+     "suburban": 0.9068554396423248,
+     "urban": 0.9112190812720848
+    },
+    "n_cv_under_20": 16,
+    "coverage90_cv_under_20": null,
+    "sum_reported": 1088917.0,
+    "sum_predicted": 1093962.8557395188,
+    "rmse_model": 70.85729469799652,
+    "top_decile_precision_model": 0.6604444444444444,
+    "rmse_places_only": 85.93014575627282,
+    "top_decile_precision_places_only": 0.5644444444444444,
+    "rmse_county_rate": 78.98149824795726,
+    "top_decile_precision_county_rate": 0.6142222222222222
+   },
+   "C": {
+    "n_masked": 11260,
+    "coverage90": 0.8982238010657193,
+    "coverage_by_region": {
+     "Midwest": 0.9163732394366197,
+     "Northeast": 0.8916876574307305,
+     "South": 0.894262683736368,
+     "West": 0.8940754039497307
+    },
+    "coverage_by_density": {
+     "rural": 0.9133012226750649,
+     "suburban": 0.896029776674938,
+     "urban": 0.8911939969101743
+    },
+    "n_cv_under_20": 45,
+    "coverage90_cv_under_20": 0.8666666666666667,
+    "sum_reported": 1887427.0,
+    "sum_predicted": 1875029.891324019,
+    "rmse_model": 102.69781461328336,
+    "top_decile_precision_model": 0.6580817051509769,
+    "rmse_places_only": 112.78355380063472,
+    "top_decile_precision_places_only": 0.6181172291296625,
+    "rmse_county_rate": 123.68863540764868,
+    "top_decile_precision_county_rate": 0.5568383658969804
+   },
+   "kids": {
+    "n_masked": 11250,
+    "coverage90": 0.9072888888888889,
+    "coverage_by_region": {
+     "Midwest": 0.9238221047996478,
+     "Northeast": 0.9168765743073047,
+     "South": 0.897673314339981,
+     "West": 0.901509705248023
+    },
+    "coverage_by_density": {
+     "rural": 0.9014449796220823,
+     "suburban": 0.9130434782608695,
+     "urban": 0.9056562085726911
+    },
+    "n_cv_under_20": 7,
+    "coverage90_cv_under_20": null,
+    "sum_reported": 686265.0,
+    "sum_predicted": 694488.557203485,
+    "rmse_model": 77.98019636762221,
+    "top_decile_precision_model": 0.4888888888888889,
+    "rmse_places_only": 84.63889680462478,
+    "top_decile_precision_places_only": 0.4328888888888889,
+    "rmse_county_rate": 84.69254531148816,
+    "top_decile_precision_county_rate": 0.4266666666666667
+   },
+   "D": {
+    "n_masked": 11257,
+    "coverage90": 0.9122323887358976,
+    "coverage_by_region": {
+     "Midwest": 0.9207397622192867,
+     "Northeast": 0.9138539042821159,
+     "South": 0.8953984819734345,
+     "West": 0.9296229802513465
+    },
+    "coverage_by_density": {
+     "rural": 0.918117821415339,
+     "suburban": 0.9287664432861752,
+     "urban": 0.8940163391477147
+    },
+    "n_cv_under_20": 2,
+    "coverage90_cv_under_20": null,
+    "sum_reported": 735366.0,
+    "sum_predicted": 753845.6134232125,
+    "rmse_model": 66.5756905779057,
+    "top_decile_precision_model": 0.4151111111111111,
+    "rmse_places_only": 67.46940715110594,
+    "top_decile_precision_places_only": 0.4017777777777778,
+    "rmse_county_rate": 75.75479672558727,
+    "top_decile_precision_county_rate": 0.2951111111111111
+   },
+   "adults": {
+    "n_masked": 11260,
+    "coverage90": 0.87202486678508,
+    "coverage_by_region": {
+     "Midwest": 0.8772007042253521,
+     "Northeast": 0.8433249370277078,
+     "South": 0.8729255571360834,
+     "West": 0.8868940754039497
+    },
+    "coverage_by_density": {
+     "rural": 0.8769914783253057,
+     "suburban": 0.8789081885856079,
+     "urban": 0.8629441624365483
+    },
+    "n_cv_under_20": 284,
+    "coverage90_cv_under_20": 0.8732394366197183,
+    "sum_reported": 3711710.0,
+    "sum_predicted": 3722838.3604867505
+   }
+  },
+  "A_holdout_all_sizes": {
+   "masked_tracts": 16548,
+   "rule": "20% of tracts of any size withheld at random and refit",
+   "what_it_tests": "the same, including the small tracts that the 3,000+ rule leaves out",
+   "L": {
+    "n_masked": 16503,
+    "coverage90": 0.9231654850633219,
+    "coverage_by_region": {
+     "Midwest": 0.9297807382736608,
+     "Northeast": 0.9264099037138928,
+     "South": 0.9235638550403544,
+     "West": 0.9134222706234686
+    },
+    "coverage_by_density": {
+     "rural": 0.9321314952279958,
+     "suburban": 0.9185185185185185,
+     "urban": 0.9205622752533508
+    },
+    "n_cv_under_20": 22,
+    "coverage90_cv_under_20": 0.7272727272727273,
+    "sum_reported": 1364417.0,
+    "sum_predicted": 1362943.3747570487,
+    "rmse_model": 61.75885131509781,
+    "top_decile_precision_model": 0.6521212121212121,
+    "rmse_places_only": 75.30593589341699,
+    "top_decile_precision_places_only": 0.5533333333333333,
+    "rmse_county_rate": 68.95919748386996,
+    "top_decile_precision_county_rate": 0.6096969696969697
+   },
+   "C": {
+    "n_masked": 16523,
+    "coverage90": 0.9017127640259033,
+    "coverage_by_region": {
+     "Midwest": 0.9153248195446974,
+     "Northeast": 0.9037011651816312,
+     "South": 0.8947368421052632,
+     "West": 0.8988030467899891
+    },
+    "coverage_by_density": {
+     "rural": 0.914334181509754,
+     "suburban": 0.8992084432717679,
+     "urban": 0.8943155831427638
+    },
+    "n_cv_under_20": 52,
+    "coverage90_cv_under_20": 0.8846153846153846,
+    "sum_reported": 2274613.0,
+    "sum_predicted": 2282962.493776876,
+    "rmse_model": 89.81131059919545,
+    "top_decile_precision_model": 0.6579903147699758,
+    "rmse_places_only": 98.40105859412809,
+    "top_decile_precision_places_only": 0.6222760290556901,
+    "rmse_county_rate": 106.76456387055453,
+    "top_decile_precision_county_rate": 0.5792978208232445
+   },
+   "kids": {
+    "n_masked": 16460,
+    "coverage90": 0.9097812879708383,
+    "coverage_by_region": {
+     "Midwest": 0.917686318131257,
+     "Northeast": 0.9104991394148021,
+     "South": 0.8960317460317461,
+     "West": 0.9251161519540858
+    },
+    "coverage_by_density": {
+     "rural": 0.9107371112057946,
+     "suburban": 0.9188759278897137,
+     "urban": 0.9006221349050426
+    },
+    "n_cv_under_20": 16,
+    "coverage90_cv_under_20": null,
+    "sum_reported": 803510.0,
+    "sum_predicted": 816182.3286866392,
+    "rmse_model": 68.13118848224686,
+    "top_decile_precision_model": 0.48602673147023084,
+    "rmse_places_only": 74.42900100437242,
+    "top_decile_precision_places_only": 0.4106925880923451,
+    "rmse_county_rate": 73.94842631005297,
+    "top_decile_precision_county_rate": 0.43377885783718106
+   },
+   "D": {
+    "n_masked": 16484,
+    "coverage90": 0.9116112594030575,
+    "coverage_by_region": {
+     "Midwest": 0.9219403401170895,
+     "Northeast": 0.9159519725557461,
+     "South": 0.9067554709800191,
+     "West": 0.9064200217627857
+    },
+    "coverage_by_density": {
+     "rural": 0.9217687074829932,
+     "suburban": 0.9209458267160755,
+     "urban": 0.895141501717651
+    },
+    "n_cv_under_20": 4,
+    "coverage90_cv_under_20": null,
+    "sum_reported": 868945.0,
+    "sum_predicted": 883520.5144223156,
+    "rmse_model": 57.28631785971727,
+    "top_decile_precision_model": 0.4441747572815534,
+    "rmse_places_only": 58.766953556636,
+    "top_decile_precision_places_only": 0.4320388349514563,
+    "rmse_county_rate": 65.06590370930209,
+    "top_decile_precision_county_rate": 0.3470873786407767
+   },
+   "adults": {
+    "n_masked": 16547,
+    "coverage90": 0.8741765879011301,
+    "coverage_by_region": {
+     "Midwest": 0.8857459789240155,
+     "Northeast": 0.8535750940814232,
+     "South": 0.879046265592926,
+     "West": 0.8708276797829037
+    },
+    "coverage_by_density": {
+     "rural": 0.8917264668636555,
+     "suburban": 0.8799015298048181,
+     "urban": 0.8552760535772623
+    },
+    "n_cv_under_20": 355,
+    "coverage90_cv_under_20": 0.8619718309859155,
+    "sum_reported": 4507975.0,
+    "sum_predicted": 4529426.38295624
+   }
+  },
+  "B_sahie_independent_refit": {
+   "what_it_tests": "a refit without SAHIE, summed to counties. It is calibrated to ACS county totals, so it mostly tests the ACS against SAHIE (administrative records). The log-count correlation is driven by county size; the rate gap is the useful number.",
+   "L": {
+    "counties": 3142,
+    "interval_overlap_share": 0.8084022915340547,
+    "corr_log_counts_mostly_county_size": 0.9708400100844465,
+    "median_abs_rate_gap_points": 3.696420414027346,
+    "median_rate_gap_points": 0.7322308802742823,
+    "median_sahie_rate_pct": 18.392019635002793,
+    "median_ratio_model_to_sahie": 1.00153703453174,
+    "total_model": 6976881.077317231,
+    "total_sahie": 6624762.0
+   },
+   "C": {
+    "counties": 3143,
+    "interval_overlap_share": 0.8275532930321349,
+    "corr_log_counts_mostly_county_size": 0.9815221508613035,
+    "median_abs_rate_gap_points": 1.9261268993500404,
+    "median_rate_gap_points": 0.38276184327982604,
+    "median_sahie_rate_pct": 12.969911504424777,
+    "median_ratio_model_to_sahie": 1.007916064769247,
+    "total_model": 11507858.665254317,
+    "total_sahie": 11386175.0
+   },
+   "kids": {
+    "counties": 3142,
+    "interval_overlap_share": 0.8112667091024824,
+    "corr_log_counts_mostly_county_size": 0.9502107544221992,
+    "median_abs_rate_gap_points": 1.6788085057267705,
+    "median_rate_gap_points": -0.8616448296068301,
+    "median_sahie_rate_pct": 6.154772548791509,
+    "median_ratio_model_to_sahie": 0.8466263609851863,
+    "total_model": 4151266.8792182463,
+    "total_sahie": 4484247.0
+   }
+  },
+  "B_sahie_production_not_independent": {
+   "L": {
+    "counties": 3142,
+    "interval_overlap_share": 1.0,
+    "corr_log_counts_mostly_county_size": 0.9945732295266164,
+    "median_abs_rate_gap_points": 2.354347298449765,
+    "median_rate_gap_points": 0.5456086558359898,
+    "median_sahie_rate_pct": 18.392019635002793,
+    "median_ratio_model_to_sahie": 1.0034912553334019,
+    "total_model": 6741055.927846355,
+    "total_sahie": 6624762.0
+   },
+   "C": {
+    "counties": 3143,
+    "interval_overlap_share": 0.9996818326439707,
+    "corr_log_counts_mostly_county_size": 0.9976811859846753,
+    "median_abs_rate_gap_points": 1.0671386195378525,
+    "median_rate_gap_points": 0.2753251496354206,
+    "median_sahie_rate_pct": 12.969911504424777,
+    "median_ratio_model_to_sahie": 1.008425057049978,
+    "total_model": 11411586.773702018,
+    "total_sahie": 11386175.0
+   },
+   "kids": {
+    "counties": 3142,
+    "interval_overlap_share": 1.0,
+    "corr_log_counts_mostly_county_size": 0.9890569670903407,
+    "median_abs_rate_gap_points": 1.189773359321189,
+    "median_rate_gap_points": -0.7627421133196132,
+    "median_sahie_rate_pct": 6.154772548791509,
+    "median_ratio_model_to_sahie": 0.851061490077982,
+    "total_model": 4221793.165179176,
+    "total_sahie": 4484247.0
+   }
+  },
+  "D_simulation": {
+   "what_it_tests": "a simulation inside the model: truth is drawn from the fitted model, so these are results for a world the model describes, not for the real one. The split at 100% of poverty and the share of children at 400% and over are held fixed in it.",
+   "elig": {
+    "bias_pct": 0.07419442383163055,
+    "direct_bias_pct": -0.20580533375393895,
+    "coverage90": 0.870345138090781,
+    "scale_to_90": 1.0840214311078613,
+    "coverage90_by_size": {
+     "small": 0.8741959557908952,
+     "medium": 0.8690984072810012,
+     "large": 0.8677401009454753
+    },
+    "median_interval_width": 86.35592651367188,
+    "rmse_model": 36.496378262829424,
+    "rmse_direct": 75.58353308001618,
+    "spearman_model_median": 0.9324545270893858,
+    "spearman_direct_median": 0.8152022067130547,
+    "coverage90_published": 0.8986371379897785,
+    "tract_interval_scale": 1.08
+   },
+   "L": {
+    "bias_pct": 0.15397605468550069,
+    "direct_bias_pct": 0.1374874649907154,
+    "coverage90": 0.8884610371915025,
+    "scale_to_90": 1.0442026984119135,
+    "coverage90_by_size": {
+     "small": 0.8901169195778101,
+     "medium": 0.8860921501706485,
+     "large": 0.8891732423402289
+    },
+    "median_interval_width": 45.0777587890625,
+    "direct_coverage90": 0.8287342567031196,
+    "direct_scale_to_90": 2.729990553762914,
+    "direct_median_interval_width": 101.90090834588239,
+    "width_ratio_model_to_direct": 0.44236856688318227,
+    "rmse_model": 22.832628881720357,
+    "rmse_direct": 60.31319961352596,
+    "spearman_model_median": 0.9422960797175024,
+    "spearman_direct_median": 0.742135968417094,
+    "coverage90_published": 0.8855057301249444,
+    "tract_interval_scale": 1.0
+   },
+   "tiers": {
+    "kids": {
+     "coverage90": 0.8568552518956974,
+     "scale_to_90": 1.157088398253174,
+     "coverage90_published": 0.9006642475678412,
+     "tract_interval_scale": 1.16
+    },
+    "medicaid": {
+     "coverage90": 0.8893904104088025,
+     "scale_to_90": 1.037954569904886,
+     "coverage90_published": 0.8875431692233555,
+     "tract_interval_scale": 1.0
+    },
+    "subsidy": {
+     "coverage90": 0.8615567510447187,
+     "scale_to_90": 1.1130189248860791,
+     "coverage90_published": 0.898914453143763,
+     "tract_interval_scale": 1.11
+    },
+    "gap": {
+     "coverage90": 0.8793418647166362,
+     "scale_to_90": 1.0635962746501861,
+     "coverage90_published": 0.8989704608871356,
+     "tract_interval_scale": 1.06
+    },
+    "d400": {
+     "coverage90": 0.8776492909206624,
+     "scale_to_90": 1.0458173914343545,
+     "coverage90_published": 0.9011852011960085,
+     "tract_interval_scale": 1.05
+    },
+    "noncit": {
+     "coverage90": 0.8839710767090763,
+     "scale_to_90": 1.0392144244849224,
+     "coverage90_published": 0.8858057630736392,
+     "tract_interval_scale": 1.0
+    },
+    "elig": {
+     "coverage90": 0.8687165582935432,
+     "scale_to_90": 1.0840214311078613,
+     "coverage90_published": 0.8986371379897785,
+     "tract_interval_scale": 1.08
+    }
+   },
+   "tract_interval_scale": {
+    "kids": 1.16,
+    "medicaid": 1.0,
+    "subsidy": 1.11,
+    "gap": 1.06,
+    "d400": 1.05,
+    "noncit": 1.0,
+    "elig": 1.08,
+    "L": 1.0
+   },
+   "rankable_adults_le138": {
+    "published_intervals": {
+     "direct": 0.1936484650256731,
+     "model": 0.1220524043722418
+    },
+    "equal_90pct_simulated_coverage": {
+     "direct": 0.03748151176633278,
+     "model": 0.11248060990127584
+    },
+    "direct_coverage90_simulated": 0.8287342567031196,
+    "model_coverage90_simulated": 0.8855057301249444,
+    "interval_scale_to_90_direct": 2.729990553762914,
+    "interval_scale_to_90_model": 1.0442026984119135,
+    "note": "the model ranks fewer tracts on purpose: it will not rank noise"
+   }
+  },
+  "E1_regret": {
+   "counties": 20,
+   "median_regret_model_pct": 0.0,
+   "median_regret_direct_pct": 0.5,
+   "share_counties_model_better_pct": 50.0,
+   "table": [
+    {
+     "county": "06037",
+     "state": "CA",
+     "name": "Los Angeles County",
+     "regret_model_pct": 0.0,
+     "regret_direct_pct": 0.6
+    },
+    {
+     "county": "48439",
+     "state": "TX",
+     "name": "Tarrant County",
+     "regret_model_pct": 1.1,
+     "regret_direct_pct": 0.5
+    },
+    {
+     "county": "15003",
+     "state": "HI",
+     "name": "Honolulu County",
+     "regret_model_pct": 0.6,
+     "regret_direct_pct": 0.0
+    },
+    {
+     "county": "18097",
+     "state": "IN",
+     "name": "Marion County",
+     "regret_model_pct": 0.3,
+     "regret_direct_pct": 0.3
+    },
+    {
+     "county": "06019",
+     "state": "CA",
+     "name": "Fresno County",
+     "regret_model_pct": 3.1,
+     "regret_direct_pct": 3.1
+    },
+    {
+     "county": "13089",
+     "state": "GA",
+     "name": "DeKalb County",
+     "regret_model_pct": 0.0,
+     "regret_direct_pct": 0.5
+    },
+    {
+     "county": "35001",
+     "state": "NM",
+     "name": "Bernalillo County",
+     "regret_model_pct": 0.3,
+     "regret_direct_pct": 2.0
+    },
+    {
+     "county": "34025",
+     "state": "NJ",
+     "name": "Monmouth County",
+     "regret_model_pct": 0.0,
+     "regret_direct_pct": 0.2
+    },
+    {
+     "county": "39153",
+     "state": "OH",
+     "name": "Summit County",
+     "regret_model_pct": 0.0,
+     "regret_direct_pct": -1.4
+    },
+    {
+     "county": "16001",
+     "state": "ID",
+     "name": "Ada County",
+     "regret_model_pct": 0.0,
+     "regret_direct_pct": 2.8
+    },
+    {
+     "county": "42071",
+     "state": "PA",
+     "name": "Lancaster County",
+     "regret_model_pct": 4.0,
+     "regret_direct_pct": 3.8
+    },
+    {
+     "county": "05119",
+     "state": "AR",
+     "name": "Pulaski County",
+     "regret_model_pct": 0.0,
+     "regret_direct_pct": 0.5
+    },
+    {
+     "county": "09140",
+     "state": "CT",
+     "name": "Naugatuck Valley Planning Region",
+     "regret_model_pct": 0.2,
+     "regret_direct_pct": 1.0
+    },
+    {
+     "county": "12117",
+     "state": "FL",
+     "name": "Seminole County",
+     "regret_model_pct": 0.0,
+     "regret_direct_pct": 0.0
+    },
+    {
+     "county": "28047",
+     "state": "MS",
+     "name": "Harrison County",
+     "regret_model_pct": 0.0,
+     "regret_direct_pct": 3.0
+    },
+    {
+     "county": "45051",
+     "state": "SC",
+     "name": "Horry County",
+     "regret_model_pct": 0.0,
+     "regret_direct_pct": 0.0
+    },
+    {
+     "county": "42095",
+     "state": "PA",
+     "name": "Northampton County",
+     "regret_model_pct": 0.0,
+     "regret_direct_pct": 0.3
+    },
+    {
+     "county": "17163",
+     "state": "IL",
+     "name": "St. Clair County",
+     "regret_model_pct": 0.0,
+     "regret_direct_pct": 2.3
+    },
+    {
+     "county": "20209",
+     "state": "KS",
+     "name": "Wyandotte County",
+     "regret_model_pct": 0.0,
+     "regret_direct_pct": 0.0
+    },
+    {
+     "county": "42069",
+     "state": "PA",
+     "name": "Lackawanna County",
+     "regret_model_pct": 0.0,
+     "regret_direct_pct": 0.0
+    }
+   ]
+  },
+  "E2_browser_interval": {
+   "counties": 20,
+   "note": "the factor is for the default settings; other settings are approximate",
+   "greedy_5": {
+    "plans": 20,
+    "mean_share_of_draws_inside_interval_pct": 90.1,
+    "plans_with_85_to_95_inside_pct": 100.0,
+    "median_width_ratio_planner_to_monte_carlo": 1.0
+   },
+   "greedy_8": {
+    "plans": 20,
+    "mean_share_of_draws_inside_interval_pct": 86.9,
+    "plans_with_85_to_95_inside_pct": 95.0,
+    "median_width_ratio_planner_to_monte_carlo": 0.92
+   },
+   "greedy_5_largest_radius": {
+    "plans": 20,
+    "mean_share_of_draws_inside_interval_pct": 76.9,
+    "plans_with_85_to_95_inside_pct": 10.0,
+    "median_width_ratio_planner_to_monte_carlo": 0.8
+   },
+   "random_5": {
+    "plans": 120,
+    "mean_share_of_draws_inside_interval_pct": 93.6,
+    "plans_with_85_to_95_inside_pct": 73.0,
+    "median_width_ratio_planner_to_monte_carlo": 1.11
+   }
+  },
+  "E3_greedy_vs_exact": {
+   "counties": 50,
+   "median_gap_pct": 1.52,
+   "max_gap_pct": 5.35,
+   "optimal_solutions": 50
+  },
+  "F_noncitizen_consistency_check": {
+   "person_file_noncitizen_share_of_uninsured_adults_pct": 27.6,
+   "modelled_pct": 25.8,
+   "difference_points": 1.8
+  },
+  "F_scenarios": {
+   "noncitizen_share_able_to_get_help": "scenario control, default 0, range 0 to 70%",
+   "plan_selection_slider": "0 to +30% on the eligible pool; a scenario, not a forecast",
+   "circuity_factor": 1.3,
+   "travel_defaults_miles": {
+    "0": 15.0,
+    "1": 5.0,
+    "2": 3.0
+   },
+   "travel_max_miles": 25.0
+  },
+  "not_run": "validation C (replication on the 2015-2019 survey) and a binomial-logit interval-width check"
+ },
+ "methods": {
+  "targets": 4,
+  "regions": 4,
+  "calibration_prior_people": 100,
+  "sahie_benchmark": "scale to the nearest edge of SAHIE's 90% interval when the county mean is outside it"
+ },
+ "downloads": {
+  "tract_table_rows": 84401,
+  "county_table_rows": 3144,
+  "tract_table_mb": 8.47,
+  "county_table_mb": 0.64
+ },
+ "example_county": {
+  "county": "48091",
+  "label": "Comal County, TX",
+  "sites": [
+   "New Braunfels Public Library",
+   "Tye Preston Memorial Library",
+   "Mammen Family Public Library",
+   "Westside Community Center Library",
+   "City Of Garden Ridge Library"
+  ],
+  "radius_miles": 15.0,
+  "tract_rows": 33,
+  "venues": 8,
+  "population": 181865,
+  "state": "TX",
+  "staff": {
+   "people": 2,
+   "appointments_per_day": 6,
+   "days_per_week": 3
+  },
+  "weeks": 6,
+  "workbook_reach": 9363.74175419664,
+  "workbook_lo": 8189.89747445081,
+  "workbook_hi": 10339.3999986649,
+  "workbook_county_eligible": 10339.3999986649,
+  "county_eligible": 10339.134227752686,
+  "python_reach": 9363.534022334956,
+  "python_lo": 8189.700349796303,
+  "python_hi": 10339.134227752686,
+  "appointments_available": 1080,
+  "share_of_expected_reach_seen": 0.11534106646313906,
+  "max_abs_difference": 0.2657709122140659,
+  "rule": "the median-population county among those in states that have not expanded Medicaid (so the coverage gap is not zero) with 8 or more candidate venues",
+  "workbook_mb": 0.03
+ }
+}
