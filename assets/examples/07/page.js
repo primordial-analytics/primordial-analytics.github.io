@@ -522,7 +522,7 @@ Ex.ready(function () {
         ") of " + a3(A.cLow) + " (90% margin plus or minus " + a3(A.moe) + "). Patients of all centers: " + a3(A.cPat) + "."
       ));
       $("map-hint").textContent =
-        F.int(A.z.length) + " ZIP areas within " + AREA_R + " miles. Size shows residents, hollow a small ZIP, violet a site. The white diamond is your site; rings mark where it draws most. Select a ZIP to move it.";
+        F.int(A.z.length) + " ZIP areas within " + AREA_R + " miles. Size shows residents; violet marks a site. The white diamond is your site; rings mark where it draws most. Select a ZIP to move it.";
       $("t-zips").textContent = "ZIP areas, " + (S.rank === "people" ? "most residents who are not patients first" : "largest share who are not patients first");
     }
     function rowText(z) {
