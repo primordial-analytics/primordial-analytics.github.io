@@ -1194,6 +1194,12 @@ main#main.ex:focus {
   .ex-tool--split .ex-tool__controls {
     position: sticky;
     top: calc(var(--ex-nav-h) + var(--ex-subnav-h) + var(--ex-s4));
+    /* opened "more" inputs can outgrow the screen: the panel then scrolls on its own */
+    max-height: calc(100vh - var(--ex-nav-h) - var(--ex-subnav-h) - 2 * var(--ex-s4));
+    overflow-y: auto;
+    /* room for focus rings, which the scroll box would clip */
+    margin: -4px;
+    padding: 4px;
   }
 }
 .ex-tool__title {
@@ -2451,6 +2457,11 @@ main#main.ex:focus {
   .ex-hero__note,
   .ex-hero__persona {
     color: #000;
+  }
+  .ex-tool--split .ex-tool__controls {
+    position: static;
+    max-height: none;
+    overflow: visible;
   }
 }
 

@@ -2,11 +2,6 @@
    No page rule adds a background, a four-sided border, a radius or a shadow to a container: hairlines and type carry the structure. */
 
 /* ---------- the tool ---------- */
-@media (min-width: 960px) {
-  .ex .ex-tool--split .ex-tool__controls {
-    position: static;
-  }
-}
 .ex .p11-more__body {
   display: grid;
   gap: var(--ex-s5);
