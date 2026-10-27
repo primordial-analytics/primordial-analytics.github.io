@@ -23,8 +23,6 @@ plugins:
 
 # add collections
 collections:
-  team:
-    output: false
   casestudies:
     output: true
   posts:
@@ -75,9 +73,3 @@ exclude:
   - backend
   - color-palette
   - analysis
-
-# Social profiles (jekyll-seo-tag emits these as sameAs on the home page)
-social:
-  name: Primordial Analytics
-  links:
-    - https://linkedin.com/company/primordial-analytics/

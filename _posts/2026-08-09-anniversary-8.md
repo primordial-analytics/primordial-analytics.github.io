@@ -1,21 +1,17 @@
 ---
 layout: post
-title: "Eight Years In: A Hard Year for Community Health"
-description: "On our eighth anniversary, a look at the coverage losses and funding cliffs community health centers face, and how our free volunteer data science can help."
+title: "A Hard Year for Community Health"
+description: "A look at the coverage losses and funding cliffs community health centers face, and how free volunteer data science can help."
 tweets: true
 ---
 
-## Happy 8th Anniversary
+It has been a hard year for the community health organizations we exist to serve.
 
-*And Maynard read unto them: on the eighth count shalt thou raise the Holy Spreadsheet of Moderate Confidence, and lo, it shall have no missing values; nine is right out.*
+### Even Free Help Costs Something
 
-Today, we celebrate Primordial Analytics' eighth anniversary, and we are grateful to be here to do it! This one is quieter than most, because it has been a hard year for the community health organizations we exist to serve, and we want to talk about that before we talk about cake.
+When you are cutting staff and consolidating sites, even free analytics costs something you don't have: the hours of a person to explain the data and act on it. A free dashboard still needs a human to say yes.
 
-### A Quiet Inbox
-
-Fewer people asked for our volunteer data science help this year. That makes sense. When you are cutting staff and consolidating sites, even free analytics costs something you don't have: the hours of a person to explain the data and act on it. A free dashboard still needs a human to say yes.
-
-If your answer this year was "not right now," that was the right answer. We would much rather be quiet than add one more item to an overloaded to-do list. Our inbox is one small data point, but the larger numbers tell a similar story.
+If your answer this year is "not right now," that is the right answer. We would much rather wait than add one more item to an overloaded to-do list. The larger numbers show why.
 
 ### What Is Coming for Coverage
 
@@ -33,17 +29,15 @@ The wider nonprofit world feels it too. In a [Center for Effective Philanthropy 
 
 Through all of it, the people at these organizations keep showing up for their patients, and we are in awe of that.
 
-### Looking Ahead: Year Nine
+### What We Can Do
 
-We don't have a grand expansion plan this year, and we think that's the right call. Tell us what would actually help, even if the answer is "nothing right now," and we'll shape year nine around that. In the meantime, we hope to be useful in smaller, lighter ways:
+Tell us what would actually help, even if the answer is "nothing right now." In the meantime, we hope to be useful in smaller, lighter ways:
 
 - **[Small asks]({{ site.baseurl }}/community-health-data-help/)**: A single chart, a spreadsheet sanity check, or a short call can beat a big project that no one has time to host.
 - **Medicaid preparation**: If it would help, we can sanity-check whatever you've already built, or run a simple what-if on your own patient data before the dates arrive.
 - **Open tools**: Sharing what we build so a busy team can pick it up on a Tuesday afternoon without a kickoff meeting.
 
 Most of all, we plan to stay available. If you run a community health organization and you have a data question, send it our way. Our help is free.
-
-To our volunteers, partners, and the people who keep the lights on: thank you for eight years. We don't know exactly what year nine holds. We'll be here, and glad to be.
 
 *Need a hand with your data, or want to lend yours? <b><a href="{{ site.baseurl }}/community-health-data-help/">See how it works</a></b> or <b><a href="{{ site.baseurl }}/#contact">CONTACT US</a></b>.*
 

@@ -49,7 +49,7 @@ CI (`.github/workflows/jekyll.yml`) only runs `bundle exec jekyll build` on push
 
 Each page is assembled by a layout in `_layouts/` from partials in `_includes/`:
 
-- `home` (used by `index.html`): header, services, about, contact. The about section is a timeline plus one statement box; it lists no people (`_team` is kept but rendered nowhere).
+- `home` (used by `index.html`): header, services, about, contact. The about section is a timeline plus one statement box; it lists no people.
 - `default`: a `small_header` (shows `page.title`, plus `page.lead` when set; posts show their `description` instead) plus the page content. `privacy.html` (linked from the footer), `projects.html` ("Examples"), `community-health-data-help.html` ("How it works", in the nav; `/process.html` and `/people.html` redirect to it) and the case-study pages use it. `projects.html` renders `portfolio_grid.html`, whose cards link to each `/casestudies/<slug>/` page.
 - `blog` / `post`: `blog_body.html` lists `site.posts`. `post_body.html` renders a post. There are no comments.
 
@@ -57,7 +57,6 @@ The collections are defined in `_config.yml`. Their front matter feeds the inclu
 
 | Collection       | Key front matter                                     | Image path                       |
 | ---------------- | ---------------------------------------------------- | -------------------------------- |
-| `_team/`         | `name`, `position`, `pic`, `social`                   | `img/team/{{pic}}`               |
 | `_casestudies/`  | `title`, `subtitle`, `date`, `thumbnail`, `kind` (`example`; untagged entries do not appear on `/projects.html`, titled "Examples", newest first), optional `persona` (shown on the card) and `need` | `img/case_studies/{{thumbnail}}` |
 | `_posts/`        | `layout: post`, `title`, `description`            | anywhere under `img/`            |
 
@@ -67,7 +66,7 @@ Examples 07 and later use `layout: example` (`_layouts/example.html`, plain Jeky
 
 Examples 07 and later have reproducible code in `analysis/<slug>/` (excluded from the site; `run.py` re-downloads raw data into the gitignored `data/raw/` and writes `output/numbers.json`, the source of every number on the page). Their downloadable files live in `downloads/`.
 
-Only `casestudies` and `posts` output their own pages. `team` sets `output: false` and renders only through the includes. Every layout puts a skip link first and wraps page content in `<main id="main">`. The blog index lives at `/blog/` (with `redirect_from: /blog.html`).
+Only `casestudies` and `posts` output their own pages. Every layout puts a skip link first and wraps page content in `<main id="main">`. The blog index lives at `/blog/` (with `redirect_from: /blog.html`).
 
 ## External integrations
 

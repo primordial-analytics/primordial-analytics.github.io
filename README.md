@@ -1,6 +1,6 @@
-# Primordial Analytics Consulting, LLC
+# Primordial Analytics
 
-Welcome to the open source repo for [our web site](https://www.primordialanalytics.com)! We strongly believe in the value of open source and sharing knowledge that has common value. Feel free to dig around in our code and see how we've modified a free template from Start Bootstrap.
+The open source repo for [our web site](https://www.primordialanalytics.com). Feel free to dig around in the code and see how we've modified a free template from Start Bootstrap.
 
 ## Howto's
 
@@ -15,7 +15,7 @@ git push origin --tags
 
 ### HTML5 Movie
 
-The founder has an affinity for cosmology and astrophysics: it's in the name, the logo, the font face, and our theme. So that movie on the front page, how did we make that? It's super simple:
+The movie on the front page is a NASA visualization. Here's how we made it:
 
 ```bash
 # get a movie file to work
@@ -62,7 +62,7 @@ bundle exec jekyll serve --watch --trace --drafts --verbose
 
 ## Attributions
 
-With the exception of a few dollars per month in AWS charges and our personal time, our web site was built for free. Why wouldn't we pay someone? Our web site is partly to demonstrate the power of the analytical individual and the strength of the open source community. When consultancies launch into wanting to sell software XYZ from proprietary vendor ABC, it's a way of creating lock-in for long-term work -- this is a linchpin in the "land and expand" business model. At Primordial, we take the opposite view: we want you to see our work and for your people to have access to the code. That's what we've done with our site.
+Apart from a few dollars a month in AWS charges, the site is built for free on open source tools:
 
 - [GitHub Pages Hosting](https://pages.github.com/)
 - [Jekyll Blog Framework](https://jekyllrb.com/)
@@ -82,7 +82,7 @@ With the exception of a few dollars per month in AWS charges and our personal ti
 
 ## Copyright and License
 
-Copyright &copy; 2025 Primordial Analytics Consulting, LLC.
+Copyright &copy; Primordial Analytics.
 
 Web site project code is released under the [MIT License](LICENSE).
 
@@ -90,7 +90,7 @@ Blog content is licensed under a [Creative Commons Attribution-NonCommercial-Sha
 
 ## Disclaimer
 
-Primordial Analytics Consulting, LLC., hereafter, "The Owner."
+Primordial Analytics, hereafter, "The Owner."
 
 Any views or opinions represented on this site or blog are personal
 and belong solely to The Owner and do not represent those of people,
