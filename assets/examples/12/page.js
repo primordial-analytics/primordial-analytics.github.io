@@ -397,8 +397,8 @@ Ex.ready(function () {
         : "";
       renderList(p);
       renderCurrent(p);
+      renderNet(p);
       if (flow) renderFlow();
-      else renderNet(p);
     }
 
     /* ---------- the ranked list ---------- */
@@ -803,17 +803,32 @@ Ex.ready(function () {
 
 
     /* ---------- follow the money: one funder's trace (flow-NN.json, written by web_data.py) ----------
-       Five columns, left to right: its sources' sources, its sources, the funder, the funders it gives to and the
-       organizations like yours at the end. Each entity appears once. A path shows where money could have gone, not
-       that the same dollars moved. */
-    var flowChart = null, flow = null, flowToken = 0;
+       Five columns, left to right: its sources' sources, its sources, the funder, the grantmakers it gives to and the
+       organizations like yours at the end, in a dialog that fills the window. Each entity appears once. A path shows
+       where money could have gone, not that the same dollars moved; line widths use pro-rata tracing (buildFlow). */
+    var flowChart = null, flow = null, flowToken = 0, dlg = $("fig-flow");
     function dropFlow() {
       flow = null;
       flowToken++;
-      $("fig-flow").hidden = true;
+      if (dlg.open) dlg.close();
     }
-    var FLOW_COLS = ["Their sources", "Its sources", "The funder", "Funders it gives to", "Organizations like yours"];
-    var FLAG_REL = 1, FLAG_BACK = 2;
+    // Esc or the Close button: the dialog's close event clears the trace (dropFlow has cleared it already)
+    dlg.addEventListener("close", function () {
+      // the event comes a moment after close(); by then a new trace may have opened the dialog again
+      if (!flow || dlg.open) return;
+      flow = null;
+      flowToken++;
+      writeHash();
+    });
+    $("flow-close").addEventListener("click", function () { dlg.close(); });
+    var FLOW_COLS = ["Their sources", "Its sources", "The funder", "Grantmakers it gives to", "Organizations like yours"];
+    var FLAG_REL = 1;
+    function cusd(v) {
+      return F.usd(v, { compact: true });
+    }
+    function share(v) {
+      return v >= 0.01 ? F.num(100 * v, 0) + "%" : v >= 0.001 ? F.num(100 * v, 1) + "%" : "under 0.1%";
+    }
     function openFlow(ein, o) {
       o = o || {};
       touched = true;
@@ -826,11 +841,9 @@ Ex.ready(function () {
         flow = { ein: ein, o: sh.o, t: tr, trail: trail };
         renderFlow();
         writeHash();
-        $("fig-flow").scrollIntoView({ block: "start" });
-        if (o.keyboard) {
-          var c = $("chart-flow").querySelector(".p12-fnode--c");
-          if (c) c.focus();
-        }
+        // a keyboard pick: keep focus in the figure, on the funder
+        var c = o.keyboard && $("chart-flow").querySelector(".p12-fnode--c");
+        if (c) c.focus();
       }, function () {
         if (token !== flowToken) return;
         // the error replaces the chart's svg, so the next trace starts a new chart
@@ -839,21 +852,11 @@ Ex.ready(function () {
         dropFlow();
         writeHash();
         $("t-flow").textContent = "Follow the money";
-        ["flow-trail", "flow-sum", "flow-text"].forEach(function (id) { $(id).textContent = ""; });
-        $("fig-net").hidden = true;
-        $("fig-flow").hidden = false;
-        Ex.showError($("chart-flow"), "This funder's trace did not load. The downloads below have its grants.");
+        ["flow-trail", "flow-sum", "flow-panel", "flow-text"].forEach(function (id) { $(id).textContent = ""; });
+        dlg.showModal();
+        Ex.showError($("chart-flow"), "This funder's trace did not load. The downloads at the end of the page have its grants.");
       });
     }
-    function closeFlow() {
-      dropFlow();
-      if (cur.p) renderNet(cur.p);
-      writeHash();
-    }
-    $("flow-close").addEventListener("click", function () {
-      closeFlow();
-      $("fig-net").scrollIntoView({ block: "start" });
-    });
     function peerOk(ein) {
       var code = flow.o[ein][4];
       return KINDS.some(function (K) { return K.code === code && S.kinds[K.k]; });
@@ -867,15 +870,14 @@ Ex.ready(function () {
       var seen = {};
       function edge(s, t, r) {
         // a grant to a funder that is also an organization like yours is in both the flows and the grant table
-        if (seen[s + ">" + t]) return;
-        seen[s + ">" + t] = 1;
-        var e = { s: nodes[s], t: nodes[t], amt: r[0], n: r[1], flag: r[2] };
-        e.s.amt += e.amt;
-        e.t.amt += e.amt;
-        edges.push(e);
+        var k = s + ">" + t;
+        if (!seen[k]) edges.push((seen[k] = { s: nodes[s], t: nodes[t], amt: r[0], n: r[1], flag: r[2], back: r[3] || 0 }));
+        else seen[k].back = seen[k].back || r[3] || 0;
+        return seen[k];
       }
       // the order of these calls picks the column of an entity that turns up in more than one place
-      node(flow.ein, 2).role = "c";
+      var c = node(flow.ein, 2);
+      c.role = "c";
       tr.in1.forEach(function (r) { node(r[0], 1); edge(r[0], flow.ein, r.slice(1)); });
       tr.mid.forEach(function (r) { node(r[0], 3); edge(flow.ein, r[0], r.slice(1)); });
       tr.peers.forEach(function (r) {
@@ -893,14 +895,50 @@ Ex.ready(function () {
         node(r[0], 0);
         edge(r[0], r[1], r.slice(2));
       });
-      return { nodes: list, edges: edges };
+      // a loop: the funder gives to a, a to b, b back to it; a sits with what it gives to, b with its sources
+      var loops = [];
+      for (var i = 0; i < tr.loop.length; i += 3) {
+        node(tr.loop[i][1], 3);
+        node(tr.loop[i + 1][1], 1);
+        loops.push(tr.loop.slice(i, i + 3).map(function (r) { return edge(r[0], r[1], r.slice(2)); }));
+      }
+      // pro-rata tracing: each grantmaker passes money on in the shares it gives it out. up(x) is the share of x's
+      // grants that could reach the funder, down(x) the share of x's grants that could be the funder's money; x's
+      // grants are all it listed (at least what is drawn). v(x) = min(1, sum of amt * v(next) / grants(x)), v(funder)
+      // = 1, solved from v = 0 upward: the values only rise and stay at most 1, so they settle whatever the order.
+      function given(n) {
+        return Math.max(o[n.ein][5], d3.sum(edges, function (e) { return e.s === n ? e.amt : 0; }));
+      }
+      function tracer(fwd) {
+        var v = new Map(), g = new Map(), adj = new Map();
+        list.forEach(function (n) { v.set(n, n === c ? 1 : 0); g.set(n, given(n)); adj.set(n, []); });
+        edges.forEach(function (e) { adj.get(fwd ? e.s : e.t).push(e); });
+        for (var moved = 1, i = 0; moved > 1e-9 && i < 500; i++) {
+          moved = 0;
+          list.forEach(function (n) {
+            if (n === c || !g.get(n)) return;
+            var x = Math.min(1, d3.sum(adj.get(n), function (e) { return e.amt * v.get(fwd ? e.t : e.s); }) / g.get(n));
+            moved = Math.max(moved, x - v.get(n));
+            v.set(n, x);
+          });
+        }
+        return function (n) { return v.get(n); };
+      }
+      var up = tracer(true), down = tracer(false);
+      edges.forEach(function (e) {
+        e.up = up(e.t);
+        e.down = down(e.s);
+        e.reach = e.amt * Math.max(e.up, e.down);
+        e.s.amt += e.reach;
+        e.t.amt += e.reach;
+      });
+      return { nodes: list, edges: edges, loops: loops, c: c };
     }
     function renderFlow() {
       if (!flow) return;
       var tr = flow.t, tot = tr.tot, name = nice(flow.o[flow.ein][0]);
       var net = (flow.net = buildFlow());
-      $("fig-net").hidden = true;
-      $("fig-flow").hidden = false;
+      flow.sel = null;
       $("t-flow").textContent = "Follow the money: " + name;
       var trail = $("flow-trail");
       trail.textContent = "";
@@ -911,7 +949,7 @@ Ex.ready(function () {
           if (i === flow.trail.length - 1) trail.appendChild(Ex.el("strong", { text: st.name }));
           else {
             var b = Ex.el("button", { class: "ex-link", type: "button", text: st.name });
-            b.addEventListener("click", function () { openFlow(st.ein, { trail: flow.trail.slice(0, i + 1) }); });
+            b.addEventListener("click", function (ev) { openFlow(st.ein, { trail: flow.trail.slice(0, i + 1), keyboard: ev.detail === 0 }); });
             trail.appendChild(b);
           }
         });
@@ -919,32 +957,175 @@ Ex.ready(function () {
       var s = ["In 2022 to 2025 it listed " + usd(tot[1]) + " in grants to U.S. organizations and received " + usd(tot[0]) + " from other grantmakers" +
         (tot[0] && tot[1] ? ", " + (tot[0] < tot[1] / 100 ? "under 1%" : F.num((100 * tot[0]) / tot[1], 0) + "%") + " of what it gave." : ".")];
       s.push("It gave " + usd(tot[2]) + " straight to " + F.plural(tot[3], "organization") + " like yours in all states" + (tot[4] ? ", and " + usd(tot[4]) + " to related ones." : "."));
-      var nRel = net.edges.filter(function (e) { return e.flag & FLAG_REL; }).length, nBack = net.edges.filter(function (e) { return e.flag & FLAG_BACK; }).length;
-      if (nRel || nBack) s.push("Shown: " + [nRel ? F.plural(nRel, "flow") + " between related organizations" : "", nBack ? F.plural(nBack, "flow") + " where money also goes the other way" : ""].filter(Boolean).join(" and ") + ".");
       $("flow-sum").textContent = s.join(" ");
+      net.flags = findFlags(net);
       renderFlowText(net);
+      if (!dlg.open) dlg.showModal();
       if (!flowChart) {
+        $("chart-flow").textContent = "";
         flowChart = Ex.chart($("chart-flow"), {
           label: "Where a funder's money comes from and where it goes",
-          margin: function (w) { return { top: 34, right: w < 520 ? 12 : 170, bottom: 10, left: w < 520 ? 12 : 140 }; },
+          margin: function (w) { return { top: 34, right: w < 520 ? 12 : 190, bottom: 10, left: w < 520 ? 12 : 170 }; },
           height: function () {
             var per = [0, 0, 0, 0, 0];
             (flow ? flow.net.nodes : []).forEach(function (n) { per[n.col]++; });
-            return 40 + Math.max(6, d3.max(per)) * 22;
+            return Math.max(44 + d3.max(per) * 22, Math.min(window.innerHeight - 260, 44 + d3.max(per) * 34));
           },
           render: drawFlow,
         });
       }
       flowChart.redraw();
+      view(null);
     }
-    function flowTip(n) {
-      var o = flow.o, e = flow.net.edges, rows = [];
-      e.filter(function (x) { return x.t === n; }).forEach(function (x) { rows.push({ name: "From " + short(nice(o[x.s.ein][0]), 30), value: usd(x.amt), color: "obs", dash: !!(x.flag & FLAG_REL) }); });
-      e.filter(function (x) { return x.s === n; }).forEach(function (x) { rows.push({ name: "To " + short(nice(o[x.t.ein][0]), 30), value: usd(x.amt), color: "obs", dash: !!(x.flag & FLAG_REL) }); });
-      var f = o[n.ein], what = n.role === "c" ? "The funder you are following" : n.role === "f" ? "A funder. Select it to follow its money." : n.role === "g" ? "A grantmaker" : "An organization like yours. Select it to see its own funders.";
-      var mine = e.filter(function (x) { return x.s === n || x.t === n; });
-      var flags = (mine.some(function (x) { return x.flag & FLAG_REL; }) ? " Dashed: related organizations." : "") + (mine.some(function (x) { return x.flag & FLAG_BACK; }) ? " Money also goes the other way." : "");
-      return { title: nice(f[0]), rows: rows.slice(0, 8), note: [nice(f[1]), f[2]].filter(Boolean).join(", ") + ". " + what + flags };
+
+    // what stands out: loops, money both ways, pass-through, conduits and one dominant source, in that order
+    function findFlags(net) {
+      var o = flow.o, c = net.c, tot = flow.t.tot, out = [];
+      var nm = function (n) { return nice(o[n.ein][0]); };
+      net.loops.slice(0, 2).forEach(function (L) {
+        out.push({ title: "Money comes back round", edges: L,
+          text: nm(c) + " → " + nm(L[0].t) + " (" + cusd(L[0].amt) + ") → " + nm(L[1].t) + " (" + cusd(L[1].amt) + ") → back to " + nm(c) + " (" + cusd(L[2].amt) + ")." });
+      });
+      var pairs = {};
+      net.edges.forEach(function (e) {
+        if (!e.back || (e.s !== c && e.t !== c)) return;
+        var other = e.s === c ? e.t : e.s, p = (pairs[other.id] = pairs[other.id] || { n: other, edges: [] });
+        p.edges.push(e);
+        p.out = e.s === c ? e.amt : e.back;
+        p.in = e.s === c ? e.back : e.amt;
+      });
+      Object.keys(pairs).map(function (k) { return pairs[k]; })
+        .sort(function (a, b) { return Math.min(b.out, b.in) - Math.min(a.out, a.in); }).slice(0, 2)
+        .forEach(function (p) {
+          out.push({ title: "Money goes both ways", edges: p.edges,
+            text: "With " + nm(p.n) + (p.edges[0].flag & FLAG_REL ? ", a related organization" : "") + ": " + cusd(p.out) + " out, " + cusd(p.in) + " back." });
+        });
+      if (tot[1] && tot[0] >= tot[1] / 2) {
+        out.push({ title: "Much of its money passes through", edges: net.edges.filter(function (e) { return e.t === c; }),
+          text: "It received " + cusd(tot[0]) + " from other grantmakers, " + share(tot[0] / tot[1]) + " of the " + cusd(tot[1]) + " it gave." });
+      }
+      net.edges.filter(function (e) { return e.s !== c && e.amt >= 1e6 && e.amt >= o[e.s.ein][5] / 2; })
+        .sort(function (a, b) { return (a.flag & FLAG_REL) - (b.flag & FLAG_REL) || b.amt - a.amt; }).slice(0, 2)
+        .forEach(function (e) {
+          out.push({ title: "Most of one grantmaker's money", edges: [e],
+            text: nm(e.s) + " gave " + share(Math.min(1, e.amt / o[e.s.ein][5])) + " of its grants (" + cusd(e.amt) + ") to " + nm(e.t) + (e.flag & FLAG_REL ? ", a related organization." : ".") });
+        });
+      var top = net.edges.filter(function (e) { return e.t === c; }).sort(function (a, b) { return b.amt - a.amt; })[0];
+      if (top && tot[0] && top.amt >= tot[0] / 2 && !out.some(function (f) { return f.edges.length === 1 && f.edges[0] === top; })) {
+        out.push({ title: "One source dominates", edges: [top],
+          text: nm(top.s) + " supplied " + share(top.amt / tot[0]) + " of what it received from other grantmakers." });
+      }
+      return out;
+    }
+    // one item at a time is lit and described in the panel: a circle {n}, a line {e} or a flag {f}. Pointing or
+    // focusing previews; selecting keeps it (flow.sel) until something else is selected.
+    function same(a, b) {
+      return !!a && !!b && a.n === b.n && a.e === b.e && a.f === b.f;
+    }
+    function pick(it) {
+      flow.sel = it && !same(it, flow.sel) ? it : null;
+      view(null);
+    }
+    // from a control in the panel, which the new panel replaces: focus goes to the new panel's title
+    function panelPick(it) {
+      pick(it);
+      $("flow-panel").querySelector(".p12-panel__title").focus();
+    }
+    function view(it) {
+      if (!flow) return;
+      it = it || flow.sel;
+      if (flow.paint) flow.paint(it);
+      renderPanel(it);
+      $("flow-panel").classList.toggle("is-pinned", !!flow.sel);
+    }
+    function renderPanel(it) {
+      var host = $("flow-panel"), o = flow.o, net = flow.net, c = net.c;
+      var nm = function (n) { return nice(o[n.ein][0]); };
+      host.textContent = "";
+      function add(tag, a, parent) {
+        var x = Ex.el(tag, a);
+        (parent || host).appendChild(x);
+        return x;
+      }
+      function goTo(label, it2) {
+        var b = add("button", { class: "ex-link", type: "button", text: label });
+        b.addEventListener("click", function () { panelPick(it2); });
+        return b;
+      }
+      // a short list of flows, each one selectable
+      function flowList(title, es, label) {
+        if (!es.length) return;
+        add("p", { class: "p12-panel__h", text: title });
+        var ul = add("ul", { class: "p12-panel__flows" });
+        es.slice().sort(function (a, b) { return b.amt - a.amt; }).slice(0, 8).forEach(function (e) {
+          var li = add("li", {}, ul), b = Ex.el("button", { class: "ex-link", type: "button", text: label(e) });
+          b.addEventListener("click", function () { panelPick({ e: e }); });
+          li.appendChild(b);
+          li.appendChild(Ex.el("span", { class: "p12-panel__amt", text: cusd(e.amt) + (e.reach < e.amt * 0.995 ? ", traced " + cusd(e.reach) : "") }));
+        });
+        if (es.length > 8) add("p", { class: "ex-hint", text: "And " + (es.length - 8) + " more in the text version." });
+      }
+      // nothing chosen: what stands out, each one selectable
+      if (!it) {
+        add("h4", { class: "p12-panel__title", tabindex: "-1", text: "What stands out" });
+        if (!net.flags.length) add("p", { class: "ex-hint", text: "No loops, money both ways, pass-through or single dominant source among the flows shown." });
+        var ul = add("ul", { class: "p12-flags" });
+        net.flags.forEach(function (f) {
+          var b = add("li", {}, ul).appendChild(Ex.el("button", { class: "p12-flag", type: "button" }));
+          b.appendChild(Ex.el("strong", { text: f.title + ". " }));
+          b.appendChild(document.createTextNode(f.text));
+          b.addEventListener("click", function () { panelPick({ f: f }); });
+        });
+        add("p", { class: "ex-hint", text: "Point at a circle or a line to see its money here. Select one to keep it." });
+        return;
+      }
+      if (flow.sel) {
+        var back = add("p", { class: "p12-panel__acts" }).appendChild(Ex.el("button", { class: "ex-link", type: "button", text: "‹ What stands out" }));
+        back.addEventListener("click", function () { panelPick(null); });
+      }
+      if (it.f) {
+        add("h4", { class: "p12-panel__title", tabindex: "-1", text: it.f.title });
+        add("p", { text: it.f.text });
+        flowList("Flows", it.f.edges, function (e) { return nm(e.s) + " to " + nm(e.t); });
+        return;
+      }
+      if (it.e) {
+        var e = it.e;
+        add("p", { class: "p12-panel__kicker", text: "A flow" });
+        add("h4", { class: "p12-panel__title", tabindex: "-1", text: nm(e.s) + " to " + nm(e.t) });
+        var lines = [usd(e.amt) + " in " + F.plural(e.n, "grant") + ", 2022 to 2025."];
+        if (e.flag & FLAG_REL) lines.push("They list each other as related organizations on Schedule R.");
+        if (e.back) lines.push(nm(e.t) + " gave " + nm(e.s) + " " + usd(e.back) + " in the same years.");
+        if (e.s !== c && e.t !== c) {
+          lines.push(e.up >= e.down
+            ? nm(e.t) + " passed " + share(e.up) + " of its grants on to " + nm(c) + ", directly or through others drawn here, so about " + cusd(e.reach) + " of this could have reached it."
+            : nm(c) + "'s money made up about " + share(e.down) + " of what " + nm(e.s) + " gave, so about " + cusd(e.reach) + " of this could be its money.");
+        }
+        lines.forEach(function (t) { add("p", { text: t }); });
+        var p = add("p", { class: "p12-panel__acts" });
+        p.appendChild(goTo(nm(e.s), { n: e.s }));
+        p.appendChild(goTo(nm(e.t), { n: e.t }));
+        return;
+      }
+      var n = it.n, f = o[n.ein];
+      var what = n.role === "c" ? "The funder you are following" : n.role === "f" ? "A funder" : n.role === "g" ? "A grantmaker" : "An organization like yours";
+      add("p", { class: "p12-panel__kicker", text: what });
+      add("h4", { class: "p12-panel__title", tabindex: "-1", text: nm(n) });
+      add("p", { class: "p12-panel__meta", text: [nice(f[1]), f[2]].filter(Boolean).join(", ") });
+      if (f[5] || f[6]) {
+        var dl = add("dl", { class: "p12-panel__stats" });
+        [["Grants it listed", usd(f[5])], ["From other grantmakers", usd(f[6]) + (f[5] && f[6] ? " (" + share(f[6] / f[5]) + " of what it gave)" : "")]].forEach(function (r) {
+          add("dt", { text: r[0] }, dl);
+          add("dd", { text: r[1] }, dl);
+        });
+      }
+      flowList("Money in, shown here", net.edges.filter(function (e) { return e.t === n; }), function (e) { return "From " + nm(e.s); });
+      flowList("Money out, shown here", net.edges.filter(function (e) { return e.s === n; }), function (e) { return "To " + nm(e.t); });
+      if (n.role === "f" || n.role === "p") {
+        var b = add("p", { class: "p12-panel__acts" }).appendChild(Ex.el("button", { class: "ex-btn ex-btn--ghost", type: "button", text: n.role === "f" ? "Follow its money" : "See its funders" }));
+        // detail 0: pressed from the keyboard
+        b.addEventListener("click", function (ev) { flowPick(n, ev.detail === 0); });
+      }
     }
     function drawFlow(c) {
       if (!flow) return;
@@ -957,11 +1138,12 @@ Ex.ready(function () {
       // links come from, so lines cross less
       var byCol = {};
       net.nodes.forEach(function (n) { (byCol[n.col] = byCol[n.col] || []).push(n); });
+      var most = d3.max(cols, function (k) { return byCol[k].length; }), step = Math.min(34, c.height / Math.max(1, most - 1));
       var rank = {};
       function place(k, key) {
         var a = byCol[k] || [];
         a.sort(function (p, q) { return key(p) - key(q) || q.amt - p.amt; });
-        var step = 22, top = (c.height - (a.length - 1) * step) / 2;
+        var top = (c.height - (a.length - 1) * step) / 2;
         a.forEach(function (n, i) { n.x = x(k); n.y = top + i * step; rank[n.id] = i; });
       }
       var avg = function (n, side) {
@@ -973,25 +1155,43 @@ Ex.ready(function () {
       place(3, function () { return 0; });
       place(0, function (n) { return avg(n, "s"); });
       place(4, function (n) { return net.edges.some(function (e) { return e.t === n && e.s.role === "c"; }) ? -1 : avg(n, "t"); });
-      var w = d3.scaleSqrt().domain([0, d3.max(net.edges, function (e) { return e.amt; }) || 1]).range([1, 12]);
-      var r = d3.scaleSqrt().domain([0, d3.max(net.nodes, function (n) { return n.amt; }) || 1]).range([3.5, 10]);
-      c.svg.attr("aria-label", "Money trace for " + nice(o[flow.ein][0]) + ": " + F.plural(net.nodes.length - 1, "connected organization") + ". The text version below lists every flow.");
+      var w = d3.scaleSqrt().domain([0, d3.max(net.edges, function (e) { return e.reach; }) || 1]).range([1, 14]);
+      var r = d3.scaleSqrt().domain([0, d3.max(net.nodes, function (n) { return n.amt; }) || 1]).range([3.5, 11]);
+      c.svg.attr("role", "group").attr("aria-label", "Money trace for " + nice(o[flow.ein][0]) + ": " + F.plural(net.nodes.length - 1, "connected organization") + ". The details panel describes the circle in focus; the text version lists every flow.");
       g.append("g").selectAll("text").data(cols).enter().append("text").attr("class", "ex-svg-label p12-colhead")
         .attr("x", function (k) { return x(k); }).attr("y", -14).attr("text-anchor", function (k) { return k < 2 ? "end" : k > 2 ? "start" : "middle"; })
         .text(function (k) { return c.narrow ? "" : FLOW_COLS[k]; });
       var link = d3.linkHorizontal().x(function (p) { return p.x; }).y(function (p) { return p.y; });
-      var paths = g.append("g").selectAll("path").data(net.edges).enter().append("path")
-        .attr("class", function (e) { return "p12-flow" + (e.flag & FLAG_REL ? " p12-flow--rel" : "") + (e.flag & FLAG_BACK ? " p12-flow--back" : ""); })
-        .attr("stroke-width", function (e) { return w(e.amt); })
-        .attr("d", function (e) {
-          if (e.s.col !== e.t.col) return link({ source: e.s, target: e.t });
+      function curve(e) {
+        if (e.s.col === e.t.col) {
           // money between two entities in one column: an arc out to the side the names are not on
           var dx = (e.s.col < 2 ? 1 : -1) * (16 + Math.abs(e.t.y - e.s.y) * 0.35);
           return "M" + e.s.x + "," + e.s.y + "C" + (e.s.x + dx) + "," + e.s.y + " " + (e.t.x + dx) + "," + e.t.y + " " + e.t.x + "," + e.t.y;
-        });
+        }
+        if (e.s.col - e.t.col >= 2) {
+          // money that runs back over the funder (a loop) bows over the top
+          var top = Math.max(-26, Math.min(e.s.y, e.t.y) - 30 - (e.s.x - e.t.x) * 0.2);
+          return "M" + e.s.x + "," + e.s.y + "C" + (e.s.x + 40) + "," + top + " " + (e.t.x - 40) + "," + top + " " + e.t.x + "," + e.t.y;
+        }
+        return link({ source: e.s, target: e.t });
+      }
+      var pg = g.append("g");
+      var paths = pg.selectAll("path.p12-flow").data(net.edges).enter().append("path")
+        .attr("class", function (e) { return "p12-flow" + (e.flag & FLAG_REL ? " p12-flow--rel" : "") + (e.back ? " p12-flow--back" : ""); })
+        .attr("stroke-width", function (e) { return w(e.reach); })
+        .attr("d", curve);
+      // a wider, invisible copy of each line takes the pointer
+      var hits = pg.selectAll("path.p12-flowhit").data(net.edges).enter().append("path").attr("class", "p12-flowhit")
+        .attr("stroke-width", function (e) { return Math.max(10, w(e.reach) + 6); }).attr("d", curve);
       var ng = g.append("g").selectAll("g").data(net.nodes).enter().append("g")
-        .attr("class", function (n) { return "ex-mark p12-fnode p12-fnode--" + n.role; })
-        .attr("transform", function (n) { return "translate(" + n.x + "," + n.y + ")"; });
+        .attr("class", function (n) { return "ex-mark p12-fnode p12-pick p12-fnode--" + n.role; })
+        .attr("transform", function (n) { return "translate(" + n.x + "," + n.y + ")"; })
+        .attr("role", "button")
+        .attr("aria-label", function (n) {
+          var f = o[n.ein], sum = function (k) { return d3.sum(net.edges, function (e) { return e[k] === n ? e.amt : 0; }); };
+          var money = [sum("t") ? cusd(sum("t")) + " in" : "", sum("s") ? cusd(sum("s")) + " out" : ""].filter(Boolean).join(", ");
+          return nice(f[0]) + ", " + [nice(f[1]), f[2]].filter(Boolean).join(", ") + ". " + (money ? "Shown here: " + money + ". " : "") + (n.role === "c" ? "The funder you are following." : n.role === "f" ? "A funder; select it twice to follow its money." : n.role === "g" ? "A grantmaker." : "An organization like yours; select it twice to see its funders.");
+        });
       ng.each(function (n) { n.r = n.role === "c" ? 11 : r(n.amt); });
       ng.append("circle").attr("class", "ex-hit").attr("r", function (n) { return Math.max(n.r + 4, 10); }).attr("fill", "transparent");
       ng.append("circle").attr("class", "p12-dot").attr("r", function (n) { return n.r; });
@@ -1019,7 +1219,8 @@ Ex.ready(function () {
             while (t.length > 4 && this.getComputedTextLength() > room) this.textContent = (t = t.slice(0, -2).trimEnd()) + "…";
           });
       }
-      // pointing at a circle lights every path through it, back to the sources and on to the organizations
+      // a circle lights every path through it, back to the sources and on to the organizations; a line lights the
+      // paths through it; a flag lights its own flows
       function reach(n, side, seen) {
         net.edges.forEach(function (e) {
           var from = side === "up" ? e.t : e.s, to = side === "up" ? e.s : e.t;
@@ -1031,21 +1232,42 @@ Ex.ready(function () {
         });
         return seen;
       }
-      function hl(n) {
-        g.classed("p12-hl", !!n);
-        if (!n) return;
-        var up = reach(n, "up", { e: new Set(), n: new Set() }), down = reach(n, "down", { e: new Set(), n: new Set() });
-        ng.classed("is-on", function (m) { return m === n || up.n.has(m) || down.n.has(m); });
-        paths.classed("is-on", function (e) { return up.e.has(e) || down.e.has(e); });
-      }
-      ng.on("pointerenter.hl focus.hl", function (ev, n) { hl(n); }).on("pointerleave.hl blur.hl", function () { hl(null); });
-      ng.filter(function (n) { return n.role !== "c" && n.role !== "g"; }).attr("role", "button").classed("p12-pick", true)
-        .on("click.pick", function (ev, n) { flowPick(n, false); })
+      flow.paint = function (it) {
+        g.classed("p12-hl", !!it);
+        ng.classed("is-sel", function (n) { return !!flow.sel && flow.sel.n === n; });
+        if (!it) return;
+        var lit = { e: new Set(), n: new Set() };
+        if (it.f) it.f.edges.forEach(function (e) { lit.e.add(e); lit.n.add(e.s); lit.n.add(e.t); });
+        else {
+          // two walks, each with its own record: a two-way pair would otherwise stop the second walk
+          var from = it.n || it.e.s, to = it.n || it.e.t;
+          [reach(from, "up", { e: new Set(), n: new Set() }), reach(to, "down", { e: new Set(), n: new Set() })].forEach(function (w) {
+            w.e.forEach(function (e) { lit.e.add(e); });
+            w.n.forEach(function (n) { lit.n.add(n); });
+          });
+          lit.n.add(from).add(to);
+          if (it.e) lit.e.add(it.e);
+        }
+        ng.classed("is-on", function (n) { return lit.n.has(n); });
+        paths.classed("is-on", function (e) { return lit.e.has(e); });
+      };
+      ng.on("pointerenter.hl focus.hl", function (ev, n) { view({ n: n }); })
+        .on("pointerleave.hl", function () { view(null); })
+        .on("blur.hl", function (ev) { if (!$("flow-panel").contains(ev.relatedTarget)) view(null); })
+        .on("click.pick", function (ev, n) { flowSelect(n, false); })
         .on("keydown.pick", function (ev, n) {
-          if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); flowPick(n, true); }
+          if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); flowSelect(n, true); }
         });
-      c.cleanup(Ex.tooltip.attach(ng, function (el) { return flowTip(el.__data__); }));
+      hits.on("pointerenter", function (ev, e) { view({ e: e }); }).on("pointerleave", function () { view(null); })
+        .on("click", function (ev, e) { pick({ e: e }); });
+      flow.paint(flow.sel);
       Ex.roving(g.node(), ".ex-mark");
+    }
+    // the first selection keeps a circle in the panel; selecting it again follows a funder's money or opens an
+    // organization's own network
+    function flowSelect(n, keyboard) {
+      if (flow.sel && flow.sel.n === n && n.role !== "c" && n.role !== "g") return flowPick(n, keyboard);
+      pick({ n: n });
     }
     function flowPick(n, keyboard) {
       if (n.role === "f") return openFlow(n.ein, { push: true, keyboard: keyboard });
@@ -1062,7 +1284,7 @@ Ex.ready(function () {
     function renderFlowText(net) {
       var o = flow.o, host = $("flow-text");
       host.textContent = "";
-      var flags = function (e) { return (e.flag & FLAG_REL ? " (related organizations)" : "") + (e.flag & FLAG_BACK ? " (money also goes the other way)" : ""); };
+      var flags = function (e) { return (e.flag & FLAG_REL ? " (related organizations)" : "") + (e.back ? " (" + usd(e.back) + " went the other way)" : "") + (e.reach < e.amt * 0.995 ? "; about " + usd(Math.round(e.reach)) + " traced to this funder" : ""); };
       // each flow once: money into the funder's side under its giver's column, money out under its receiver's
       var col = function (e) { return e.s.col < 2 ? e.s.col : e.t.col; };
       [0, 1, 2, 3, 4].forEach(function (k) {

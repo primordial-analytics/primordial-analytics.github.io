@@ -264,6 +264,168 @@
 .ex .p12-key--back {
   border-top: 3px solid var(--ex-warn);
 }
+/* the trace fills the window: chart on the left, the details panel on the right (below it on a narrow screen) */
+html:has(.p12-flowdlg[open]) {
+  overflow: hidden;
+}
+.ex .p12-flowdlg {
+  width: calc(100vw - 2rem);
+  max-width: 110rem;
+  height: calc(100dvh - 2rem);
+  max-height: none;
+  margin: auto;
+  padding: var(--ex-s4) var(--ex-s5) var(--ex-s5);
+  border: 1px solid var(--ex-line-strong);
+  background: var(--ex-paper);
+  color: var(--ex-ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ex .p12-flowdlg::backdrop {
+  background: rgba(13, 10, 40, 0.55);
+}
+.ex .p12-flowdlg__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: var(--ex-s4);
+}
+.ex .p12-flowdlg__head .ex-hint {
+  max-width: 60rem;
+  margin-top: var(--ex-s1);
+}
+.ex .p12-flowdlg__body {
+  display: grid;
+  gap: var(--ex-s4);
+  margin: var(--ex-s4) 0 var(--ex-s3);
+}
+@media (min-width: 64rem) {
+  .ex .p12-flowdlg__body {
+    grid-template-columns: minmax(0, 1fr) 21rem;
+    align-items: start;
+  }
+  .ex .p12-panel {
+    position: sticky;
+    top: 0;
+    max-height: calc(100dvh - 6rem);
+    overflow-y: auto;
+  }
+}
+/* narrow: a selection keeps the panel in view at the bottom of the dialog */
+@media (max-width: 63.99rem) {
+  .ex .p12-panel.is-pinned {
+    position: sticky;
+    bottom: calc(-1 * var(--ex-s5));
+    max-height: 45dvh;
+    overflow-y: auto;
+    background: var(--ex-paper);
+    border-top: 1px solid var(--ex-line-strong);
+    padding-top: var(--ex-s3);
+    padding-bottom: var(--ex-s3);
+  }
+}
+.ex .p12-panel {
+  border-left: 3px solid var(--ex-line);
+  padding: 0 0 0 var(--ex-s4);
+  font-size: var(--ex-t-sm);
+  line-height: 1.45;
+}
+.ex .p12-panel p {
+  margin: 0 0 var(--ex-s2);
+}
+.ex .p12-panel__kicker {
+  font-size: var(--ex-t-xs);
+  font-weight: 600;
+  color: var(--ex-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.ex .p12-panel__title {
+  font-size: var(--ex-t-base);
+  font-weight: 700;
+  margin: 0 0 var(--ex-s1);
+  overflow-wrap: anywhere;
+}
+.ex .p12-panel__meta {
+  color: var(--ex-muted);
+}
+.ex .p12-panel__stats {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.15rem var(--ex-s3);
+  margin: 0 0 var(--ex-s3);
+}
+.ex .p12-panel__stats dt {
+  color: var(--ex-muted);
+}
+.ex .p12-panel__stats dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.ex .p12-panel__h {
+  font-weight: 600;
+  margin-top: var(--ex-s3);
+}
+.ex .p12-panel__flows {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--ex-s2);
+}
+.ex .p12-panel__flows li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--ex-s2);
+  border-bottom: 1px solid var(--ex-line);
+}
+.ex .p12-panel__flows .ex-link,
+.ex .p12-panel__acts .ex-link {
+  font-size: inherit;
+  text-align: left;
+  min-height: 1.75rem;
+}
+.ex .p12-panel__amt {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  color: var(--ex-muted);
+  font-size: var(--ex-t-note);
+}
+.ex .p12-panel__acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--ex-s4);
+  margin-top: var(--ex-s3);
+}
+/* what stands out: a list of buttons in the panel, each lights its flows */
+.ex .p12-flags {
+  list-style: none;
+  padding: 0;
+  margin: var(--ex-s2) 0 var(--ex-s3);
+  display: grid;
+  gap: var(--ex-s2);
+}
+.ex .p12-flag {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: var(--ex-s1) 0 var(--ex-s1) var(--ex-s3);
+  border: 0;
+  border-left: 3px solid var(--ex-warn);
+  background: none;
+  color: var(--ex-ink);
+  font: inherit;
+  font-size: var(--ex-t-sm);
+  line-height: 1.4;
+  cursor: pointer;
+}
+.ex .p12-flag:hover,
+.ex .p12-flag[aria-pressed="true"] {
+  background: var(--ex-surface-2);
+}
+.ex .p12-flag:focus-visible {
+  outline: 3px solid var(--ex-focus);
+  outline-offset: 2px;
+}
 .ex .p12-trail {
   margin: 0 0 var(--ex-s1);
   font-size: var(--ex-t-note);
@@ -323,6 +485,16 @@
 }
 .ex-chart .p12-hl .p12-fnode.is-on {
   opacity: 1;
+}
+.ex-chart .p12-flowhit {
+  fill: none;
+  stroke: transparent;
+  pointer-events: stroke;
+  cursor: pointer;
+}
+.ex-chart .p12-fnode.is-sel .p12-dot {
+  stroke: var(--ex-ink);
+  stroke-width: 2.5;
 }
 .ex .p12-net .ex-figure__head .ex-hint {
   margin-top: var(--ex-s1);

@@ -17,13 +17,15 @@ and funder filters (with ties), and every peer those funders gave to. It adds
   counts   {"fc.hc.cp|daf|pre": funders with a grant to a peer of those kinds}, for every choice, since the file holds
            only the leading funders
   top      TOP_US: the page lists only that many (with ties), the ranks the file holds in full for every choice
-Flow file: {"o": {ein: [name, city, state, role, kind]}, "t": {center ein: trace}}. role: "f" a funder (it has its
-own trace), "g" another grantmaker, or "p" an organization like yours; kind: the peer kind code, or "" (a funder can be
-a peer too). A trace (dollars and grants in RECENT years; flag 1 = related on
-Schedule R, 2 = the money also goes the other way):
-  in1   [source, dollars, grants, flag]          its largest sources (flows.traces)
-  in2   [source, via, dollars, grants, flag]     the largest sources of each of those
-  mid   [grantmaker, dollars, grants, flag]      the largest funders it gave to
+Flow file: {"o": {ein: [name, city, state, role, kind, given, received]}, "t": {center ein: trace}}. role: "f" a funder
+(it has its own trace), "g" another grantmaker, or "p" an organization like yours; kind: the peer kind code, or "" (a
+funder can be a peer too); given, received: as in grantmakers.csv (0 for a peer that is not a grantmaker). A trace
+(dollars and grants in RECENT years; flag 1 = related on Schedule R, 2 = the money also goes the other way; back: the
+dollars that went the other way):
+  in1   [source, dollars, grants, flag, back]          its largest sources (flows.traces)
+  in2   [source, via, dollars, grants, flag, back]     the largest sources of each of those
+  mid   [grantmaker, dollars, grants, flag, back]      the largest funders it gave to
+  loop  [giver, receiver, dollars, grants, flag, back] the legs of its loops (flows.loops), three to a loop
   peers [peer, dollars, grants, flag]            the TOP_PEERS organizations like yours it gave the most
   midp  [grantmaker, peer, dollars, grants, flag]  the TOP_MID_PEERS each of those funders gave the most
   tot   [received from grantmakers, all grants listed, to peers (unrelated), peers (unrelated), to related peers]
@@ -105,7 +107,8 @@ def flow_files(peers, grants, out, dest):
     gm = pd.read_csv(out / "grantmakers.csv", dtype={"ein": str}, keep_default_na=False).set_index("ein")
     funders = set(pd.read_csv(out / "funders.csv", dtype={"ein": str}, usecols=["ein"]).ein)
     t = flows.traces(fl, funders)
-    t["flag"] = t.related.astype(int) + 2 * t.back.astype(int)
+    t["flag"] = t.related.astype(int) + 2 * (t.back > 0)
+    grants = grants[grants.funder_ein != grants.peer_ein]  # a filer that lists itself as a grantee is not a flow
     pp = (grants.groupby(["funder_ein", "peer_ein"]).agg(dollars=("amount", "sum"), grants=("amount", "size"),
                                                           related=("related", "any")).reset_index()
           .sort_values(["dollars", "peer_ein"], ascending=[False, True]))
@@ -122,19 +125,21 @@ def flow_files(peers, grants, out, dest):
     shards = {}
     for c in sorted(funders):
         mids = hops.get((c, "mid"), none)
-        tr = {"in1": rows(hops.get((c, "in1"), none), ["src", "dollars", "grants", "flag"]),
-              "in2": rows(hops.get((c, "in2"), none), ["src", "dst", "dollars", "grants", "flag"]),
-              "mid": rows(mids, ["dst", "dollars", "grants", "flag"]),
+        tr = {"in1": rows(hops.get((c, "in1"), none), ["src", "dollars", "grants", "flag", "back"]),
+              "in2": rows(hops.get((c, "in2"), none), ["src", "dst", "dollars", "grants", "flag", "back"]),
+              "mid": rows(mids, ["dst", "dollars", "grants", "flag", "back"]),
+              "loop": rows(hops.get((c, "loop"), none), ["src", "dst", "dollars", "grants", "flag", "back"]),
               "peers": rows(direct.get(c, pp.iloc[:0]), ["peer_ein", "dollars", "grants", "flag"]),
               "midp": [r for m in mids.dst for r in rows(via.get(m, pp.iloc[:0]), ["funder_ein", "peer_ein", "dollars", "grants", "flag"])],
               "tot": [n(gm.received.get(c, 0)), n(gm.given.get(c, 0)), n(un.dollars.get(c, 0)), int(un.n.get(c, 0)), n(rel.get(c, 0))]}
         sh = shards.setdefault(c[-2:], {"o": {}, "t": {}})
         sh["t"][c] = tr
-        for e in {c} | {r[0] for k in ("in1", "mid", "peers") for r in tr[k]} | {x for r in tr["in2"] + tr["midp"] for x in r[:2]}:
+        for e in {c} | {r[0] for k in ("in1", "mid", "peers") for r in tr[k]} | {x for r in tr["in2"] + tr["midp"] + tr["loop"] for x in r[:2]}:
             if e not in sh["o"]:
                 kind = PEER_KINDS[peers.kind[e]] if e in peers.index else ""
                 r = peers.loc[e] if kind and e not in gm.index else gm.loc[e]
-                sh["o"][e] = [r["name"], r.city, r.state, "f" if e in funders else "p" if kind else "g", kind]
+                sh["o"][e] = [r["name"], r.city, r.state, "f" if e in funders else "p" if kind else "g", kind,
+                              n(r.get("given", 0)), n(r.get("received", 0))]
     for k, sh in shards.items():
         (dest / f"flow-{k}.json").write_text(json.dumps(sh, separators=(",", ":")))
 
