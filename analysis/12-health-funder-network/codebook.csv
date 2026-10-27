@@ -1,0 +1,48 @@
+file,column,meaning,source
+funder-table,ein,Funder's employer identification number,IRS return header
+funder-table,peers,Peer organizations it funded in tax years 2022-2025,Schedule I or Form 990-PF grant lines
+funder-table,grants,Grants to peers in 2022-2025,Schedule I or Form 990-PF grant lines
+funder-table,dollars,Dollars to peers in 2022-2025,Schedule I or Form 990-PF grant lines
+funder-table,median_grant,Median grant to a peer in 2022-2025,Schedule I or Form 990-PF grant lines
+funder-table,last_year,Latest tax year with a grant to a peer,Return tax period
+funder-table,states,States of the peers it funded in 2022-2025,IRS Business Master File
+funder-table,general_share,"Share of its 2022-2025 grants to peers labeled general support, among grants whose kind is not unclear",Local model reading the grant purpose
+funder-table,peers_all_years,Peer organizations it funded in tax years 2020-2025,Schedule I or Form 990-PF grant lines
+funder-table,states_all,States of the peers it funded in 2020-2025,IRS Business Master File
+funder-table,median_grant_all,Median grant to a peer in 2020-2025,Schedule I or Form 990-PF grant lines
+funder-table,open,"Share of the peers it funded in 2023 or 2024 that it had not funded in the three years before; blank if fewer than three",Schedule I or Form 990-PF grant lines
+funder-table,type,"private (Form 990-PF), hospital (Form 990 says it operates a hospital), daf (Form 990 says it holds donor-advised funds) or charity",IRS return
+funder-table,name,Funder name on its latest return,IRS return header
+funder-table,city,City on its latest return,IRS return header
+funder-table,state,State on its latest return,IRS return header
+funder-table,preselected,"Private foundation that checked the box saying it gives only to preselected organizations",Form 990-PF supplementary information
+funder-table,website,Website on its latest return,IRS return
+funder-table,grants_paid,Total grants paid on its latest return,IRS return
+funder-table,channel,"national_daf (donor-advised fund sponsor giving in 10+ states), matching (median grant under $1000 in 10+ states) or direct",Derived from the columns above
+grant-table,funder_ein,Funder's employer identification number,IRS return header
+grant-table,peer_ein,Recipient's employer identification number after matching,Matching step
+grant-table,tax_year,Tax year of the return listing the grant,IRS return
+grant-table,amount,"Dollars: cash plus non-cash on Schedule I, the amount paid on Form 990-PF",Schedule I or Form 990-PF grant lines
+grant-table,kind,"general, program, capital, in_kind, event or unclear; unclear for related-party grants, which were not labeled",Local model reading the grant purpose
+grant-table,related,"Funder and recipient list each other as related organizations; left out of every count on the page",Schedule R
+grant-table,purpose,Purpose text as filed,Schedule I or Form 990-PF grant lines
+organization-table,ein,Organization's employer identification number,IRS Business Master File
+organization-table,name,Name,IRS Business Master File
+organization-table,city,City,IRS Business Master File
+organization-table,state,State,IRS Business Master File
+organization-table,zip,ZIP code,IRS Business Master File
+organization-table,ntee,NTEE activity code,IRS Business Master File
+organization-table,mission,"Mission or main activity on its latest Form 990 or 990-EZ, cut to 600 characters",IRS return
+organization-table,revenue,Total revenue on its latest Form 990 or 990-EZ,IRS return
+organization-table,model_kind,"free_clinic, care_provider or not_peer",Local model reading the name and mission
+organization-table,hrsa,On the HRSA list of health centers and look-alikes,HRSA
+organization-table,kind,"health_center if hrsa, otherwise model_kind",Derived
+organization-table,funders,Funders with an unrelated grant to it in 2022-2025,Grant table
+organization-table,dollars,Unrelated grant dollars to it in 2022-2025,Grant table
+organization-table,top_share,Share of those dollars from its largest funder,Grant table
+reference-labels,step,"match, missed_care, missed_other, org or grant",check/ samples
+reference-labels,id,Item id within the step's sample,check/ samples
+reference-labels,item,What the labeler saw,check/ samples
+reference-labels,reference,"Blind reference label (for match, the accepted EINs separated by |, or NONE)",check/ labels
+reference-labels,pipeline,The pipeline's answer,run.py
+reference-labels,note,Labeler's note,check/ labels

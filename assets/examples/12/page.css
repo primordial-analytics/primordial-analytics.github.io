@@ -1,0 +1,306 @@
+/* Page-local styles for example 12 (who funds organizations like yours). Loaded after the kit CSS.
+   Layout and chart marks only: no tinted fills, boxes, radius or shadow on a container. */
+
+.ex .p12-tool [hidden],
+.ex .p12-net[hidden],
+.ex .p12-current[hidden] {
+  display: none;
+}
+
+/* ---------- controls ---------- */
+.ex .p12-more__body {
+  display: grid;
+  gap: var(--ex-s5);
+  margin-top: var(--ex-s3);
+}
+.ex .p12-who {
+  gap: 0;
+}
+.ex .p12-who .ex-label {
+  margin-bottom: var(--ex-s1);
+}
+.ex .p12-who .ex-check {
+  align-items: start;
+  padding: 0.4rem 0;
+}
+
+/* ---------- the ranked list ---------- */
+.ex .p12-ranked > .ex-hint {
+  margin: var(--ex-s1) 0 var(--ex-s3);
+}
+.ex .p12-list {
+  container-type: inline-size;
+}
+.ex .p12-head {
+  display: none;
+}
+.ex .p12-rows {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--ex-line-strong);
+}
+.ex .p12-row {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  column-gap: var(--ex-s3);
+  row-gap: var(--ex-s2);
+  padding: var(--ex-s3) 0;
+  border-bottom: 1px solid var(--ex-line);
+  font-family: var(--ex-font-ui);
+  font-size: var(--ex-t-sm);
+  line-height: 1.35;
+}
+.ex .p12-rank {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--ex-muted);
+  padding-top: 0.05rem;
+}
+.ex .p12-main {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+  justify-items: start;
+}
+.ex .p12-name {
+  color: var(--ex-ink);
+  font-weight: 600;
+  font-size: var(--ex-t-base);
+  overflow-wrap: anywhere;
+}
+.ex .p12-meta {
+  color: var(--ex-muted);
+}
+.ex .p12-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.1rem;
+  font-size: var(--ex-t-note);
+  font-weight: 600;
+  color: var(--ex-gold-deep);
+}
+.ex .p12-badge::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--ex-gold);
+  flex: none;
+}
+.ex .p12-acts {
+  grid-column: 2 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--ex-s4);
+  font-size: var(--ex-t-note);
+}
+.ex .p12-acts .ex-link,
+.ex .p12-acts a {
+  min-height: 1.75rem;
+  font-size: var(--ex-t-note);
+  font-weight: 500;
+  color: var(--ex-ink);
+  display: inline-flex;
+  align-items: center;
+  text-decoration: underline;
+  text-decoration-color: var(--ex-gold);
+  text-underline-offset: 0.22em;
+}
+.ex .p12-acts a:focus-visible {
+  outline: 3px solid var(--ex-focus);
+  outline-offset: 2px;
+}
+.ex .p12-stats {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(5.25rem, 1fr));
+  gap: var(--ex-s2) var(--ex-s3);
+  margin: 0;
+}
+.ex .p12-stat dt {
+  font-size: var(--ex-t-xs);
+  color: var(--ex-muted);
+  font-weight: 500;
+}
+.ex .p12-stat dd {
+  margin: 0;
+  color: var(--ex-ink);
+  font-variant-numeric: tabular-nums;
+}
+.ex .p12-peers {
+  grid-column: 1 / -1;
+  margin-top: var(--ex-s2);
+}
+.ex .p12-peers .ex-table td.is-text {
+  white-space: normal;
+  min-width: 14rem;
+}
+.ex .p12-peers .ex-table th:first-child {
+  white-space: normal;
+  min-width: 12rem;
+}
+
+/* wide: one line per funder, with a header row over the five numbers */
+@container (min-width: 44rem) {
+  .ex .p12-head {
+    display: grid;
+    grid-template-columns: 1.75rem minmax(0, 1fr) repeat(5, 4.9rem);
+    column-gap: var(--ex-s3);
+    align-items: end;
+    padding-bottom: var(--ex-s2);
+    font-size: var(--ex-t-note);
+    font-weight: 500;
+    color: var(--ex-muted);
+    line-height: 1.25;
+  }
+  .ex .p12-head span:first-child {
+    grid-column: 1 / 3;
+  }
+  .ex .p12-head span:nth-child(n + 2) {
+    text-align: right;
+  }
+  .ex .p12-row {
+    grid-template-columns: 1.75rem minmax(0, 1fr) auto;
+    align-items: start;
+  }
+  .ex .p12-stats {
+    grid-column: 3;
+    grid-template-columns: repeat(5, 4.9rem);
+    gap: 0 var(--ex-s3);
+    text-align: right;
+  }
+  .ex .p12-stat dt {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* ---------- your current funders ---------- */
+.ex .p12-current > .ex-hint {
+  margin: var(--ex-s1) 0 var(--ex-s3);
+}
+
+/* ---------- the network figure ---------- */
+.ex .p12-key {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  box-sizing: border-box;
+  vertical-align: -0.1em;
+  flex: none;
+}
+.ex .p12-key--org {
+  background: var(--ex-c-ref);
+}
+.ex .p12-key--funder {
+  background: var(--ex-c-obs);
+}
+.ex .p12-key--peer {
+  background: var(--ex-paper);
+  border: 2px solid var(--ex-c-obs);
+}
+.ex .p12-key--sugg {
+  background: var(--ex-c-est);
+}
+.ex-chart .p12-edge {
+  stroke-width: 1.25;
+  fill: none;
+}
+.ex-chart .p12-edge--obs {
+  stroke: var(--ex-c-obs);
+  stroke-opacity: 0.4;
+}
+.ex-chart .p12-edge--sugg {
+  stroke: var(--ex-c-est);
+  stroke-opacity: 0.75;
+}
+.ex-chart .p12-dot {
+  stroke: var(--ex-paper);
+  stroke-width: 1.5;
+}
+.ex-chart .p12-node--o .p12-dot {
+  fill: var(--ex-c-ref);
+}
+.ex-chart .p12-node--f .p12-dot {
+  fill: var(--ex-c-obs);
+}
+.ex-chart .p12-node--p .p12-dot {
+  fill: var(--ex-paper);
+  stroke: var(--ex-c-obs);
+  stroke-width: 1.5;
+}
+.ex-chart .p12-node--s .p12-dot {
+  fill: var(--ex-c-est);
+}
+.ex-chart text.p12-num {
+  font: 700 11px var(--ex-font-ui);
+  fill: var(--ex-ink);
+  pointer-events: none;
+}
+.ex .p12-nettext {
+  font-size: var(--ex-t-sm);
+  line-height: 1.5;
+}
+.ex .p12-nettext__h {
+  font-weight: 600;
+  color: var(--ex-ink);
+  margin-top: var(--ex-s3);
+}
+.ex .p12-nettext ul,
+.ex .p12-nettext ol {
+  padding-left: 1.25rem;
+  margin: var(--ex-s1) 0 0;
+}
+.ex .p12-nettext ul {
+  list-style: disc;
+}
+.ex .p12-nettext ol {
+  list-style: decimal;
+}
+
+/* ---------- findings and checks ---------- */
+.ex .p12-cols {
+  --ex-col-min: 19rem;
+  margin-top: var(--ex-s7);
+}
+.ex-chart .p12-track {
+  fill: var(--ex-c-grid);
+}
+.ex-chart .p12-bar--obs {
+  fill: var(--ex-c-obs);
+}
+.ex-chart .p12-bar--est {
+  fill: var(--ex-c-est);
+}
+.ex-chart .p12-bar--dim {
+  fill: var(--ex-c-dim);
+}
+.ex .p12-cols .ex-note,
+.ex .p12-after {
+  margin-top: var(--ex-s3);
+}
+.ex .p12-after {
+  max-width: var(--ex-text-w);
+}
+.ex .p12-checks th:first-child {
+  white-space: normal;
+  min-width: 13rem;
+}
+.ex .p12-detail .ex-prose ul {
+  list-style: disc;
+}
+
+/* a wide table's caption wraps at the width of the scrolling region instead of running off its right edge */
+.ex .ex-table-wrap {
+  container-type: inline-size;
+}
+.ex .ex-table-wrap caption {
+  max-width: 100cqw;
+  white-space: normal;
+}
