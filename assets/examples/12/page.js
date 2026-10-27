@@ -11,10 +11,10 @@ Ex.ready(function () {
     return document.getElementById(id);
   };
   var BASE = (($("main") || document.body).getAttribute("data-ex-data") || "").replace(/data\.json$/, "");
-  var PAGE = 20, FEW = 10, TOP_SUGGEST = 8, TOP_PEERS = 12, MAX_FUNDERS = 16, TOP_STATE = 12, MAX_STATE_PEERS = 60;
+  var PAGE = 20, FEW = 10, TOP_SUGGEST = 8, TOP_PEERS = 12, MAX_FUNDERS = 16, TOP_STATE = 12, MAX_STATE_PEERS = 60, TOP_US = 20, MAX_US_PEERS = 150;
 
   /* columns of the state files (see web_data.py) */
-  var P_EIN = 0, P_NAME = 1, P_CITY = 2, P_KIND = 3, P_TOP = 6, P_ZIP3 = 7;
+  var P_EIN = 0, P_NAME = 1, P_CITY = 2, P_KIND = 3, P_TOP = 6, P_ZIP3 = 7, P_ST = 8;
   var F_EIN = 0, F_NAME = 1, F_CITY = 2, F_ST = 3, F_TYPE = 4, F_CHAN = 5, F_PRE = 6, F_WEB = 7, F_ALL = 8, F_MED = 10, F_LAST = 11, F_GEN = 12, F_NEW = 13;
   var G_F = 0, G_P = 1, G_YEAR = 2, G_AMT = 3, G_PURPOSE = 5;
 
@@ -25,7 +25,7 @@ Ex.ready(function () {
   ];
   var TYPE_LABEL = { private: "Private foundation", charity: "Community foundation or charity", hospital: "Hospital or health system" };
   var NAMES = {
-    AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California", CO: "Colorado", CT: "Connecticut", DE: "Delaware", DC: "District of Columbia", FL: "Florida", GA: "Georgia", GU: "Guam",
+    AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California", CO: "Colorado", CT: "Connecticut", DE: "Delaware", DC: "District of Columbia", FL: "Florida", GA: "Georgia", GU: "Guam", US: "all states",
     HI: "Hawaii", ID: "Idaho", IL: "Illinois", IN: "Indiana", IA: "Iowa", KS: "Kansas", KY: "Kentucky", LA: "Louisiana", ME: "Maine", MD: "Maryland", MA: "Massachusetts", MI: "Michigan",
     MN: "Minnesota", MS: "Mississippi", MO: "Missouri", MT: "Montana", NE: "Nebraska", NV: "Nevada", NH: "New Hampshire", NJ: "New Jersey", NM: "New Mexico", NY: "New York",
     NC: "North Carolina", ND: "North Dakota", OH: "Ohio", OK: "Oklahoma", OR: "Oregon", PA: "Pennsylvania", PR: "Puerto Rico", RI: "Rhode Island", SC: "South Carolina", SD: "South Dakota",
@@ -103,6 +103,7 @@ Ex.ready(function () {
     var N = D.numbers || {};
     var STATES = D.states, byAbbr = {};
     STATES.forEach(function (s) { byAbbr[s.st] = s; });
+    byAbbr.US = { st: "US" }; // all states: state-US.json holds the leading funders and every organization they fund
     var DEFAULT = STATES.slice().sort(function (a, b) { return b.peers - a.peers; })[0].st;
 
     /* ---------- numbers written into the text from data.json ---------- */
@@ -157,12 +158,12 @@ Ex.ready(function () {
 
     /* ---------- pickers ---------- */
     var stateCombo = Ex.combobox($("pick-state"), {
-      id: "state", label: "State", placeholder: "Search states", noun: "states", noun_one: "state",
-      items: STATES.map(function (s) { return { value: s.st, label: NAMES[s.st] || s.st, hint: s.st }; }).sort(function (a, b) { return a.label < b.label ? -1 : 1; }),
+      id: "state", label: "State", hint: "Clear it to see all states.", placeholder: "Search states", noun: "states", noun_one: "state",
+      items: [{ value: "US", label: "All states", hint: "US", search: "united states national" }].concat(STATES.map(function (s) { return { value: s.st, label: NAMES[s.st] || s.st, hint: s.st }; }).sort(function (a, b) { return a.label < b.label ? -1 : 1; })),
       onSelect: function (it) {
-        if (!it) return;
+        // clearing the state shows all states
         touched = true;
-        show(it.value, null);
+        show(it ? it.value : "US", null);
       },
     });
     var orgCombo = Ex.combobox($("pick-org"), {
@@ -188,13 +189,19 @@ Ex.ready(function () {
         d.byP[g[G_P]].push(i);
         d.fp[g[G_F] + "|" + g[G_P]] = 1;
       });
+      if (d.counts) {
+        // all states: the file holds only the leading funders, so the totals come with it
+        d.nDaf = d.counts["fc.hc.cp|1|0"] - d.counts["fc.hc.cp|0|0"];
+        d.nPre = d.counts["fc.hc.cp|1|0"] - d.counts["fc.hc.cp|1|1"];
+        return d;
+      }
       d.nDaf = d.funders.filter(function (f) { return f[F_CHAN] !== "direct"; }).length;
       d.nPre = d.funders.filter(function (f) { return f[F_PRE]; }).length;
       d.kindN = {};
       d.peers.forEach(function (p) { d.kindN[p[P_KIND]] = (d.kindN[p[P_KIND]] || 0) + 1; });
       return d;
     }
-    function show(abbr, org) {
+    function show(abbr, org, then) {
       var token = ++cur.token;
       $("results").setAttribute("aria-busy", "true");
       Ex.loadData(BASE + "state-" + abbr + ".json").then(function (raw) {
@@ -206,12 +213,16 @@ Ex.ready(function () {
         S.org = org && d.pIdx[org] != null ? org : null;
         shown = PAGE;
         expanded = {};
-        orgCombo.setItems(d.peers.map(function (p) { return { value: p[P_EIN], label: nice(p[P_NAME]), hint: nice(p[P_CITY]), search: p[P_EIN] }; }));
+        // all states has no organization picker: an organization's funders are in its state's file
+        if (d.counts) S.org = null;
+        $("pick-org").hidden = !!d.counts;
+        orgCombo.setItems(d.counts ? [] : d.peers.map(function (p) { return { value: p[P_EIN], label: nice(p[P_NAME]), hint: nice(p[P_CITY]), search: p[P_EIN] }; }));
         orgCombo.setValue(S.org, { silent: true });
         stateCombo.setValue(abbr, { silent: true });
         $("results").removeAttribute("aria-busy");
         syncControls();
         update();
+        if (then) then();
       }, function () {
         $("results").removeAttribute("aria-busy");
         Ex.showError($("rank-list"), "This state's data did not load. The downloads below have the same numbers.");
@@ -225,7 +236,11 @@ Ex.ready(function () {
         ok[i] = !!S.kinds[p[P_KIND]];
         if (ok[i]) n++;
       });
+      if (d.counts) n = d3.sum(KINDS, function (K) { return S.kinds[K.k] ? d.kindN[K.k] || 0 : 0; });
       return { ok: ok, n: n };
+    }
+    function countKey() {
+      return KINDS.filter(function (K) { return S.kinds[K.k]; }).map(function (K) { return K.code; }).join(".") + "|" + S.daf + "|" + S.pre;
     }
     function currentFunders(d, oi) {
       var by = {};
@@ -262,6 +277,11 @@ Ex.ready(function () {
         var fa = d.funders[a.fi], fb = d.funders[b.fi];
         return b.near - a.near || b.n - a.n || fb[F_ALL] - fa[F_ALL] || (fa[F_NAME] < fb[F_NAME] ? -1 : 1);
       });
+      // all states: the file holds every funder down to the d.top-th for each choice, ties included, and no further
+      if (d.counts && rows.length > d.top) {
+        var cut = rows[d.top - 1].n;
+        rows = rows.filter(function (r) { return r.n >= cut; });
+      }
       return { ok: pf.ok, nPeers: pf.n, oi: oi, cf: cf, rows: rows };
     }
 
@@ -349,8 +369,9 @@ Ex.ready(function () {
       $("msg").textContent = msg.join(" ");
 
       $("r1-label").textContent = "Funders of organizations like yours in " + name;
-      $("r1").textContent = F.int(rows.length);
-      $("r1-range").textContent = rows.length ? "The top funder gave to " + F.int(rows[0].n) + " of the " + F.int(p.nPeers) + "." : "";
+      var total = d.counts ? d.counts[countKey()] || 0 : rows.length;
+      $("r1").textContent = F.int(total);
+      $("r1-range").textContent = rows.length ? "The top funder gave to " + F.int(rows[0].n) + " of the " + F.int(p.nPeers) + "." + (rows.length < total ? " The " + F.int(rows.length) + " that gave to the most are listed." : "") : "";
       $("r2-label").textContent = "Organizations like yours counted in " + name;
       $("r2").textContent = F.int(p.nPeers);
       $("r2-range").textContent = kindsText(d, p.ok);
@@ -384,7 +405,7 @@ Ex.ready(function () {
       var d = cur.d;
       var rows = r.grants.map(function (gi) {
         var g = d.grants[gi], pe = d.peers[g[G_P]];
-        return { peer: nice(pe[P_NAME]) + (pe[P_CITY] ? ", " + nice(pe[P_CITY]) : ""), year: g[G_YEAR], amount: g[G_AMT], purpose: purposeText(d.purposes[g[G_PURPOSE]]) };
+        return { peer: nice(pe[P_NAME]) + (pe[P_CITY] ? ", " + nice(pe[P_CITY]) : "") + (d.counts ? ", " + pe[P_ST] : ""), year: g[G_YEAR], amount: g[G_AMT], purpose: purposeText(d.purposes[g[G_PURPOSE]]) };
       }).sort(function (a, b) { return a.peer < b.peer ? -1 : a.peer > b.peer ? 1 : b.year - a.year; });
       Ex.dataTable(host, {
         caption: "Grants from " + nice(f[F_NAME]) + " to organizations like yours in " + (NAMES[cur.abbr] || cur.abbr) + ", 2022 to 2025",
@@ -410,7 +431,7 @@ Ex.ready(function () {
       if (f[F_PRE]) main.appendChild(Ex.el("span", { class: "p12-badge", text: "Funds only preselected organizations" }));
       var stats = Ex.el("dl", { class: "p12-stats" }, [
         cur.p.oi >= 0 ? stat("Funded nearby", F.int(r.near)) : null,
-        stat("Organizations funded here", F.int(r.n)),
+        stat(d.counts ? "Organizations funded" : "Organizations funded here", F.int(r.n)),
         stat("Median grant", usd(f[F_MED])),
         stat("Latest year", String(f[F_LAST])),
         stat("For general support", pctOrDash(f[F_GEN])),
@@ -484,7 +505,7 @@ Ex.ready(function () {
       return p.oi >= 0 && p.cf.length ? buildEgo(p) : buildState(p);
     }
     function buildState(p) {
-      var d = cur.d, top = p.rows.slice(0, TOP_STATE), cnt = {};
+      var d = cur.d, top = p.rows.slice(0, d.counts ? TOP_US : TOP_STATE), cnt = {};
       if (!top.length) return null;
       top.forEach(function (r) {
         var seen = {};
@@ -497,7 +518,7 @@ Ex.ready(function () {
         return b.n - a.n || (d.peers[a.pi][P_NAME] < d.peers[b.pi][P_NAME] ? -1 : 1);
       });
       var all = peers.length, size = d3.scaleSqrt().domain([1, d3.max(top, function (r) { return r.n; })]).range([8, 17]);
-      peers = peers.slice(0, MAX_STATE_PEERS);
+      peers = peers.slice(0, d.counts ? MAX_US_PEERS : MAX_STATE_PEERS);
       var nodes = top.map(function (s, i) { return { id: "s" + s.fi, t: "s", fi: s.fi, r: size(s.n), rank: i + 1, s: s }; }), links = [];
       peers.forEach(function (q) {
         nodes.push({ id: "p" + q.pi, t: "p", pi: q.pi, r: 3.5 + Math.min(q.n, 6) * 0.6, n: q.n });
@@ -549,14 +570,15 @@ Ex.ready(function () {
       $("key-ego").hidden = !ego;
       $("key-state").hidden = ego;
       $("net-all").hidden = !ego;
-      $("net-hint").textContent = "Point at or tab to a circle to see its connections. Select an organization to see its own funders." +
+      $("net-hint").textContent = "Point at or tab to a circle to see its connections. Select an organization to see its own funders" + (cur.d.counts ? ", in its state." : ".") +
         (!ego && net.allPeers > net.peers.length ? " Shown: the " + F.int(net.peers.length) + " of " + F.int(net.allPeers) + " organizations funded by the most of these funders." : "");
       renderNetText(net);
       if (!netChart) {
         netChart = Ex.chart($("chart-net"), {
           label: "Network of funders and organizations like yours",
           margin: function (w) { return { top: 14, right: w < 520 ? 14 : 130, bottom: 14, left: w < 520 ? 14 : 130 }; },
-          height: function (w) { return Math.round(Math.min(580, Math.max(w < 520 ? 420 : 400, w * (w < 520 ? 1.05 : 0.62)))); },
+          // a ring of more funders (all states) needs more room
+          height: function (w) { var big = cur.net && cur.net.sugg.length > TOP_STATE; return Math.round(Math.min(big ? 720 : 580, Math.max(w < 520 ? 420 : big ? 520 : 400, w * (w < 520 ? (big ? 1.3 : 1.05) : big ? 0.75 : 0.62)))); },
           render: drawNet,
         });
       }
@@ -600,7 +622,8 @@ Ex.ready(function () {
       var nodes = net.nodes.map(function (n, i) {
         var m = Object.assign({}, n);
         if (m.t === "s") {
-          var a = -Math.PI / 2 + (2 * Math.PI * i) / nf;
+          // half a step off the top, so no name sits straight above or below the middle
+          var a = -Math.PI / 2 + (Math.PI * (2 * i + 1)) / nf;
           m.fx = m.x = cx + Math.cos(a) * rx;
           m.fy = m.y = cy + Math.sin(a) * ry;
           at[m.id] = m;
@@ -641,7 +664,7 @@ Ex.ready(function () {
       var ego = net.mode === "ego";
       if (n.t === "p") {
         var pe = d.peers[n.pi];
-        return { title: nice(pe[P_NAME]), rows: [{ name: ego ? "Funders it shares with you" : "Funders shown that gave to it", value: F.int(n.n), color: "obs" }], note: nice(pe[P_CITY]) + ". Select it to see its own funders." };
+        return { title: nice(pe[P_NAME]), rows: [{ name: ego ? "Funders it shares with you" : "Funders shown that gave to it", value: F.int(n.n), color: "obs" }], note: nice(pe[P_CITY]) + (d.counts ? ", " + pe[P_ST] : "") + ". Select it to see its own funders." };
       }
       var sf = d.funders[n.fi];
       return { title: n.rank + ". " + nice(sf[F_NAME]), rows: [{ name: "Organizations like yours funded here", value: F.int(n.s.n), color: "est" }], note: typeLabel(sf) + (ego ? ". Suggested; it does not fund you now." : ". Number " + n.rank + " in the list.") };
@@ -701,15 +724,21 @@ Ex.ready(function () {
       Ex.roving(g.node(), ".ex-mark");
     }
     function pickOrg(pi, keyboard) {
+      var pe = cur.d.peers[pi];
+      function after() {
+        $("fig-net").scrollIntoView({ block: "nearest" });
+        // the figure was redrawn; keep keyboard focus in it, on the organization just chosen
+        var mark = keyboard && ($("chart-net").querySelector(".p12-node--o") || $("chart-net").querySelector(".p12-node--s"));
+        if (mark) mark.focus();
+      }
       touched = true;
-      S.org = cur.d.peers[pi][P_EIN];
+      // from all states, open the organization's own state
+      if (cur.d.counts) return show(pe[P_ST], pe[P_EIN], after);
+      S.org = pe[P_EIN];
       orgCombo.setValue(S.org, { silent: true });
       shown = PAGE;
       update();
-      $("fig-net").scrollIntoView({ block: "nearest" });
-      // the figure was redrawn; keep keyboard focus in it, on the organization just chosen
-      var mark = keyboard && ($("chart-net").querySelector(".p12-node--o") || $("chart-net").querySelector(".p12-node--s"));
-      if (mark) mark.focus();
+      after();
     }
     $("net-all").addEventListener("click", function () {
       touched = true;
