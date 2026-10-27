@@ -243,6 +243,29 @@
   fill: var(--ex-ink);
   pointer-events: none;
 }
+.ex .p12-net .ex-figure__head .ex-hint {
+  margin-top: var(--ex-s1);
+}
+/* the state view: many links, so they stay faint until a circle is pointed at */
+.ex-chart .p12-net--state .p12-edge--sugg {
+  stroke-opacity: 0.22;
+}
+.ex-chart .p12-pick {
+  cursor: pointer;
+}
+.ex-chart .p12-hl .p12-edge {
+  stroke-opacity: 0.05;
+}
+.ex-chart .p12-hl .p12-edge.is-on {
+  stroke-opacity: 0.9;
+  stroke-width: 2;
+}
+.ex-chart .p12-hl .p12-node {
+  opacity: 0.2;
+}
+.ex-chart .p12-hl .p12-node.is-on {
+  opacity: 1;
+}
 .ex .p12-nettext {
   font-size: var(--ex-t-sm);
   line-height: 1.5;

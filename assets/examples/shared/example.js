@@ -869,6 +869,10 @@
         });
       });
     });
+    // the style's town dots name an image its sprite lacks ("circle-11"); a blank one keeps them off, as dots would read as data points
+    map.on("styleimagemissing", function (e) {
+      if (e.id === "circle-11") map.addImage(e.id, { width: 1, height: 1, data: new Uint8Array(4) });
+    });
     if (o.label) map.getCanvas().setAttribute("aria-label", o.label);
     return map;
   };

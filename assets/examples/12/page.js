@@ -11,7 +11,7 @@ Ex.ready(function () {
     return document.getElementById(id);
   };
   var BASE = (($("main") || document.body).getAttribute("data-ex-data") || "").replace(/data\.json$/, "");
-  var PAGE = 20, FEW = 10, TOP_SUGGEST = 8, TOP_PEERS = 12, MAX_FUNDERS = 16;
+  var PAGE = 20, FEW = 10, TOP_SUGGEST = 8, TOP_PEERS = 12, MAX_FUNDERS = 16, TOP_STATE = 12, MAX_STATE_PEERS = 60;
 
   /* columns of the state files (see web_data.py) */
   var P_EIN = 0, P_NAME = 1, P_CITY = 2, P_KIND = 3, P_TOP = 6, P_ZIP3 = 7;
@@ -25,7 +25,7 @@ Ex.ready(function () {
   ];
   var TYPE_LABEL = { private: "Private foundation", charity: "Community foundation or charity", hospital: "Hospital or health system" };
   var NAMES = {
-    AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California", CO: "Colorado", CT: "Connecticut", DE: "Delaware", DC: "District of Columbia", FL: "Florida", GA: "Georgia",
+    AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California", CO: "Colorado", CT: "Connecticut", DE: "Delaware", DC: "District of Columbia", FL: "Florida", GA: "Georgia", GU: "Guam",
     HI: "Hawaii", ID: "Idaho", IL: "Illinois", IN: "Indiana", IA: "Iowa", KS: "Kansas", KY: "Kentucky", LA: "Louisiana", ME: "Maine", MD: "Maryland", MA: "Massachusetts", MI: "Michigan",
     MN: "Minnesota", MS: "Mississippi", MO: "Missouri", MT: "Montana", NE: "Nebraska", NV: "Nevada", NH: "New Hampshire", NJ: "New Jersey", NM: "New Mexico", NY: "New York",
     NC: "North Carolina", ND: "North Dakota", OH: "Ohio", OK: "Oklahoma", OR: "Oregon", PA: "Pennsylvania", PR: "Puerto Rico", RI: "Rhode Island", SC: "South Carolina", SD: "South Dakota",
@@ -476,11 +476,39 @@ Ex.ready(function () {
       else curTable.update(rows, spec);
     }
 
-    /* ---------- the network figure: computed once per choice, no animation ---------- */
+    /* ---------- the network figure: computed once per choice, no animation ----------
+       With an organization that has funders: it, its funders, the peers they share and the suggested funders.
+       Otherwise: the state's top funders in the list and the organizations like yours they fund. */
     var netChart = null;
     function buildNet(p) {
+      return p.oi >= 0 && p.cf.length ? buildEgo(p) : buildState(p);
+    }
+    function buildState(p) {
+      var d = cur.d, top = p.rows.slice(0, TOP_STATE), cnt = {};
+      if (!top.length) return null;
+      top.forEach(function (r) {
+        var seen = {};
+        r.grants.forEach(function (gi) {
+          var pi = d.grants[gi][G_P];
+          if (!seen[pi]) { seen[pi] = 1; cnt[pi] = (cnt[pi] || 0) + 1; }
+        });
+      });
+      var peers = Object.keys(cnt).map(function (k) { return { pi: +k, n: cnt[k] }; }).sort(function (a, b) {
+        return b.n - a.n || (d.peers[a.pi][P_NAME] < d.peers[b.pi][P_NAME] ? -1 : 1);
+      });
+      var all = peers.length, size = d3.scaleSqrt().domain([1, d3.max(top, function (r) { return r.n; })]).range([8, 17]);
+      peers = peers.slice(0, MAX_STATE_PEERS);
+      var nodes = top.map(function (s, i) { return { id: "s" + s.fi, t: "s", fi: s.fi, r: size(s.n), rank: i + 1, s: s }; }), links = [];
+      peers.forEach(function (q) {
+        nodes.push({ id: "p" + q.pi, t: "p", pi: q.pi, r: 3.5 + Math.min(q.n, 6) * 0.6, n: q.n });
+        top.forEach(function (s) {
+          if (d.fp[s.fi + "|" + q.pi]) links.push({ source: "s" + s.fi, target: "p" + q.pi, type: "s" });
+        });
+      });
+      return { mode: "state", nodes: nodes, links: links, sugg: top, peers: peers, allPeers: all };
+    }
+    function buildEgo(p) {
       var d = cur.d, oi = p.oi;
-      if (oi < 0 || !p.cf.length) return null;
       var cf = p.cf.slice(0, MAX_FUNDERS);
       var shared = {};
       p.cf.forEach(function (c) {
@@ -504,23 +532,29 @@ Ex.ready(function () {
         nodes.push({ id: "s" + s.fi, t: "s", fi: s.fi, r: 10, rank: i + 1, s: s });
         links.push({ source: "s" + s.fi, target: "o", type: "weak" });
       });
-        nodes.forEach(function (a) {
+      nodes.forEach(function (a) {
         if (a.t !== "f" && a.t !== "s") return;
         peers.forEach(function (q) {
           if (d.fp[a.fi + "|" + q.pi]) links.push({ source: a.id, target: "p" + q.pi, type: a.t });
         });
       });
-      return { nodes: nodes, links: links, cf: cf, moreCf: p.cf.length - cf.length, peers: peers, shared: shared, sugg: sugg };
+      return { mode: "ego", nodes: nodes, links: links, cf: cf, moreCf: p.cf.length - cf.length, peers: peers, shared: shared, sugg: sugg };
     }
     function renderNet(p) {
       var net = (cur.net = buildNet(p));
       $("fig-net").hidden = !net;
       if (!net) return;
-      $("t-net").textContent = "Who funds " + orgName() + ", and who funds its peers";
+      var ego = net.mode === "ego", name = NAMES[cur.abbr] || cur.abbr, n = net.sugg.length;
+      $("t-net").textContent = ego ? "Who funds " + orgName() + ", and who funds its peers" : (n === 1 ? "The one funder" : (n < TOP_STATE ? "The " : "The top ") + F.int(n) + " funders") + " in " + name + " and the organizations like yours " + (n === 1 ? "it funds" : "they fund");
+      $("key-ego").hidden = !ego;
+      $("key-state").hidden = ego;
+      $("net-all").hidden = !ego;
+      $("net-hint").textContent = "Point at or tab to a circle to see its connections. Select an organization to see its own funders." +
+        (!ego && net.allPeers > net.peers.length ? " Shown: the " + F.int(net.peers.length) + " of " + F.int(net.allPeers) + " organizations funded by the most of these funders." : "");
       renderNetText(net);
       if (!netChart) {
         netChart = Ex.chart($("chart-net"), {
-          label: "Network of your organization, its funders, peers that share a funder with it and suggested funders",
+          label: "Network of funders and organizations like yours",
           margin: function (w) { return { top: 14, right: w < 520 ? 14 : 130, bottom: 14, left: w < 520 ? 14 : 130 }; },
           height: function (w) { return Math.round(Math.min(580, Math.max(w < 520 ? 420 : 400, w * (w < 520 ? 1.05 : 0.62)))); },
           render: drawNet,
@@ -530,6 +564,7 @@ Ex.ready(function () {
     }
     function layout(net, w, h) {
       var cx = w / 2, cy = h / 2, R = Math.min(cx, cy) - 14;
+      if (net.mode === "state") return layoutState(net, w, h, cx, cy, R);
       var ring = { o: 0, f: 0.3, p: 0.64, s: 0.98 };
       var count = { f: 0, p: 0, s: 0 }, idx = { f: 0, p: 0, s: 0 };
       var nodes = net.nodes.map(function (n) {
@@ -557,6 +592,45 @@ Ex.ready(function () {
       });
       return { nodes: nodes, links: links.filter(function (l) { return l.type !== "weak"; }), cx: cx };
     }
+    function layoutState(net, w, h, cx, cy, R) {
+      // funders evenly on an outer ellipse; each organization pulled toward the funders that gave to it, so the ones
+      // several funders share sit in the middle and the ones a single funder holds sit next to it
+      // names sit beside the ring on a wide screen only, so a phone's ring fills the figure
+      var rx = Math.min(w / 2 - (w < 500 ? 16 : 60), R * 1.4), ry = Math.min(cy - 20, R * 1.4), nf = net.sugg.length, at = {}, j = 0;
+      var nodes = net.nodes.map(function (n, i) {
+        var m = Object.assign({}, n);
+        if (m.t === "s") {
+          var a = -Math.PI / 2 + (2 * Math.PI * i) / nf;
+          m.fx = m.x = cx + Math.cos(a) * rx;
+          m.fy = m.y = cy + Math.sin(a) * ry;
+          at[m.id] = m;
+        }
+        return m;
+      });
+      var links = net.links.map(function (l) { return { source: l.source, target: l.target, type: l.type }; });
+      nodes.forEach(function (m) {
+        if (m.t !== "p") return;
+        var mine = links.filter(function (l) { return l.target === m.id; }).map(function (l) { return at[l.source]; });
+        var a = (2 * Math.PI * j++) / net.peers.length;
+        m.x = cx + 0.55 * (d3.mean(mine, function (f) { return f.x; }) - cx) + Math.cos(a) * 4;
+        m.y = cy + 0.55 * (d3.mean(mine, function (f) { return f.y; }) - cy) + Math.sin(a) * 4;
+      });
+      var sim = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(function (n) { return n.id; }).distance(R * 0.3).strength(0.12))
+        .force("charge", d3.forceManyBody().strength(-14))
+        .force("collide", d3.forceCollide(function (n) { return n.r + (n.t === "s" ? 8 : 1.5); }))
+        .stop();
+      for (var k = 0; k < 300; k++) {
+        sim.tick();
+        nodes.forEach(function (n) {
+          if (n.t !== "p") return;
+          // keep organizations inside the ring of funders
+          var dx = (n.x - cx) / (rx * 0.8), dy = (n.y - cy) / (ry * 0.8), q = Math.sqrt(dx * dx + dy * dy);
+          if (q > 1) { n.x = cx + (n.x - cx) / q; n.y = cy + (n.y - cy) / q; }
+        });
+      }
+      return { nodes: nodes, links: links, cx: cx };
+    }
     function nodeTip(n) {
       var d = cur.d, p = cur.p, net = cur.net;
       if (n.t === "o") return { title: orgName(), rows: [{ name: "Current funders", value: F.int(p.cf.length), color: "obs" }, { name: "Peers sharing a funder", value: F.int(Object.keys(net.shared).length), color: "ref" }], note: F.int(net.peers.length) + " with the most shared funders are shown." };
@@ -564,12 +638,13 @@ Ex.ready(function () {
         var f = d.funders[n.fi], shared = net.peers.filter(function (q) { return d.fp[n.fi + "|" + q.pi]; }).length;
         return { title: nice(f[F_NAME]), rows: [{ name: "Gave to you", value: usd(n.c.total), color: "obs" }, { name: "Years", value: Object.keys(n.c.years).sort().join(", ") }, { name: "Also gave to peers shown", value: F.int(shared) }], note: typeLabel(f) };
       }
+      var ego = net.mode === "ego";
       if (n.t === "p") {
         var pe = d.peers[n.pi];
-        return { title: nice(pe[P_NAME]), rows: [{ name: "Funders it shares with you", value: F.int(n.n), color: "obs" }], note: nice(pe[P_CITY]) };
+        return { title: nice(pe[P_NAME]), rows: [{ name: ego ? "Funders it shares with you" : "Funders shown that gave to it", value: F.int(n.n), color: "obs" }], note: nice(pe[P_CITY]) + ". Select it to see its own funders." };
       }
       var sf = d.funders[n.fi];
-      return { title: n.rank + ". " + nice(sf[F_NAME]), rows: [{ name: "Organizations like yours funded here", value: F.int(n.s.n), color: "est" }], note: typeLabel(sf) + ". Suggested; it does not fund you now." };
+      return { title: n.rank + ". " + nice(sf[F_NAME]), rows: [{ name: "Organizations like yours funded here", value: F.int(n.s.n), color: "est" }], note: typeLabel(sf) + (ego ? ". Suggested; it does not fund you now." : ". Number " + n.rank + " in the list.") };
     }
     function short(s, n) {
       return s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s;
@@ -577,9 +652,12 @@ Ex.ready(function () {
     function drawNet(c) {
       var net = cur.net, d = cur.d;
       if (!net) return;
-      var L = layout(net, c.width, c.height), g = c.g;
-      c.svg.attr("aria-label", "Network of " + orgName() + ": " + F.plural(net.cf.length, "current funder") + ", " + F.plural(net.peers.length, "peer") + " that share a funder with it and " + F.plural(net.sugg.length, "suggested funder") + ". The text version below lists the same connections.");
-      g.append("g").selectAll("line").data(L.links).enter().append("line")
+      var L = layout(net, c.width, c.height), g = c.g, ego = net.mode === "ego";
+      c.svg.attr("aria-label", (ego
+        ? "Network of " + orgName() + ": " + F.plural(net.cf.length, "current funder") + ", " + F.plural(net.peers.length, "peer") + " that share a funder with it and " + F.plural(net.sugg.length, "suggested funder")
+        : "Network of the top " + F.plural(net.sugg.length, "funder") + " in " + (NAMES[cur.abbr] || cur.abbr) + " and " + F.plural(net.peers.length, "organization") + " like yours they fund") + ". The text version below lists the same connections.");
+      g.classed("p12-net--state", !ego);
+      var edges = g.append("g").selectAll("line").data(L.links).enter().append("line")
         .attr("class", function (l) { return "p12-edge p12-edge--" + (l.type === "s" ? "sugg" : "obs"); })
         .attr("x1", function (l) { return l.source.x; }).attr("y1", function (l) { return l.source.y; })
         .attr("x2", function (l) { return l.target.x; }).attr("y2", function (l) { return l.target.y; });
@@ -592,13 +670,54 @@ Ex.ready(function () {
       // names on the nodes that matter, on a wide screen; the tooltip and the text version carry the rest
       var label = function (sel, text, dy) {
         sel.append("text").attr("class", "ex-svg-label ex-svg-label--direct p12-lab").attr("dy", dy || "0.32em")
-          .attr("x", function (n) { return n.x < L.cx ? -(n.r + 6) : n.r + 6; }).attr("text-anchor", function (n) { return n.x < L.cx ? "end" : "start"; }).text(text);
+          .attr("x", function (n) { return n.x < L.cx ? -(n.r + 6) : n.r + 6; }).attr("text-anchor", function (n) { return n.x < L.cx ? "end" : "start"; }).text(text)
+          .each(function (n) {
+            // trim a name that would run past the edge of the figure
+            var room = (n.x < L.cx ? n.x + c.margin.left : c.width + c.margin.right - n.x) - n.r - 8, t = this.textContent;
+            while (t.length > 4 && this.getComputedTextLength() > room) this.textContent = (t = t.slice(0, -2).trimEnd()) + "…";
+          });
       };
       if (!c.narrow) label(ng.filter(function (n) { return n.t === "s"; }), function (n) { return short(nice(d.funders[n.fi][F_NAME]), 26); });
       ng.filter(function (n) { return n.t === "o"; }).append("text").attr("class", "ex-svg-label ex-svg-label--direct p12-lab").attr("y", 26).attr("text-anchor", "middle").text(short(orgName(), c.narrow ? 24 : 34));
+      // pointing at or focusing a circle lights its links and neighbours
+      var adj = {};
+      L.links.forEach(function (l) {
+        (adj[l.source.id] = adj[l.source.id] || {})[l.target.id] = 1;
+        (adj[l.target.id] = adj[l.target.id] || {})[l.source.id] = 1;
+      });
+      function hl(n) {
+        g.classed("p12-hl", !!n);
+        ng.classed("is-on", function (m) { return !!n && (m.id === n.id || !!(adj[n.id] || {})[m.id]); });
+        edges.classed("is-on", function (l) { return !!n && (l.source.id === n.id || l.target.id === n.id); });
+      }
+      ng.on("pointerenter.hl focus.hl", function (e, n) { hl(n); }).on("pointerleave.hl blur.hl", function () { hl(null); });
+      // an organization opens its own network
+      ng.filter(function (n) { return n.t === "p"; }).attr("role", "button").classed("p12-pick", true)
+        .on("click.pick", function (e, n) { pickOrg(n.pi, false); })
+        .on("keydown.pick", function (e, n) {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pickOrg(n.pi, true); }
+        });
       c.cleanup(Ex.tooltip.attach(ng, function (el) { return nodeTip(el.__data__); }));
       Ex.roving(g.node(), ".ex-mark");
     }
+    function pickOrg(pi, keyboard) {
+      touched = true;
+      S.org = cur.d.peers[pi][P_EIN];
+      orgCombo.setValue(S.org, { silent: true });
+      shown = PAGE;
+      update();
+      $("fig-net").scrollIntoView({ block: "nearest" });
+      // the figure was redrawn; keep keyboard focus in it, on the organization just chosen
+      var mark = keyboard && ($("chart-net").querySelector(".p12-node--o") || $("chart-net").querySelector(".p12-node--s"));
+      if (mark) mark.focus();
+    }
+    $("net-all").addEventListener("click", function () {
+      touched = true;
+      S.org = null;
+      orgCombo.setValue(null, { silent: true });
+      shown = PAGE;
+      update();
+    });
     function renderNetText(net) {
       var d = cur.d, host = $("net-text");
       host.textContent = "";
@@ -607,6 +726,17 @@ Ex.ready(function () {
         var ul = Ex.el(ordered ? "ol" : "ul");
         items.forEach(function (t) { ul.appendChild(Ex.el("li", { text: t })); });
         host.appendChild(ul);
+      }
+      if (net.mode === "state") {
+        list("Top funders, as numbered in the list", net.sugg.map(function (s) {
+          return nice(d.funders[s.fi][F_NAME]) + ", funded " + F.plural(s.n, "organization") + " like yours here";
+        }), true);
+        list("Organizations like yours they fund" + (net.allPeers > net.peers.length ? " (the " + F.int(net.peers.length) + " of " + F.int(net.allPeers) + " funded by the most of them)" : ""), net.peers.map(function (q) {
+          var by = [];
+          net.sugg.forEach(function (s, i) { if (d.fp[s.fi + "|" + q.pi]) by.push(i + 1); });
+          return nice(d.peers[q.pi][P_NAME]) + ", funded by " + (by.length === 1 ? "number " : "numbers ") + by.join(", ");
+        }));
+        return;
       }
       list("Your current funders" + (net.moreCf > 0 ? " (largest " + net.cf.length + " of " + (net.cf.length + net.moreCf) + ")" : ""), net.cf.map(function (n) {
         var f = d.funders[n.fi];

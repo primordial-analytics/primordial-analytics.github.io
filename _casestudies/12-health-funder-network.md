@@ -150,6 +150,30 @@ extra_scripts:
 
 <p class="ex-hint" id="msg" role="status" hidden></p>
 
+<figure class="ex-figure p12-net" id="fig-net" aria-labelledby="t-net" hidden>
+<div class="ex-figure__head">
+<h3 class="ex-figure__title" id="t-net">Funders and the organizations like yours they fund</h3>
+<p class="ex-hint" id="net-hint"></p>
+</div>
+<ul class="ex-legend" id="key-state" aria-label="Key">
+<li><span class="p12-key p12-key--sugg" aria-hidden="true"></span>A funder, numbered as in the list; larger means more organizations like yours</li>
+<li><span class="p12-key p12-key--peer" aria-hidden="true"></span>An organization like yours</li>
+</ul>
+<ul class="ex-legend" id="key-ego" aria-label="Key" hidden>
+<li><span class="p12-key p12-key--org" aria-hidden="true"></span>Your organization</li>
+<li><span class="p12-key p12-key--funder" aria-hidden="true"></span>A current funder</li>
+<li><span class="p12-key p12-key--peer" aria-hidden="true"></span>A peer that shares a funder with you</li>
+<li><span class="p12-key p12-key--sugg" aria-hidden="true"></span>A suggested funder, numbered as in the list</li>
+</ul>
+<div class="ex-chart p12-netchart" id="chart-net"></div>
+<p class="ex-actions"><button class="ex-link" type="button" id="net-all" hidden>Show the whole state</button></p>
+<details class="ex-notes">
+<summary>Text version<span class="ex-vh"> of the figure</span></summary>
+<div id="net-text" class="p12-nettext"></div>
+<p class="ex-source">Source: IRS Form 990 Schedule I and Form 990-PF grant lists, tax years 2022 to 2025; Primordial Analytics matching and labels.</p>
+</details>
+</figure>
+
 <div class="p12-ranked">
 <h3 class="ex-tool__title" id="t-rank">Funders of organizations like yours</h3>
 <p class="ex-hint" id="rank-hint"></p>
@@ -167,23 +191,6 @@ extra_scripts:
 <div id="table-current"></div>
 </div>
 
-<figure class="ex-figure p12-net" id="fig-net" aria-labelledby="t-net" hidden>
-<div class="ex-figure__head">
-<h3 class="ex-figure__title" id="t-net">Who funds you, and who funds your peers</h3>
-</div>
-<ul class="ex-legend" aria-label="Key">
-<li><span class="p12-key p12-key--org" aria-hidden="true"></span>Your organization</li>
-<li><span class="p12-key p12-key--funder" aria-hidden="true"></span>A current funder</li>
-<li><span class="p12-key p12-key--peer" aria-hidden="true"></span>A peer that shares a funder with you</li>
-<li><span class="p12-key p12-key--sugg" aria-hidden="true"></span>A suggested funder, numbered as in the list</li>
-</ul>
-<div class="ex-chart p12-netchart" id="chart-net"></div>
-<details class="ex-notes">
-<summary>Text version<span class="ex-vh"> of the figure</span></summary>
-<div id="net-text" class="p12-nettext"></div>
-<p class="ex-source">Source: IRS Form 990 Schedule I and Form 990-PF grant lists, tax years 2022 to 2025; Primordial Analytics matching and labels.</p>
-</details>
-</figure>
 </div>
 
 </div>
