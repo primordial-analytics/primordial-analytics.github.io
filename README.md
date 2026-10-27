@@ -42,7 +42,7 @@ gem install bundler jekyll
 To rebuild the site from scratch and capture config updates and styles changes, run the gulp command and then build the site:
 
 ```bash
-gulp default
+npx gulp default
 bundle exec jekyll serve --watch --trace --drafts --verbose
 ```
 
@@ -54,7 +54,6 @@ gem install bundler jekyll
 bundle update
 bundle install
 npm cache clean --force
-rm -rf node_modules package-lock.json
 npm install
 npm audit
 npm audit fix
@@ -73,7 +72,6 @@ With the exception of a few dollars per month in AWS charges and our personal ti
 - [NASA Galaxy Video](https://nasaviz.gsfc.nasa.gov/10661)
 - [Coverr MP4 Videos](https://coverr.co)
 - [Unsplash Stock Photos](https://unsplash.com)
-- [Fontawesome Icons](https://fontawesome.com)
 - [Noun Project Logos](https://thenounproject.com/S-Copinger/uploads/?i=11524)
 - [Font Squirrel Fonts](https://www.fontsquirrel.com/fonts/sansation)
 - Communications powered by [AWS](https://aws.amazon.com/):
@@ -86,7 +84,7 @@ With the exception of a few dollars per month in AWS charges and our personal ti
 
 Copyright &copy; 2025 Primordial Analytics Consulting, LLC.
 
-Web site project code is released under the [MIT License](LICENSE.md).
+Web site project code is released under the [MIT License](LICENSE).
 
 Blog content is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 

@@ -13,9 +13,6 @@
     <meta charset="utf-8">
 
     <!-- remaining metadata -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="msvalidate.01" content="00DBE51A1837EA51E1489980A8A632EF"/>
 
@@ -29,9 +26,11 @@
     {% if page.layout == 'post' %}
     <!-- fancybox -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css" as="style"
+          integrity="sha512-Nep6azRFo4niNmQ/2gCnsDcS4IP3nF77+M3jNv9YwxZPGenftLY0V6KyRaqw4T4fjlpSeqAhCQQBgrOJ+rmB8g==" crossorigin="anonymous" referrerpolicy="no-referrer"
           onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css"
+              integrity="sha512-Nep6azRFo4niNmQ/2gCnsDcS4IP3nF77+M3jNv9YwxZPGenftLY0V6KyRaqw4T4fjlpSeqAhCQQBgrOJ+rmB8g==" crossorigin="anonymous" referrerpolicy="no-referrer">
     </noscript>
     {% endif %}
 
@@ -85,7 +84,6 @@
 
     <!-- seo -->
     <link rel='dns-prefetch' href='//fonts.googleapis.com'/>
-    <link rel='dns-prefetch' href='//s.w.org'/>
     {% feed_meta %}
 
 </head>

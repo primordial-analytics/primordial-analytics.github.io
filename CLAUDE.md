@@ -72,7 +72,7 @@ Only `casestudies` and `posts` output their own pages. `team` sets `output: fals
 
 ## External integrations
 
-- Contact form: `js/contact_me.js` POSTs JSON to an AWS API Gateway endpoint (backed by Lambda + SES). The backend isn't in this repo.
+- Contact form: `js/contact_me.js` POSTs JSON to an AWS API Gateway endpoint (backed by Lambda + SES). `backend/aws_lambda.js` is a copy of the Lambda source, kept out of the site; it is not deployed from here, so the live function may differ.
 - Google Analytics (gtag) and the Bing/Google verification files (`BingSiteAuth.xml`, `google*.html`, the `msvalidate` meta tag) are live. Don't remove them.
 - SEO/sitemap/feed/redirects come from the `jekyll-seo-tag`, `jekyll-sitemap`, `jekyll-feed`, and `jekyll-redirect-from` plugins. Every page defaults to the share image `img/sm_content/og-default.jpg` (front-matter defaults in `_config.yml`). The Google verification file is kept out of the sitemap with `sitemap: false` but must stay published.
 - The contact form's JSON payload must keep exactly the keys `name`, `phone`, `email` and `message`, because the backend schema is unknown. The "I am…" role is prepended to `message`. Never submit the form or POST to the endpoint in testing: it sends real email.
