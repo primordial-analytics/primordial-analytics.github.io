@@ -9,9 +9,8 @@ Marketing site and blog for Primordial Analytics (<www.primordialanalytics.com>)
 ## Commands
 
 ```bash
-# Ruby: CI uses 3.1.4. System ruby is 3.0.2, so use the asdf install:
-export ASDF_RUBY_VERSION=3.1.4
-gem install bundler -v 2.5.23   # matches "BUNDLED WITH" in Gemfile.lock
+# Ruby: .tool-versions pins 3.4.12 for asdf and for CI. Bundler 2.6.9 ships with it
+# and matches "BUNDLED WITH" in Gemfile.lock.
 bundle install                  # gems go to vendor/bundle (set in .bundle/config)
 npm install
 

@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 #versions = JSON.parse(open('https://pages.github.com/versions.json').read)
 
 #gem 'github-pages', versions['github-pages'], group: :jekyll_plugins
-gem "github-pages", "~> 231", group: :jekyll_plugins
+gem "github-pages", "~> 232", group: :jekyll_plugins
 gem 'jekyll-gist'
 gem 'faraday-retry'
 
