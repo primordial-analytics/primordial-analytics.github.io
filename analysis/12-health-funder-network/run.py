@@ -32,6 +32,7 @@ import llm  # noqa: E402
 import match  # noqa: E402
 import parse  # noqa: E402
 import prepare  # noqa: E402
+import flows  # noqa: E402
 import results  # noqa: E402
 import thumbnail  # noqa: E402
 import web_data  # noqa: E402
@@ -219,6 +220,11 @@ def main():
     stage("results")
     ft = results.funders(e, latest)
     pt = results.peers(e, peers.rename(columns={"NAME": "name", "CITY": "city", "STATE": "state", "ZIP": "zip", "NTEE_CD": "ntee"}))
+    stage("money between grantmakers")
+    fl = flows.flows(g, pairs)
+    used = flows.used(fl, set(ft.index))
+    gm = flows.grantmakers(used, fl, g, latest, bmf, set(ft.index))
+    del fl
     stage("checks")
     ch, ref = checks(o, e, missed(rec))
     stage("backtest")
@@ -236,6 +242,8 @@ def main():
     ft.rename_axis("ein").to_csv(OUT / "funders.csv")
     e[e.tax_year.isin(results.RECENT)][["funder_ein", "peer_ein", "tax_year", "amount", "kind", "related", "purpose"]].to_csv(OUT / "grants.csv", index=False)
     ref.to_csv(OUT / "reference_labels.csv", index=False)
+    used.to_csv(OUT / "flows.csv", index=False)
+    gm.to_csv(OUT / "grantmakers.csv")
     stage("page data and downloads")
     web_data.build()
     for name, table in (("funders", "funder-table"), ("grants", "grant-table"), ("peers", "organization-table"),

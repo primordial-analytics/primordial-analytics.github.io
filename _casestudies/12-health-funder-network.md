@@ -174,6 +174,30 @@ extra_scripts:
 </details>
 </figure>
 
+<figure class="ex-figure p12-net p12-flowfig" id="fig-flow" aria-labelledby="t-flow" hidden>
+<div class="ex-figure__head">
+<p class="p12-trail" id="flow-trail"></p>
+<h3 class="ex-figure__title" id="t-flow">Follow the money</h3>
+<p class="ex-hint" id="flow-sum"></p>
+</div>
+<ul class="ex-legend" aria-label="Key">
+<li><span class="p12-key p12-key--org" aria-hidden="true"></span>The funder you are following</li>
+<li><span class="p12-key p12-key--funder" aria-hidden="true"></span>A funder you can follow next</li>
+<li><span class="p12-key p12-key--other" aria-hidden="true"></span>Another grantmaker</li>
+<li><span class="p12-key p12-key--peer" aria-hidden="true"></span>An organization like yours</li>
+<li><span class="p12-key p12-key--rel" aria-hidden="true"></span>Between related organizations</li>
+<li><span class="p12-key p12-key--back" aria-hidden="true"></span>Money also goes the other way</li>
+</ul>
+<div class="ex-chart p12-flowchart" id="chart-flow"></div>
+<p class="ex-note">Line width is dollars, 2022 to 2025. A path shows where money could have gone, not that the same dollars moved: a grantmaker pools what it receives. Only the largest flows are drawn: 8 sources, 3 sources of each, 8 funders it gives to, 12 organizations it funds and 4 for each of those funders. Point at a circle to light every path through it.</p>
+<p class="ex-actions"><button class="ex-link" type="button" id="flow-close">Back to the network</button></p>
+<details class="ex-notes">
+<summary>Text version<span class="ex-vh"> of the money trace</span></summary>
+<div id="flow-text" class="p12-nettext"></div>
+<p class="ex-source">Source: IRS Form 990 Schedule I, Schedule R and Form 990-PF grant lists, tax years 2022 to 2025; Primordial Analytics matching.</p>
+</details>
+</figure>
+
 <div class="p12-ranked">
 <h3 class="ex-tool__title" id="t-rank">Funders of organizations like yours</h3>
 <p class="ex-hint" id="rank-hint"></p>
@@ -375,6 +399,7 @@ Everything on this page comes from `analysis/12-health-funder-network` in the [s
 <li><strong>Kind of grant.</strong> For each distinct purpose text the model returns general support, program, capital, donated goods, event or sponsorship, or unclear.</li>
 <li><strong>Funders.</strong> A funder is a private foundation if it files Form 990-PF, a hospital or health system if its return says so, a charity that holds donor-advised funds if its return says so, and otherwise a community foundation or charity. A charity that holds donor-advised funds and gives in 10 or more states is listed as a donor-advised fund; a funder in 10 or more states with a median grant under $1,000 is a matching program. Both are hidden unless you ask.</li>
 <li><strong>Ranking.</strong> A funder's score is the number of distinct peers of the kinds you tick in your state that it gave to in 2022 to 2025. If you choose an organization, peers in its 3-digit ZIP area count first and its current funders are left out. Ties are broken by the peers it gave to anywhere. With all states chosen, the list holds the 100 funders that gave to the most organizations like yours anywhere, more when there are ties.</li>
+<li><strong>Following the money.</strong> Grants from one grantmaker to another (a recipient that files its own grant list) are summed by pair for 2022 to 2025. A funder's trace shows its 8 largest sources, the 3 largest sources of each, the 8 largest funders it gives to and the organizations like yours at the end. Flows between organizations that list each other on Schedule R are marked as related; money that goes both ways between two grantmakers is marked too.</li>
 <li><strong>Checks.</strong> For each step, a random sample was labeled by Claude (Anthropic) reading the full record without the pipeline's answer. Intervals are 95%. Shares of grant purposes are corrected for the errors the sample found (prediction-powered inference).</li>
 <li><strong>Backtest.</strong> We ranked funders from the grants of earlier years and checked them against later ones: 2020 to 2022 against 2023 and 2024, and 2020 and 2021 against 2022 and 2023. An organization is scored if it had a funder before and gained one after; only direct funders count. The rule, set before the final data, was to rank by state unless another method beat it on both splits. Ranking by nearby peers did.</li>
 </ol>

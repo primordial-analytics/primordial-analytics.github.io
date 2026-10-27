@@ -10,6 +10,7 @@ Run: `pip install -r requirements.txt && python run.py`. The first run downloads
 - `match.py` links recipients to the IRS Business Master File: EIN, then name with ZIP, city or state, then the model choosing among five candidates (or none) for recipients that look like care providers.
 - `classify.py` labels each organization (free clinic, other care provider, not a peer) and each grant purpose (general, program, capital, in-kind, event, unclear). `health_centers.py` marks health centers from HRSA's list instead.
 - `check.py` draws the reference samples (fixed seeds) and computes accuracy with Wilson intervals and corrected shares (prediction-powered inference). Labels are in `check/`.
+- `flows.py` sums the grants between grantmakers (a recipient that files its own grant list), flags related parties (Schedule R) and money that goes both ways, and picks each funder's trace for the page's "Follow the money" view.
 - `graph.py` backtests ways to rank likely funders on earlier years; `results.py` builds the funder and organization tables and the findings.
 - `web_data.py` writes `assets/examples/12/` and `thumbnail.py` the card image; `run.py` also copies the tables and `codebook.csv` to `downloads/`. Every number on the page is in `output/numbers.json`.
 

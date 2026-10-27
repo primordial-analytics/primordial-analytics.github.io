@@ -170,6 +170,12 @@
     gap: 0 var(--ex-s3);
     text-align: right;
   }
+  .ex .p12-list--near .p12-head {
+    grid-template-columns: 1.75rem minmax(0, 1fr) repeat(6, 4.9rem);
+  }
+  .ex .p12-list--near .p12-stats {
+    grid-template-columns: repeat(6, 4.9rem);
+  }
   .ex .p12-stat dt {
     position: absolute;
     width: 1px;
@@ -242,6 +248,81 @@
   font: 700 11px var(--ex-font-ui);
   fill: var(--ex-ink);
   pointer-events: none;
+}
+/* ---------- follow the money ---------- */
+.ex .p12-key--other {
+  background: var(--ex-c-dim);
+}
+.ex .p12-key--rel,
+.ex .p12-key--back {
+  width: 1.4rem;
+  height: 0;
+  border-radius: 0;
+  border-top: 3px dashed var(--ex-c-obs);
+  vertical-align: 0.25em;
+}
+.ex .p12-key--back {
+  border-top: 3px solid var(--ex-warn);
+}
+.ex .p12-trail {
+  margin: 0 0 var(--ex-s1);
+  font-size: var(--ex-t-note);
+  color: var(--ex-muted);
+}
+.ex .p12-trail .ex-link {
+  font-size: inherit;
+  min-height: 0;
+}
+.ex-chart .p12-flow {
+  fill: none;
+  stroke: var(--ex-c-obs);
+  stroke-opacity: 0.35;
+}
+.ex-chart .p12-flow--rel {
+  stroke-dasharray: 5 3;
+}
+.ex-chart .p12-flow--back {
+  stroke: var(--ex-warn);
+  stroke-opacity: 0.6;
+}
+.ex-chart .p12-fnode .p12-dot {
+  stroke: var(--ex-paper);
+}
+.ex-chart .p12-fnode--c .p12-dot {
+  fill: var(--ex-c-ref);
+}
+.ex-chart .p12-fnode--f .p12-dot {
+  fill: var(--ex-c-obs);
+}
+.ex-chart .p12-fnode--g .p12-dot {
+  fill: var(--ex-c-dim);
+}
+.ex-chart .p12-fnode--p .p12-dot {
+  fill: var(--ex-paper);
+  stroke: var(--ex-c-obs);
+  stroke-width: 1.5;
+}
+.ex-chart text.p12-flab {
+  paint-order: stroke;
+  stroke: var(--ex-paper);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.ex-chart text.p12-colhead {
+  font-weight: 600;
+  fill: var(--ex-muted);
+}
+.ex-chart .p12-hl .p12-flow {
+  stroke-opacity: 0.06;
+}
+.ex-chart .p12-hl .p12-flow.is-on {
+  stroke-opacity: 0.85;
+}
+.ex-chart .p12-hl .p12-fnode {
+  opacity: 0.2;
+}
+.ex-chart .p12-hl .p12-fnode.is-on {
+  opacity: 1;
 }
 .ex .p12-net .ex-figure__head .ex-hint {
   margin-top: var(--ex-s1);

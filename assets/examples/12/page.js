@@ -143,6 +143,7 @@ Ex.ready(function () {
       }
       s.daf = q.daf === "1" ? 1 : 0;
       s.pre = q.pre === "1" ? 1 : 0;
+      s.f = /^\d{9}$/.test(q.f || "") ? q.f : null;
       return s;
     }
     function writeHash() {
@@ -153,6 +154,7 @@ Ex.ready(function () {
       if (on.length !== KINDS.length) p.push("k=" + on.join("."));
       if (S.daf) p.push("daf=1");
       if (S.pre) p.push("pre=1");
+      if (flow) p.push("f=" + flow.ein);
       try { history.replaceState(null, "", location.pathname + location.search + "#" + p.join("&")); } catch (e) { /* no history API: the choices still work */ }
     }
 
@@ -171,6 +173,7 @@ Ex.ready(function () {
       emptyText: "Not in the list. Leave this empty to see every funder.",
       onSelect: function (it) {
         touched = true;
+        dropFlow();
         S.org = it ? it.value : null;
         shown = PAGE;
         update();
@@ -320,6 +323,7 @@ Ex.ready(function () {
     $("reset").addEventListener("click", function () {
       S = fresh();
       touched = false;
+      dropFlow();
       try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { /* see writeHash */ }
       show(DEFAULT, null);
     });
@@ -337,7 +341,9 @@ Ex.ready(function () {
       if (!q) return;
       var s = fromHash(q);
       S = s;
-      show(s.st, s.org);
+      var keep = flow && s.f === flow.ein;
+      if (!keep) dropFlow();
+      show(s.st, s.org, !keep && s.f && function () { openFlow(s.f); });
     });
 
     /* ---------- the answer ---------- */
@@ -391,7 +397,8 @@ Ex.ready(function () {
         : "";
       renderList(p);
       renderCurrent(p);
-      renderNet(p);
+      if (flow) renderFlow();
+      else renderNet(p);
     }
 
     /* ---------- the ranked list ---------- */
@@ -421,7 +428,9 @@ Ex.ready(function () {
       var site = siteUrl(f[F_WEB]);
       var btn = Ex.el("button", { class: "ex-link", type: "button", "aria-expanded": "false", "aria-controls": id }, ["Show the " + F.plural(r.n, "organization")]);
       var panel = Ex.el("div", { class: "p12-peers", id: id, hidden: true });
-      var acts = Ex.el("div", { class: "p12-acts" }, [btn]);
+      var follow = Ex.el("button", { class: "ex-link", type: "button" }, ["Follow the money"]);
+      follow.addEventListener("click", function () { openFlow(f[F_EIN]); });
+      var acts = Ex.el("div", { class: "p12-acts" }, [follow, btn]);
       if (/^\d{9}$/.test(ein)) acts.appendChild(link("https://projects.propublica.org/nonprofits/organizations/" + ein, "Form 990s", "ProPublica Nonprofit Explorer"));
       if (site) acts.appendChild(link(site.href, "Website: " + site.text, "website"));
       var main = Ex.el("div", { class: "p12-main" }, [
@@ -462,10 +471,11 @@ Ex.ready(function () {
         $("more").hidden = true;
         return;
       }
+      host.classList.toggle("p12-list--near", p.oi >= 0);
       host.appendChild(Ex.el("div", { class: "p12-head", "aria-hidden": "true" }, [
-        Ex.el("span", { text: "Funder" }), Ex.el("span", { text: "Organizations like yours funded here" }), Ex.el("span", { text: "Median grant" }), Ex.el("span", { text: "Latest year" }),
+        Ex.el("span", { text: "Funder" }), p.oi >= 0 ? Ex.el("span", { text: "Funded nearby" }) : null, Ex.el("span", { text: cur.d.counts ? "Organizations like yours funded" : "Organizations like yours funded here" }), Ex.el("span", { text: "Median grant" }), Ex.el("span", { text: "Latest year" }),
         Ex.el("span", { text: "For general support" }), Ex.el("span", { text: "Grantees new to it" }),
-      ]));
+      ].filter(Boolean)));
       var ol = Ex.el("ol", { class: "p12-rows", "aria-label": "Funders, most organizations like yours first" });
       rows.slice(0, shown).forEach(function (r, i) { ol.appendChild(rowEl(r, i + 1)); });
       host.appendChild(ol);
@@ -570,7 +580,7 @@ Ex.ready(function () {
       $("key-ego").hidden = !ego;
       $("key-state").hidden = ego;
       $("net-all").hidden = !ego;
-      $("net-hint").textContent = "Point at or tab to a circle to see its connections. Select an organization to see its own funders" + (cur.d.counts ? ", in its state." : ".") +
+      $("net-hint").textContent = "Point at or tab to a circle to see its connections. Select a funder to follow its money, or an organization to see its own funders" + (cur.d.counts ? ", in its state." : ".") +
         (!ego && net.allPeers > net.peers.length ? " Shown: the " + F.int(net.peers.length) + " of " + F.int(net.allPeers) + " organizations funded by the most of these funders." : "");
       renderNetText(net);
       if (!netChart) {
@@ -659,7 +669,7 @@ Ex.ready(function () {
       if (n.t === "o") return { title: orgName(), rows: [{ name: "Current funders", value: F.int(p.cf.length), color: "obs" }, { name: "Peers sharing a funder", value: F.int(Object.keys(net.shared).length), color: "ref" }], note: F.int(net.peers.length) + " with the most shared funders are shown." };
       if (n.t === "f") {
         var f = d.funders[n.fi], shared = net.peers.filter(function (q) { return d.fp[n.fi + "|" + q.pi]; }).length;
-        return { title: nice(f[F_NAME]), rows: [{ name: "Gave to you", value: usd(n.c.total), color: "obs" }, { name: "Years", value: Object.keys(n.c.years).sort().join(", ") }, { name: "Also gave to peers shown", value: F.int(shared) }], note: typeLabel(f) };
+        return { title: nice(f[F_NAME]), rows: [{ name: "Gave to you", value: usd(n.c.total), color: "obs" }, { name: "Years", value: Object.keys(n.c.years).sort().join(", ") }, { name: "Also gave to peers shown", value: F.int(shared) }], note: typeLabel(f) + ". Select it to follow its money." };
       }
       var ego = net.mode === "ego";
       if (n.t === "p") {
@@ -667,7 +677,7 @@ Ex.ready(function () {
         return { title: nice(pe[P_NAME]), rows: [{ name: ego ? "Funders it shares with you" : "Funders shown that gave to it", value: F.int(n.n), color: "obs" }], note: nice(pe[P_CITY]) + (d.counts ? ", " + pe[P_ST] : "") + ". Select it to see its own funders." };
       }
       var sf = d.funders[n.fi];
-      return { title: n.rank + ". " + nice(sf[F_NAME]), rows: [{ name: "Organizations like yours funded here", value: F.int(n.s.n), color: "est" }], note: typeLabel(sf) + (ego ? ". Suggested; it does not fund you now." : ". Number " + n.rank + " in the list.") };
+      return { title: n.rank + ". " + nice(sf[F_NAME]), rows: [{ name: "Organizations like yours funded here", value: F.int(n.s.n), color: "est" }], note: typeLabel(sf) + (ego ? ". Suggested; it does not fund you now." : ". Number " + n.rank + " in the list.") + " Select it to follow its money." };
     }
     function short(s, n) {
       return s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s;
@@ -714,6 +724,12 @@ Ex.ready(function () {
         edges.classed("is-on", function (l) { return !!n && (l.source.id === n.id || l.target.id === n.id); });
       }
       ng.on("pointerenter.hl focus.hl", function (e, n) { hl(n); }).on("pointerleave.hl blur.hl", function () { hl(null); });
+      // a funder opens its money trace
+      ng.filter(function (n) { return n.t === "s" || n.t === "f"; }).attr("role", "button").classed("p12-pick", true)
+        .on("click.pick", function (e, n) { openFlow(d.funders[n.fi][F_EIN]); })
+        .on("keydown.pick", function (e, n) {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openFlow(d.funders[n.fi][F_EIN], { keyboard: true }); }
+        });
       // an organization opens its own network
       ng.filter(function (n) { return n.t === "p"; }).attr("role", "button").classed("p12-pick", true)
         .on("click.pick", function (e, n) { pickOrg(n.pi, false); })
@@ -783,6 +799,280 @@ Ex.ready(function () {
           return nice(d.funders[s.fi][F_NAME]) + ", funded " + F.plural(s.n, "organization") + " like yours here" + (to.length ? ", including " + to.slice(0, 3).join("; ") : "");
         }), true);
       }
+    }
+
+
+    /* ---------- follow the money: one funder's trace (flow-NN.json, written by web_data.py) ----------
+       Five columns, left to right: its sources' sources, its sources, the funder, the funders it gives to and the
+       organizations like yours at the end. Each entity appears once. A path shows where money could have gone, not
+       that the same dollars moved. */
+    var flowChart = null, flow = null, flowToken = 0;
+    function dropFlow() {
+      flow = null;
+      flowToken++;
+      $("fig-flow").hidden = true;
+    }
+    var FLOW_COLS = ["Their sources", "Its sources", "The funder", "Funders it gives to", "Organizations like yours"];
+    var FLAG_REL = 1, FLAG_BACK = 2;
+    function openFlow(ein, o) {
+      o = o || {};
+      touched = true;
+      var token = ++flowToken;
+      Ex.loadData(BASE + "flow-" + ein.slice(-2) + ".json").then(function (sh) {
+        var tr = sh.t[ein];
+        if (!tr || token !== flowToken) return;
+        var step = { ein: ein, name: nice(sh.o[ein][0]) };
+        var trail = o.trail || (o.push && flow ? flow.trail.concat(step) : [step]);
+        flow = { ein: ein, o: sh.o, t: tr, trail: trail };
+        renderFlow();
+        writeHash();
+        $("fig-flow").scrollIntoView({ block: "start" });
+        if (o.keyboard) {
+          var c = $("chart-flow").querySelector(".p12-fnode--c");
+          if (c) c.focus();
+        }
+      }, function () {
+        if (token !== flowToken) return;
+        // the error replaces the chart's svg, so the next trace starts a new chart
+        if (flowChart) flowChart.destroy();
+        flowChart = null;
+        dropFlow();
+        writeHash();
+        $("t-flow").textContent = "Follow the money";
+        ["flow-trail", "flow-sum", "flow-text"].forEach(function (id) { $(id).textContent = ""; });
+        $("fig-net").hidden = true;
+        $("fig-flow").hidden = false;
+        Ex.showError($("chart-flow"), "This funder's trace did not load. The downloads below have its grants.");
+      });
+    }
+    function closeFlow() {
+      dropFlow();
+      if (cur.p) renderNet(cur.p);
+      writeHash();
+    }
+    $("flow-close").addEventListener("click", function () {
+      closeFlow();
+      $("fig-net").scrollIntoView({ block: "start" });
+    });
+    function peerOk(ein) {
+      var code = flow.o[ein][4];
+      return KINDS.some(function (K) { return K.code === code && S.kinds[K.k]; });
+    }
+    function buildFlow() {
+      var tr = flow.t, o = flow.o, nodes = {}, list = [], edges = [];
+      function node(ein, col) {
+        if (!nodes[ein]) list.push((nodes[ein] = { id: ein, ein: ein, col: col, role: o[ein][3], amt: 0 }));
+        return nodes[ein];
+      }
+      var seen = {};
+      function edge(s, t, r) {
+        // a grant to a funder that is also an organization like yours is in both the flows and the grant table
+        if (seen[s + ">" + t]) return;
+        seen[s + ">" + t] = 1;
+        var e = { s: nodes[s], t: nodes[t], amt: r[0], n: r[1], flag: r[2] };
+        e.s.amt += e.amt;
+        e.t.amt += e.amt;
+        edges.push(e);
+      }
+      // the order of these calls picks the column of an entity that turns up in more than one place
+      node(flow.ein, 2).role = "c";
+      tr.in1.forEach(function (r) { node(r[0], 1); edge(r[0], flow.ein, r.slice(1)); });
+      tr.mid.forEach(function (r) { node(r[0], 3); edge(flow.ein, r[0], r.slice(1)); });
+      tr.peers.forEach(function (r) {
+        if (!peerOk(r[0])) return;
+        node(r[0], 4);
+        edge(flow.ein, r[0], r.slice(1));
+      });
+      tr.midp.forEach(function (r) {
+        if (!peerOk(r[1]) || !nodes[r[0]]) return;
+        node(r[1], 4);
+        edge(r[0], r[1], r.slice(2));
+      });
+      tr.in2.forEach(function (r) {
+        if (!nodes[r[1]]) return;
+        node(r[0], 0);
+        edge(r[0], r[1], r.slice(2));
+      });
+      return { nodes: list, edges: edges };
+    }
+    function renderFlow() {
+      if (!flow) return;
+      var tr = flow.t, tot = tr.tot, name = nice(flow.o[flow.ein][0]);
+      var net = (flow.net = buildFlow());
+      $("fig-net").hidden = true;
+      $("fig-flow").hidden = false;
+      $("t-flow").textContent = "Follow the money: " + name;
+      var trail = $("flow-trail");
+      trail.textContent = "";
+      if (flow.trail.length > 1) {
+        trail.appendChild(document.createTextNode("Path: "));
+        flow.trail.forEach(function (st, i) {
+          if (i) trail.appendChild(document.createTextNode(" › "));
+          if (i === flow.trail.length - 1) trail.appendChild(Ex.el("strong", { text: st.name }));
+          else {
+            var b = Ex.el("button", { class: "ex-link", type: "button", text: st.name });
+            b.addEventListener("click", function () { openFlow(st.ein, { trail: flow.trail.slice(0, i + 1) }); });
+            trail.appendChild(b);
+          }
+        });
+      }
+      var s = ["In 2022 to 2025 it listed " + usd(tot[1]) + " in grants to U.S. organizations and received " + usd(tot[0]) + " from other grantmakers" +
+        (tot[0] && tot[1] ? ", " + (tot[0] < tot[1] / 100 ? "under 1%" : F.num((100 * tot[0]) / tot[1], 0) + "%") + " of what it gave." : ".")];
+      s.push("It gave " + usd(tot[2]) + " straight to " + F.plural(tot[3], "organization") + " like yours in all states" + (tot[4] ? ", and " + usd(tot[4]) + " to related ones." : "."));
+      var nRel = net.edges.filter(function (e) { return e.flag & FLAG_REL; }).length, nBack = net.edges.filter(function (e) { return e.flag & FLAG_BACK; }).length;
+      if (nRel || nBack) s.push("Shown: " + [nRel ? F.plural(nRel, "flow") + " between related organizations" : "", nBack ? F.plural(nBack, "flow") + " where money also goes the other way" : ""].filter(Boolean).join(" and ") + ".");
+      $("flow-sum").textContent = s.join(" ");
+      renderFlowText(net);
+      if (!flowChart) {
+        flowChart = Ex.chart($("chart-flow"), {
+          label: "Where a funder's money comes from and where it goes",
+          margin: function (w) { return { top: 34, right: w < 520 ? 12 : 170, bottom: 10, left: w < 520 ? 12 : 140 }; },
+          height: function () {
+            var per = [0, 0, 0, 0, 0];
+            (flow ? flow.net.nodes : []).forEach(function (n) { per[n.col]++; });
+            return 40 + Math.max(6, d3.max(per)) * 22;
+          },
+          render: drawFlow,
+        });
+      }
+      flowChart.redraw();
+    }
+    function flowTip(n) {
+      var o = flow.o, e = flow.net.edges, rows = [];
+      e.filter(function (x) { return x.t === n; }).forEach(function (x) { rows.push({ name: "From " + short(nice(o[x.s.ein][0]), 30), value: usd(x.amt), color: "obs", dash: !!(x.flag & FLAG_REL) }); });
+      e.filter(function (x) { return x.s === n; }).forEach(function (x) { rows.push({ name: "To " + short(nice(o[x.t.ein][0]), 30), value: usd(x.amt), color: "obs", dash: !!(x.flag & FLAG_REL) }); });
+      var f = o[n.ein], what = n.role === "c" ? "The funder you are following" : n.role === "f" ? "A funder. Select it to follow its money." : n.role === "g" ? "A grantmaker" : "An organization like yours. Select it to see its own funders.";
+      var mine = e.filter(function (x) { return x.s === n || x.t === n; });
+      var flags = (mine.some(function (x) { return x.flag & FLAG_REL; }) ? " Dashed: related organizations." : "") + (mine.some(function (x) { return x.flag & FLAG_BACK; }) ? " Money also goes the other way." : "");
+      return { title: nice(f[0]), rows: rows.slice(0, 8), note: [nice(f[1]), f[2]].filter(Boolean).join(", ") + ". " + what + flags };
+    }
+    function drawFlow(c) {
+      if (!flow) return;
+      var net = flow.net, g = c.g, o = flow.o;
+      var cols = [0, 1, 2, 3, 4].filter(function (k) { return net.nodes.some(function (n) { return n.col === k; }); });
+      // names sit left of the two source columns and right of the rest, so the columns leave room on those sides
+      var FR = [0, 0.26, 0.47, 0.64, 1], lo = FR[cols[0]], hi = FR[cols[cols.length - 1]];
+      var x = function (k) { return cols.length === 1 ? c.width / 2 : ((FR[k] - lo) / (hi - lo)) * c.width; };
+      // order within a column: sources and grantmakers by dollars; sources' sources and organizations by where their
+      // links come from, so lines cross less
+      var byCol = {};
+      net.nodes.forEach(function (n) { (byCol[n.col] = byCol[n.col] || []).push(n); });
+      var rank = {};
+      function place(k, key) {
+        var a = byCol[k] || [];
+        a.sort(function (p, q) { return key(p) - key(q) || q.amt - p.amt; });
+        var step = 22, top = (c.height - (a.length - 1) * step) / 2;
+        a.forEach(function (n, i) { n.x = x(k); n.y = top + i * step; rank[n.id] = i; });
+      }
+      var avg = function (n, side) {
+        var r = net.edges.filter(function (e) { return e[side] === n; }).map(function (e) { return rank[(side === "t" ? e.s : e.t).id]; }).filter(function (v) { return v != null; });
+        return r.length ? d3.mean(r) : 1e3;
+      };
+      place(2, function () { return 0; });
+      place(1, function () { return 0; });
+      place(3, function () { return 0; });
+      place(0, function (n) { return avg(n, "s"); });
+      place(4, function (n) { return net.edges.some(function (e) { return e.t === n && e.s.role === "c"; }) ? -1 : avg(n, "t"); });
+      var w = d3.scaleSqrt().domain([0, d3.max(net.edges, function (e) { return e.amt; }) || 1]).range([1, 12]);
+      var r = d3.scaleSqrt().domain([0, d3.max(net.nodes, function (n) { return n.amt; }) || 1]).range([3.5, 10]);
+      c.svg.attr("aria-label", "Money trace for " + nice(o[flow.ein][0]) + ": " + F.plural(net.nodes.length - 1, "connected organization") + ". The text version below lists every flow.");
+      g.append("g").selectAll("text").data(cols).enter().append("text").attr("class", "ex-svg-label p12-colhead")
+        .attr("x", function (k) { return x(k); }).attr("y", -14).attr("text-anchor", function (k) { return k < 2 ? "end" : k > 2 ? "start" : "middle"; })
+        .text(function (k) { return c.narrow ? "" : FLOW_COLS[k]; });
+      var link = d3.linkHorizontal().x(function (p) { return p.x; }).y(function (p) { return p.y; });
+      var paths = g.append("g").selectAll("path").data(net.edges).enter().append("path")
+        .attr("class", function (e) { return "p12-flow" + (e.flag & FLAG_REL ? " p12-flow--rel" : "") + (e.flag & FLAG_BACK ? " p12-flow--back" : ""); })
+        .attr("stroke-width", function (e) { return w(e.amt); })
+        .attr("d", function (e) {
+          if (e.s.col !== e.t.col) return link({ source: e.s, target: e.t });
+          // money between two entities in one column: an arc out to the side the names are not on
+          var dx = (e.s.col < 2 ? 1 : -1) * (16 + Math.abs(e.t.y - e.s.y) * 0.35);
+          return "M" + e.s.x + "," + e.s.y + "C" + (e.s.x + dx) + "," + e.s.y + " " + (e.t.x + dx) + "," + e.t.y + " " + e.t.x + "," + e.t.y;
+        });
+      var ng = g.append("g").selectAll("g").data(net.nodes).enter().append("g")
+        .attr("class", function (n) { return "ex-mark p12-fnode p12-fnode--" + n.role; })
+        .attr("transform", function (n) { return "translate(" + n.x + "," + n.y + ")"; });
+      ng.each(function (n) { n.r = n.role === "c" ? 11 : r(n.amt); });
+      ng.append("circle").attr("class", "ex-hit").attr("r", function (n) { return Math.max(n.r + 4, 10); }).attr("fill", "transparent");
+      ng.append("circle").attr("class", "p12-dot").attr("r", function (n) { return n.r; });
+      // the funder's name above it, clear of its lines; on a phone only this name is drawn
+      // centred over its circle; at the first or last column, flush with the edge of the figure instead
+      var ci = cols.indexOf(2), cfirst = ci === 0 && cols.length > 1, clast = ci === cols.length - 1 && cols.length > 1;
+      ng.filter(function (n) { return n.role === "c"; }).append("text").attr("class", "ex-svg-label p12-flab p12-flab--c")
+        .attr("y", function (n) { return -n.r - 8; }).attr("x", function (n) { return cfirst ? -n.r : clast ? n.r : 0; })
+        .attr("text-anchor", cfirst ? "start" : clast ? "end" : "middle").text(function (n) { return nice(o[n.ein][0]); })
+        .each(function (n) {
+          var left = ci > 0 ? n.x - x(cols[ci - 1]) : n.x + c.margin.left, right = ci < cols.length - 1 ? x(cols[ci + 1]) - n.x : c.width + c.margin.right - n.x;
+          var room = (cfirst ? right + n.r : clast ? left + n.r : 2 * Math.min(left, right)) - 24, t = this.textContent;
+          while (t.length > 4 && this.getComputedTextLength() > room) this.textContent = (t = t.slice(0, -2).trimEnd()) + "…";
+        });
+      if (!c.narrow) {
+        ng.filter(function (n) { return n.role !== "c"; }).append("text").attr("class", "ex-svg-label p12-flab").attr("dy", "0.32em")
+          .attr("x", function (n) { return n.col < 2 ? -(n.r + 6) : n.r + 6; })
+          .attr("text-anchor", function (n) { return n.col < 2 ? "end" : "start"; })
+          .text(function (n) { return nice(o[n.ein][0]); })
+          .each(function (n) {
+            // trim a name to the room before the next column (or the edge of the figure)
+            var i = cols.indexOf(n.col), room = n.col < 2 ? n.x - (i > 0 ? x(cols[i - 1]) : -c.margin.left) : (i < cols.length - 1 ? x(cols[i + 1]) : c.width + c.margin.right) - n.x;
+            room -= n.r + 14;
+            var t = this.textContent;
+            while (t.length > 4 && this.getComputedTextLength() > room) this.textContent = (t = t.slice(0, -2).trimEnd()) + "…";
+          });
+      }
+      // pointing at a circle lights every path through it, back to the sources and on to the organizations
+      function reach(n, side, seen) {
+        net.edges.forEach(function (e) {
+          var from = side === "up" ? e.t : e.s, to = side === "up" ? e.s : e.t;
+          if (from === n && !seen.e.has(e)) {
+            seen.e.add(e);
+            seen.n.add(to);
+            reach(to, side, seen);
+          }
+        });
+        return seen;
+      }
+      function hl(n) {
+        g.classed("p12-hl", !!n);
+        if (!n) return;
+        var up = reach(n, "up", { e: new Set(), n: new Set() }), down = reach(n, "down", { e: new Set(), n: new Set() });
+        ng.classed("is-on", function (m) { return m === n || up.n.has(m) || down.n.has(m); });
+        paths.classed("is-on", function (e) { return up.e.has(e) || down.e.has(e); });
+      }
+      ng.on("pointerenter.hl focus.hl", function (ev, n) { hl(n); }).on("pointerleave.hl blur.hl", function () { hl(null); });
+      ng.filter(function (n) { return n.role !== "c" && n.role !== "g"; }).attr("role", "button").classed("p12-pick", true)
+        .on("click.pick", function (ev, n) { flowPick(n, false); })
+        .on("keydown.pick", function (ev, n) {
+          if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); flowPick(n, true); }
+        });
+      c.cleanup(Ex.tooltip.attach(ng, function (el) { return flowTip(el.__data__); }));
+      Ex.roving(g.node(), ".ex-mark");
+    }
+    function flowPick(n, keyboard) {
+      if (n.role === "f") return openFlow(n.ein, { push: true, keyboard: keyboard });
+      // an organization like yours: its own network, in its state
+      var st = flow.o[n.ein][2];
+      if (!byAbbr[st]) return;
+      dropFlow();
+      show(st, n.ein, function () {
+        $("fig-net").scrollIntoView({ block: "start" });
+        var m = keyboard && $("chart-net").querySelector(".p12-node--o");
+        if (m) m.focus();
+      });
+    }
+    function renderFlowText(net) {
+      var o = flow.o, host = $("flow-text");
+      host.textContent = "";
+      var flags = function (e) { return (e.flag & FLAG_REL ? " (related organizations)" : "") + (e.flag & FLAG_BACK ? " (money also goes the other way)" : ""); };
+      // each flow once: money into the funder's side under its giver's column, money out under its receiver's
+      var col = function (e) { return e.s.col < 2 ? e.s.col : e.t.col; };
+      [0, 1, 2, 3, 4].forEach(function (k) {
+        var es = net.edges.filter(function (e) { return col(e) === k; });
+        if (!es.length) return;
+        host.appendChild(Ex.el("p", { class: "p12-nettext__h", text: k === 2 ? "Back to the funder" : FLOW_COLS[k] }));
+        var ul = Ex.el("ul");
+        es.forEach(function (e) { ul.appendChild(Ex.el("li", { text: nice(o[e.s.ein][0]) + " to " + nice(o[e.t.ein][0]) + ": " + usd(e.amt) + " in " + F.plural(e.n, "grant") + flags(e) })); });
+        host.appendChild(ul);
+      });
     }
 
     /* ---------- findings: bars ---------- */
@@ -855,7 +1145,7 @@ Ex.ready(function () {
     /* ---------- go ---------- */
     var q = readHash(), s0 = q ? fromHash(q) : fresh();
     S = s0;
-    show(s0.st, s0.org);
+    show(s0.st, s0.org, s0.f && function () { openFlow(s0.f); });
     if (q) {
       // a shared link lands on the tool
       requestAnimationFrame(function () { $("tool").scrollIntoView(); });
